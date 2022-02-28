@@ -20,7 +20,7 @@ const provider = {
     async all(query?: Partial<PaginationQuery>): Promise<PaginatedResult> {
       const { limit = 10, offset = 0 } = query || {};
 
-      const endpoint = `${API_BASE_URL}?limit=${limit}&offset=${offset}`;
+      const endpoint = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
       const response = await fetch(endpoint);
 
       if (!response.ok) throw new Error(response.statusText);

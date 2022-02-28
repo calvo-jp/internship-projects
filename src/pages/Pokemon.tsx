@@ -1,4 +1,3 @@
-import ArrowLeftIcon from "@heroicons/react/outline/ArrowLeftIcon";
 import ChevronLeftIcon from "@heroicons/react/outline/ChevronLeftIcon";
 import FireIcon from "@heroicons/react/outline/FireIcon";
 import LightningBoltIcon from "@heroicons/react/outline/LightningBoltIcon";

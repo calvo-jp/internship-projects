@@ -26,29 +26,26 @@ const Card = ({ url }: CardProps) => {
     };
   }, [url]);
 
-  if (pending) return <div>Loading...</div>;
-  if (!data) return <></>;
+  if (pending || !data) return <></>;
 
   return (
-    <Link to={"/pokemons/" + data.id} className="block">
-      <div className="flex h-[150px] w-[150px] items-center justify-center overflow-hidden rounded-full border-4 border-slate-100">
+    <Link
+      to={"/pokemons/" + data.id}
+      className="block rounded-lg bg-white p-8 shadow-md"
+    >
+      <div className="flex h-[100px] items-center justify-center overflow-hidden">
         <img
-          width={64}
-          height={64}
+          className="h-full w-full"
           src={data.sprites.other.dream_world.front_default}
           alt=""
         />
       </div>
 
-      <div className="p-4">
-        <h2 className="text-center text-lg">{capitalizeFirst(data.name)}</h2>
+      <div className="mt-2 p-2">
+        <h2 className="text-xl">{data.name}</h2>
       </div>
     </Link>
   );
-};
-
-const capitalizeFirst = (subject: string) => {
-  return subject[0].toUpperCase() + subject.substring(1);
 };
 
 export default Card;
