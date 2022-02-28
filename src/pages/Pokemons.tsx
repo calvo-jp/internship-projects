@@ -1,11 +1,16 @@
 import ChevronUpIcon from "@heroicons/react/outline/ChevronUpIcon";
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import normalizeResult from "../helpers/normalizeResponse";
+import IPokemon from "../types/pokemon";
 
 interface Paginated {
   next: string | null;
   previous: string | null;
-  results: Record<string, any>[];
+  results: {
+    name: string;
+    url: string;
+  }[];
   count: number;
 }
 
@@ -64,10 +69,10 @@ export default function Pokemons() {
     <div className="mx-auto flex min-h-screen max-w-screen-lg flex-col">
       <Header />
 
-      <main className="grow p-4">
+      <main className="grow p-6">
         <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {data.results.map((item: Record<string, any>, index) => (
-            <div key={index}>
+          {data.results.map((item) => (
+            <div key={item.url}>
               <Card url={item.url} />
             </div>
           ))}
@@ -101,20 +106,13 @@ const ScrollToTopButton = (props: React.ComponentProps<"button">) => {
   );
 };
 
-const Brand = () => {
-  return (
-    <div className="w-fit">
-      <h1 className="bg-gradient-to-r from-orange-400 to-amber-400 text-6xl font-black uppercase [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-        POKEDEX
-      </h1>
-    </div>
-  );
-};
-
 const Header = () => {
   return (
-    <header className="flex flex-col items-center justify-center p-8">
-      <Brand />
+    <header className="bg-gradient-to-r from-orange-400 to-amber-400 p-6 lg:rounded-b-3xl">
+      <div>
+        <h1 className="text-6xl font-bold text-white">Pokedex</h1>
+        <p className="-mt-1 ml-1 text-sm text-amber-100">Powered by pokeapi</p>
+      </div>
     </header>
   );
 };
@@ -125,7 +123,7 @@ interface CardProps {
 
 const Card = ({ url }: CardProps) => {
   const [pending, setPending] = useState(true);
-  const [data, setData] = useState<Record<string, any>>();
+  const [data, setData] = useState<IPokemon>();
 
   useEffect(() => {
     fetch(url)
@@ -135,7 +133,7 @@ const Card = ({ url }: CardProps) => {
         throw new Error(response.statusText);
       })
       .catch(console.error)
-      .then(setData)
+      .then((data) => setData(normalizeResult(data)))
       .finally(() => setPending(false));
 
     return () => {
@@ -154,11 +152,7 @@ const Card = ({ url }: CardProps) => {
       className="block rounded-lg bg-white p-8 shadow-md"
     >
       <div className="flex h-[100px] items-center justify-center overflow-hidden">
-        <img
-          className="h-full w-full"
-          src={data.sprites.other.dream_world.front_default}
-          alt=""
-        />
+        <img className="h-full w-full" src={data.image} alt="" />
       </div>
 
       <div className="mt-4">

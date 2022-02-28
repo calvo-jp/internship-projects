@@ -3,6 +3,8 @@ import FireIcon from "@heroicons/react/outline/FireIcon";
 import LightningBoltIcon from "@heroicons/react/outline/LightningBoltIcon";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import normalizeResult from "../helpers/normalizeResponse";
+import IPokemon from "../types/pokemon";
 
 interface Params {
   id: string;
@@ -14,7 +16,7 @@ export default function Pokemon() {
   const pokemonId = params.id!;
 
   const [pending, setPending] = useState(true);
-  const [data, setData] = useState<Record<string, any>>();
+  const [data, setData] = useState<IPokemon>();
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon/" + pokemonId)
@@ -22,7 +24,7 @@ export default function Pokemon() {
         if (!response.ok) throw new Error(response.statusText);
         return response.json();
       })
-      .then(setData)
+      .then((data) => setData(normalizeResult(data)))
       .catch(console.error)
       .finally(() => setPending(false));
 
@@ -34,14 +36,6 @@ export default function Pokemon() {
 
   if (pending) return <Loader />;
   if (!data) return <InternalError />;
-
-  const stats: {
-    name: string;
-    value: number;
-  }[] = data.stats.map((i: Record<string, any>) => ({
-    value: i.base_stat,
-    name: i.stat.name,
-  }));
 
   return (
     <div className="mx-auto max-w-screen-md">
@@ -56,8 +50,8 @@ export default function Pokemon() {
 
           <Card.Content>
             <ul>
-              {data.abilities.map((item: Record<string, any>) => (
-                <li key={item.ability.name}>{item.ability.name}</li>
+              {data.abilities.map((ability) => (
+                <li key={ability}>{ability}</li>
               ))}
             </ul>
           </Card.Content>
@@ -70,7 +64,7 @@ export default function Pokemon() {
           />
 
           <Card.Content>
-            {stats.map((stat) => (
+            {data.stats.map((stat) => (
               <div key={stat.name}>
                 <div className="text-sm">{stat.name}</div>
 
@@ -119,22 +113,24 @@ Card.Content = ({ children }: React.PropsWithChildren<{}>) => {
   return <div className="mt-6">{children}</div>;
 };
 
-const Header = ({ data }: Record<string, any>) => {
+interface HeaderProps {
+  data: IPokemon;
+}
+
+const Header = ({ data }: HeaderProps) => {
   return (
     <div className="relative bg-gradient-to-r from-orange-400 to-amber-500 text-white md:rounded-b-3xl">
       <BackButton />
 
       <div className="flex flex-col items-center gap-2 p-8 md:flex-row md:gap-6">
         <section>
-          <Avatar src={data.sprites.other.dream_world.front_default} />
+          <Avatar src={data.image} />
         </section>
 
         <section className="text-center">
           <h1 className="text-3xl font-bold">{data.name}</h1>
 
-          <Types
-            data={data.types.map((item: Record<string, any>) => item.type.name)}
-          />
+          <Types data={data.types} />
         </section>
       </div>
     </div>
