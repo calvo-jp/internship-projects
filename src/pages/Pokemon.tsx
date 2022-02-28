@@ -33,8 +33,8 @@ export default function Pokemon() {
     };
   }, [pokemonId]);
 
-  if (pending) return <div className="p-2">Loading...</div>;
-  if (!data) return <div>Something went wrong.</div>;
+  if (pending) return <Loader />;
+  if (!data) return <InternalError />;
 
   const stats: {
     name: string;
@@ -158,4 +158,12 @@ const Header = ({ data }: TData) => {
       </div>
     </div>
   );
+};
+
+const Loader = () => {
+  return <div className="p-4 text-sm text-gray-600">Loading...</div>;
+};
+
+const InternalError = () => {
+  return <div className="p-4 text-sm text-gray-600">Something went wrong.</div>;
 };
