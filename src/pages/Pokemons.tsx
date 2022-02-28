@@ -108,7 +108,7 @@ const ScrollToTopButton = (props: React.ComponentProps<"button">) => {
 
 const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-orange-400 to-amber-400 p-6 lg:rounded-b-3xl">
+    <header className="overflow-hidden bg-gradient-to-r from-orange-400 to-amber-400 p-6 lg:rounded-b-3xl">
       <div>
         <h1 className="text-6xl font-bold text-white">Pokedex</h1>
         <p className="-mt-1 ml-1 text-sm text-amber-100">Powered by pokeapi</p>
@@ -155,8 +155,16 @@ const Card = ({ url }: CardProps) => {
         <img className="h-full w-full" src={data.image} alt="" />
       </div>
 
-      <div className="mt-4">
-        <h2 className="text-xl">{data.name}</h2>
+      <div className="mt-8">
+        <h2 className="text-2xl">{data.name}</h2>
+
+        <ul className="flex flex-wrap items-center gap-x-1 text-sm text-gray-400">
+          <li>Abilities: {data.abilities.length}</li>
+          <li className="h-1 w-1 rounded-full bg-gray-200"></li>
+          <li>Moves: {data.moves.length}</li>
+          <li className="h-1 w-1 rounded-full bg-gray-200"></li>
+          <li>Types: {data.types.length}</li>
+        </ul>
       </div>
     </Link>
   );
