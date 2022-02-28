@@ -149,7 +149,7 @@ const Card = ({ url }: CardProps) => {
   return (
     <Link
       to={"/pokemons/" + data.id}
-      className="block rounded-lg bg-white p-8 shadow-md"
+      className="block rounded-lg border border-transparent bg-white p-8 shadow-md transition-all duration-300 hover:border-orange-300 hover:ring-2 hover:ring-orange-200 focus:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-200"
     >
       <div className="flex h-[100px] items-center justify-center overflow-hidden">
         <img className="h-full w-full" src={data.image} alt="" />
