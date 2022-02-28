@@ -3,25 +3,25 @@ import FireIcon from "@heroicons/react/outline/FireIcon";
 import LightningBoltIcon from "@heroicons/react/outline/LightningBoltIcon";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import provider from "../provider";
 
 interface Params {
   id: string;
   [key: string]: string;
 }
 
-type TData = Awaited<ReturnType<typeof provider["read"]["one"]>>;
-
 export default function Pokemon() {
   const params = useParams<Params>();
   const pokemonId = params.id!;
 
   const [pending, setPending] = useState(true);
-  const [data, setData] = useState<TData>();
+  const [data, setData] = useState<Record<string, any>>();
 
   useEffect(() => {
-    provider.read
-      .one(pokemonId)
+    fetch("https://pokeapi.co/api/v2/pokemon/" + pokemonId)
+      .then((response) => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
       .then(setData)
       .catch(console.error)
       .finally(() => setPending(false));
@@ -119,43 +119,66 @@ Card.Content = ({ children }: React.PropsWithChildren<{}>) => {
   return <div className="mt-6">{children}</div>;
 };
 
-const Header = ({ data }: TData) => {
-  const types = data.types.map((item: Record<string, any>) => item.type.name);
-
+const Header = ({ data }: Record<string, any>) => {
   return (
     <div className="relative bg-gradient-to-r from-orange-400 to-amber-500 text-white md:rounded-b-3xl">
-      <Link
-        to="/pokemons"
-        className="absolute top-4 left-4 rounded-full border-gray-100 bg-black from-orange-400 to-amber-500 p-2 opacity-30 hover:opacity-50 md:-left-8 md:block md:border-4 md:bg-gradient-to-r md:p-3 md:opacity-100 md:hover:opacity-100"
-      >
-        <ChevronLeftIcon className="h-6 w-6 stroke-white md:h-8 md:w-8" />
-      </Link>
+      <BackButton />
 
       <div className="flex flex-col items-center gap-2 p-8 md:flex-row md:gap-6">
-        <section className="flex h-[150px] w-[150px] shrink-0 grow-0 basis-[150px] items-center justify-center overflow-hidden rounded-full bg-white bg-opacity-30 p-6">
-          <img
-            className="h-full w-full"
-            src={data.sprites.other.dream_world.front_default}
-            alt=""
-          />
+        <section>
+          <Avatar src={data.sprites.other.dream_world.front_default} />
         </section>
 
         <section className="text-center">
           <h1 className="text-3xl font-bold">{data.name}</h1>
 
-          <div className="mt-2 flex gap-1 md:mt-1">
-            {types.map((type: string) => (
-              <div
-                key={type}
-                className="rounded-full bg-white bg-opacity-30 px-4 py-2 text-sm font-semibold"
-              >
-                {type}
-              </div>
-            ))}
-          </div>
+          <Types
+            data={data.types.map((item: Record<string, any>) => item.type.name)}
+          />
         </section>
       </div>
     </div>
+  );
+};
+
+interface TypesProps {
+  data: string[];
+}
+
+const Types = ({ data }: TypesProps) => {
+  return (
+    <div className="mt-2 flex gap-1 md:mt-1">
+      {data.map((i) => (
+        <div
+          key={i}
+          className="rounded-full bg-white bg-opacity-30 px-4 py-2 text-sm font-semibold"
+        >
+          {i}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+interface AvatarProps {
+  src: string;
+}
+const Avatar = ({ src }: AvatarProps) => {
+  return (
+    <div className="flex h-[150px] w-[150px] shrink-0 grow-0 basis-[150px] items-center justify-center overflow-hidden rounded-full bg-white bg-opacity-30 p-6">
+      <img className="h-full w-full" src={src} alt="" />
+    </div>
+  );
+};
+
+const BackButton = () => {
+  return (
+    <Link
+      to="/pokemons"
+      className="absolute top-4 left-4 rounded-full border-gray-100 bg-black from-orange-400 to-amber-500 p-2 opacity-30 hover:opacity-50 md:-left-8 md:block md:border-4 md:bg-gradient-to-r md:p-3 md:opacity-100 md:hover:opacity-100"
+    >
+      <ChevronLeftIcon className="h-6 w-6 stroke-white md:h-8 md:w-8" />
+    </Link>
   );
 };
 

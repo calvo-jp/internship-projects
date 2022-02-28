@@ -1,7 +1,6 @@
 import ChevronUpIcon from "@heroicons/react/outline/ChevronUpIcon";
-import { useEffect, useState } from "react";
-import Card from "../components/Card";
-import Header from "../components/Header";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface Paginated {
   next: string | null;
@@ -9,8 +8,6 @@ interface Paginated {
   results: Record<string, any>[];
   count: number;
 }
-
-const defaultEndpoint = "https://pokeapi.co/api/v2/pokemon?limit=12";
 
 const defaultData: Paginated = {
   count: 0,
@@ -20,6 +17,11 @@ const defaultData: Paginated = {
 };
 
 export default function Pokemons() {
+  const defaultEndpoint = useMemo(
+    () => "https://pokeapi.co/api/v2/pokemon?limit=12",
+    []
+  );
+
   const [pending, setPending] = useState(true);
   const [data, setData] = useState(defaultData);
   const [url, setUrl] = useState(defaultEndpoint);
@@ -30,6 +32,13 @@ export default function Pokemons() {
   const handleScroll = () => {
     if (window.scrollY > 0) setShowScollTopButton(true);
     else setShowScollTopButton(false);
+  };
+
+  const loadMore = () => {
+    if (data.next) {
+      setPending(true);
+      setUrl(data.next);
+    }
   };
 
   useEffect(() => {
@@ -64,37 +73,115 @@ export default function Pokemons() {
           ))}
         </section>
 
-        {pending && <Loader />}
-        {!pending && !!data.next && (
-          <div className="flex justify-center p-4 text-sm text-gray-500">
-            <button
-              onClick={() => {
-                if (data.next) {
-                  setPending(true);
-                  setUrl(data.next);
-                }
-              }}
-            >
-              Load more
-            </button>
-          </div>
-        )}
+        {pending && <CardsSkeleton />}
+        {!pending && !!data.next && <LoadMoreButton onClick={loadMore} />}
       </main>
 
-      {showScrollTopButton && (
-        <button
-          className="fixed right-4 bottom-4 z-10 flex rounded-full bg-gradient-to-r from-amber-600 to-orange-500 p-2 shadow-md"
-          onClick={scrollToTop}
-        >
-          <ChevronUpIcon className="h-8 w-8 stroke-white" />
-        </button>
-      )}
+      {showScrollTopButton && <ScrollToTopButton onClick={scrollToTop} />}
     </div>
   );
 }
 
-const Loader = () => {
+const LoadMoreButton = (props: React.ComponentProps<"button">) => {
   return (
-    <div className="mx-auto w-fit p-4 text-sm text-gray-500">Loading...</div>
+    <div className="flex justify-center p-4 text-gray-500">
+      <button {...props}>Load more</button>
+    </div>
+  );
+};
+
+const ScrollToTopButton = (props: React.ComponentProps<"button">) => {
+  return (
+    <button
+      className="fixed right-4 bottom-4 z-10 flex rounded-full bg-gradient-to-r from-amber-600 to-orange-500 p-4 shadow-md"
+      {...props}
+    >
+      <ChevronUpIcon className="h-6 w-6 stroke-white" />
+    </button>
+  );
+};
+
+const Brand = () => {
+  return (
+    <div className="w-fit">
+      <h1 className="bg-gradient-to-r from-orange-400 to-amber-400 text-6xl font-black uppercase [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+        POKEDEX
+      </h1>
+    </div>
+  );
+};
+
+const Header = () => {
+  return (
+    <header className="flex flex-col items-center justify-center p-8">
+      <Brand />
+    </header>
+  );
+};
+
+interface CardProps {
+  url: string;
+}
+
+const Card = ({ url }: CardProps) => {
+  const [pending, setPending] = useState(true);
+  const [data, setData] = useState<Record<string, any>>();
+
+  useEffect(() => {
+    fetch(url)
+      .then((response) => {
+        if (response.ok) return response.json();
+
+        throw new Error(response.statusText);
+      })
+      .catch(console.error)
+      .then(setData)
+      .finally(() => setPending(false));
+
+    return () => {
+      setPending(true);
+      setData(undefined);
+    };
+  }, [url]);
+
+  if (pending) return <CardSkeleton />;
+
+  if (!data) return <></>;
+
+  return (
+    <Link
+      to={"/pokemons/" + data.id}
+      className="block rounded-lg bg-white p-8 shadow-md"
+    >
+      <div className="flex h-[100px] items-center justify-center overflow-hidden">
+        <img
+          className="h-full w-full"
+          src={data.sprites.other.dream_world.front_default}
+          alt=""
+        />
+      </div>
+
+      <div className="mt-4">
+        <h2 className="text-xl">{data.name}</h2>
+      </div>
+    </Link>
+  );
+};
+
+const CardsSkeleton = () => {
+  return (
+    <div className='className="grid lg:grid-cols-3" mt-4 grid-cols-1 gap-4 md:grid-cols-2'>
+      {new Array(12).fill(null).map((_, idx) => (
+        <CardSkeleton key={idx} />
+      ))}
+    </div>
+  );
+};
+
+const CardSkeleton = () => {
+  return (
+    <div className="block animate-pulse rounded-lg bg-slate-200 p-8">
+      <div className="min-h-[130px]"></div>
+    </div>
   );
 };
