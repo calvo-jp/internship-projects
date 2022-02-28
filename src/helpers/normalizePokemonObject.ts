@@ -2,7 +2,7 @@ import IPokemon from "../types/pokemon";
 
 type Dict = Record<string, any>;
 
-export default function normalizeResult(data: Dict): IPokemon {
+export default function normalizePokemonObject(data: Dict): IPokemon {
   return {
     id: data.id,
     name: data.name,

@@ -3,7 +3,7 @@ import FireIcon from "@heroicons/react/outline/FireIcon";
 import LightningBoltIcon from "@heroicons/react/outline/LightningBoltIcon";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import normalizeResult from "../helpers/normalizeResponse";
+import normalizePokemonObject from "../helpers/normalizePokemonObject";
 import IPokemon from "../types/pokemon";
 
 interface Params {
@@ -24,7 +24,7 @@ export default function Pokemon() {
         if (!response.ok) throw new Error(response.statusText);
         return response.json();
       })
-      .then((data) => setData(normalizeResult(data)))
+      .then((data) => setData(normalizePokemonObject(data)))
       .catch(console.error)
       .finally(() => setPending(false));
 

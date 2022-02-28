@@ -1,7 +1,7 @@
 import ChevronUpIcon from "@heroicons/react/outline/ChevronUpIcon";
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import normalizeResult from "../helpers/normalizeResponse";
+import normalizePokemonObject from "../helpers/normalizePokemonObject";
 import IPokemon from "../types/pokemon";
 
 interface Paginated {
@@ -133,7 +133,7 @@ const Card = ({ url }: CardProps) => {
         throw new Error(response.statusText);
       })
       .catch(console.error)
-      .then((data) => setData(normalizeResult(data)))
+      .then((data) => setData(normalizePokemonObject(data)))
       .finally(() => setPending(false));
 
     return () => {
