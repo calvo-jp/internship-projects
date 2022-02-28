@@ -1,10 +1,10 @@
 import ChevronLeftIcon from "@heroicons/react/outline/ChevronLeftIcon";
-import FireIcon from "@heroicons/react/outline/FireIcon";
-import LightningBoltIcon from "@heroicons/react/outline/LightningBoltIcon";
+import CogIcon from "@heroicons/react/solid/CogIcon";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import normalizePokemonObject from "../helpers/normalizePokemonObject";
 import IPokemon from "../types/pokemon";
+import NotFound from "./NotFound";
 
 interface Params {
   id: string;
@@ -35,7 +35,7 @@ export default function Pokemon() {
   }, [pokemonId]);
 
   if (pending) return <Loader />;
-  if (!data) return <InternalError />;
+  if (!data) return <NotFound />;
 
   return (
     <div className="mx-auto max-w-screen-md">
@@ -43,11 +43,7 @@ export default function Pokemon() {
 
       <div className="flex flex-col gap-4 p-6">
         <Card>
-          <Card.Heading
-            text="Abilities"
-            icon={<FireIcon className="h-6 w-6 text-red-500" />}
-          />
-
+          <Card.Heading label="Abilities" />
           <Card.Content>
             <ul>
               {data.abilities.map((ability) => (
@@ -58,11 +54,23 @@ export default function Pokemon() {
         </Card>
 
         <Card>
-          <Card.Heading
-            icon={<LightningBoltIcon className="h-6 w-6 text-amber-500" />}
-            text="Stats"
-          />
+          <Card.Heading label="Moves" />
+          <Card.Content>
+            <ul className="flex flex-wrap gap-1">
+              {data.moves.map((move) => (
+                <li
+                  className="rounded-md bg-amber-100 p-1 px-2 text-sm"
+                  key={move}
+                >
+                  {move}
+                </li>
+              ))}
+            </ul>
+          </Card.Content>
+        </Card>
 
+        <Card>
+          <Card.Heading label="Stats" />
           <Card.Content>
             {data.stats.map((stat) => (
               <div key={stat.name}>
@@ -75,7 +83,7 @@ export default function Pokemon() {
                     max={100}
                   />
 
-                  {stat.value <= 90 && <p className="text-xs">{stat.value}</p>}
+                  <p className="text-xs">{stat.value}</p>
                 </div>
               </div>
             ))}
@@ -95,16 +103,14 @@ const Card = ({ children }: React.PropsWithChildren<{}>) => {
 };
 
 interface CardHeadingProps {
-  icon: JSX.Element;
-  text: string;
+  label: string;
 }
 
-Card.Heading = ({ icon: SVGIcon, text }: CardHeadingProps) => {
+Card.Heading = ({ label }: CardHeadingProps) => {
   return (
     <div className="flex items-center gap-1">
-      {SVGIcon}
-
-      <h3 className="text-xl text-gray-500">{text}</h3>
+      <CogIcon className="block h-4 w-4 fill-gray-400" />
+      <h3 className="text-xl text-gray-500">{label}</h3>
     </div>
   );
 };
@@ -180,8 +186,4 @@ const BackButton = () => {
 
 const Loader = () => {
   return <div className="p-4 text-sm text-gray-600">Loading...</div>;
-};
-
-const InternalError = () => {
-  return <div className="p-4 text-sm text-gray-600">Something went wrong.</div>;
 };
