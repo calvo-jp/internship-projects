@@ -16,14 +16,17 @@ interface Paginated {
   count: number;
 }
 
-const defaultData: Paginated = {
-  count: 0,
-  results: [],
-  next: null,
-  previous: null,
-};
-
 export default function Pokemons() {
+  const defaultData = useMemo<Paginated>(
+    () => ({
+      count: 0,
+      results: [],
+      next: null,
+      previous: null,
+    }),
+    []
+  );
+
   const defaultEndpoint = useMemo(
     () => "https://pokeapi.co/api/v2/pokemon?limit=12",
     []
@@ -89,7 +92,7 @@ export default function Pokemons() {
         <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {pokemons.map((pokemon) => (
             <div key={pokemon.id}>
-              <Card data={pokemon} />
+              <PokemonCard data={pokemon} />
             </div>
           ))}
         </section>
@@ -133,11 +136,11 @@ const Header = () => {
   );
 };
 
-interface CardProps {
+interface PokemonCardProps {
   data: IPokemon;
 }
 
-const Card = ({ data }: CardProps) => {
+const PokemonCard = ({ data }: PokemonCardProps) => {
   return (
     <Link
       to={"/pokemons/" + data.id}
@@ -150,11 +153,11 @@ const Card = ({ data }: CardProps) => {
       <div className="mt-8">
         <h2 className="text-2xl">{data.name}</h2>
 
-        <ul className="flex flex-wrap items-center gap-x-1 text-sm text-gray-400">
+        <ul className="flex flex-wrap items-center gap-x-1 text-xs text-gray-400">
           <li>Abilities: {data.abilities.length}</li>
-          <li className="h-1 w-1 rounded-full bg-gray-200"></li>
+          <li className="h-[3px] w-[3px] rounded-full bg-gray-200"></li>
           <li>Moves: {data.moves.length}</li>
-          <li className="h-1 w-1 rounded-full bg-gray-200"></li>
+          <li className="h-[3px] w-[3px] rounded-full bg-gray-200"></li>
           <li>Types: {data.types.length}</li>
         </ul>
       </div>
