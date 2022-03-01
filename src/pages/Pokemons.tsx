@@ -16,6 +16,8 @@ interface Paginated {
   count: number;
 }
 
+const defaultEndpoint = "https://pokeapi.co/api/v2/pokemon?limit=12";
+
 export default function Pokemons() {
   const defaultData = useMemo<Paginated>(
     () => ({
@@ -24,11 +26,6 @@ export default function Pokemons() {
       next: null,
       previous: null,
     }),
-    []
-  );
-
-  const defaultEndpoint = useMemo(
-    () => "https://pokeapi.co/api/v2/pokemon?limit=12",
     []
   );
 
@@ -87,6 +84,7 @@ export default function Pokemons() {
 
   useEffect(() => {
     fetchPokemons();
+
     window.addEventListener("scroll", handleScroll);
 
     return () => {
