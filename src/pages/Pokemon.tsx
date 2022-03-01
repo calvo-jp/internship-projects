@@ -1,6 +1,6 @@
 import ChevronLeftIcon from "@heroicons/react/outline/ChevronLeftIcon";
 import CogIcon from "@heroicons/react/solid/CogIcon";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import normalizePokemonObject from "../helpers/normalizePokemonObject";
 import IPokemon from "../types/pokemon";
@@ -18,21 +18,31 @@ export default function Pokemon() {
   const [pending, setPending] = useState(true);
   const [data, setData] = useState<IPokemon>();
 
+  const fetchPokemon = useCallback(async () => {
+    const endpoint = "https://pokeapi.co/api/v2/pokemon/" + pokemonId;
+
+    try {
+      const response = await fetch(endpoint);
+
+      if (!response.ok) throw new Error(response.statusText);
+
+      const pokemon = await response.json();
+      setData(normalizePokemonObject(pokemon));
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setPending(false);
+    }
+  }, [pokemonId]);
+
   useEffect(() => {
-    fetch("https://pokeapi.co/api/v2/pokemon/" + pokemonId)
-      .then((response) => {
-        if (!response.ok) throw new Error(response.statusText);
-        return response.json();
-      })
-      .then((data) => setData(normalizePokemonObject(data)))
-      .catch(console.error)
-      .finally(() => setPending(false));
+    fetchPokemon();
 
     return () => {
       setData(undefined);
       setPending(true);
     };
-  }, [pokemonId]);
+  }, [fetchPokemon]);
 
   if (pending) return <Loader />;
   if (!data) return <NotFound />;

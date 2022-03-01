@@ -1,5 +1,5 @@
 import ChevronUpIcon from "@heroicons/react/outline/ChevronUpIcon";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import normalizePokemonObject from "../helpers/normalizePokemonObject";
 import IPokemon from "../types/pokemon";
@@ -52,29 +52,39 @@ export default function Pokemons() {
     }
   };
 
-  useEffect(() => {
-    fetch(url)
-      .then((response) => response.json())
-      .then(({ results, ...etc }) => {
-        setData((state) => ({
-          ...state,
-          ...etc,
-        }));
+  const fetchPokemons = useCallback(async () => {
+    try {
+      const response = await fetch(url);
 
-        const promises = results.map((result: Result) => fetch(result.url));
-        return Promise.allSettled(promises);
-      })
-      .then((results) => {
-        for (const result of results) {
-          if (result.status === "fulfilled") {
-            result.value.json().then((obj: any) => {
-              setPokemons((state) => [...state, normalizePokemonObject(obj)]);
-            });
-          }
+      if (!response.ok) throw new Error(response.statusText);
+
+      const { results, ...etc } = await response.json();
+
+      setData((current) => ({
+        ...current,
+        ...etc,
+      }));
+
+      const promises = results.map((result: Result) => fetch(result.url));
+      const responses = await Promise.allSettled(promises);
+
+      for (const response of responses) {
+        if (response.status === "fulfilled") {
+          const parsed = await response.value.json();
+          const pokemon = normalizePokemonObject(parsed);
+
+          setPokemons((state) => [...state, pokemon]);
         }
-      })
-      .finally(() => setPending(false));
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      return setPending(false);
+    }
+  }, [url]);
 
+  useEffect(() => {
+    fetchPokemons();
     window.addEventListener("scroll", handleScroll);
 
     return () => {
@@ -82,7 +92,7 @@ export default function Pokemons() {
       setShowScollTopButton(false);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [url]);
+  }, [fetchPokemons]);
 
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-lg flex-col">
