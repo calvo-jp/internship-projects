@@ -52,56 +52,73 @@ export default function Pokemon() {
       <Header data={data} />
 
       <div className="flex flex-col gap-4 p-6">
-        <Card>
-          <Card.Heading label="Abilities" />
-          <Card.Content>
-            <ul>
-              {data.abilities.map((ability) => (
-                <li key={ability}>{ability}</li>
-              ))}
-            </ul>
-          </Card.Content>
-        </Card>
-
-        <Card>
-          <Card.Heading label="Moves" />
-          <Card.Content>
-            <ul className="flex flex-wrap gap-1">
-              {data.moves.map((move) => (
-                <li
-                  className="rounded-md bg-amber-100 p-1 px-2 text-sm"
-                  key={move}
-                >
-                  {move}
-                </li>
-              ))}
-            </ul>
-          </Card.Content>
-        </Card>
-
-        <Card>
-          <Card.Heading label="Stats" />
-          <Card.Content>
-            {data.stats.map((stat) => (
-              <div key={stat.name}>
-                <div className="text-sm">{stat.name}</div>
-
-                <div className="flex items-center gap-1">
-                  <progress
-                    value={stat.value}
-                    className="progress-bar h-1 w-full rounded-md bg-gray-200"
-                    max={100}
-                  />
-
-                  <p className="text-xs">{stat.value}</p>
-                </div>
-              </div>
-            ))}
-          </Card.Content>
-        </Card>
+        <Abilities items={data.abilities} />
+        <Moves items={data.moves} />
+        <Stats items={data.stats} />
       </div>
     </div>
   );
+}
+
+const Stats = ({ items }: Itemable<IPokemon["stats"][number]>) => {
+  return (
+    <Card>
+      <Card.Heading label="Stats" />
+      <Card.Content>
+        {items.map((stat) => (
+          <div key={stat.name}>
+            <div className="text-sm">{stat.name}</div>
+
+            <div className="flex items-center gap-1">
+              <progress
+                value={stat.value}
+                className="progress-bar h-1 w-full rounded-md bg-gray-200"
+                max={100}
+              />
+
+              <p className="text-xs">{stat.value}</p>
+            </div>
+          </div>
+        ))}
+      </Card.Content>
+    </Card>
+  );
+};
+
+const Moves = ({ items }: Itemable<string>) => {
+  return (
+    <Card>
+      <Card.Heading label="Moves" />
+      <Card.Content>
+        <ul className="flex flex-wrap gap-1">
+          {items.map((move) => (
+            <li className="rounded-md bg-amber-100 p-1 px-2 text-sm" key={move}>
+              {move}
+            </li>
+          ))}
+        </ul>
+      </Card.Content>
+    </Card>
+  );
+};
+
+const Abilities = ({ items }: Itemable<string>) => {
+  return (
+    <Card>
+      <Card.Heading label="Abilities" />
+      <Card.Content>
+        <ul>
+          {items.map((ability) => (
+            <li key={ability}>{ability}</li>
+          ))}
+        </ul>
+      </Card.Content>
+    </Card>
+  );
+};
+
+interface Itemable<T> {
+  items: T[];
 }
 
 const Card = ({ children }: React.PropsWithChildren<{}>) => {
