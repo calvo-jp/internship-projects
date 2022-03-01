@@ -2,6 +2,7 @@ import ChevronLeftIcon from "@heroicons/react/outline/ChevronLeftIcon";
 import CogIcon from "@heroicons/react/solid/CogIcon";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import Loader from "../components/Loader";
 import normalizePokemonObject from "../helpers/normalizePokemonObject";
 import IPokemon from "../types/pokemon";
 import NotFound from "./NotFound";
@@ -209,8 +210,4 @@ const BackButton = () => {
       <ChevronLeftIcon className="h-6 w-6 stroke-white md:h-8 md:w-8" />
     </Link>
   );
-};
-
-const Loader = () => {
-  return <div className="p-4 text-sm text-gray-600">Loading...</div>;
 };
