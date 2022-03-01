@@ -4,13 +4,15 @@ import { Link } from "react-router-dom";
 import normalizePokemonObject from "../helpers/normalizePokemonObject";
 import IPokemon from "../types/pokemon";
 
+interface Result {
+  name: string;
+  url: string;
+}
+
 interface Paginated {
   next: string | null;
   previous: string | null;
-  results: {
-    name: string;
-    url: string;
-  }[];
+  results: Result[];
   count: number;
 }
 
@@ -31,6 +33,7 @@ export default function Pokemons() {
   const [data, setData] = useState(defaultData);
   const [url, setUrl] = useState(defaultEndpoint);
   const [showScrollTopButton, setShowScollTopButton] = useState(false);
+  const [pokemons, setPokemons] = useState<IPokemon[]>([]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -49,17 +52,30 @@ export default function Pokemons() {
   useEffect(() => {
     fetch(url)
       .then((response) => response.json())
-      .then(({ results: r, ...etc }) => {
-        setData(({ results }) => ({
+      .then(({ results, ...etc }) => {
+        setData((state) => ({
+          ...state,
           ...etc,
-          results: [...results, ...r],
         }));
+
+        const promises = results.map((result: Result) => fetch(result.url));
+        return Promise.allSettled(promises);
+      })
+      .then((results) => {
+        for (const result of results) {
+          if (result.status === "fulfilled") {
+            result.value.json().then((obj: any) => {
+              setPokemons((state) => [...state, normalizePokemonObject(obj)]);
+            });
+          }
+        }
       })
       .finally(() => setPending(false));
 
     window.addEventListener("scroll", handleScroll);
 
     return () => {
+      setPending(true);
       setShowScollTopButton(false);
       window.removeEventListener("scroll", handleScroll);
     };
@@ -71,9 +87,9 @@ export default function Pokemons() {
 
       <main className="grow p-6">
         <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {data.results.map((item) => (
-            <div key={item.url}>
-              <Card url={item.url} />
+          {pokemons.map((pokemon) => (
+            <div key={pokemon.id}>
+              <Card data={pokemon} />
             </div>
           ))}
         </section>
@@ -118,34 +134,10 @@ const Header = () => {
 };
 
 interface CardProps {
-  url: string;
+  data: IPokemon;
 }
 
-const Card = ({ url }: CardProps) => {
-  const [pending, setPending] = useState(true);
-  const [data, setData] = useState<IPokemon>();
-
-  useEffect(() => {
-    fetch(url)
-      .then((response) => {
-        if (response.ok) return response.json();
-
-        throw new Error(response.statusText);
-      })
-      .catch(console.error)
-      .then((data) => setData(normalizePokemonObject(data)))
-      .finally(() => setPending(false));
-
-    return () => {
-      setPending(true);
-      setData(undefined);
-    };
-  }, [url]);
-
-  if (pending) return <CardSkeleton />;
-
-  if (!data) return <></>;
-
+const Card = ({ data }: CardProps) => {
   return (
     <Link
       to={"/pokemons/" + data.id}
