@@ -1,5 +1,5 @@
 import ChevronUpIcon from "@heroicons/react/outline/ChevronUpIcon";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import normalizePokemonObject from "../helpers/normalizePokemonObject";
 import IPokemon from "../types/pokemon";
@@ -17,18 +17,14 @@ interface Paginated {
 }
 
 const defaultEndpoint = "https://pokeapi.co/api/v2/pokemon?limit=12";
+const defaultData: Paginated = {
+  count: 0,
+  results: [],
+  next: null,
+  previous: null,
+};
 
 export default function Pokemons() {
-  const defaultData = useMemo<Paginated>(
-    () => ({
-      count: 0,
-      results: [],
-      next: null,
-      previous: null,
-    }),
-    []
-  );
-
   const [pending, setPending] = useState(true);
   const [data, setData] = useState(defaultData);
   const [url, setUrl] = useState(defaultEndpoint);
