@@ -74,6 +74,8 @@ export default function Pokemons() {
           const pokemon = normalizePokemonObject(parsed);
 
           setPokemons((state) => [...state, pokemon]);
+        } else {
+          throw new Error(response.reason);
         }
       }
     } catch (e) {
