@@ -1,11 +1,10 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import Header from "components/Header";
 import Pagination from "components/Pagination";
-import PokemonCard from "components/PokemonCard";
+import PokemonList from "components/PokemonList";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import IPokemon from "types/pokemon";
 import getPokemons from "utils/getPokemons";
 
 interface Props {
@@ -53,29 +52,6 @@ const Pokemons: NextPage<Props> = ({ data }) => {
         <Pagination onPrev={prev} onNext={next} {...data} />
       </Box>
     </>
-  );
-};
-
-interface PokemonListProps {
-  pokemons: IPokemon[];
-}
-
-const PokemonList = ({ pokemons }: PokemonListProps) => {
-  return (
-    <Grid
-      gap={4}
-      flexWrap="wrap"
-      templateColumns={{
-        base: "1fr",
-        md: "repeat(2, 1fr)",
-      }}
-    >
-      {pokemons.map((pokemon) => (
-        <GridItem key={pokemon.id}>
-          <PokemonCard data={pokemon} />
-        </GridItem>
-      ))}
-    </Grid>
   );
 };
 
