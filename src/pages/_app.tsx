@@ -1,14 +1,30 @@
-import { ChakraProvider } from "@chakra-ui/react";
-import { useTheme } from "@emotion/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
+import "@fontsource/pt-sans/400.css";
+import "@fontsource/pt-sans/700.css";
 import type { AppProps } from "next/app";
+import { PropsWithChildren } from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const theme = useTheme();
-
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
+    <ChakraProvider>
+      <Root>
+        <Component {...pageProps} />
+      </Root>
     </ChakraProvider>
+  );
+};
+
+const Root = ({ children }: PropsWithChildren<{}>) => {
+  return (
+    <Box
+      minHeight="100vh"
+      fontFamily="'PT Sans', sans-serif"
+      color="gray.700"
+      backgroundColor="gray.50"
+      scrollBehavior="smooth"
+    >
+      {children}
+    </Box>
   );
 };
 
