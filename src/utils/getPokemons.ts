@@ -45,30 +45,35 @@ const getPokemons: PokemonsFetcher = async ({
   params.append("offset", offset.toString());
   const query = params.toString();
 
-  const response = await fetch(`${process.env.API_BASE_URL}?${query}`);
-  const data: NonNormalizedPaginated = await response.json();
+  try {
+    console.log(`${process.env.API_BASE_URL}?${query}`);
+    const response = await fetch(`${process.env.API_BASE_URL}?${query}`);
+    const data: NonNormalizedPaginated = await response.json();
 
-  const promises = data.results.map(({ url }) => fetch(url));
-  const results = await Promise.allSettled(promises);
-  const rows: IPokemon[] = [];
+    const promises = data.results.map(({ url }) => fetch(url));
+    const results = await Promise.allSettled(promises);
+    const rows: IPokemon[] = [];
 
-  for (const result of results) {
-    if (result.status === "fulfilled") {
-      const parsed = await result.value.json();
-      const pokemon = normalizePokemonObject(parsed);
+    for (const result of results) {
+      if (result.status === "fulfilled") {
+        const parsed = await result.value.json();
+        const pokemon = normalizePokemonObject(parsed);
 
-      rows.push(pokemon);
+        rows.push(pokemon);
+      }
     }
-  }
 
-  return {
-    page,
-    pageSize,
-    rows,
-    totalRows: data.count,
-    hasNext: !!data.next,
-    hasPrevious: !!data.previous,
-  };
+    return {
+      page,
+      pageSize,
+      rows,
+      totalRows: data.count,
+      hasNext: !!data.next,
+      hasPrevious: !!data.previous,
+    };
+  } catch (error) {
+    throw new Error("Something went wrong while fetching the API");
+  }
 };
 
 const inRangeCoalesce = (subject: number, min: number, max: number) => {

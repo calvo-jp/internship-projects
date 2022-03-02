@@ -24,8 +24,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       },
     };
   } catch (e) {
-    console.log(e);
-
     return {
       notFound: true,
     };
@@ -35,19 +33,23 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 const Pokemons: NextPage<Props> = ({ data }) => {
   const router = useRouter();
 
-  const next = () => {
-    if (!data.hasNext) return;
-
+  const redirect = (page: number) => {
     router.push({
       pathname: "/ssr/pokemons",
       query: {
-        page: data.page + 1,
+        page,
         pageSize: data.pageSize,
       },
     });
   };
 
-  const prev = () => {};
+  const next = () => {
+    if (data.hasNext) redirect(data.page + 1);
+  };
+
+  const prev = () => {
+    if (data.hasPrevious) redirect(data.page - 1);
+  };
 
   return (
     <>
@@ -59,7 +61,7 @@ const Pokemons: NextPage<Props> = ({ data }) => {
 
       <Box as="main" p={4}>
         <PokemonList pokemons={data.rows} />
-        <Pagination onPrev={prev} onNext={next} />
+        <Pagination onPrev={prev} onNext={next} {...data} />
       </Box>
     </>
   );

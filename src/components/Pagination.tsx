@@ -33,7 +33,9 @@ const Pagination = ({
 
       <Stack direction="row" alignItems="center" justifyContent="end">
         <Box ml={6}>
-          <Text fontSize="sm">Page {page} of 300</Text>
+          <Text fontSize="sm">
+            Page {page} of {getTotalPage(pageSize, totalRows)}
+          </Text>
         </Box>
 
         <PaginationButton onClick={onPrev}>
@@ -68,6 +70,10 @@ const PaginationButton = ({
       {children}
     </Button>
   );
+};
+
+const getTotalPage = (pageSize: number, totalRows: number) => {
+  return Math.ceil(totalRows / pageSize);
 };
 
 const currentYear = new Date().getFullYear();

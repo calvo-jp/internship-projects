@@ -1,4 +1,4 @@
-import { Avatar, Box } from "@chakra-ui/react";
+import PokemonWidget from "components/PokemonWidget";
 import { GetServerSideProps, NextPage } from "next";
 import IPokemon from "types/pokemon";
 import getPokemon from "utils/getPokemon";
@@ -16,34 +16,11 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
   params,
 }) => {
   const data = await getPokemon(params?.id);
-
   return !data ? { notFound: true } : { props: { data } };
 };
 
 const Pokemon: NextPage<Props> = ({ data }) => {
-  console.log(data);
-
-  return (
-    <div>
-      <PokemonWidget data={data} />
-    </div>
-  );
-};
-
-interface WidgetProps {
-  data: IPokemon;
-}
-
-const PokemonWidget = (data: WidgetProps) => {
-  return (
-    <Box>
-      <Avatar />
-    </Box>
-  );
-};
-
-const WidgetHeader = (props: WidgetProps) => {
-  return <Box></Box>;
+  return <PokemonWidget data={data} />;
 };
 
 export default Pokemon;

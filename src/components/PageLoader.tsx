@@ -30,16 +30,15 @@ const PageLoader = () => {
   return (
     <Box
       position="fixed"
-      // TODO: change this
-      bgColor="red"
-      hidden={status === Status.waiting}
+      bgGradient="linear(to right, pink.400, red.300, pink.300)"
       transition="all"
-      transitionDuration="30ms"
+      transitionDuration="150ms"
       left={0}
       top={0}
       zIndex={99}
+      h={0.5}
       w={status === Status.complte ? "full" : "50%"}
-      h={1}
+      hidden={status === Status.waiting}
     />
   );
 };
