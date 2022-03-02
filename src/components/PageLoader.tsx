@@ -30,14 +30,15 @@ const PageLoader = () => {
   return (
     <Box
       position="fixed"
-      bgColor="white"
+      // TODO: change this
+      bgColor="red"
       hidden={status === Status.waiting}
       transition="all"
       transitionDuration="30ms"
       left={0}
       top={0}
       zIndex={99}
-      w={Status.complte ? "full" : "50%"}
+      w={status === Status.complte ? "full" : "50%"}
       h={1}
     />
   );

@@ -11,6 +11,7 @@ const PokemonCard = ({ data }: PokemonCardProps) => {
   return (
     <Link passHref href={"/ssr/pokemons/" + data.id}>
       <Box
+        display="block"
         as="a"
         border={1}
         borderColor="transparent"

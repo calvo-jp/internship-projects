@@ -1,19 +1,27 @@
-import { Box, ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider, Container } from "@chakra-ui/react";
 import "@fontsource/pt-sans/400.css";
 import "@fontsource/pt-sans/700.css";
 import PageLoader from "components/PageLoader";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { PropsWithChildren } from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <ChakraProvider>
-      <PageLoader />
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
 
-      <Root>
-        <Component {...pageProps} />
-      </Root>
-    </ChakraProvider>
+      <ChakraProvider>
+        <PageLoader />
+        <Root>
+          <Container p={0} maxW="container.md">
+            <Component {...pageProps} />
+          </Container>
+        </Root>
+      </ChakraProvider>
+    </>
   );
 };
 

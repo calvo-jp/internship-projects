@@ -3,17 +3,11 @@ import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import { ComponentProps, PropsWithChildren } from "react";
 
 interface PaginationProps {
-  onNext?: (page: number) => void;
-  onPrev?: (page: number) => void;
-  /** disable or enables next control */
-  next?: boolean;
-  /** disable or enables previous control */
-  prev?: boolean;
-  page?: number;
-  pageSize?: number;
+  onNext: () => void;
+  onPrev: () => void;
 }
 
-const Pagination = ({}: PaginationProps) => {
+const Pagination = ({ onNext, onPrev }: PaginationProps) => {
   return (
     <Stack
       direction="row"
@@ -33,11 +27,11 @@ const Pagination = ({}: PaginationProps) => {
           <Text fontSize="sm">Page 1 of 300</Text>
         </Box>
 
-        <PaginationButton>
+        <PaginationButton onClick={onPrev}>
           <ChevronLeftIcon w={6} h={6} color="white" />
         </PaginationButton>
 
-        <PaginationButton>
+        <PaginationButton onClick={onNext}>
           <ChevronRightIcon w={6} h={6} color="white" />
         </PaginationButton>
       </Stack>
@@ -57,6 +51,9 @@ const PaginationButton = ({
       shadow="sm"
       bgColor="orange.400"
       rounded="full"
+      _hover={{
+        bgColor: "orange.500",
+      }}
       {...props}
     >
       {children}

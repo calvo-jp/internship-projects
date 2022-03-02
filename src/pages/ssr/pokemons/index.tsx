@@ -1,9 +1,11 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex, Grid, GridItem } from "@chakra-ui/react";
 import Header from "components/Header";
 import Pagination from "components/Pagination";
 import PokemonCard from "components/PokemonCard";
 import { GetStaticProps, NextPage } from "next";
+import Head from "next/head";
 import IPokemon from "types/pokemon";
+import calcOffset from "utils/calcOffset";
 import getPokemons from "utils/getPokemons";
 
 interface Props {
@@ -18,15 +20,11 @@ interface Params {
 export const getServerSideProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const page = [params?.page].flat(1).at(0);
+  const page = params?.page;
+  const limit = 30;
+  const offset = calcOffset({ page, limit });
 
-  let offset: number;
-
-  offset = page ? parseInt(page) : 1;
-  offset = offset <= 1 ? 1 : offset;
-  offset = (offset - 1) * 30;
-
-  const endpoint = `${process.env.API_BASE_URL}?limit=30&offset=${offset}`;
+  const endpoint = `${process.env.API_BASE_URL}?limit=${limit}&offset=${offset}`;
   const data = await getPokemons(endpoint);
 
   return {
@@ -37,25 +35,23 @@ export const getServerSideProps: GetStaticProps<Props, Params> = async ({
 };
 
 const Pokemons: NextPage<Props> = ({ data }) => {
-  const next = (page: number) => {};
+  const next = () => {};
 
-  const prev = (page: number) => {};
+  const prev = () => {};
 
   return (
-    <Box minHeight="100vh" color="gray.700" scrollBehavior="smooth">
+    <>
+      <Head>
+        <title>(SSR) Pokemons</title>
+      </Head>
+
       <Header />
 
       <Box as="main" p={4}>
         <PokemonList pokemons={data.results} />
-
-        <Pagination
-          prev={!!data.previous}
-          next={!!data.next}
-          onPrev={prev}
-          onNext={next}
-        />
+        <Pagination onPrev={prev} onNext={next} />
       </Box>
-    </Box>
+    </>
   );
 };
 
@@ -65,11 +61,20 @@ interface PokemonListProps {
 
 const PokemonList = ({ pokemons }: PokemonListProps) => {
   return (
-    <Flex gap={4} direction="column">
+    <Grid
+      gap={4}
+      flexWrap="wrap"
+      templateColumns={{
+        base: "1fr",
+        md: "repeat(2, 1fr)",
+      }}
+    >
       {pokemons.map((pokemon) => (
-        <PokemonCard data={pokemon} key={pokemon.id} />
+        <GridItem key={pokemon.id}>
+          <PokemonCard data={pokemon} />
+        </GridItem>
       ))}
-    </Flex>
+    </Grid>
   );
 };
 
