@@ -12,14 +12,7 @@ const NotFound = () => {
 
       <Header />
 
-      <Box>
-        <Text>Error 404</Text>
-        <Text>Does not exists</Text>
-
-        <Link passHref href="/">
-          <Button as="a">Go to homepage</Button>
-        </Link>
-      </Box>
+      <Box>TODO</Box>
     </>
   );
 };

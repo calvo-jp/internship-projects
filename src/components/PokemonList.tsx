@@ -4,9 +4,10 @@ import PokemonCard from "./PokemonCard";
 
 interface PokemonListProps {
   pokemons: IPokemon[];
+  isSSG?: boolean;
 }
 
-const PokemonList = ({ pokemons }: PokemonListProps) => {
+const PokemonList = ({ pokemons, isSSG }: PokemonListProps) => {
   return (
     <Grid
       gap={4}
@@ -18,7 +19,7 @@ const PokemonList = ({ pokemons }: PokemonListProps) => {
     >
       {pokemons.map((pokemon) => (
         <GridItem key={pokemon.id}>
-          <PokemonCard data={pokemon} />
+          <PokemonCard data={pokemon} isSSG={isSSG} />
         </GridItem>
       ))}
     </Grid>

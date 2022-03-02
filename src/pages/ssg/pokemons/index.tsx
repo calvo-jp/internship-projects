@@ -36,7 +36,7 @@ const Pokemons: NextPage<Props> = ({ pokemons }) => {
       <Header />
 
       <Stack as="main" p={4} spacing={4}>
-        <PokemonList pokemons={rows} />
+        <PokemonList pokemons={rows} isSSG />
 
         {hasNext && (
           <Flex justify="center">

@@ -5,11 +5,14 @@ import IPokemon from "types/pokemon";
 
 interface PokemonCardProps {
   data: IPokemon;
+  isSSG?: boolean;
 }
 
-const PokemonCard = ({ data }: PokemonCardProps) => {
+const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
+  const baseUrl = isSSG ? "/ssg/pokemons/" : "/ssr/pokemons/";
+
   return (
-    <Link passHref href={"/ssr/pokemons/" + data.id}>
+    <Link passHref href={baseUrl + data.id}>
       <Box
         display="block"
         as="a"

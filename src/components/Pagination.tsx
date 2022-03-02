@@ -13,8 +13,6 @@ const Pagination = ({
   onPrev,
   page,
   pageSize,
-  hasNext,
-  hasPrevious,
   totalRows,
 }: PaginationProps & Omit<IPaginated, "rows">) => {
   return (
