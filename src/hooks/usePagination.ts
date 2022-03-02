@@ -22,10 +22,10 @@ const usePagination = (allRows: IPokemon[]) => {
   };
 
   useEffect(() => {
-    setData(({ page, rows, hasNext }) => ({
+    setData(({ page, rows }) => ({
       page,
       rows: [...rows, ...getPageRows(allRows, page)],
-      hasNext,
+      hasNext: isThereNext(allRows, page),
     }));
   }, [
     allRows,
@@ -44,6 +44,10 @@ const getPageRows = (rows: IPokemon[], page: number) => {
   const offset = calcOffset(page);
   const array = copy.splice(offset, pageSize);
   return array;
+};
+
+const isThereNext = (allRows: IPokemon[], page: number) => {
+  return page * pageSize < allRows.length;
 };
 
 export default usePagination;
