@@ -1,4 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -13,9 +14,13 @@ const Header = () => {
       alignItems="center"
       justifyContent="center"
     >
-      <Text as="h1" fontSize="6xl" fontWeight={700} lineHeight={1}>
-        POKEDEX
-      </Text>
+      <Link passHref href="/">
+        <a>
+          <Text as="h1" fontSize="6xl" fontWeight={700} lineHeight={1}>
+            POKEDEX
+          </Text>
+        </a>
+      </Link>
 
       <Text as="p">Powered by pokeapi</Text>
     </Box>

@@ -32,7 +32,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
   if (!data) return { notFound: true };
 
-  return { props: { data }, revalidate: 60 * 60 * 24 * 7 };
+  return {
+    revalidate: 60 * 60 * 24 * 7,
+    props: {
+      data,
+    },
+  };
 };
 
 const Pokemon: NextPage<Props> = ({ data }) => {
