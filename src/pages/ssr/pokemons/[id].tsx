@@ -1,5 +1,6 @@
 import PokemonWidget from "components/PokemonWidget";
 import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
 import IPokemon from "types/pokemon";
 import getPokemon from "utils/getPokemon";
 
@@ -20,7 +21,14 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
 };
 
 const Pokemon: NextPage<Props> = ({ data }) => {
-  return <PokemonWidget data={data} redirectUrl="/ssr/pokemons" />;
+  return (
+    <>
+      <Head>
+        <title>(SSR) Pokedex | {data.name}</title>
+      </Head>
+      <PokemonWidget data={data} redirectUrl="/ssr/pokemons" />;
+    </>
+  );
 };
 
 export default Pokemon;
