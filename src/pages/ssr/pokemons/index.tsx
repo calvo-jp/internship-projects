@@ -15,19 +15,8 @@ interface Props {
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
-  try {
-    const data = await getPokemons(context.query);
-
-    return {
-      props: {
-        data,
-      },
-    };
-  } catch (e) {
-    return {
-      notFound: true,
-    };
-  }
+  const data = await getPokemons(context.query);
+  return data.rows.length === 0 ? { notFound: true } : { props: { data } };
 };
 
 const Pokemons: NextPage<Props> = ({ data }) => {

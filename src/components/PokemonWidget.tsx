@@ -1,8 +1,6 @@
 import { ChevronLeftIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
-  CircularProgress,
-  CircularProgressLabel,
   Flex,
   IconButton,
   Progress,
@@ -12,17 +10,19 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import Link from "next/link";
 import { PropsWithChildren } from "react";
 import IPokemon from "types/pokemon";
 
 interface WidgetProps {
   data: IPokemon;
+  redirectUrl: string;
 }
 
-const PokemonWidget = ({ data }: WidgetProps) => {
+const PokemonWidget = ({ data, ...etc }: WidgetProps) => {
   return (
     <Stack>
-      <Header data={data} />
+      <Header data={data} {...etc} />
 
       <Stack p={6} spacing={4}>
         <Stats stats={data.stats} />
@@ -106,7 +106,7 @@ const Card = ({ title, children }: PropsWithChildren<CardProps>) => {
   );
 };
 
-const Header = ({ data }: WidgetProps) => {
+const Header = ({ data, redirectUrl }: WidgetProps) => {
   return (
     <Flex
       bgGradient="linear(to right, orange.400, yellow.500)"
@@ -117,7 +117,7 @@ const Header = ({ data }: WidgetProps) => {
       roundedBottom="3xl"
       position="relative"
     >
-      <BackButton />
+      <BackButton href={redirectUrl} />
 
       <Stack align="center">
         <Avatar src={data.image} />
@@ -132,24 +132,28 @@ const Header = ({ data }: WidgetProps) => {
   );
 };
 
-const BackButton = () => {
+const BackButton = ({ href }: { href: string }) => {
   return (
-    <IconButton
-      aria-label="Go back"
-      rounded="full"
-      position="absolute"
-      bg="orange.400"
-      borderWidth={4}
-      borderColor="gray.50"
-      borderStyle="solid"
-      top={8}
-      left={-8}
-      w={16}
-      h={16}
-      _hover={{ bgColor: "orange.500" }}
-    >
-      <ChevronLeftIcon color="white" width={10} height={10} />
-    </IconButton>
+    <Link href={href} passHref>
+      <IconButton
+        aria-label="Go back"
+        as="a"
+        rounded="full"
+        position="absolute"
+        bg="orange.400"
+        borderWidth={4}
+        borderColor="gray.50"
+        borderStyle="solid"
+        top={8}
+        left={-8}
+        w={16}
+        h={16}
+        _hover={{ bgColor: "orange.500" }}
+        _focus={{ boxShadow: "none" }}
+      >
+        <ChevronLeftIcon color="white" width={10} height={10} />
+      </IconButton>
+    </Link>
   );
 };
 

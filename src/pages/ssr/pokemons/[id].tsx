@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
 };
 
 const Pokemon: NextPage<Props> = ({ data }) => {
-  return <PokemonWidget data={data} />;
+  return <PokemonWidget data={data} redirectUrl="/ssr/pokemons" />;
 };
 
 export default Pokemon;

@@ -7,7 +7,9 @@ export default function normalizePokemonObject(data: Dict): IPokemon {
     return {
       id: data.id,
       name: data.name,
-      image: data.sprites.other.dream_world.front_default,
+      image:
+        data.sprites.other.dream_world.front_default ||
+        data.sprites.front_default,
       types: data.types.map((type: Dict) => type.type.name),
       abilities: data.abilities.map((ability: Dict) =>
         ability.ability.name.replace(/-/g, " ")
