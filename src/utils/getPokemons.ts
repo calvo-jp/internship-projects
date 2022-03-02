@@ -1,3 +1,4 @@
+import IPaginated from "types/paginated";
 import IPokemon from "types/pokemon";
 import normalizePokemonObject from "utils/normalizePokemonObject";
 
@@ -8,7 +9,7 @@ interface IResult {
 
 type StringOrNull = string | null;
 
-interface IPaginated {
+interface NonNormalizedPaginated {
   count: number;
   results: IResult[];
   next: StringOrNull;
@@ -20,17 +21,22 @@ type StringOrNumber = string | number;
 interface Params {
   /** page number or index */
   page?: StringOrNumber;
-  /** page size or limit */
+  /** aka limit */
   pageSize?: StringOrNumber;
 }
 
 /** default page size */
-const PAGESIZE = 30;
+const DEFAULT_PAGESIZE = 30;
 
-const getPokemons = async ({ page = 1, pageSize = PAGESIZE }: Params = {}) => {
+type PokemonsFetcher = (params?: Params) => Promise<IPaginated>;
+
+const getPokemons: PokemonsFetcher = async ({
+  page = 1,
+  pageSize = DEFAULT_PAGESIZE,
+} = {}) => {
   page = parseIntOrCoalesceIfNanOrZero(page, 1);
-  pageSize = parseIntOrCoalesceIfNanOrZero(pageSize, PAGESIZE);
-  pageSize = inRangeCoalesce(pageSize, PAGESIZE, 100);
+  pageSize = parseIntOrCoalesceIfNanOrZero(pageSize, DEFAULT_PAGESIZE);
+  pageSize = inRangeCoalesce(pageSize, DEFAULT_PAGESIZE, 100);
 
   const offset = (page - 1) * pageSize;
 
@@ -40,7 +46,7 @@ const getPokemons = async ({ page = 1, pageSize = PAGESIZE }: Params = {}) => {
   const query = params.toString();
 
   const response = await fetch(`${process.env.API_BASE_URL}?${query}`);
-  const data: IPaginated = await response.json();
+  const data: NonNormalizedPaginated = await response.json();
 
   const promises = data.results.map(({ url }) => fetch(url));
   const results = await Promise.allSettled(promises);
@@ -69,9 +75,12 @@ const inRangeCoalesce = (subject: number, min: number, max: number) => {
   return subject <= max && subject >= min ? subject : min;
 };
 
-const parseIntOrCoalesceIfNanOrZero = <_, T>(
-  subject: undefined | string | number,
-  defaultValue: T
+const parseIntOrCoalesceIfNanOrZero = <
+  S extends undefined | string | number,
+  D
+>(
+  subject: S,
+  defaultValue: D
 ) => {
   // undefined
   if (!subject) return defaultValue;

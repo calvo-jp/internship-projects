@@ -1,13 +1,22 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import { ComponentProps, PropsWithChildren } from "react";
+import IPaginated from "types/paginated";
 
 interface PaginationProps {
   onNext: () => void;
   onPrev: () => void;
 }
 
-const Pagination = ({ onNext, onPrev }: PaginationProps) => {
+const Pagination = ({
+  onNext,
+  onPrev,
+  page,
+  pageSize,
+  hasNext,
+  hasPrevious,
+  totalRows,
+}: PaginationProps & Omit<IPaginated, "rows">) => {
   return (
     <Stack
       direction="row"
@@ -24,7 +33,7 @@ const Pagination = ({ onNext, onPrev }: PaginationProps) => {
 
       <Stack direction="row" alignItems="center" justifyContent="end">
         <Box ml={6}>
-          <Text fontSize="sm">Page 1 of 300</Text>
+          <Text fontSize="sm">Page {page} of 300</Text>
         </Box>
 
         <PaginationButton onClick={onPrev}>

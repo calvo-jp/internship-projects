@@ -15,13 +15,21 @@ interface Props {
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
-  const data = await getPokemons(context.query);
+  try {
+    const data = await getPokemons(context.query);
 
-  return {
-    props: {
-      data,
-    },
-  };
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (e) {
+    console.log(e);
+
+    return {
+      notFound: true,
+    };
+  }
 };
 
 const Pokemons: NextPage<Props> = ({ data }) => {
