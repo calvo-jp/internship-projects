@@ -1,4 +1,4 @@
-import { Box, Link, Stack } from "@chakra-ui/react";
+import { Box, Link, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { PropsWithChildren } from "react";
@@ -18,11 +18,21 @@ export default function Landing() {
       >
         <Stack>
           <NextLink passHref href="/ssr/pokemons">
-            <Link fontSize="3xl">SSR</Link>
+            <Link>
+              <Text fontSize="3xl" lineHeight={1}>
+                SSR
+              </Text>
+              <Text fontSize="sm">Server Side Rendering</Text>
+            </Link>
           </NextLink>
 
           <NextLink passHref href="/ssg/pokemons">
-            <Link fontSize="3xl">SSG</Link>
+            <Link>
+              <Text fontSize="3xl" lineHeight={1}>
+                SSR
+              </Text>
+              <Text fontSize="sm">Server Side Generation</Text>
+            </Link>
           </NextLink>
         </Stack>
       </Box>

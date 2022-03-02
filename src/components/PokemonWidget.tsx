@@ -140,15 +140,15 @@ const BackButton = ({ href }: { href: string }) => {
         as="a"
         rounded="full"
         position="absolute"
-        bg="orange.400"
-        borderWidth={4}
+        bg={{ base: "blackAlpha.300", lg: "orange.400" }}
+        borderWidth={{ lg: 4 }}
         borderColor="gray.50"
         borderStyle="solid"
-        top={8}
-        left={-8}
-        w={16}
-        h={16}
-        _hover={{ bgColor: "orange.500" }}
+        top={{ base: 4, lg: 8 }}
+        left={{ base: 4, lg: -8 }}
+        w={{ base: 12, lg: 16 }}
+        h={{ base: 12, lg: 16 }}
+        _hover={{ lg: { bgColor: "orange.500" } }}
         _focus={{ boxShadow: "none" }}
       >
         <ChevronLeftIcon color="white" width={10} height={10} />

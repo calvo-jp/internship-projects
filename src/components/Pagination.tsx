@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Button, Input, Select, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import { ComponentProps, PropsWithChildren } from "react";
 import IPaginated from "types/paginated";
 
@@ -35,8 +35,6 @@ const Pagination = ({
             Page {page} of {getTotalPage(pageSize, totalRows)}
           </Text>
         </Box>
-
-        <Input value={pageSize} onChange={(e) => {}} size="sm" w="0" />
 
         <PaginationButton onClick={onPrev}>
           <ChevronLeftIcon w={6} h={6} color="white" />
