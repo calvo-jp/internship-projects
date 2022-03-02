@@ -1,13 +1,60 @@
+import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 import Header from "components/Header";
+import PokemonList from "components/PokemonList";
+import ScrollToTopButton from "components/ScrollToTopButton";
+import usePagination from "hooks/usePagination";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import React from "react";
+import IPokemon from "types/pokemon";
+import getPokemons from "utils/getPokemons";
 
-const Pokemons = () => {
+interface Props {
+  pokemons: IPokemon[];
+}
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const data = await getPokemons({ pageSize: 120 });
+
+  return {
+    revalidate: 60 * 60 * 24 * 3, // 3days
+    props: {
+      pokemons: data.rows,
+    },
+  };
+};
+
+const Pokemons: NextPage<Props> = ({ pokemons }) => {
+  const { next, rows, hasNext } = usePagination(pokemons);
+
   return (
     <>
       <Head>
-        <title>(SSG) Pokemons</title>
+        <title>(SSR) Pokedex</title>
       </Head>
+
       <Header />
+
+      <Stack as="main" p={4} spacing={4}>
+        <PokemonList pokemons={rows} />
+
+        {hasNext && (
+          <Flex justify="center">
+            <Box
+              as="button"
+              fontWeight="normal"
+              fontSize="sm"
+              onClick={next}
+              color="gray.500"
+              _hover={{ color: "gray.600" }}
+            >
+              Load more
+            </Box>
+          </Flex>
+        )}
+      </Stack>
+
+      <ScrollToTopButton />
     </>
   );
 };

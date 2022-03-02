@@ -8,8 +8,6 @@ interface PokemonCardProps {
 }
 
 const PokemonCard = ({ data }: PokemonCardProps) => {
-  console.log(data.image);
-
   return (
     <Link passHref href={"/ssr/pokemons/" + data.id}>
       <Box

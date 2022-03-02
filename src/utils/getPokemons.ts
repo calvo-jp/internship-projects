@@ -36,7 +36,7 @@ const getPokemons: PokemonsFetcher = async ({
 } = {}) => {
   page = parseIntOrCoalesceIfNanOrZero(page, 1);
   pageSize = parseIntOrCoalesceIfNanOrZero(pageSize, DEFAULT_PAGESIZE);
-  pageSize = inRangeCoalesce(pageSize, DEFAULT_PAGESIZE, 100);
+  pageSize = inRangeCoalesce(pageSize, DEFAULT_PAGESIZE, 240);
 
   const offset = (page - 1) * pageSize;
 
