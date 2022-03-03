@@ -1,6 +1,6 @@
 ## POKEDEX
 
-Demo of NextJS' SSG and SSR with chakra-ui and pokedex API
+Demo of NextJS' SSG and SSR with [chakra-ui](https://chakra-ui.com/)
 
 **Requirements**
 
