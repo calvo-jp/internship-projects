@@ -26,7 +26,7 @@ interface Params {
 }
 
 /** default page size */
-const DEFAULT_PAGESIZE = 30;
+const DEFAULT_PAGESIZE = 12;
 
 type PokemonsFetcher = (params?: Params) => Promise<IPaginated>;
 
