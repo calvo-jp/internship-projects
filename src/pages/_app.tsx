@@ -1,12 +1,10 @@
 import { Box, ChakraProvider, Container } from "@chakra-ui/react";
 import "@fontsource/pt-sans/400.css";
 import "@fontsource/pt-sans/700.css";
-import InternalError from "components/errors/Internal";
 import PageLoader from "components/PageLoader";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { PropsWithChildren } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -21,9 +19,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
         <Root>
           <Container p={0} maxW="container.md">
-            <ErrorBoundary FallbackComponent={InternalError}>
-              <Component {...pageProps} />
-            </ErrorBoundary>
+            <Component {...pageProps} />
           </Container>
         </Root>
       </ChakraProvider>
