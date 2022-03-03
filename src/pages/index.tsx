@@ -35,7 +35,17 @@ export default function Landing() {
 
           <Box as="footer">
             <Text align="center" color="gray.500">
-              ⚡ Powered by pokeapi
+              ⚡ Powered by{" "}
+              <Box
+                as="a"
+                href="https://pokeapi.co/"
+                rel="noreferrer"
+                target="_blank"
+                fontWeight="bold"
+                _hover={{ color: "orange.400" }}
+              >
+                pokeapi
+              </Box>
             </Text>
           </Box>
         </Stack>
@@ -69,6 +79,7 @@ const CustomLink = ({ href, label, helperText }: CustomLinkProps) => {
         <Text fontSize="5xl" lineHeight={1}>
           {label}
         </Text>
+
         <Text fontSize="sm" color="gray.600">
           {helperText}
         </Text>
