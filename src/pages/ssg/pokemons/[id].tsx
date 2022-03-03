@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   if (!data) return { notFound: true };
 
   return {
-    revalidate: 60 * 60 * 24 * 7,
+    revalidate: 60 * 60 * 24 * 3,
     props: {
       data,
     },
