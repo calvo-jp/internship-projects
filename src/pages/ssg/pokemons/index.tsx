@@ -30,7 +30,7 @@ const isScrolledToBottom = () => {
   return (
     window.innerHeight + window.pageYOffset >=
     document.body.offsetHeight -
-      16 /* <- don't wait for scrollbar to hit the bottom, fetch in advance */
+      32 /* <- don't wait for scrollbar to hit the bottom, fetch in advance */
   );
 };
 
