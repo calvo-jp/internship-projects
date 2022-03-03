@@ -24,8 +24,9 @@ export default function InfiniteScroll({
 
 const isScrolledToBottom = () => {
   return (
-    window.innerHeight + window.pageYOffset >=
-    document.body.offsetHeight -
-      32 /* <- don't wait for scrollbar to hit the bottom, fetch in advance */
+    window.innerHeight +
+      window.pageYOffset +
+      64 /* <- don't wait for scrollbar to hit the bottom, fetch in advance */ >=
+    document.body.offsetHeight
   );
 };
