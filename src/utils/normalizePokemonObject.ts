@@ -3,8 +3,6 @@ import IPokemon from "types/pokemon";
 type Dict = Record<string, any>;
 
 export default function normalizePokemonObject(data: Dict): IPokemon {
-  debug(data);
-
   try {
     return {
       id: data.id,
@@ -34,27 +32,5 @@ export default function normalizePokemonObject(data: Dict): IPokemon {
     throw new Error("Something happened while parsing object");
   }
 }
-
-/** Checks for missing keys in dev mode */
-const debug = (data: Dict) => {
-  if (process.env.NODE_ENV === "development") {
-    const keys: (keyof IPokemon)[] = [
-      "id",
-      "name",
-      "image",
-      "types",
-      "abilities",
-      "moves",
-      "stats",
-      "experience",
-      "weight",
-      "height",
-    ];
-
-    for (const key of keys) {
-      if (!data[key]) console.error("Missing key:" + key);
-    }
-  }
-};
 
 const defaultImage = "/pokeball.png";
