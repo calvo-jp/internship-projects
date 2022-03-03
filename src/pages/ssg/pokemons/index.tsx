@@ -13,8 +13,9 @@ import ScrollToTopButton from "components/ScrollToTopButton";
 import useSSGPagination from "hooks/useSSGPagination";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import getPokemons from "utils/getPokemons";
+import isScrolledToBottom from "utils/isScrolledToBottom";
 
 interface Props {
   data: Awaited<ReturnType<typeof getPokemons>>;
@@ -40,7 +41,16 @@ const Pokemons: NextPage<Props> = ({ data }) => {
   const { hasNext, next, rows, fetching, error } = useSSGPagination(data);
 
   const shouldShowError = error && !fetching;
-  const shouldShowLoadMore = hasNext && !fetching && !error;
+
+  const handleScroll = useCallback(() => {
+    if (!fetching && hasNext && isScrolledToBottom()) next();
+  }, [fetching, hasNext, next]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   return (
     <>
@@ -55,7 +65,6 @@ const Pokemons: NextPage<Props> = ({ data }) => {
 
         {fetching && <Loader />}
         {shouldShowError && <ReloadTrigger onReload={next} />}
-        {shouldShowLoadMore && <LoadMoreButton onClick={next} />}
       </Stack>
       <ScrollToTopButton />
     </>
@@ -83,27 +92,6 @@ const ReloadTrigger = ({ onReload }: ReloadTriggerProps) => {
         <RepeatIcon />
       </Box>
     </Stack>
-  );
-};
-
-interface LoadMoreButtonProps {
-  onClick: () => void;
-}
-
-const LoadMoreButton = ({ onClick }: LoadMoreButtonProps) => {
-  return (
-    <Flex justify="center">
-      <Box
-        as="button"
-        fontSize="sm"
-        fontWeight="normal"
-        color="gray.500"
-        onClick={onClick}
-        _hover={{ color: "gray.600" }}
-      >
-        Load more
-      </Box>
-    </Flex>
   );
 };
 
