@@ -15,10 +15,19 @@ export default function Landing() {
       </Head>
 
       <Stack minHeight="100vh">
-        <Stack spacing={10} flexGrow={1} justify="center" align="center">
+        <Stack
+          spacing={{ base: 6, md: 10 }}
+          flexGrow={1}
+          justify="center"
+          align="center"
+        >
           <Header />
 
-          <Stack direction="row" spacing={4} as="main">
+          <Stack
+            direction={{ base: "column", sm: "row" }}
+            spacing={{ base: 2, md: 4 }}
+            as="main"
+          >
             <Link
               href="/ssg/pokemons"
               label="SSG"
