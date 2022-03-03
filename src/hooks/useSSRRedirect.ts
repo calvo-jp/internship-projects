@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import getPokemons from "utils/getPokemons";
 
 const useSSRRedirect = () => {
   const router = useRouter();
