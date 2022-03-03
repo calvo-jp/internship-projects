@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import Header from "components/Header";
 import Pagination from "components/Pagination";
 import PokemonList from "components/PokemonList";
+import useSSRRedirect from "hooks/useSSRRedirect";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -19,24 +20,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 };
 
 const Pokemons: NextPage<Props> = ({ data }) => {
-  const router = useRouter();
-
-  const redirect = (page: number) => {
-    router.push({
-      pathname: "/ssr/pokemons",
-      query: {
-        page,
-        pageSize: data.pageSize,
-      },
-    });
-  };
+  const redirect = useSSRRedirect();
 
   const next = () => {
-    if (data.hasNext) redirect(data.page + 1);
+    if (data.hasNext) redirect(data.page + 1, data.pageSize);
   };
 
   const prev = () => {
-    if (data.hasPrevious) redirect(data.page - 1);
+    if (data.hasPrevious) redirect(data.page - 1, data.pageSize);
   };
 
   return (
