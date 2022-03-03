@@ -8,7 +8,6 @@ import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import React, { useCallback, useEffect } from "react";
 import getPokemons from "utils/getPokemons";
-import isScrolledToBottom from "utils/isScrolledToBottom";
 
 interface Props {
   data: Awaited<ReturnType<typeof getPokemons>>;
@@ -25,6 +24,14 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       data,
     },
   };
+};
+
+const isScrolledToBottom = () => {
+  return (
+    window.innerHeight + window.pageYOffset >=
+    document.body.offsetHeight -
+      16 /* <- don't wait for scrollbar to hit the bottom, fetch in advance */
+  );
 };
 
 const Pokemons: NextPage<Props> = ({ data }) => {
