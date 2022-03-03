@@ -7,8 +7,8 @@ import Image from "next/image";
 import NextLink from "next/link";
 
 export default function Landing() {
-  // const ringtone = useRingtone();
-  // if (ringtone) ringtone.play();
+  const ringtone = useRingtone();
+  if (ringtone) ringtone.play();
 
   return (
     <>
