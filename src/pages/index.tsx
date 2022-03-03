@@ -1,7 +1,6 @@
 import { Box, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
-import { PropsWithChildren } from "react";
 
 export default function Landing() {
   return (
@@ -16,38 +15,24 @@ export default function Landing() {
         alignItems="center"
         justifyContent="center"
       >
-        <Stack spacing={8} as="main">
-          <Heading />
+        <Stack spacing={8}>
+          <Header />
 
-          <Stack direction="row" spacing={4}>
-            <CustomLink
-              href="/ssr/pokemons"
-              label="SSR"
-              helperText="Server Side Rendering"
-            />
-
+          <Stack direction="row" spacing={4} as="main">
             <CustomLink
               href="/ssg/pokemons"
               label="SSG"
               helperText="Static Site Generation"
             />
+
+            <CustomLink
+              href="/ssr/pokemons"
+              label="SSR"
+              helperText="Server Side Rendering"
+            />
           </Stack>
 
-          <Box as="footer">
-            <Text align="center" color="gray.500">
-              ⚡ Powered by{" "}
-              <Box
-                as="a"
-                href="https://pokeapi.co/"
-                rel="noreferrer"
-                target="_blank"
-                fontWeight="bold"
-                _hover={{ color: "orange.400" }}
-              >
-                pokeapi
-              </Box>
-            </Text>
-          </Box>
+          <Footer />
         </Stack>
       </Box>
     </>
@@ -88,9 +73,9 @@ const CustomLink = ({ href, label, helperText }: CustomLinkProps) => {
   );
 };
 
-const Heading = () => {
+const Header = () => {
   return (
-    <Box>
+    <Box as="header">
       <Text
         as="h1"
         w="fit-content"
@@ -107,6 +92,26 @@ const Heading = () => {
 
       <Text as="p" textAlign="center" fontSize="sm" color="gray.500">
         Next SSG and SSR Demo
+      </Text>
+    </Box>
+  );
+};
+
+const Footer = () => {
+  return (
+    <Box as="footer">
+      <Text align="center" color="gray.500">
+        ⚡ Powered by{" "}
+        <Box
+          as="a"
+          href="https://pokeapi.co/"
+          rel="noreferrer"
+          target="_blank"
+          fontWeight="bold"
+          _hover={{ color: "orange.400" }}
+        >
+          pokeapi
+        </Box>
       </Text>
     </Box>
   );
