@@ -4,7 +4,7 @@ const getPokemon = async (id: any) => {
   if (!id) return null;
 
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon${id}`);
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const pokemon = await response.json();
 
     return normalizePokemonObject(pokemon);
