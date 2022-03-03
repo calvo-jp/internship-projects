@@ -110,7 +110,8 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
   return (
     <Flex
       bgGradient="linear(to right, orange.400, yellow.500)"
-      p={4}
+      px={4}
+      py={8}
       align="center"
       justify="center"
       roundedBottom="3xl"
