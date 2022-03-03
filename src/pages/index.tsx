@@ -1,9 +1,7 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import github from "assets/github.png";
 import useRingtone from "hooks/useRingtone";
 import Head from "next/head";
-import Image from "next/image";
 import NextLink from "next/link";
 
 export default function Landing() {
