@@ -1,12 +1,5 @@
 import { RepeatIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  CircularProgress,
-  Flex,
-  Link,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, CircularProgress, Flex, Stack, Text } from "@chakra-ui/react";
 import Header from "components/Header";
 import PokemonList from "components/PokemonList";
 import ScrollToTopButton from "components/ScrollToTopButton";
