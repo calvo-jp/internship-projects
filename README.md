@@ -10,7 +10,6 @@ Demo of NextJS' SSG and SSR with [chakra-ui](https://chakra-ui.com/)
 **Installation**
 
 - Clone repo
-- Go to repo and rename `.env.example` to `.env.local`
 - Open terminal, cd to repo and run the command below
 
 ```
