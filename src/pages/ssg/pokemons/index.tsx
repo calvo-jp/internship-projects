@@ -1,12 +1,12 @@
 import { RepeatIcon } from "@chakra-ui/icons";
 import { Box, CircularProgress, Flex, Stack, Text } from "@chakra-ui/react";
 import Header from "components/Header";
+import InfiniteScroll from "components/InfiniteScroll";
 import PokemonList from "components/PokemonList";
 import ScrollToTopButton from "components/ScrollToTopButton";
 import useSSGPagination from "hooks/useSSGPagination";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import React, { useCallback, useEffect } from "react";
 import getPokemons from "utils/getPokemons";
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  // limiting 50 data to pre-render.
+  // pre-render only 50 rows,
   // other data will be fetched on the client-side
   const data = await getPokemons({ pageSize: 50 });
 
@@ -26,28 +26,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   };
 };
 
-const isScrolledToBottom = () => {
-  return (
-    window.innerHeight + window.pageYOffset >=
-    document.body.offsetHeight -
-      32 /* <- don't wait for scrollbar to hit the bottom, fetch in advance */
-  );
-};
-
 const Pokemons: NextPage<Props> = ({ data }) => {
   const { hasNext, next, rows, fetching, error } = useSSGPagination(data);
-
-  const shouldShowError = error && !fetching;
-
-  const handleScroll = useCallback(() => {
-    if (!fetching && hasNext && isScrolledToBottom()) next();
-  }, [fetching, hasNext, next]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
 
   return (
     <>
@@ -61,8 +41,10 @@ const Pokemons: NextPage<Props> = ({ data }) => {
         <PokemonList pokemons={rows} isSSG />
 
         {fetching && <Loader />}
-        {shouldShowError && <ReloadTrigger onReload={next} />}
+        {!fetching && error && <ReloadTrigger onReload={next} />}
       </Stack>
+
+      <InfiniteScroll callback={next} disabled={fetching || !hasNext} />
       <ScrollToTopButton />
     </>
   );
