@@ -37,7 +37,7 @@ const Pokemons: NextPage<Props> = ({ data }) => {
 
       <Header />
 
-      <Stack as="main" p={4} spacing={4}>
+      <Stack as="main" p={{ base: 2, md: 4 }} spacing={{ base: 2, md: 4 }}>
         <PokemonList pokemons={rows} isSSG />
 
         {fetching && <Loader />}

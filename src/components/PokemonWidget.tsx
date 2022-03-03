@@ -21,10 +21,10 @@ interface WidgetProps {
 
 const PokemonWidget = ({ data, ...etc }: WidgetProps) => {
   return (
-    <Stack>
+    <Stack spacing={0}>
       <Header data={data} {...etc} />
 
-      <Stack p={6} spacing={4}>
+      <Stack spacing={{ base: 2, md: 4 }} p={{ base: 2, md: 4 }}>
         <Stats stats={data.stats} />
         <Moves moves={data.moves} />
         <Abilities abilities={data.abilities} />
@@ -110,7 +110,6 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
   return (
     <Flex
       bgGradient="linear(to right, orange.400, yellow.500)"
-      px={4}
       py={8}
       align="center"
       justify="center"

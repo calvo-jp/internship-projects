@@ -50,7 +50,7 @@ const Pokemon: NextPage<Props> = ({ data }) => {
       <Head>
         <title>(SSR) Pokedex | {data.name}</title>
       </Head>
-      <PokemonWidget data={data} redirectUrl="/ssg/pokemons" />;
+      <PokemonWidget data={data} redirectUrl="/ssg/pokemons" />
     </>
   );
 };

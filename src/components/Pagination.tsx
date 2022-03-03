@@ -21,7 +21,6 @@ const Pagination = ({
       justifyContent="space-between"
       alignItems="baseline"
       w="full"
-      mt={4}
     >
       <Box>
         <Text fontSize="sm" color="gray.600">

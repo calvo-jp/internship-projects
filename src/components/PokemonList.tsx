@@ -9,7 +9,7 @@ interface PokemonListProps {
 
 const PokemonList = ({ pokemons, isSSG }: PokemonListProps) => {
   return (
-    <SimpleGrid spacing={4} columns={{ base: 1, md: 2 }}>
+    <SimpleGrid spacing={{ base: 2, md: 4 }} columns={{ base: 1, md: 2 }}>
       {pokemons.map((pokemon) => (
         <Box key={pokemon.id}>
           <PokemonCard data={pokemon} isSSG={isSSG} />

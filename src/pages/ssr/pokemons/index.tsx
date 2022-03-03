@@ -37,9 +37,12 @@ const Pokemons: NextPage<Props> = ({ data }) => {
 
       <Header />
 
-      <Box as="main" p={4}>
+      <Box as="main" p={{ base: 2, md: 4 }}>
         <PokemonList pokemons={data.rows} />
-        <Pagination onPrev={prev} onNext={next} {...data} />
+
+        <Box mt={4}>
+          <Pagination onPrev={prev} onNext={next} {...data} />
+        </Box>
       </Box>
     </>
   );
