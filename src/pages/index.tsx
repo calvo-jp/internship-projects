@@ -15,7 +15,7 @@ export default function Landing() {
         alignItems="center"
         justifyContent="center"
       >
-        <Stack spacing={8}>
+        <Stack spacing={10}>
           <Header />
 
           <Stack direction="row" spacing={4} as="main">
