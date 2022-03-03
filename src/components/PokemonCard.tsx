@@ -33,7 +33,9 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
         }}
       >
         <Box position="relative" height={100}>
-          <Image src={data.image} alt="" layout="fill"></Image>
+          <Box maxW={100} h="full" position="relative" mx="auto">
+            <Image src={data.image} alt="" layout="fill"></Image>
+          </Box>
         </Box>
 
         <Box mt={8}>
