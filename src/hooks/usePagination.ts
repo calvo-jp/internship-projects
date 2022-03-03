@@ -27,12 +27,7 @@ const usePagination = (allRows: IPokemon[]) => {
       rows: [...rows, ...getPageRows(allRows, page)],
       hasNext: isThereNext(allRows, page),
     }));
-  }, [
-    allRows,
-
-    // DO NOT TOUCH
-    data.page,
-  ]);
+  }, [allRows, data.page /* <- this triggers rerender */]);
 
   return { ...data, next };
 };
