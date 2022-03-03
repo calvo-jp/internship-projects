@@ -46,7 +46,10 @@ const getPokemons: PokemonsFetcher = async ({
   const query = params.toString();
 
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}?${query}`);
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?${query}`);
+
+    if (!response.ok) throw new Error(response.statusText);
+
     const data: NonNormalizedPaginated = await response.json();
 
     const promises = data.results.map(({ url }) => fetch(url));
@@ -71,6 +74,7 @@ const getPokemons: PokemonsFetcher = async ({
       hasPrevious: !!data.previous,
     };
   } catch (error) {
+    console.log(error);
     throw new Error("Something went wrong while fetching the API");
   }
 };
