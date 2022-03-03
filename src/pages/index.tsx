@@ -19,13 +19,13 @@ export default function Landing() {
           <Header />
 
           <Stack direction="row" spacing={4} as="main">
-            <CustomLink
+            <Link
               href="/ssg/pokemons"
               label="SSG"
               helperText="Static Site Generation"
             />
 
-            <CustomLink
+            <Link
               href="/ssr/pokemons"
               label="SSR"
               helperText="Server Side Rendering"
@@ -45,7 +45,7 @@ interface CustomLinkProps {
   helperText: string;
 }
 
-const CustomLink = ({ href, label, helperText }: CustomLinkProps) => {
+const Link = ({ href, label, helperText }: CustomLinkProps) => {
   return (
     <NextLink passHref href={href}>
       <Box
