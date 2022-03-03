@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const data = await getPokemons({ pageSize: 120 });
+  const data = await getPokemons();
 
   return {
     revalidate: 60 * 60 * 24 * 3, // 3days
