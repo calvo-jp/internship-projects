@@ -5,7 +5,6 @@ import PokemonList from "components/PokemonList";
 import useSSRRedirect from "hooks/useSSRRedirect";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import getPokemons from "utils/getPokemons";
 
 interface Props {
