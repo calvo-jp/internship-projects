@@ -46,7 +46,6 @@ const getPokemons: PokemonsFetcher = async ({
   const query = params.toString();
 
   try {
-    console.log(`${process.env.API_BASE_URL}?${query}`);
     const response = await fetch(`${process.env.API_BASE_URL}?${query}`);
     const data: NonNormalizedPaginated = await response.json();
 
