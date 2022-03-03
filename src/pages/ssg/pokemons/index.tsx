@@ -1,8 +1,8 @@
-import { Box, Button, Flex, Stack } from "@chakra-ui/react";
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import Header from "components/Header";
 import PokemonList from "components/PokemonList";
 import ScrollToTopButton from "components/ScrollToTopButton";
-import usePagination from "hooks/usePagination";
+import useSSGPagination from "hooks/useSSGPagination";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const Pokemons: NextPage<Props> = ({ pokemons }) => {
-  const { next, rows, hasNext } = usePagination(pokemons);
+  const { next, rows, hasNext } = useSSGPagination(pokemons);
 
   return (
     <>

@@ -7,7 +7,7 @@ interface D {
   hasNext: boolean;
 }
 
-const usePagination = (allRows: IPokemon[]) => {
+const useSSGPagination = (allRows: IPokemon[]) => {
   const [data, setData] = useState<D>({
     page: 1,
     rows: [],
@@ -45,4 +45,4 @@ const isThereNext = (allRows: IPokemon[], page: number) => {
   return page * pageSize < allRows.length;
 };
 
-export default usePagination;
+export default useSSGPagination;
