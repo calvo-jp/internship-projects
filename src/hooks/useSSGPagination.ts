@@ -11,7 +11,10 @@ const useSSGPagination = (init: Awaited<ReturnType<typeof getPokemons>>) => {
       setFetching(true);
 
       try {
-        const { rows, ...newData } = await getPokemons({ page: data.page + 1 });
+        const { rows, ...newData } = await getPokemons({
+          page: data.page + 1,
+          pageSize: data.pageSize,
+        });
 
         setData((old) => ({
           ...newData,

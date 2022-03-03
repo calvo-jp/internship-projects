@@ -15,12 +15,9 @@ interface Props {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  // NOTICE:
-  // I can only fetch data lesser than 30 to be statically generated
-  // due to a (FALLBACK_BODY_TOO_LARGE) error in vercel,
-  // which seems like something about the bandwidth limit? Sorry 😔
-  // Other pages will still be fetched on the client side
-  const data = await getPokemons();
+  // limiting 50 data to pre-render.
+  // other data will be fetched on the client-side
+  const data = await getPokemons({ pageSize: 50 });
 
   return {
     revalidate: 60 * 60 * 24 * 3, // 3days
