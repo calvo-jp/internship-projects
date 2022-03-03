@@ -1,21 +1,20 @@
 import { Box, Stack, Text } from "@chakra-ui/react";
+import useRingtone from "hooks/useRingtone";
 import Head from "next/head";
 import NextLink from "next/link";
 
 export default function Landing() {
+  const ringtone = useRingtone();
+  if (ringtone) ringtone.play();
+
   return (
     <>
       <Head>
         <title>Pokedex - SSG & SSR Demo using NextJS</title>
       </Head>
 
-      <Box
-        minHeight="100vh"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Stack spacing={10}>
+      <Stack minHeight="100vh">
+        <Stack spacing={10} flexGrow={1} justify="center" align="center">
           <Header />
 
           <Stack direction="row" spacing={4} as="main">
@@ -34,7 +33,7 @@ export default function Landing() {
 
           <Footer />
         </Stack>
-      </Box>
+      </Stack>
     </>
   );
 }
