@@ -17,7 +17,7 @@ interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const data = await getPokemons({ pageSize: 60 });
+  const data = await getPokemons();
 
   return {
     paths: data.rows.map(({ id }) => ({ params: { id: id.toString() } })),
