@@ -1,11 +1,14 @@
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import github from "assets/github.png";
 import useRingtone from "hooks/useRingtone";
 import Head from "next/head";
+import Image from "next/image";
 import NextLink from "next/link";
 
 export default function Landing() {
-  const ringtone = useRingtone();
-  if (ringtone) ringtone.play();
+  // const ringtone = useRingtone();
+  // if (ringtone) ringtone.play();
 
   return (
     <>
@@ -31,12 +34,36 @@ export default function Landing() {
             />
           </Stack>
 
-          <Footer />
+          <Credits />
         </Stack>
+
+        <GithubLink />
       </Stack>
     </>
   );
 }
+
+const GithubLink = () => {
+  return (
+    <Flex
+      as="a"
+      href="https://github.com/calvo-jp/pokedex-chakra"
+      rel="noreferrer"
+      target="_blank"
+      position="absolute"
+      right={2}
+      bottom={2}
+      align="center"
+      p={2}
+      gap={2}
+      color="gray.600"
+      _hover={{ color: "gray.700" }}
+    >
+      <Text fontSize="sm">Source Code</Text>
+      <ArrowForwardIcon />
+    </Flex>
+  );
+};
 
 interface CustomLinkProps {
   href: string;
@@ -74,7 +101,7 @@ const Link = ({ href, label, helperText }: CustomLinkProps) => {
 
 const Header = () => {
   return (
-    <Box as="header">
+    <Box>
       <Text
         as="h1"
         w="fit-content"
@@ -96,7 +123,7 @@ const Header = () => {
   );
 };
 
-const Footer = () => {
+const Credits = () => {
   return (
     <Box as="footer">
       <Text align="center" color="gray.500">
