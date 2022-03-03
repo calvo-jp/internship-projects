@@ -9,7 +9,6 @@ export default interface IPokemon {
   weight: number;
   height: number;
   experience: number;
-  __original__: Record<string, any>;
 }
 
 interface Stat {
