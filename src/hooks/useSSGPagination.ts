@@ -1,48 +1,31 @@
-import { useEffect, useState } from "react";
-import IPokemon from "types/pokemon";
+import { useState } from "react";
+import getPokemons from "utils/getPokemons";
 
-interface D {
-  rows: IPokemon[];
-  page: number;
-  hasNext: boolean;
-}
+const useSSGPagination = (init: Awaited<ReturnType<typeof getPokemons>>) => {
+  const [data, setData] = useState(init);
+  const [error, setError] = useState(false);
+  const [fetching, setFetching] = useState(false);
 
-const useSSGPagination = (allRows: IPokemon[]) => {
-  const [data, setData] = useState<D>({
-    page: 1,
-    rows: [],
-    hasNext: true,
-  });
-
-  /** increments page by 1 */
-  const next = () => {
+  const next = async () => {
     if (data.hasNext) {
-      setData(({ page, ...etc }) => ({ page: page + 1, ...etc }));
+      setFetching(true);
+
+      try {
+        const { rows, ...newData } = await getPokemons({ page: data.page + 1 });
+
+        setData((old) => ({
+          ...newData,
+          rows: [...old.rows, ...rows],
+        }));
+      } catch {
+        setError(true);
+      } finally {
+        setFetching(false);
+      }
     }
   };
 
-  useEffect(() => {
-    setData(({ page, rows }) => ({
-      page,
-      rows: [...rows, ...getPageRows(allRows, page)],
-      hasNext: isThereNext(allRows, page),
-    }));
-  }, [allRows, data.page /* <- this triggers rerender */]);
-
-  return { ...data, next };
-};
-
-const pageSize = 12;
-const calcOffset = (page: number) => (page - 1) * pageSize;
-const getPageRows = (rows: IPokemon[], page: number) => {
-  const copy = [...rows];
-  const offset = calcOffset(page);
-  const array = copy.splice(offset, pageSize);
-  return array;
-};
-
-const isThereNext = (allRows: IPokemon[], page: number) => {
-  return page * pageSize < allRows.length;
+  return { ...data, next, fetching, error };
 };
 
 export default useSSGPagination;
