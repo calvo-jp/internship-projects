@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { Flex, Spinner } from "@chakra-ui/react";
 import PokemonWidget from "components/PokemonWidget";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
