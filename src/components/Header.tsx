@@ -36,7 +36,9 @@ const Header = () => {
         bottom={-8}
         opacity=".4"
       >
-        <Image src={pokeball} alt="" layout="fill" />
+        <Box position="relative" w="full" h="full">
+          <Image src={pokeball} alt="" layout="fill" />
+        </Box>
       </Box>
     </Box>
   );
