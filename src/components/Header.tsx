@@ -9,7 +9,7 @@ const Header = () => {
       as="header"
       height={180}
       bgGradient="linear(to right, orange.400, yellow.500)"
-      roundedBottom="3xl"
+      roundedBottom={{ base: 0, md: "3xl" }}
       color="white"
       display="flex"
       flexDirection="column"
@@ -29,6 +29,7 @@ const Header = () => {
       <Text as="p">Powered by pokeapi</Text>
 
       <Box
+        display={{ base: "none", md: "block" }}
         position="absolute"
         height={150}
         width={150}

@@ -1,4 +1,4 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import IPokemon from "types/pokemon";
 import PokemonCard from "./PokemonCard";
 
@@ -9,20 +9,13 @@ interface PokemonListProps {
 
 const PokemonList = ({ pokemons, isSSG }: PokemonListProps) => {
   return (
-    <Grid
-      gap={4}
-      flexWrap="wrap"
-      templateColumns={{
-        base: "1fr",
-        md: "repeat(2, 1fr)",
-      }}
-    >
+    <SimpleGrid spacing={4} columns={{ base: 1, md: 2 }}>
       {pokemons.map((pokemon) => (
-        <GridItem key={pokemon.id}>
+        <Box key={pokemon.id}>
           <PokemonCard data={pokemon} isSSG={isSSG} />
-        </GridItem>
+        </Box>
       ))}
-    </Grid>
+    </SimpleGrid>
   );
 };
 

@@ -114,8 +114,8 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
       py={8}
       align="center"
       justify="center"
-      roundedBottom="3xl"
       position="relative"
+      roundedBottom={{ base: 0, md: "3xl" }}
     >
       <BackButton href={redirectUrl} />
 
