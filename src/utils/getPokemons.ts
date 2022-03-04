@@ -83,10 +83,7 @@ const inRangeCoalesce = (subject: number, min: number, max: number) => {
   return subject <= max && subject >= min ? subject : min;
 };
 
-const parseIntOrCoalesceIfNanOrZero = <
-  S extends undefined | string | number,
-  D
->(
+const parseIntOrCoalesceIfNanOrZero = <S extends undefined | StringOrNumber, D>(
   subject: S,
   defaultValue: D
 ) => {
