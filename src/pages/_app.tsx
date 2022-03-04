@@ -1,8 +1,9 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import { Box, ChakraProvider, Container } from "@chakra-ui/react";
 import "@fontsource/pt-sans/400.css";
 import "@fontsource/pt-sans/700.css";
 import PageLoader from "components/PageLoader";
+import client from "config/apollo/client";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { PropsWithChildren } from "react";
@@ -29,11 +30,6 @@ const App = ({ Component, pageProps }: AppProps) => {
     </>
   );
 };
-
-const client = new ApolloClient({
-  uri: "https://beta.pokeapi.co/graphql/v1beta",
-  cache: new InMemoryCache(),
-});
 
 const Root = ({ children }: PropsWithChildren<{}>) => {
   return (
