@@ -1,9 +1,7 @@
-import { ApolloProvider } from "@apollo/client";
 import { Box, ChakraProvider, Container } from "@chakra-ui/react";
 import "@fontsource/pt-sans/400.css";
 import "@fontsource/pt-sans/700.css";
 import PageLoader from "components/PageLoader";
-import client from "config/apollo/client";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { PropsWithChildren } from "react";
@@ -21,9 +19,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
         <Root>
           <Container p={0} maxW="container.md">
-            <ApolloProvider client={client}>
-              <Component {...pageProps} />
-            </ApolloProvider>
+            <Component {...pageProps} />
           </Container>
         </Root>
       </ChakraProvider>
