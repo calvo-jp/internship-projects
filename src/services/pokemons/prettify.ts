@@ -1,9 +1,12 @@
 import IPokemon from "types/pokemon";
+import isObject from "utils/isObject";
 
-type Dictionary = Record<string, any>;
+type Dict = Record<string, any>;
 
-export default function prettify(data: Dictionary): IPokemon {
-  const defaultImage = "/pokeball.png";
+const DEFAULT_IMG = "/pokeball.png";
+
+export default function prettify(data: any): IPokemon {
+  if (!isObject(data)) throw new Error("Could not parse object");
 
   return {
     id: data.id,
@@ -12,16 +15,16 @@ export default function prettify(data: Dictionary): IPokemon {
       data.sprites.other.dream_world.front_default,
       data.sprites.other.home.front_default,
       data.sprites.front_default,
-      defaultImage
+      DEFAULT_IMG
     ),
-    types: data.types.map((type: Dictionary) => type.type.name),
-    abilities: data.abilities.map((ability: Dictionary) =>
+    types: data.types.map((type: Dict) => type.type.name),
+    abilities: data.abilities.map((ability: Dict) =>
       unKebabCase(ability.ability.name)
     ),
     moves: data.moves
-      .map((move: Dictionary) => unKebabCase(move.move.name))
+      .map((move: Dict) => unKebabCase(move.move.name))
       .slice(0, 10),
-    stats: data.stats.map((stat: Dictionary) => ({
+    stats: data.stats.map((stat: Dict) => ({
       value: stat.base_stat,
       name: unKebabCase(stat.stat.name),
     })),
