@@ -16,19 +16,14 @@ const Pagination = ({
   totalRows,
 }: PaginationProps & Omit<IPaginated, "rows">) => {
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="baseline"
-      w="full"
-    >
+    <Stack direction="row" justify="space-between" align="baseline" w="full">
       <Box>
         <Text fontSize="sm" color="gray.600">
           POKEDEX {currentYear}
         </Text>
       </Box>
 
-      <Stack direction="row" alignItems="center" justifyContent="end">
+      <Stack direction="row" align="center" justify="end">
         <Box ml={6}>
           <Text fontSize="sm">
             Page {page} of {getTotalPage(pageSize, totalRows)}

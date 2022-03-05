@@ -3,7 +3,7 @@ import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <>
       <Head>
@@ -34,4 +34,6 @@ export default function NotFound() {
       </Flex>
     </>
   );
-}
+};
+
+export default NotFound;
