@@ -2,6 +2,7 @@ import { ChevronLeftIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
+  Heading,
   IconButton,
   Progress,
   Stack,
@@ -121,9 +122,9 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
       <Stack align="center">
         <Avatar src={data.image} />
 
-        <Text color="white" fontWeight="bold" fontSize="4xl">
+        <Heading color="white" fontWeight="bold" fontSize="4xl">
           {data.name}
-        </Text>
+        </Heading>
 
         <Types items={data.types} />
       </Stack>

@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import pokeball from "assets/pokeball.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,11 +19,9 @@ const Header = () => {
       overflow="hidden"
     >
       <Link passHref href="/">
-        <a>
-          <Text as="h1" fontSize="6xl" fontWeight={700} lineHeight={1}>
-            POKEDEX
-          </Text>
-        </a>
+        <Heading as="a" fontSize="6xl" fontWeight={700} lineHeight={1}>
+          POKEDEX
+        </Heading>
       </Link>
 
       <Text as="p">Powered by pokeapi</Text>

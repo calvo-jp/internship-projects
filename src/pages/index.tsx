@@ -1,5 +1,5 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
 
@@ -105,7 +105,7 @@ const Link = ({ href, label, helperText }: CustomLinkProps) => {
 const Header = () => {
   return (
     <Box>
-      <Text
+      <Heading
         as="h1"
         w="fit-content"
         mx="auto"
@@ -117,7 +117,7 @@ const Header = () => {
         bgGradient="linear(to right, orange.400, yellow.500)"
       >
         POKEDEX
-      </Text>
+      </Heading>
 
       <Text as="p" textAlign="center" fontSize="sm" color="gray.500">
         Next SSG and SSR Demo

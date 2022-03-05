@@ -20,7 +20,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const data = await services.pokemons.read.all({ pageSize: 50 });
 
   return {
-    revalidate: 60 * 60 * 24 * 3, // 3days
+    revalidate: 60 * 60 * 24 * 7,
     props: {
       data,
     },

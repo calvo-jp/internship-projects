@@ -48,7 +48,7 @@ const read = {
     const limit = parseIntOrCoalesce(params?.pageSize, 20);
     const offset = (page - 1) * limit;
 
-    const response = await fetch(`${BASE_URL}?limit=${limit}&offset=${offset}`);
+    const response = await fetch(`${BASE_URL}?offset=${offset}&limit=${limit}`);
 
     if (!response.ok) throw new Error(response.statusText);
 
