@@ -1,10 +1,13 @@
 import normalizePokemonObject from "./normalizePokemonObject";
 
-const getPokemon = async (id: String | number) => {
-  if (!id) return null;
+const getPokemon = async (query: { id: String | number } | { url: string }) => {
+  const request =
+    "id" in query
+      ? new Request("https://pokeapi.co/api/v2/pokemon/" + query.id)
+      : new Request(query.url);
 
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    const response = await fetch(request);
     const pokemon = await response.json();
 
     return normalizePokemonObject(pokemon);

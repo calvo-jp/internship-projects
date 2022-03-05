@@ -28,7 +28,7 @@ interface Props {
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const data = await getPokemon(params!.id);
+  const data = await getPokemon({ id: params!.id });
 
   if (!data) return { notFound: true };
 

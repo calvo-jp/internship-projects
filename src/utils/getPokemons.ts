@@ -1,17 +1,16 @@
-import IPaginated from "types/paginated";
 import IPokemon from "types/pokemon";
-import normalizePokemonObject from "utils/normalizePokemonObject";
+import getPokemon from "./getPokemon";
 
-interface IResult {
+interface Result {
   name: string;
   url: string;
 }
 
 type StringOrNull = string | null;
 
-interface NonNormalizedPaginated {
+interface NonNormalizedResponse {
   count: number;
-  results: IResult[];
+  results: Result[];
   next: StringOrNull;
   previous: StringOrNull;
 }
@@ -19,82 +18,56 @@ interface NonNormalizedPaginated {
 type StringOrNumber = string | number;
 
 interface Params {
-  /** page number or index */
   page?: StringOrNumber;
-  /** aka limit */
   pageSize?: StringOrNumber;
 }
 
-/** default page size */
-const DEFAULT_PAGESIZE = 20;
+const baseUrl = "https://pokeapi.co/api/v2/pokemon";
 
-type PokemonsFetcher = (params?: Params) => Promise<IPaginated>;
+const getPokemons = async (params?: Params) => {
+  const page = parseIntOrCoalesce(params?.page, 1);
+  const limit = parseIntOrCoalesce(params?.pageSize, 20);
+  const offset = (page - 1) * limit;
 
-const getPokemons: PokemonsFetcher = async ({
-  page = 1,
-  pageSize = DEFAULT_PAGESIZE,
-} = {}) => {
-  page = parseIntOrCoalesceIfNanOrZero(page, 1);
-  pageSize = parseIntOrCoalesceIfNanOrZero(pageSize, DEFAULT_PAGESIZE);
-  pageSize = inRangeCoalesce(pageSize, DEFAULT_PAGESIZE, 240);
+  const endpoint = `${baseUrl}?limit=${limit}&offset=${offset}`;
+  const response = await fetch(endpoint);
 
-  const offset = (page - 1) * pageSize;
+  if (!response.ok) throw new Error(response.statusText);
 
-  const params = new URLSearchParams();
-  params.append("limit", pageSize.toString());
-  params.append("offset", offset.toString());
-  const query = params.toString();
+  const data: NonNormalizedResponse = await response.json();
 
-  try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?${query}`);
+  const promises = data.results.map(({ url }) => getPokemon({ url }));
+  const results = await Promise.allSettled(promises);
+  const pokemons: IPokemon[] = [];
 
-    if (!response.ok) throw new Error(response.statusText);
-
-    const data: NonNormalizedPaginated = await response.json();
-
-    const promises = data.results.map(({ url }) => fetch(url));
-    const results = await Promise.allSettled(promises);
-    const rows: IPokemon[] = [];
-
-    for (const result of results) {
-      if (result.status === "fulfilled") {
-        const parsed = await result.value.json();
-        const pokemon = normalizePokemonObject(parsed);
-
-        rows.push(pokemon);
-      }
+  for (const result of results) {
+    if (result.status === "fulfilled" && result.value) {
+      pokemons.push(result.value);
     }
-
-    return {
-      page,
-      pageSize,
-      rows,
-      totalRows: data.count,
-      hasNext: !!data.next,
-      hasPrevious: !!data.previous,
-    };
-  } catch (error) {
-    throw new Error("Something went wrong while fetching the API");
   }
+
+  return {
+    page,
+    pageSize: limit,
+    rows: pokemons,
+    totalRows: data.count,
+    hasNext: !!data.next,
+    hasPrevious: !!data.previous,
+  };
 };
 
-const inRangeCoalesce = (subject: number, min: number, max: number) => {
-  return subject <= max && subject >= min ? subject : min;
-};
-
-const parseIntOrCoalesceIfNanOrZero = (
+const parseIntOrCoalesce = (
   subject: StringOrNumber | undefined,
   defaultValue: number
 ) => {
-  // undefined
+  defaultValue = Math.trunc(defaultValue);
+
   if (!subject) return defaultValue;
 
-  // number <= 0
-  if (typeof subject === "number") return subject > 0 ? subject : defaultValue;
+  if (typeof subject === "number") return Math.trunc(subject);
 
-  // string
   const value = parseInt(subject);
-  return !Number.isNaN(value) && value > 0 ? value : defaultValue;
+  return Number.isNaN(value) ? defaultValue : Math.trunc(value);
 };
 
 export default getPokemons;
