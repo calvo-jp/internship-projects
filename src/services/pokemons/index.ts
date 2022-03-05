@@ -60,7 +60,7 @@ const read = {
 
     for (const result of results) {
       if (result.status === "fulfilled" && !!result.value) {
-        pokemons.push(prettify(result.value));
+        pokemons.push(result.value);
       }
     }
 
