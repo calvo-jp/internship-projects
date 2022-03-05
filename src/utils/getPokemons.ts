@@ -60,14 +60,12 @@ const parseIntOrCoalesce = (
   subject: StringOrNumber | undefined,
   defaultValue: number
 ) => {
-  defaultValue = Math.trunc(defaultValue);
-
   if (!subject) return defaultValue;
 
-  if (typeof subject === "number") return Math.trunc(subject);
+  if (typeof subject === "number") return subject;
 
   const value = parseInt(subject);
-  return Number.isNaN(value) ? defaultValue : Math.trunc(value);
+  return Number.isNaN(value) ? defaultValue : value;
 };
 
 export default getPokemons;
