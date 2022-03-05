@@ -1,8 +1,19 @@
 import IPokemon from "types/pokemon";
 
-type Dict = Record<string, any>;
+type Dictionary = Record<string, any>;
 
-export default function normalizePokemonObject(data: Dict): IPokemon {
+const isDictionary = (subject: any): subject is Dictionary => {
+  const tag = "[object Object]";
+
+  return (
+    Object(subject) === subject &&
+    Object.prototype.toString.call(subject) === tag
+  );
+};
+
+export default function normalizePokemonObject(data: unknown): IPokemon {
+  if (!isDictionary(data)) throw new Error("Invalid pokemon object");
+
   return {
     id: data.id,
     name: data.name,
@@ -12,14 +23,14 @@ export default function normalizePokemonObject(data: Dict): IPokemon {
       data.sprites.front_default,
       defaultImage
     ),
-    types: data.types.map((type: Dict) => type.type.name),
-    abilities: data.abilities.map((ability: Dict) =>
+    types: data.types.map((type: Dictionary) => type.type.name),
+    abilities: data.abilities.map((ability: Dictionary) =>
       normalizeKebab(ability.ability.name)
     ),
     moves: data.moves
-      .map((move: Dict) => normalizeKebab(move.move.name))
+      .map((move: Dictionary) => normalizeKebab(move.move.name))
       .slice(0, 10),
-    stats: data.stats.map((stat: Dict) => ({
+    stats: data.stats.map((stat: Dictionary) => ({
       value: stat.base_stat,
       name: normalizeKebab(stat.stat.name),
     })),
