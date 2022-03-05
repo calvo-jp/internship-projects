@@ -29,7 +29,7 @@ export default function normalizePokemonObject(data: Dict): IPokemon {
   };
 }
 
-const unsafeCoalesce = (...args: any): any => {
+const unsafeCoalesce = (...args: any) => {
   for (const arg of args) if (!!arg) return arg;
 };
 

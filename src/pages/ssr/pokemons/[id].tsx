@@ -16,7 +16,7 @@ interface Params {
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
   params,
 }) => {
-  const data = await getPokemon(params?.id);
+  const data = await getPokemon(params!.id);
   return !data ? { notFound: true } : { props: { data } };
 };
 

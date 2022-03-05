@@ -1,6 +1,6 @@
 import normalizePokemonObject from "./normalizePokemonObject";
 
-const getPokemon = async (id: any) => {
+const getPokemon = async (id: String | number) => {
   if (!id) return null;
 
   try {

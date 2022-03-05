@@ -1,13 +1,9 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import useRingtone from "hooks/useRingtone";
 import Head from "next/head";
 import NextLink from "next/link";
 
 export default function Landing() {
-  const ringtone = useRingtone();
-  if (ringtone) ringtone.play();
-
   return (
     <>
       <Head>

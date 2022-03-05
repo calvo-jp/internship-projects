@@ -7,10 +7,6 @@ import IPokemon from "types/pokemon";
 import getPokemon from "utils/getPokemon";
 import getPokemons from "utils/getPokemons";
 
-interface Props {
-  data: IPokemon;
-}
-
 interface Params {
   [key: string]: string;
   id: string;
@@ -25,10 +21,14 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   };
 };
 
+interface Props {
+  data: IPokemon;
+}
+
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const data = await getPokemon(params?.id);
+  const data = await getPokemon(params!.id);
 
   if (!data) return { notFound: true };
 

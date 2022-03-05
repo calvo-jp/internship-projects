@@ -74,7 +74,6 @@ const getPokemons: PokemonsFetcher = async ({
       hasPrevious: !!data.previous,
     };
   } catch (error) {
-    console.log(error);
     throw new Error("Something went wrong while fetching the API");
   }
 };
@@ -83,9 +82,9 @@ const inRangeCoalesce = (subject: number, min: number, max: number) => {
   return subject <= max && subject >= min ? subject : min;
 };
 
-const parseIntOrCoalesceIfNanOrZero = <S extends undefined | StringOrNumber, D>(
-  subject: S,
-  defaultValue: D
+const parseIntOrCoalesceIfNanOrZero = (
+  subject: StringOrNumber | undefined,
+  defaultValue: number
 ) => {
   // undefined
   if (!subject) return defaultValue;
