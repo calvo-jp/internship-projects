@@ -27,9 +27,14 @@ interface Params {
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
 
 const read = {
-  async one(id: string | number) {
+  async one(filter: { id: string | number } | { url: string }) {
+    const request =
+      "id" in filter
+        ? new Request(BASE_URL + filter.id)
+        : new Request(filter.url);
+
     try {
-      const response = await fetch(BASE_URL + id);
+      const response = await fetch(request);
       const pokemon = await response.json();
 
       return prettify(pokemon);
@@ -49,14 +54,13 @@ const read = {
 
     const data: NonNormalizedResponse = await response.json();
 
-    const promises = data.results.map(({ url }) => fetch(url));
+    const promises = data.results.map(({ url }) => read.one({ url }));
     const results = await Promise.allSettled(promises);
     const pokemons: IPokemon[] = [];
 
     for (const result of results) {
-      if (result.status === "fulfilled") {
-        const parsed = await result.value.json();
-        pokemons.push(prettify(parsed));
+      if (result.status === "fulfilled" && !!result.value) {
+        pokemons.push(prettify(result.value));
       }
     }
 

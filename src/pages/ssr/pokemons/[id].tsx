@@ -16,7 +16,7 @@ interface Params {
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
   params,
 }) => {
-  const data = await services.pokemons.read.one(params!.id);
+  const data = await services.pokemons.read.one({ id: params!.id });
   return !data ? { notFound: true } : { props: { data } };
 };
 
