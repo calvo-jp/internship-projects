@@ -1,7 +1,8 @@
 import { useState } from "react";
-import getPokemons from "utils/getPokemons";
+import services from "services";
+import IPaginated from "types/paginated";
 
-const useSSGPagination = (init: Awaited<ReturnType<typeof getPokemons>>) => {
+const useSSGPagination = (init: IPaginated) => {
   const [data, setData] = useState(init);
   const [error, setError] = useState(false);
   const [fetching, setFetching] = useState(false);
@@ -11,7 +12,7 @@ const useSSGPagination = (init: Awaited<ReturnType<typeof getPokemons>>) => {
       setFetching(true);
 
       try {
-        const { rows, ...newData } = await getPokemons({
+        const { rows, ...newData } = await services.pokemons.read.all({
           page: data.page + 1,
           pageSize: data.pageSize,
         });

@@ -7,16 +7,17 @@ import ScrollToTopButton from "components/ScrollToTopButton";
 import useSSGPagination from "hooks/useSSGPagination";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import getPokemons from "utils/getPokemons";
+import services from "services";
+import IPaginated from "types/paginated";
 
 interface Props {
-  data: Awaited<ReturnType<typeof getPokemons>>;
+  data: IPaginated;
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   // pre-render only 50 rows,
   // other data will be fetched on the client-side
-  const data = await getPokemons({ pageSize: 50 });
+  const data = await services.pokemons.read.all({ pageSize: 50 });
 
   return {
     revalidate: 60 * 60 * 24 * 3, // 3days

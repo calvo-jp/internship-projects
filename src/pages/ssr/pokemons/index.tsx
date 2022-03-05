@@ -5,16 +5,17 @@ import PokemonList from "components/PokemonList";
 import useSSRRedirect from "hooks/useSSRRedirect";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import getPokemons from "utils/getPokemons";
+import services from "services";
+import IPaginated from "types/paginated";
 
 interface Props {
-  data: Awaited<ReturnType<typeof getPokemons>>;
+  data: IPaginated;
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
-  const data = await getPokemons(context.query);
+  const data = await services.pokemons.read.all(context.query);
   return data.rows.length === 0 ? { notFound: true } : { props: { data } };
 };
 

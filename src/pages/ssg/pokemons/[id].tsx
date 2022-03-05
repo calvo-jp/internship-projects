@@ -3,9 +3,8 @@ import PokemonWidget from "components/PokemonWidget";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import services from "services";
 import IPokemon from "types/pokemon";
-import getPokemon from "utils/getPokemon";
-import getPokemons from "utils/getPokemons";
 
 interface Params {
   [key: string]: string;
@@ -13,7 +12,7 @@ interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const data = await getPokemons();
+  const data = await services.pokemons.read.all();
 
   return {
     paths: data.rows.map(({ id }) => ({ params: { id: id.toString() } })),
@@ -28,7 +27,7 @@ interface Props {
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const data = await getPokemon({ id: params!.id });
+  const data = await services.pokemons.read.one(params!.id);
 
   if (!data) return { notFound: true };
 

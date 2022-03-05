@@ -1,8 +1,8 @@
 import PokemonWidget from "components/PokemonWidget";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import services from "services";
 import IPokemon from "types/pokemon";
-import getPokemon from "utils/getPokemon";
 
 interface Props {
   data: IPokemon;
@@ -16,7 +16,7 @@ interface Params {
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
   params,
 }) => {
-  const data = await getPokemon({ id: params!.id });
+  const data = await services.pokemons.read.one(params!.id);
   return !data ? { notFound: true } : { props: { data } };
 };
 
