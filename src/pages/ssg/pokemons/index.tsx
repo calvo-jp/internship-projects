@@ -45,7 +45,7 @@ const Pokemons: NextPage<Props> = ({ data }) => {
         {!fetching && error && <ReloadTrigger onReload={next} />}
       </Stack>
 
-      <InfiniteScroll callback={next} disabled={fetching || !hasNext} />
+      <InfiniteScroll callback={next} paused={fetching || !hasNext} />
       <ScrollToTopButton />
     </>
   );

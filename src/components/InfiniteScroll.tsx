@@ -2,13 +2,13 @@ import { useCallback, useEffect } from "react";
 
 interface InfiniteScrollProps {
   callback: () => void;
-  disabled?: boolean;
+  paused?: boolean;
 }
 
-const InfiniteScroll = ({ callback, disabled }: InfiniteScrollProps) => {
+const InfiniteScroll = ({ callback, paused }: InfiniteScrollProps) => {
   const handleScroll = useCallback(() => {
-    if (!disabled && isScrolledToBottom()) callback();
-  }, [callback, disabled]);
+    if (!paused && isScrolledToBottom()) callback();
+  }, [callback, paused]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
