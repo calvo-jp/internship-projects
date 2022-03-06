@@ -81,27 +81,26 @@ interface LinkProps {
 const Link = ({ href, label, helperText }: LinkProps) => {
   return (
     <NextLink passHref href={href}>
-      <Box
-        as="a"
-        textAlign="center"
+      <ChakraLink
+        px={4}
+        py={2}
         border={1}
         borderStyle="solid"
         borderColor="gray.300"
-        py={2}
-        px={4}
+        textAlign="center"
         rounded="sm"
         _hover={{
           borderColor: "orange.300",
         }}
       >
-        <Text fontSize="5xl" lineHeight={1}>
+        <Text as="div" fontSize="5xl" lineHeight={1}>
           {label}
         </Text>
 
-        <Text fontSize="sm" color="gray.600">
+        <Text as="div" fontSize="sm" color="gray.600">
           {helperText}
         </Text>
-      </Box>
+      </ChakraLink>
     </NextLink>
   );
 };
