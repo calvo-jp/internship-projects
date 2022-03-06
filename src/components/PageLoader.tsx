@@ -24,21 +24,21 @@ const PageLoader = () => {
     router.events.on("routeChangeError", handleComplete);
   }, [router.events]);
 
-  // Conceal loader when generating new pages or probably an error
+  // hide loader when generating new pages or on error
   if (router.isFallback) return <React.Fragment />;
 
   return (
     <Box
       position="fixed"
-      bgGradient="linear(to right, pink.400, red.300, pink.300)"
-      transition="all"
-      transitionDuration="150ms"
+      zIndex={99}
       left={0}
       top={0}
-      zIndex={99}
       h={0.5}
       w={status === Status.complte ? "full" : "50%"}
       hidden={status === Status.waiting}
+      bgGradient="linear(to right, pink.400, red.300, pink.300)"
+      transition="all"
+      transitionDuration="150ms"
     />
   );
 };
