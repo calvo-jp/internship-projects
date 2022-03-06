@@ -2,8 +2,8 @@ import { useState } from "react";
 import services from "services";
 import IPaginated from "types/paginated";
 
-const useSSGPagination = (init: IPaginated) => {
-  const [data, setData] = useState(init);
+const useSSGPagination = (initialValue: IPaginated) => {
+  const [data, setData] = useState(initialValue);
   const [error, setError] = useState(false);
   const [fetching, setFetching] = useState(false);
 
