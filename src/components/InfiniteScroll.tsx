@@ -5,10 +5,7 @@ interface InfiniteScrollProps {
   disabled?: boolean;
 }
 
-export default function InfiniteScroll({
-  callback,
-  disabled,
-}: InfiniteScrollProps) {
+const InfiniteScroll = ({ callback, disabled }: InfiniteScrollProps) => {
   const handleScroll = useCallback(() => {
     if (!disabled && isScrolledToBottom()) callback();
   }, [callback, disabled]);
@@ -20,13 +17,20 @@ export default function InfiniteScroll({
   }, [handleScroll]);
 
   return <></>;
-}
+};
 
 const isScrolledToBottom = () => {
-  return (
+  const actualHeight = document.body.offsetHeight;
+
+  const consumedHeight =
+    /* viewport height */
     window.innerHeight +
-      window.pageYOffset +
-      64 /* <- don't wait for scrollbar to hit the bottom, fetch in advance */ >=
-    document.body.offsetHeight
-  );
+    /* number of px scrolled vertically */
+    window.pageYOffset +
+    /* don't wait for scrollbar to hit the bottom, fetch in advance */
+    75;
+
+  return consumedHeight >= actualHeight;
 };
+
+export default InfiniteScroll;
