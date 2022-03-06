@@ -2,8 +2,6 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Box,
   Center,
-  Container,
-  Flex,
   Heading,
   HStack,
   Link as ChakraLink,

@@ -1,4 +1,4 @@
-import { Box, Heading, Stack, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Heading, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import IPokemon from "types/pokemon";

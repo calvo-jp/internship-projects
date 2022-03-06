@@ -2,11 +2,7 @@ import { ChevronLeftIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
   Center,
-  CircularProgress,
-  CircularProgressLabel,
   Flex,
-  Grid,
-  GridItem,
   Heading,
   IconButton,
   Progress,
