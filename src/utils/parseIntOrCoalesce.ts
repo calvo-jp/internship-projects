@@ -1,5 +1,5 @@
 const parseIntOrCoalesce = (
-  subject: string | number | undefined,
+  subject: string | number | undefined | null,
   defaultValue: number
 ) => {
   if (!subject) return defaultValue;
