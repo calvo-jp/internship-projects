@@ -5,8 +5,8 @@ type Dict = Record<string, any>;
 
 const DEFAULT_IMG = "/pokeball.png";
 
-export default function prettify(data: any): IPokemon {
-  if (!isObject(data)) throw new Error("Could not parse object");
+const prettify = (data: any): IPokemon => {
+  if (!isObject(data)) throw new Error("Unable to prettify data");
 
   return {
     id: data.id,
@@ -18,11 +18,12 @@ export default function prettify(data: any): IPokemon {
       DEFAULT_IMG
     ),
     types: data.types.map((type: Dict) => type.type.name),
-    abilities: data.abilities.map((ability: Dict) =>
-      unKebabCase(ability.ability.name)
-    ),
+    abilities: data.abilities
+      .map((ability: Dict) => ability.ability.name)
+      .map(unKebabCase),
     moves: data.moves
-      .map((move: Dict) => unKebabCase(move.move.name))
+      .map((move: Dict) => move.move.name)
+      .map(unKebabCase)
       .slice(0, 10),
     stats: data.stats.map((stat: Dict) => ({
       value: stat.base_stat,
@@ -32,7 +33,7 @@ export default function prettify(data: any): IPokemon {
     weight: data.weight,
     height: data.height,
   };
-}
+};
 
 const unsafeCoalesce = (...args: any) => {
   for (const arg of args) if (!!arg) return arg;
@@ -41,3 +42,5 @@ const unsafeCoalesce = (...args: any) => {
 const unKebabCase = (subject: string) => {
   return subject.replace(/[a-z0-9]-[a-z0-9]/gi, (m) => m.replace(/-/, " "));
 };
+
+export default prettify;
