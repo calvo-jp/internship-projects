@@ -1,4 +1,4 @@
-import { Box, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, Stack, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import IPokemon from "types/pokemon";
@@ -14,12 +14,12 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
   return (
     <Link passHref href={baseUrl + data.id}>
       <Box
-        display="block"
         as="a"
+        display="block"
         border={1}
         borderColor="transparent"
         borderStyle="solid"
-        background="white"
+        bgColor="white"
         shadow="md"
         p={4}
         w="full"
@@ -33,33 +33,27 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
         }}
       >
         <Box position="relative" height={100}>
-          <Box maxW={100} h="full" position="relative" mx="auto">
-            <Image src={data.image} alt="" layout="fill"></Image>
+          <Box h="full" position="relative" maxW={100} mx="auto">
+            <Image src={data.image} alt="" layout="fill" />
           </Box>
         </Box>
 
         <Box mt={8}>
-          <Text as="h2" fontSize="xl">
+          <Heading fontSize="xl" fontWeight="normal">
             {data.name}
-          </Text>
+          </Heading>
 
-          <Stack
-            spacing={2}
-            fontSize="xs"
-            color="gray.500"
-            direction="row"
-            alignItems="center"
-          >
+          <Wrap spacing={2} color="gray.500" fontSize="xs">
             {[
               ["Types", data.types.length],
               ["Abilities", data.abilities.length],
               ["Moves", data.moves.length],
             ].map(([label, count]) => (
-              <Box key={label}>
+              <WrapItem key={label}>
                 {label}: {count}
-              </Box>
+              </WrapItem>
             ))}
-          </Stack>
+          </Wrap>
         </Box>
       </Box>
     </Link>

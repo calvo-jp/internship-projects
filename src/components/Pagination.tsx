@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Button, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Text } from "@chakra-ui/react";
 import { ComponentProps, PropsWithChildren } from "react";
 import IPaginated from "types/paginated";
 
@@ -16,14 +16,12 @@ const Pagination = ({
   totalRows,
 }: PaginationProps & Omit<IPaginated, "rows">) => {
   return (
-    <Stack direction="row" justify="space-between" align="baseline" w="full">
-      <Box>
-        <Text fontSize="sm" color="gray.600">
-          POKEDEX {currentYear}
-        </Text>
-      </Box>
+    <HStack justify="space-between" align="baseline" w="full">
+      <Text fontSize="sm" color="gray.600">
+        POKEDEX {currentYear}
+      </Text>
 
-      <Stack direction="row" align="center" justify="end">
+      <HStack direction="row" align="center" justify="end">
         <Box ml={6}>
           <Text fontSize="sm">
             Page {page} of {getTotalPage(pageSize, totalRows)}
@@ -36,8 +34,8 @@ const Pagination = ({
         <PaginationButton onClick={onNext}>
           <ChevronRightIcon w={6} h={6} color="white" />
         </PaginationButton>
-      </Stack>
-    </Stack>
+      </HStack>
+    </HStack>
   );
 };
 

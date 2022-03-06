@@ -1,12 +1,18 @@
 import { ChevronLeftIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Center,
+  CircularProgress,
+  CircularProgressLabel,
   Flex,
+  Grid,
+  GridItem,
   Heading,
   IconButton,
   Progress,
   Stack,
   Text,
+  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -73,8 +79,9 @@ const Stats = ({ stats }: { stats: IPokemon["stats"] }) => {
             <Flex alignItems="center" gap={2}>
               <Progress
                 value={stat.value}
-                colorScheme="orange"
                 size="xs"
+                rounded="sm"
+                colorScheme="orange"
                 flexGrow={1}
               />
 
@@ -109,17 +116,15 @@ const Card = ({ title, children }: PropsWithChildren<CardProps>) => {
 
 const Header = ({ data, redirectUrl }: WidgetProps) => {
   return (
-    <Flex
-      bgGradient="linear(to right, orange.400, yellow.500)"
-      py={8}
-      align="center"
-      justify="center"
+    <Center
       position="relative"
+      bgGradient="linear(to right, orange.400, yellow.500)"
       roundedBottom={{ base: 0, md: "3xl" }}
+      py={8}
     >
       <BackButton href={redirectUrl} />
 
-      <Stack align="center">
+      <VStack align="center">
         <Avatar src={data.image} />
 
         <Heading color="white" fontWeight="bold" fontSize="4xl">
@@ -127,8 +132,8 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
         </Heading>
 
         <Types items={data.types} />
-      </Stack>
-    </Flex>
+      </VStack>
+    </Center>
   );
 };
 

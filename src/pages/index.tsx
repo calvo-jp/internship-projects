@@ -1,5 +1,16 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Container,
+  Flex,
+  Heading,
+  HStack,
+  Link as ChakraLink,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import NextLink from "next/link";
 
@@ -10,71 +21,66 @@ export default function Landing() {
         <title>Pokedex - SSG & SSR Demo using NextJS</title>
       </Head>
 
-      <Stack minHeight="100vh">
+      <VStack
+        spacing={{ base: 6, md: 10 }}
+        minH="100vh"
+        align="center"
+        justify="center"
+      >
+        <Brand />
+
         <Stack
-          spacing={{ base: 6, md: 10 }}
-          flexGrow={1}
-          justify="center"
-          align="center"
+          direction={{ base: "column", sm: "row" }}
+          spacing={{ base: 2, md: 4 }}
         >
-          <Header />
+          <Link
+            href="/ssg/pokemons"
+            label="SSG"
+            helperText="Static Site Generation"
+          />
 
-          <Stack
-            direction={{ base: "column", sm: "row" }}
-            spacing={{ base: 2, md: 4 }}
-            as="main"
-          >
-            <Link
-              href="/ssg/pokemons"
-              label="SSG"
-              helperText="Static Site Generation"
-            />
-
-            <Link
-              href="/ssr/pokemons"
-              label="SSR"
-              helperText="Server Side Rendering"
-            />
-          </Stack>
-
-          <Credits />
+          <Link
+            href="/ssr/pokemons"
+            label="SSR"
+            helperText="Server Side Rendering"
+          />
         </Stack>
 
-        <GithubLink />
-      </Stack>
+        <Credits />
+      </VStack>
+
+      <GithubLink />
     </>
   );
 }
 
 const GithubLink = () => {
   return (
-    <Flex
-      as="a"
+    <ChakraLink
       href="https://github.com/calvo-jp/pokedex-chakra"
-      rel="noreferrer"
-      target="_blank"
+      isExternal
       position="absolute"
       right={2}
       bottom={2}
-      align="center"
       p={2}
-      gap={2}
       color="gray.600"
       _hover={{ color: "gray.700" }}
     >
-      <Text fontSize="sm">Source Code</Text>
-      <ArrowForwardIcon />
-    </Flex>
+      <HStack>
+        <Text fontSize="sm">Source Code</Text>
+        <ArrowForwardIcon />
+      </HStack>
+    </ChakraLink>
   );
 };
 
-interface CustomLinkProps {
+interface LinkProps {
   href: string;
   label: string;
   helperText: string;
 }
 
-const Link = ({ href, label, helperText }: CustomLinkProps) => {
+const Link = ({ href, label, helperText }: LinkProps) => {
   return (
     <NextLink passHref href={href}>
       <Box
@@ -102,14 +108,14 @@ const Link = ({ href, label, helperText }: CustomLinkProps) => {
   );
 };
 
-const Header = () => {
+const Brand = () => {
   return (
     <Box>
       <Heading
         as="h1"
         w="fit-content"
         mx="auto"
-        fontSize={64}
+        fontSize={56}
         fontWeight={700}
         lineHeight={1}
         backgroundClip="text"
@@ -128,20 +134,19 @@ const Header = () => {
 
 const Credits = () => {
   return (
-    <Box as="footer">
-      <Text align="center" color="gray.500">
-        ⚡ Powered by{" "}
-        <Box
-          as="a"
+    <Center color="gray.500">
+      <HStack>
+        <Text align="center">⚡ Powered by</Text>
+
+        <ChakraLink
           href="https://pokeapi.co/"
-          rel="noreferrer"
-          target="_blank"
+          isExternal
           fontWeight="bold"
           _hover={{ color: "orange.400" }}
         >
           pokeapi
-        </Box>
-      </Text>
-    </Box>
+        </ChakraLink>
+      </HStack>
+    </Center>
   );
 };

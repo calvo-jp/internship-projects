@@ -1,36 +1,26 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import pokeball from "assets/pokeball.png";
 import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
   return (
-    <Box
+    <VStack
       as="header"
-      height={180}
       bgGradient="linear(to right, orange.400, yellow.500)"
       roundedBottom={{ base: 0, md: "3xl" }}
       color="white"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
       position="relative"
       overflow="hidden"
+      py={{ base: 8, md: 12 }}
     >
-      <Link passHref href="/">
-        <Heading as="a" fontSize="6xl" fontWeight={700} lineHeight={1}>
-          POKEDEX
-        </Heading>
-      </Link>
-
-      <Text as="p">Powered by pokeapi</Text>
+      <Brand />
 
       <Box
         display={{ base: "none", md: "block" }}
         position="absolute"
-        height={150}
-        width={150}
+        h={150}
+        w={150}
         right={-8}
         bottom={-8}
         opacity=".4"
@@ -39,7 +29,23 @@ const Header = () => {
           <Image src={pokeball} alt="" layout="fill" />
         </Box>
       </Box>
-    </Box>
+    </VStack>
+  );
+};
+
+const Brand = () => {
+  return (
+    <Link href="/" passHref>
+      <VStack as="a">
+        <Heading as="h1" fontSize="6xl" fontWeight={700} lineHeight={0.8}>
+          POKEDEX
+        </Heading>
+
+        <Text as="p" lineHeight={0.8} opacity="0.9">
+          Powered by pokeapi
+        </Text>
+      </VStack>
+    </Link>
   );
 };
 
