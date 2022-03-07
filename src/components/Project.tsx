@@ -20,11 +20,16 @@ const Project = ({ data }: ProjectProps) => {
   return (
     <Link href={"/works/" + data.id} passHref>
       <Box as="a">
-        <Stack direction="row" gap={4}>
-          <Image src={data.image} alt="" w="246px" height="180px" />
+        <Stack direction={{ base: "column", md: "row" }} gap={4}>
+          <Image
+            alt=""
+            src={data.image}
+            w={{ base: "full", md: "246px" }}
+            h={{ base: "auto", md: "180px" }}
+          />
 
-          <Flex justify="space-between" direction="column">
-            <Heading fontWeight={700} fontSize="30px">
+          <Flex justify="space-between" direction="column" gap={4}>
+            <Heading fontWeight={700} fontSize={{ base: "24px", md: "30px" }}>
               {data.title}
             </Heading>
 
@@ -33,7 +38,7 @@ const Project = ({ data }: ProjectProps) => {
                 bgColor="#142850"
                 color="white"
                 fontWeight={900}
-                fontSize="18px"
+                fontSize={{ base: "16px", md: "18px" }}
                 py={1}
                 px={3}
                 rounded="full"
@@ -41,7 +46,7 @@ const Project = ({ data }: ProjectProps) => {
                 {data.createdAt}
               </Badge>
 
-              <Text fontSize="20px" color="#8695A4">
+              <Text fontSize={{ base: "16px", md: "20px" }} color="#8695A4">
                 {data.tags.join(", ")}
               </Text>
             </HStack>

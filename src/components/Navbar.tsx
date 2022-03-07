@@ -1,3 +1,4 @@
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
@@ -11,14 +12,26 @@ import { useRouter } from "next/router";
 
 const Navbar = () => {
   const router = useRouter();
-  console.log(router.pathname);
 
   const links = ["Works", "Blog", "Contact"];
 
   return (
-    <Flex as="header" py={8} px={12} justify="end" maxW="">
+    <Flex
+      as="header"
+      py={{ base: 4, md: 8 }}
+      px={{ base: 6, md: 12 }}
+      justify="end"
+      position="sticky"
+      top={0}
+      bgColor="white"
+      zIndex={99}
+    >
       <Box>
-        <Wrap spacing={4}>
+        <Box as="button" display={{ base: "block", md: "none" }}>
+          <HamburgerIcon w={6} h={6} />
+        </Box>
+
+        <Wrap spacing={4} display={{ base: "none", md: "block" }}>
           {links.map((link) => {
             const href = "/" + link.toLowerCase();
 

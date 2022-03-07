@@ -20,7 +20,7 @@ const Work = () => {
       </Head>
 
       <Navbar />
-      <Box as="main" w="650px" mx="auto">
+      <Box as="main" maxW="650px" mx="auto" p={{ base: 4, md: 8 }}>
         <Section1 />
         <Section2 />
       </Box>
@@ -34,18 +34,21 @@ const Section1 = () => {
   return (
     <Box as="section">
       <Box>
-        <Heading fontSize="34px" as="h1" maxW="500px">
+        <Heading fontSize={{ base: "30px", md: "34px" }} as="h1" maxW="500px">
           Designing Dashboards with usability in mind
         </Heading>
 
-        <Flex align="center" gap={4} mt={4}>
+        <Flex
+          align="center"
+          gap={4}
+          mt={4}
+          fontSize={{ base: "18px", md: "20px" }}
+        >
           <Badge bgColor="#FF7C7C" rounded="full" color="white" py={1} px={2}>
             2020
           </Badge>
 
-          <Text fontSize="20px" fontWeight={400}>
-            Dashboard, User Experience Design
-          </Text>
+          <Text fontWeight={400}>Dashboard, User Experience Design</Text>
         </Flex>
 
         <Text mt={4}>
@@ -65,11 +68,16 @@ const Section1 = () => {
 const Section2 = () => {
   return (
     <Box as="section" mt={16}>
-      <Heading as="h2" fontSize="30px" fontWeight={500}>
+      <Heading as="h2" fontSize={{ base: "26px", md: "30px" }} fontWeight={500}>
         Heading 1
       </Heading>
 
-      <Heading as="h3" fontSize="24px" fontWeight={500} mt={2}>
+      <Heading
+        as="h3"
+        fontSize={{ base: "20px", md: "24px" }}
+        fontWeight={500}
+        mt={2}
+      >
         Heading 2
       </Heading>
 

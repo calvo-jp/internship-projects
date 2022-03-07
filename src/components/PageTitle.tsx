@@ -6,7 +6,12 @@ interface PageTitleProps {
 
 const PageTitle = ({ label }: PageTitleProps) => {
   return (
-    <Heading as="h1" fontWeight={700} fontSize="44px" mb={16}>
+    <Heading
+      as="h1"
+      fontWeight={700}
+      fontSize={{ base: "30px", md: "44px" }}
+      mb={{ base: 8, md: 16 }}
+    >
       {label}
     </Heading>
   );

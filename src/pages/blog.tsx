@@ -9,21 +9,7 @@ import Head from "next/head";
 import services from "services";
 import IPost from "types/post";
 
-interface Props {
-  data: IPost[];
-}
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const data = await services.posts.read.all();
-
-  return {
-    props: {
-      data,
-    },
-  };
-};
-
-const Blog: NextPage<Props> = ({ data }) => {
+const Blog = () => {
   return (
     <>
       <Head>
@@ -34,7 +20,7 @@ const Blog: NextPage<Props> = ({ data }) => {
       <Box as="main">
         <Wrapper>
           <PageTitle label="Blog" />
-          <Posts items={data} />
+          <Posts />
         </Wrapper>
       </Box>
       <Footer />
@@ -42,15 +28,26 @@ const Blog: NextPage<Props> = ({ data }) => {
   );
 };
 
-const Posts = ({ items }: { items: IPost[] }) => {
+const Posts = () => {
   return (
     <Box>
-      {items.map((post) => (
-        <Box key={post.id} mt={8}>
-          <Post data={post} />
-          <Divider mt={8} />
-        </Box>
-      ))}
+      {Array(4)
+        .fill(null)
+        .map((_, index) => (
+          <Box key={index} mt={8}>
+            <Post
+              data={{
+                id: 0,
+                title: "UI Interactions of the week",
+                body: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+                tags: ["Express", "Handlebars"],
+                createdAt: "12 Feb 2019",
+              }}
+            />
+
+            <Divider mt={{ base: 4, md: 8 }} />
+          </Box>
+        ))}
     </Box>
   );
 };

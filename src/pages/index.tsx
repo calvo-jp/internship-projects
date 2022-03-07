@@ -2,12 +2,14 @@ import {
   Avatar,
   Box,
   Button,
+  Flex,
   Heading,
   HStack,
   Link as ChakraLink,
   SimpleGrid,
   Stack,
   Text,
+  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -92,7 +94,7 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
           </NextLink>
         </HStack>
 
-        <SimpleGrid columns={2} spacing={4} mt={4}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={4}>
           {items.map((post) => (
             <Box bgColor="white" shadow="sm" p={8} key={post.id}>
               <Post data={post} featured />
@@ -107,35 +109,45 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
 const About = () => {
   return (
     <Wrapper>
-      <Stack direction="row" spacing={16} py={8} align="start">
-        <Box>
-          <Heading fontWeight={700}>
+      <Flex
+        py={{ base: 4, md: 16 }}
+        gap={{ base: 8, md: 16 }}
+        align={{ base: "center", md: "start" }}
+        direction={{ base: "column", md: "row" }}
+      >
+        <Flex
+          direction="column"
+          order={{ base: 1, md: 0 }}
+          align={{ base: "center", md: "start" }}
+          textAlign={{ base: "center", md: "left" }}
+          gap={{ base: 4, md: 8 }}
+        >
+          <Heading fontWeight={700} fontSize={{ base: "32px", md: "44px" }}>
             <div>Hi, I am John,</div>
             <div>Creative Technologist</div>
           </Heading>
 
-          <Text mt={8}>
+          <Text>
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
             sint. Velit officia consequat duis enim velit mollit. Exercitation
             veniam consequat sunt nostrud amet.
           </Text>
 
-          <Button bgColor="#FF6464" color="white" mt={8} rounded="sm">
+          <Button bgColor="#FF6464" color="white" rounded="sm">
             Download Resume
           </Button>
-        </Box>
+        </Flex>
 
         <Avatar
+          order={{ base: 0, md: 1 }}
           src="/images/selfie.png"
-          size="245px"
-          flexBasis="245px"
-          flexGrow={0}
-          flexShrink={0}
+          h={{ base: "200px", md: "245px" }}
+          w={{ base: "200px", md: "245px" }}
           borderWidth={8}
           borderStyle="solid"
           borderColor="#EDF7FA"
         />
-      </Stack>
+      </Flex>
     </Wrapper>
   );
 };
