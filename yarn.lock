@@ -757,6 +757,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/heebo@^4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/heebo/-/heebo-4.5.5.tgz#4c435e839a71d7eead6a829bfa79cf99d9a09f71"
+  integrity sha512-PIXUusHjNNBoacz9fDMSUkUjNeN4p16psUnPDD39hBp5yc/5chQ/rPzS0M3VPMTdqRG3NHblYyL95zImOv/9KA==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.9.5.tgz#2cbaf9a89460da24b5ca6531b8bbfc23e1df50c7"
