@@ -11,11 +11,7 @@ import { useRouter } from "next/router";
 import React, { ComponentProps, useEffect, useRef, useState } from "react";
 
 const Navbar = () => {
-  const router = useRouter();
   const navbarRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  const links = ["Works", "Blog", "Contact"];
 
   useEffect(() => {
     const navbar = navbarRef.current;
@@ -24,8 +20,8 @@ const Navbar = () => {
 
   return (
     <Flex
-      ref={navbarRef}
       as="header"
+      ref={navbarRef}
       py={{ base: 4, lg: 8 }}
       px={{ base: 6, lg: 12 }}
       justify="end"
@@ -36,56 +32,63 @@ const Navbar = () => {
       transition="all"
       transitionDuration="350ms"
     >
-      {visible && <CloseButton onClose={() => setVisible(false)} />}
-
-      <Box>
-        <Box
-          as="button"
-          display={{ base: "block", lg: "none" }}
-          onClick={() => setVisible(true)}
-          zIndex={999}
-        >
-          <HamburgerIcon w={6} h={6} />
-        </Box>
-
-        <Wrap
-          spacing={4}
-          position={{ base: "fixed", lg: "static" }}
-          display={{ base: visible ? "flex" : "none", lg: "block" }}
-          h="full"
-          w="full"
-          top={0}
-          left={0}
-          zIndex={99}
-          alignItems="center"
-          justifyContent="center"
-          bgColor="white"
-          direction={{ base: "column", lg: "row" }}
-        >
-          {links.map((link) => {
-            const href = "/" + link.toLowerCase();
-            const active = router.pathname.startsWith(href);
-
-            return (
-              <WrapItem key={link} w="fit-content">
-                <NextLink href={href} passHref>
-                  <ChakraLink
-                    fontWeight={500}
-                    fontSize="20px"
-                    color={active ? "brand.maroon" : "inherit"}
-                    _hover={{
-                      textDecor: "none",
-                    }}
-                  >
-                    {link}
-                  </ChakraLink>
-                </NextLink>
-              </WrapItem>
-            );
-          })}
-        </Wrap>
-      </Box>
+      <NavLinks />
     </Flex>
+  );
+};
+
+const links = ["Works", "Blog", "Contact"];
+
+const NavLinks = () => {
+  return (
+    <>
+      <Box display={{ base: "block", md: "none" }} as="nav">
+        <NavLinksMobile />
+      </Box>
+
+      <Box display={{ base: "none", md: "block" }} as="nav">
+        <NavLinksDesktop />
+      </Box>
+    </>
+  );
+};
+
+const NavLinksDesktop = () => {
+  return <NavLinksBase />;
+};
+
+const NavLinksMobile = () => {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <>
+      <Box
+        as="button"
+        display={{ base: "block", md: "none" }}
+        onClick={() => setVisible(true)}
+      >
+        <HamburgerIcon w={6} h={6} />
+      </Box>
+
+      <Box
+        position="fixed"
+        display={{ base: visible ? "flex" : "none", md: "none" }}
+        h="full"
+        w="full"
+        top={0}
+        left={0}
+        zIndex={99}
+        alignItems="center"
+        justifyContent="center"
+        bgColor="brand.white"
+      >
+        <CloseButton onClose={() => setVisible(false)} />
+
+        <Box>
+          <NavLinksBase />
+        </Box>
+      </Box>
+    </>
   );
 };
 
@@ -97,14 +100,54 @@ const CloseButton = (props: CloseButtonProps) => {
   return (
     <Box
       as="button"
-      display={{ base: "block", lg: "none" }}
+      display={{ base: "block", md: "none" }}
       position="absolute"
       zIndex={999}
-      right={6}
+      right={7}
       top={4}
       onClick={props.onClose}
     >
       <CloseIcon w={4} h={4} />
+    </Box>
+  );
+};
+
+const NavLinksBase = () => {
+  const router = useRouter();
+
+  return (
+    <Box as="nav">
+      <Wrap
+        spacing={{ base: 2, md: 4 }}
+        direction={{ base: "column", md: "row" }}
+      >
+        {links.map((link) => {
+          const href = `/${link.toLowerCase()}`;
+          const active = router.pathname.startsWith(href);
+
+          return (
+            <WrapItem
+              key={link}
+              w="fit-content"
+              display="flex"
+              alignItems="center"
+            >
+              <NextLink href={href} passHref>
+                <ChakraLink
+                  fontWeight={500}
+                  fontSize="20px"
+                  color={active ? "brand.maroon" : "inherit"}
+                  _hover={{
+                    textDecor: "none",
+                  }}
+                >
+                  {link}
+                </ChakraLink>
+              </NextLink>
+            </WrapItem>
+          );
+        })}
+      </Wrap>
     </Box>
   );
 };

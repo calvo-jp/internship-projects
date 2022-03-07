@@ -3,7 +3,6 @@ import Footer from "components/Footer";
 import Navbar from "components/Navbar";
 import PageTitle from "components/PageTitle";
 import Project from "components/Project";
-import Wrapper from "components/Wrapper";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import services from "services";

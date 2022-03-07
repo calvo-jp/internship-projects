@@ -15,10 +15,9 @@ import Footer from "components/Footer";
 import Navbar from "components/Navbar";
 import Post from "components/Post";
 import Project from "components/Project";
-import Wrapper from "components/Wrapper";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { default as Link, default as NextLink } from "next/link";
+import { PropsWithChildren } from "react";
 import services from "services";
 import IPost from "types/post";
 import IProject from "types/project";
@@ -84,19 +83,14 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
       <Wrapper>
         <HStack
           align="center"
-          justify={{
-            base: "center",
-            lg: "space-between",
-          }}
+          justify={{ base: "center", lg: "space-between" }}
         >
           <Heading fontSize={{ base: "18px", lg: "22px" }} fontWeight={400}>
             Recent Posts
           </Heading>
 
           <Box display={{ base: "none", lg: "block" }}>
-            <NextLink passHref href="/posts/1">
-              <ChakraLink color="brand.sky">View all</ChakraLink>
-            </NextLink>
+            <ChakraLink color="brand.sky">View all</ChakraLink>
           </Box>
         </HStack>
 
@@ -119,6 +113,7 @@ const About = () => {
         py={{ base: 4, lg: 16 }}
         gap={{ base: 8, lg: 16 }}
         align={{ base: "center", lg: "start" }}
+        justify={{ base: "", lg: "space-between" }}
         direction={{ base: "column", lg: "row" }}
       >
         <Flex
@@ -133,13 +128,13 @@ const About = () => {
             <div>Creative Technologist</div>
           </Heading>
 
-          <Text maxW="container.sm">
+          <Text maxW="500px">
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
             sint. Velit officia consequat duis enim velit mollit. Exercitation
             veniam consequat sunt nostrud amet.
           </Text>
 
-          <Button bgColor="#FF6464" color="white" rounded="sm">
+          <Button bgColor="brand.maroon" color="white" rounded="sm">
             Download Resume
           </Button>
         </Flex>
@@ -155,6 +150,14 @@ const About = () => {
         />
       </Flex>
     </Wrapper>
+  );
+};
+
+const Wrapper = (props: PropsWithChildren<{}>) => {
+  return (
+    <Box maxW="900px" mx="auto" p={{ base: 4, lg: 8 }}>
+      {props.children}
+    </Box>
   );
 };
 

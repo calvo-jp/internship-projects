@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import Footer from "components/Footer";
 import Navbar from "components/Navbar";
-import Wrapper from "components/Wrapper";
 import Head from "next/head";
 
 const Work = () => {
@@ -40,7 +39,7 @@ const Section1 = () => {
         </Heading>
 
         <Flex
-          align="center"
+          align="flex-start"
           gap={4}
           mt={4}
           fontSize={{ base: "18px", lg: "20px" }}
