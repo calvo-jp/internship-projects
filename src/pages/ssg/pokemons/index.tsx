@@ -33,7 +33,7 @@ const Pokemons: NextPage<Props> = ({ data }) => {
   return (
     <>
       <Head>
-        <title>(SSR) Pokedex</title>
+        <title>(SSG) Pokedex</title>
       </Head>
 
       <Header />

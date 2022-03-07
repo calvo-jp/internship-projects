@@ -47,7 +47,7 @@ const Pokemon: NextPage<Props> = ({ data }) => {
   return (
     <>
       <Head>
-        <title>(SSR) Pokedex | {data.name}</title>
+        <title>(SSG) Pokedex | {data.name}</title>
       </Head>
       <PokemonWidget data={data} redirectUrl="/ssg/pokemons" />
     </>
