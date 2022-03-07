@@ -35,7 +35,7 @@ const Navbar = () => {
       position="sticky"
       top={0}
       transition="all"
-      transitionDuration="300ms"
+      transitionDuration="350ms"
     >
       {visible && (
         <Box
