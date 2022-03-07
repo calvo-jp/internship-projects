@@ -20,7 +20,8 @@ const Work = () => {
       </Head>
 
       <Navbar />
-      <Box as="main" maxW="650px" mx="auto" p={{ base: 4, lg: 8 }}>
+
+      <Box as="main" maxW="container.md" mx="auto" p={{ base: 4, lg: 8 }}>
         <Section1 />
         <Section2 />
       </Box>

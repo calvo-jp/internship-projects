@@ -80,7 +80,7 @@ const FeaturedProjects = ({ items }: Itemable<IProject>) => {
 
 const RecentPosts = ({ items }: Itemable<IPost>) => {
   return (
-    <Box bgColor="#EDF7FA">
+    <Box bgColor="brand.light">
       <Wrapper>
         <HStack
           align="center"
@@ -95,14 +95,14 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
 
           <Box display={{ base: "none", lg: "block" }}>
             <NextLink passHref href="/posts/1">
-              <ChakraLink color="#00A8CC">View all</ChakraLink>
+              <ChakraLink color="brand.sky">View all</ChakraLink>
             </NextLink>
           </Box>
         </HStack>
 
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4} mt={4}>
           {items.map((post) => (
-            <Box bgColor="white" shadow="sm" p={8} key={post.id}>
+            <Box bgColor="brand.white" shadow="sm" p={8} key={post.id}>
               <Post data={post} featured />
             </Box>
           ))}
@@ -123,17 +123,17 @@ const About = () => {
       >
         <Flex
           direction="column"
+          gap={{ base: 4, lg: 8 }}
           order={{ base: 1, lg: 0 }}
           align={{ base: "center", lg: "start" }}
           textAlign={{ base: "center", lg: "left" }}
-          gap={{ base: 4, lg: 8 }}
         >
           <Heading fontWeight={700} fontSize={{ base: "32px", lg: "44px" }}>
             <div>Hi, I am John,</div>
             <div>Creative Technologist</div>
           </Heading>
 
-          <Text>
+          <Text maxW="container.sm">
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
             sint. Velit officia consequat duis enim velit mollit. Exercitation
             veniam consequat sunt nostrud amet.
@@ -151,7 +151,7 @@ const About = () => {
           w={{ base: "200px", lg: "245px" }}
           borderWidth={8}
           borderStyle="solid"
-          borderColor="#EDF7FA"
+          borderColor="brand.light"
         />
       </Flex>
     </Wrapper>

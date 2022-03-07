@@ -36,7 +36,7 @@ const Navbar = () => {
       transition="all"
       transitionDuration="350ms"
     >
-      {visible && <CloseButton onClick={() => setVisible(false)} />}
+      {visible && <CloseButton onClose={() => setVisible(false)} />}
 
       <Box>
         <Box
@@ -89,7 +89,11 @@ const Navbar = () => {
   );
 };
 
-const CloseButton = (props: ComponentProps<"button">) => {
+interface CloseButtonProps {
+  onClose: () => void;
+}
+
+const CloseButton = (props: CloseButtonProps) => {
   return (
     <Box
       as="button"
@@ -98,6 +102,7 @@ const CloseButton = (props: ComponentProps<"button">) => {
       zIndex={999}
       right={6}
       top={4}
+      onClick={props.onClose}
     >
       <CloseIcon w={4} h={4} />
     </Box>

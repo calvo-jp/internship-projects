@@ -31,11 +31,9 @@ const Works: NextPage<Props> = ({ data }) => {
       </Head>
 
       <Navbar />
-      <Box as="main">
-        <Wrapper>
-          <PageTitle label="Works" />
-          <Projects items={data} />
-        </Wrapper>
+      <Box as="main" p={{ base: 4, lg: 8 }} maxW="container.md" mx="auto">
+        <PageTitle label="Works" />
+        <Projects items={data} />
       </Box>
       <Footer />
     </>

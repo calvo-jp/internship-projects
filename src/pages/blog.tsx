@@ -14,11 +14,9 @@ const Blog = () => {
       </Head>
 
       <Navbar />
-      <Box as="main">
-        <Wrapper>
-          <PageTitle label="Blog" />
-          <Posts />
-        </Wrapper>
+      <Box as="main" p={{ base: 4, lg: 8 }} maxW="container.md" mx="auto">
+        <PageTitle label="Blog" />
+        <Posts />
       </Box>
       <Footer />
     </>

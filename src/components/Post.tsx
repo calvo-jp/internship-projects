@@ -4,6 +4,7 @@ import IPost from "types/post";
 
 interface PostProps {
   data: IPost;
+  /** set this to true on landing page */
   featured?: boolean;
 }
 
@@ -15,21 +16,21 @@ const Post = ({ data, featured }: PostProps) => {
           fontWeight={featured ? 700 : 500}
           fontSize={
             featured
-              ? { base: "22px", lg: "26px" }
-              : { base: "26px", lg: "30px" }
+              ? { base: "22px", md: "26px" } /* on landing */
+              : { base: "26px", md: "30px" } /* on blog */
           }
         >
           {data.title}
         </Heading>
 
         <HStack
-          mt={4}
+          mt={1}
           gap={2}
           align="center"
           fontSize={
             featured
-              ? { base: "16px", lg: "18px" }
-              : { base: "16px", lg: "20px" }
+              ? { base: "16px", md: "18px" } /* on landing */
+              : { base: "16px", md: "20px" } /* on blog */
           }
         >
           <Text>{data.createdAt}</Text>
