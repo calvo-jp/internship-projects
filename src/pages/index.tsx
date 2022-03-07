@@ -7,9 +7,7 @@ import {
   HStack,
   Link as ChakraLink,
   SimpleGrid,
-  Stack,
   Text,
-  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -84,14 +82,22 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
   return (
     <Box bgColor="#EDF7FA">
       <Wrapper>
-        <HStack justify="space-between" align="center">
-          <Heading fontSize="22px" fontWeight={400}>
+        <HStack
+          align="center"
+          justify={{
+            base: "center",
+            md: "space-between",
+          }}
+        >
+          <Heading fontSize={{ base: "18px", md: "22px" }} fontWeight={400}>
             Recent Posts
           </Heading>
 
-          <NextLink passHref href="/posts/1">
-            <ChakraLink color="#00A8CC">View all</ChakraLink>
-          </NextLink>
+          <Box display={{ base: "none", md: "block" }}>
+            <NextLink passHref href="/posts/1">
+              <ChakraLink color="#00A8CC">View all</ChakraLink>
+            </NextLink>
+          </Box>
         </HStack>
 
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={4}>
