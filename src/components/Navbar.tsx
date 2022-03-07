@@ -11,22 +11,6 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-const onScrollReveal = (element: HTMLElement) => {
-  var prevScrollpos = window.pageYOffset;
-
-  window.onscroll = function () {
-    var currentScrollPos = window.pageYOffset;
-
-    if (prevScrollpos > currentScrollPos) {
-      element.style.top = "0";
-    } else {
-      element.style.top = "-100%";
-    }
-
-    prevScrollpos = currentScrollPos;
-  };
-};
-
 const Navbar = () => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
@@ -120,6 +104,17 @@ const Navbar = () => {
       </Box>
     </Flex>
   );
+};
+
+const onScrollReveal = (elem: HTMLElement) => {
+  const win = window;
+  let prevScrollpos = win.pageYOffset;
+
+  win.addEventListener("scroll", () => {
+    const currentScrollPos = win.pageYOffset;
+    elem.style.top = prevScrollpos > currentScrollPos ? "0" : "-100%";
+    prevScrollpos = currentScrollPos;
+  });
 };
 
 export default Navbar;
