@@ -45,7 +45,7 @@ const Posts = () => {
               }}
             />
 
-            <Divider mt={{ base: 4, md: 8 }} />
+            <Divider mt={{ base: 4, lg: 8 }} />
           </Box>
         ))}
     </Box>

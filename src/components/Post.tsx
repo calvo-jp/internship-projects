@@ -15,8 +15,8 @@ const Post = ({ data, featured }: PostProps) => {
           fontWeight={featured ? 700 : 500}
           fontSize={
             featured
-              ? { base: "22px", md: "26px" }
-              : { base: "26px", md: "30px" }
+              ? { base: "22px", lg: "26px" }
+              : { base: "26px", lg: "30px" }
           }
         >
           {data.title}
@@ -28,8 +28,8 @@ const Post = ({ data, featured }: PostProps) => {
           align="center"
           fontSize={
             featured
-              ? { base: "16px", md: "18px" }
-              : { base: "16px", md: "20px" }
+              ? { base: "16px", lg: "18px" }
+              : { base: "16px", lg: "20px" }
           }
         >
           <Text>{data.createdAt}</Text>

@@ -14,7 +14,7 @@ import type { AppProps } from "next/app";
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ChakraProvider theme={theme}>
-      <Box bgColor="white" color="#21243D" minHeight="100vh">
+      <Box bgColor="brand.white" color="brand.black" minHeight="100vh">
         <Component {...pageProps} />
       </Box>
     </ChakraProvider>

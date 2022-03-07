@@ -86,21 +86,21 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
           align="center"
           justify={{
             base: "center",
-            md: "space-between",
+            lg: "space-between",
           }}
         >
-          <Heading fontSize={{ base: "18px", md: "22px" }} fontWeight={400}>
+          <Heading fontSize={{ base: "18px", lg: "22px" }} fontWeight={400}>
             Recent Posts
           </Heading>
 
-          <Box display={{ base: "none", md: "block" }}>
+          <Box display={{ base: "none", lg: "block" }}>
             <NextLink passHref href="/posts/1">
               <ChakraLink color="#00A8CC">View all</ChakraLink>
             </NextLink>
           </Box>
         </HStack>
 
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={4}>
+        <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4} mt={4}>
           {items.map((post) => (
             <Box bgColor="white" shadow="sm" p={8} key={post.id}>
               <Post data={post} featured />
@@ -116,19 +116,19 @@ const About = () => {
   return (
     <Wrapper>
       <Flex
-        py={{ base: 4, md: 16 }}
-        gap={{ base: 8, md: 16 }}
-        align={{ base: "center", md: "start" }}
-        direction={{ base: "column", md: "row" }}
+        py={{ base: 4, lg: 16 }}
+        gap={{ base: 8, lg: 16 }}
+        align={{ base: "center", lg: "start" }}
+        direction={{ base: "column", lg: "row" }}
       >
         <Flex
           direction="column"
-          order={{ base: 1, md: 0 }}
-          align={{ base: "center", md: "start" }}
-          textAlign={{ base: "center", md: "left" }}
-          gap={{ base: 4, md: 8 }}
+          order={{ base: 1, lg: 0 }}
+          align={{ base: "center", lg: "start" }}
+          textAlign={{ base: "center", lg: "left" }}
+          gap={{ base: 4, lg: 8 }}
         >
-          <Heading fontWeight={700} fontSize={{ base: "32px", md: "44px" }}>
+          <Heading fontWeight={700} fontSize={{ base: "32px", lg: "44px" }}>
             <div>Hi, I am John,</div>
             <div>Creative Technologist</div>
           </Heading>
@@ -145,10 +145,10 @@ const About = () => {
         </Flex>
 
         <Avatar
-          order={{ base: 0, md: 1 }}
+          order={{ base: 0, lg: 1 }}
           src="/images/selfie.png"
-          h={{ base: "200px", md: "245px" }}
-          w={{ base: "200px", md: "245px" }}
+          h={{ base: "200px", lg: "245px" }}
+          w={{ base: "200px", lg: "245px" }}
           borderWidth={8}
           borderStyle="solid"
           borderColor="#EDF7FA"

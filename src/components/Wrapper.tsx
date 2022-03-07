@@ -1,11 +1,11 @@
-import { Container } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 
 const Wrapper = (props: PropsWithChildren<{}>) => {
   return (
-    <Container maxW="900px" p={{ base: 4, md: 8 }}>
+    <Box maxW="container.lg" mx="auto" p={{ base: 4, lg: 8 }}>
       {props.children}
-    </Container>
+    </Box>
   );
 };
 

@@ -27,10 +27,10 @@ const Navbar = () => {
     <Flex
       ref={ref}
       as="header"
-      py={{ base: 4, md: 8 }}
-      px={{ base: 6, md: 12 }}
+      py={{ base: 4, lg: 8 }}
+      px={{ base: 6, lg: 12 }}
       justify="end"
-      bgColor="white"
+      bgColor="brand.white"
       zIndex={99}
       position="sticky"
       top={0}
@@ -40,7 +40,7 @@ const Navbar = () => {
       {visible && (
         <Box
           as="button"
-          display={{ base: "block", md: "none" }}
+          display={{ base: "block", lg: "none" }}
           onClick={() => setVisible(false)}
           position="absolute"
           right={6}
@@ -54,7 +54,7 @@ const Navbar = () => {
       <Box>
         <Box
           as="button"
-          display={{ base: "block", md: "none" }}
+          display={{ base: "block", lg: "none" }}
           onClick={() => setVisible(true)}
           zIndex={999}
         >
@@ -63,10 +63,10 @@ const Navbar = () => {
 
         <Wrap
           spacing={4}
-          position={{ base: "fixed", md: "static" }}
+          position={{ base: "fixed", lg: "static" }}
           display={{
             base: visible ? "flex" : "none",
-            md: "block",
+            lg: "block",
           }}
           h="full"
           w="full"
@@ -76,7 +76,7 @@ const Navbar = () => {
           alignItems="center"
           justifyContent="center"
           bgColor="white"
-          direction={{ base: "column", md: "row" }}
+          direction={{ base: "column", lg: "row" }}
         >
           {links.map((link) => {
             const href = "/" + link.toLowerCase();
@@ -88,7 +88,7 @@ const Navbar = () => {
                   <ChakraLink
                     fontWeight={500}
                     fontSize="20px"
-                    color={active ? "#FF6464" : "inherit"}
+                    color={active ? "brand.maroon" : "inherit"}
                     _hover={{
                       textDecor: "none",
                     }}

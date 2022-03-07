@@ -9,8 +9,8 @@ const PageTitle = ({ label }: PageTitleProps) => {
     <Heading
       as="h1"
       fontWeight={700}
-      fontSize={{ base: "30px", md: "44px" }}
-      mb={{ base: 8, md: 16 }}
+      fontSize={{ base: "30px", lg: "44px" }}
+      mb={{ base: 8, lg: 16 }}
     >
       {label}
     </Heading>
