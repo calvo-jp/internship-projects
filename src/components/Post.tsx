@@ -10,7 +10,7 @@ interface PostProps {
 
 const Post = ({ data, featured }: PostProps) => {
   return (
-    <Link passHref href={"/blog/" + data.id}>
+    <Link passHref href={`/blog/${data.id}`}>
       <Box w="full" as="a">
         <Heading
           fontWeight={featured ? 700 : 500}
