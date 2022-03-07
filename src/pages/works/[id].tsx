@@ -7,8 +7,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import Footer from "components/Footer";
-import Navbar from "components/Navbar";
+import Layout from "components/Layout";
 import Head from "next/head";
 
 const Work = () => {
@@ -18,14 +17,10 @@ const Work = () => {
         <title>Works | Designing Dashboards with usability in mind</title>
       </Head>
 
-      <Navbar />
-
-      <Box as="main" maxW="container.md" mx="auto" p={{ base: 4, lg: 8 }}>
+      <Layout>
         <Section1 />
         <Section2 />
-      </Box>
-
-      <Footer />
+      </Layout>
     </>
   );
 };

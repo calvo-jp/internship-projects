@@ -1,7 +1,5 @@
 import { Box, Wrap, WrapItem } from "@chakra-ui/react";
-import Footer from "components/Footer";
-import Navbar from "components/Navbar";
-import PageTitle from "components/PageTitle";
+import Layout from "components/Layout";
 import Project from "components/Project";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
@@ -29,12 +27,9 @@ const Works: NextPage<Props> = ({ data }) => {
         <title>Portfolio UI | Works</title>
       </Head>
 
-      <Navbar />
-      <Box as="main" p={{ base: 4, lg: 8 }} maxW="container.md" mx="auto">
-        <PageTitle label="Works" />
+      <Layout title="Works">
         <Projects items={data} />
-      </Box>
-      <Footer />
+      </Layout>
     </>
   );
 };

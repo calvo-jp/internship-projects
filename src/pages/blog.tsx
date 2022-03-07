@@ -1,9 +1,6 @@
 import { Box, Divider } from "@chakra-ui/react";
-import Footer from "components/Footer";
-import Navbar from "components/Navbar";
-import PageTitle from "components/PageTitle";
+import Layout from "components/Layout";
 import Post from "components/Post";
-import Wrapper from "components/Wrapper";
 import Head from "next/head";
 
 const Blog = () => {
@@ -13,12 +10,9 @@ const Blog = () => {
         <title>Portfolio UI | Blog</title>
       </Head>
 
-      <Navbar />
-      <Box as="main" p={{ base: 4, lg: 8 }} maxW="container.md" mx="auto">
-        <PageTitle label="Blog" />
+      <Layout title="Blog">
         <Posts />
-      </Box>
-      <Footer />
+      </Layout>
     </>
   );
 };
