@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <Box as="footer" p={8} mt={16}>
       <VStack spacing={4}>
-        <Wrap>
+        <Wrap spacing={4}>
           <WrapItem>
             <FacebookIcon />
           </WrapItem>

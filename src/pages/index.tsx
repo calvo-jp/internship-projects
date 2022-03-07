@@ -95,7 +95,7 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
         <SimpleGrid columns={2} spacing={4} mt={4}>
           {items.map((post) => (
             <Box bgColor="white" shadow="sm" p={8} key={post.id}>
-              <Post data={post} />
+              <Post data={post} featured />
             </Box>
           ))}
         </SimpleGrid>
