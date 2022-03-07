@@ -38,6 +38,14 @@ const read = {
         createdAt: "2018",
         image: "/images/attachments/components.png",
       },
+      {
+        id: 5,
+        title: "Designing Landing pages",
+        body: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+        tags: ["Website"],
+        createdAt: "2020",
+        image: "/images/attachments/website.png",
+      },
     ];
   },
 };
