@@ -44,7 +44,13 @@ const Section1 = () => {
           mt={4}
           fontSize={{ base: "18px", lg: "20px" }}
         >
-          <Badge bgColor="#FF7C7C" rounded="full" color="white" py={1} px={2}>
+          <Badge
+            bgColor="brand.maroon"
+            rounded="full"
+            color="brand.white"
+            py={1}
+            px={2}
+          >
             2020
           </Badge>
 

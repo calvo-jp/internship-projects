@@ -1,13 +1,10 @@
-import { Box, Divider, Heading, Text, Wrap } from "@chakra-ui/react";
+import { Box, Divider } from "@chakra-ui/react";
 import Footer from "components/Footer";
 import Navbar from "components/Navbar";
 import PageTitle from "components/PageTitle";
 import Post from "components/Post";
 import Wrapper from "components/Wrapper";
-import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import services from "services";
-import IPost from "types/post";
 
 const Blog = () => {
   return (

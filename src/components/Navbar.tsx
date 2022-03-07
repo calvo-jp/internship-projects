@@ -1,7 +1,6 @@
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Container,
   Flex,
   Link as ChakraLink,
   Wrap,
@@ -9,23 +8,23 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import React, { ComponentProps, useEffect, useRef, useState } from "react";
 
 const Navbar = () => {
   const router = useRouter();
+  const navbarRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
   const links = ["Works", "Blog", "Contact"];
 
   useEffect(() => {
-    const header = ref.current;
-    if (header) onScrollReveal(header);
+    const navbar = navbarRef.current;
+    if (navbar) onScrollReveal(navbar);
   }, []);
 
   return (
     <Flex
-      ref={ref}
+      ref={navbarRef}
       as="header"
       py={{ base: 4, lg: 8 }}
       px={{ base: 6, lg: 12 }}
@@ -37,19 +36,7 @@ const Navbar = () => {
       transition="all"
       transitionDuration="350ms"
     >
-      {visible && (
-        <Box
-          as="button"
-          display={{ base: "block", lg: "none" }}
-          onClick={() => setVisible(false)}
-          position="absolute"
-          right={6}
-          top={4}
-          zIndex={999}
-        >
-          <CloseIcon w={4} h={4} />
-        </Box>
-      )}
+      {visible && <CloseButton onClick={() => setVisible(false)} />}
 
       <Box>
         <Box
@@ -64,10 +51,7 @@ const Navbar = () => {
         <Wrap
           spacing={4}
           position={{ base: "fixed", lg: "static" }}
-          display={{
-            base: visible ? "flex" : "none",
-            lg: "block",
-          }}
+          display={{ base: visible ? "flex" : "none", lg: "block" }}
           h="full"
           w="full"
           top={0}
@@ -105,12 +89,26 @@ const Navbar = () => {
   );
 };
 
-const onScrollReveal = (elem: HTMLElement) => {
-  const win = window;
-  let prevScrollpos = win.pageYOffset;
+const CloseButton = (props: ComponentProps<"button">) => {
+  return (
+    <Box
+      as="button"
+      display={{ base: "block", lg: "none" }}
+      position="absolute"
+      zIndex={999}
+      right={6}
+      top={4}
+    >
+      <CloseIcon w={4} h={4} />
+    </Box>
+  );
+};
 
-  win.addEventListener("scroll", () => {
-    const currentScrollPos = win.pageYOffset;
+const onScrollReveal = (elem: HTMLElement) => {
+  let prevScrollpos = window.pageYOffset;
+
+  window.addEventListener("scroll", () => {
+    const currentScrollPos = window.pageYOffset;
     elem.style.top = prevScrollpos > currentScrollPos ? "0" : "-100%";
     prevScrollpos = currentScrollPos;
   });

@@ -34,9 +34,13 @@ const Post = ({ data, featured }: PostProps) => {
         >
           <Text>{data.createdAt}</Text>
 
-          <Divider height="18px" borderColor="black" orientation="vertical" />
+          <Divider
+            height="18px"
+            borderColor="brand.black"
+            orientation="vertical"
+          />
 
-          <Text color={featured ? "inherit" : "#8695A4"}>
+          <Text color={featured ? "inherit" : "brand.gray"}>
             {data.tags.join(", ")}
           </Text>
         </HStack>

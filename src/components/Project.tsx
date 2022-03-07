@@ -20,7 +20,7 @@ const Project = ({ data }: ProjectProps) => {
   return (
     <Link href={"/works/" + data.id} passHref>
       <Box as="a">
-        <Stack direction={{ base: "column", lg: "row" }} gap={4}>
+        <Stack gap={4} direction={{ base: "column", lg: "row" }}>
           <Image
             alt=""
             src={data.image}
@@ -35,7 +35,7 @@ const Project = ({ data }: ProjectProps) => {
 
             <HStack gap={4}>
               <Badge
-                bgColor="#142850"
+                bgColor="brand.indigo"
                 color="white"
                 fontWeight={900}
                 fontSize={{ base: "16px", lg: "18px" }}
