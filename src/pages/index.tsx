@@ -1,125 +1,64 @@
 import {
   Avatar,
-  Badge,
   Box,
   Button,
-  Divider,
-  Flex,
   Heading,
   HStack,
-  Image,
   Link as ChakraLink,
   SimpleGrid,
   Stack,
   Text,
-  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import FacebookIcon from "components/icons/Facebook";
-import InstagramIcon from "components/icons/Instagram";
-import LinkedInIcon from "components/icons/Linkedin";
-import TwitterIcon from "components/icons/Twitter";
+import Footer from "components/Footer";
 import Navbar from "components/Navbar";
+import Post from "components/Post";
+import Project from "components/Project";
 import Wrapper from "components/Wrapper";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { default as Link, default as NextLink } from "next/link";
+import services from "services";
+import IPost from "types/post";
+import IProject from "types/project";
 
-const Landing = () => {
+interface Props {
+  posts: IPost[];
+  projects: IProject[];
+}
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const projects = await services.projects.read.all();
+  return {
+    props: {
+      posts: await services.posts.read.all(),
+      projects: projects.filter((project) => !!project.isFeatured),
+    },
+  };
+};
+
+const Landing: NextPage<Props> = ({ posts, projects }) => {
   return (
     <>
       <Head>
         <title>Portfolio UI</title>
       </Head>
 
-      <Box>
-        <Navbar />
+      <Navbar />
+
+      <Box as="main">
         <About />
-        <RecentPosts />
-        <Featured />
-        <Footer />
+        <RecentPosts items={posts} />
+        <FeaturedProjects items={projects} />
       </Box>
+
+      <Footer />
     </>
   );
 };
 
-const Footer = () => {
-  return (
-    <Box as="footer" p={8} mt={16}>
-      <VStack spacing={4}>
-        <Wrap>
-          <WrapItem>
-            <FacebookIcon />
-          </WrapItem>
-          <WrapItem>
-            <InstagramIcon />
-          </WrapItem>
-          <WrapItem>
-            <TwitterIcon />
-          </WrapItem>
-          <WrapItem>
-            <LinkedInIcon />
-          </WrapItem>
-        </Wrap>
-        <Text fontSize="14px">Copyright ©2020 All rights reserved</Text>
-      </VStack>
-    </Box>
-  );
-};
-
-interface FeaturedItemProps {
-  title: string;
-  body: string;
-  category: string;
-  image: string;
-  createdAt: string;
-}
-
-const FeaturedItem = ({
-  title,
-  category,
-  body,
-  image,
-  createdAt,
-}: FeaturedItemProps) => {
-  return (
-    <Box>
-      <Stack direction="row" gap={4}>
-        <Image src={image} alt="" w="246px" height="180px" />
-
-        <Flex justify="space-between" direction="column">
-          <Heading fontWeight={700} fontSize="30px">
-            {title}
-          </Heading>
-
-          <HStack gap={4}>
-            <Badge
-              bgColor="#142850"
-              color="white"
-              fontWeight={900}
-              fontSize="18px"
-              py={1}
-              px={3}
-              rounded="full"
-            >
-              {createdAt}
-            </Badge>
-
-            <Text fontSize="20px" color="#8695A4">
-              {category}
-            </Text>
-          </HStack>
-
-          <Text fontSize="16px">{body}</Text>
-        </Flex>
-      </Stack>
-
-      <Divider mt={8} />
-    </Box>
-  );
-};
-
-const Featured = () => {
+const FeaturedProjects = ({ items }: Itemable<IProject>) => {
   return (
     <Wrapper>
       <Heading fontSize="22px" fontWeight={400}>
@@ -128,69 +67,18 @@ const Featured = () => {
 
       <Box mt={8}>
         <Wrap spacing={8}>
-          <WrapItem>
-            <FeaturedItem
-              title="Designing Dashboards"
-              body="Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet."
-              category="Dashboard"
-              image="/images/attachments/dashboard.png"
-              createdAt="2020"
-            />
-          </WrapItem>
-          <WrapItem>
-            <FeaturedItem
-              title="Vibrant Portraits of 2020"
-              body="Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet."
-              category="Illustration"
-              image="/images/attachments/illustration.png"
-              createdAt="2018"
-            />
-          </WrapItem>
-          <WrapItem>
-            <FeaturedItem
-              title="36 Days of Malayalam type"
-              body="Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet."
-              category="Typography"
-              image="/images/attachments/typography.png"
-              createdAt="2018"
-            />
-          </WrapItem>
+          {items.map((project) => (
+            <WrapItem key={project.id}>
+              <Project data={project} />
+            </WrapItem>
+          ))}
         </Wrap>
       </Box>
     </Wrapper>
   );
 };
 
-interface PostProps {
-  id: number | string;
-  body: string;
-  title: string;
-  tags: string[];
-  // TODO: change to date
-  createdAt: string;
-}
-
-const Post = ({ title, body, tags, createdAt }: PostProps) => {
-  return (
-    <Box bgColor="white" shadow="sm" p={8}>
-      <Heading fontSize="26px" fontWeight={700}>
-        {title}
-      </Heading>
-
-      <HStack gap={2} mt={4}>
-        <Text>{createdAt}</Text>
-        <Divider height="18px" borderColor="black" orientation="vertical" />
-        <Text>{tags.join(", ")}</Text>
-      </HStack>
-
-      <Text fontSize="16px" mt={4}>
-        {body}
-      </Text>
-    </Box>
-  );
-};
-
-const RecentPosts = () => {
+const RecentPosts = ({ items }: Itemable<IPost>) => {
   return (
     <Box bgColor="#EDF7FA">
       <Wrapper>
@@ -205,21 +93,11 @@ const RecentPosts = () => {
         </HStack>
 
         <SimpleGrid columns={2} spacing={4} mt={4}>
-          <Post
-            id={1}
-            title="Making a design system from scratch"
-            body="Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet."
-            tags={["Design", "Pattern"]}
-            createdAt="12 Feb 2020"
-          />
-
-          <Post
-            id={2}
-            title="Creating pixel perfect icons in Figma"
-            body="Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet."
-            tags={["Figma", "Icon Design"]}
-            createdAt="12 Feb 2020"
-          />
+          {items.map((post) => (
+            <Box bgColor="white" shadow="sm" p={8} key={post.id}>
+              <Post data={post} />
+            </Box>
+          ))}
         </SimpleGrid>
       </Wrapper>
     </Box>
@@ -261,5 +139,9 @@ const About = () => {
     </Wrapper>
   );
 };
+
+interface Itemable<T extends IPost | IProject> {
+  items: T[];
+}
 
 export default Landing;
