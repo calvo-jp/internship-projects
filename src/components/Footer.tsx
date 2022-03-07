@@ -10,16 +10,24 @@ const Footer = () => {
       <VStack spacing={4}>
         <Wrap spacing={4}>
           <WrapItem>
-            <FacebookIcon />
+            <a href="#">
+              <FacebookIcon />
+            </a>
           </WrapItem>
           <WrapItem>
-            <InstagramIcon />
+            <a href="#">
+              <InstagramIcon />
+            </a>
           </WrapItem>
           <WrapItem>
-            <TwitterIcon />
+            <a href="#">
+              <TwitterIcon />
+            </a>
           </WrapItem>
           <WrapItem>
-            <LinkedInIcon />
+            <a href="#">
+              <LinkedInIcon />
+            </a>
           </WrapItem>
         </Wrap>
 

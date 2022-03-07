@@ -80,6 +80,7 @@ const Navbar = () => {
         >
           {links.map((link) => {
             const href = "/" + link.toLowerCase();
+            const active = router.pathname.startsWith(href);
 
             return (
               <WrapItem key={link} w="fit-content">
@@ -87,9 +88,7 @@ const Navbar = () => {
                   <ChakraLink
                     fontWeight={500}
                     fontSize="20px"
-                    color={
-                      router.pathname.startsWith(href) ? "#FF6464" : "inherit"
-                    }
+                    color={active ? "#FF6464" : "inherit"}
                     _hover={{
                       textDecor: "none",
                     }}
