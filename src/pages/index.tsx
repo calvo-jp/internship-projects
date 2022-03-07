@@ -113,7 +113,7 @@ const About = () => {
         py={{ base: 4, lg: 16 }}
         gap={{ base: 8, lg: 16 }}
         align={{ base: "center", lg: "start" }}
-        justify={{ base: "", lg: "space-between" }}
+        justify={{ lg: "space-between" }}
         direction={{ base: "column", lg: "row" }}
       >
         <Flex

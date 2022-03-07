@@ -42,19 +42,17 @@ const links = ["Works", "Blog", "Contact"];
 const NavLinks = () => {
   return (
     <>
-      <Box display={{ base: "block", md: "none" }} as="nav">
+      {/* MOBILE */}
+      <Box display={{ base: "block", lg: "none" }} as="nav">
         <NavLinksMobile />
       </Box>
 
-      <Box display={{ base: "none", md: "block" }} as="nav">
-        <NavLinksDesktop />
+      {/* DESKTOP */}
+      <Box display={{ base: "none", lg: "block" }} as="nav">
+        <NavLinksBase />
       </Box>
     </>
   );
-};
-
-const NavLinksDesktop = () => {
-  return <NavLinksBase />;
 };
 
 const NavLinksMobile = () => {
@@ -64,7 +62,7 @@ const NavLinksMobile = () => {
     <>
       <Box
         as="button"
-        display={{ base: "block", md: "none" }}
+        display={{ base: "block", lg: "none" }}
         onClick={() => setVisible(true)}
       >
         <HamburgerIcon w={6} h={6} />
@@ -72,7 +70,7 @@ const NavLinksMobile = () => {
 
       <Box
         position="fixed"
-        display={{ base: visible ? "flex" : "none", md: "none" }}
+        display={{ base: visible ? "flex" : "none", lg: "none" }}
         h="full"
         w="full"
         top={0}
@@ -100,7 +98,7 @@ const CloseButton = (props: CloseButtonProps) => {
   return (
     <Box
       as="button"
-      display={{ base: "block", md: "none" }}
+      display={{ base: "block", lg: "none" }}
       position="absolute"
       zIndex={999}
       right={7}
@@ -118,8 +116,8 @@ const NavLinksBase = () => {
   return (
     <Box as="nav">
       <Wrap
-        spacing={{ base: 2, md: 4 }}
-        direction={{ base: "column", md: "row" }}
+        spacing={{ base: 2, lg: 4 }}
+        direction={{ base: "column", lg: "row" }}
       >
         {links.map((link) => {
           const href = `/${link.toLowerCase()}`;
@@ -127,10 +125,10 @@ const NavLinksBase = () => {
 
           return (
             <WrapItem
-              key={link}
               w="fit-content"
               display="flex"
               alignItems="center"
+              key={link}
             >
               <NextLink href={href} passHref>
                 <ChakraLink
