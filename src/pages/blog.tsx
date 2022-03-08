@@ -23,7 +23,7 @@ const Posts = () => {
       {Array(4)
         .fill(null)
         .map((_, index) => (
-          <Box key={index} mt={8}>
+          <Box key={index} mt={{ base: 4, lg: 8 }}>
             <Post
               data={{
                 id: 0,
