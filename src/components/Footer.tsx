@@ -8,7 +8,7 @@ const Footer = () => {
   const icons = [FacebookIcon, InstagramIcon, TwitterIcon, LinkedInIcon];
 
   return (
-    <Box as="footer" p={8} mt={16}>
+    <Box as="footer" p={8} mt={24}>
       <VStack spacing={4}>
         <Wrap spacing={4}>
           {icons.map((SVGIcon, index) => (

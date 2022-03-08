@@ -60,7 +60,11 @@ const Landing: NextPage<Props> = ({ posts, projects }) => {
 const FeaturedProjects = ({ items }: Itemable<IProject>) => {
   return (
     <Wrapper>
-      <Heading fontSize="22px" fontWeight={400}>
+      <Heading
+        fontSize="22px"
+        fontWeight={400}
+        textAlign={{ base: "center", lg: "left" }}
+      >
         Featured works
       </Heading>
 
@@ -96,7 +100,13 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
 
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4} mt={4}>
           {items.map((post) => (
-            <Box bgColor="brand.white" shadow="sm" p={8} key={post.id}>
+            <Box
+              bgColor="brand.white"
+              shadow="sm"
+              rounded="md"
+              p={8}
+              key={post.id}
+            >
               <Post data={post} featured />
             </Box>
           ))}
@@ -110,7 +120,7 @@ const About = () => {
   return (
     <Wrapper>
       <Flex
-        py={{ base: 4, lg: 16 }}
+        py={{ base: 8, lg: 16 }}
         gap={{ base: 8, lg: 16 }}
         align={{ base: "center", lg: "start" }}
         justify={{ lg: "space-between" }}

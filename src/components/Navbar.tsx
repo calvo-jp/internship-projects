@@ -24,6 +24,7 @@ const Navbar = () => {
       ref={navbarRef}
       py={{ base: 4, lg: 8 }}
       px={{ base: 6, lg: 12 }}
+      mb={{ base: 2, lg: 8 }}
       justify="end"
       bgColor="brand.white"
       position="sticky"
