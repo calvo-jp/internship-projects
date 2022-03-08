@@ -29,8 +29,8 @@ const Navbar = () => {
       position="sticky"
       top={0}
       zIndex={99}
-      transition="all"
-      transitionDuration="350ms"
+      transitionProperty="position"
+      transitionDuration="slow"
     >
       <NavLinks />
     </Flex>
