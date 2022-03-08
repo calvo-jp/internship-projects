@@ -15,7 +15,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const navbar = navbarRef.current;
-    if (navbar) onScrollReveal(navbar);
+    if (navbar) revealOnScrollUp(navbar);
   }, []);
 
   return (
@@ -155,7 +155,7 @@ const NavLinksBase = () => {
   );
 };
 
-const onScrollReveal = (elem: HTMLElement) => {
+const revealOnScrollUp = (elem: HTMLElement) => {
   let prevScrollpos = window.pageYOffset;
 
   window.addEventListener("scroll", () => {
