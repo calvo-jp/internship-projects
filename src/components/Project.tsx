@@ -17,8 +17,10 @@ interface ProjectProps {
 }
 
 const Project = ({ data }: ProjectProps) => {
+  const href = "/works/" + data.id;
+
   return (
-    <Link href={`/works/${data.id}`} passHref>
+    <Link href={href} passHref>
       <Box as="a">
         <Stack gap={4} direction={{ base: "column", lg: "row" }}>
           <Image
