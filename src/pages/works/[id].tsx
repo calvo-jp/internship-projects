@@ -30,18 +30,18 @@ const Section1 = () => {
     <Box as="section">
       <Box>
         <Heading
-          fontSize={{ base: "3xl", lg: "4xl" }}
-          fontWeight="bold"
           as="h1"
           maxW="505px"
+          fontSize={{ base: "3xl", lg: "4xl" }}
+          fontWeight="bold"
         >
           Designing Dashboards with usability in mind
         </Heading>
 
         <Flex
           mt={{ base: 6, lg: 8 }}
-          align="flex-start"
           gap={6}
+          align="flex-start"
           fontSize={{ base: "lg", lg: "xl" }}
         >
           <Badge
