@@ -135,9 +135,7 @@ const NavLinksBase = () => {
                   fontWeight={500}
                   fontSize="20px"
                   color={active ? "brand.maroon" : "inherit"}
-                  _hover={{
-                    textDecor: "none",
-                  }}
+                  _hover={{ textDecor: "none" }}
                 >
                   {link}
                 </ChakraLink>
