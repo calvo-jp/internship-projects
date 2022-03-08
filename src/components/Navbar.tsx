@@ -26,9 +26,9 @@ const Navbar = () => {
       px={{ base: 6, lg: 12 }}
       justify="end"
       bgColor="brand.white"
-      zIndex={99}
       position="sticky"
       top={0}
+      zIndex={99}
       transition="all"
       transitionDuration="350ms"
     >
@@ -42,12 +42,12 @@ const links = ["Works", "Blog", "Contact"];
 const NavLinks = () => {
   return (
     <>
-      {/* MOBILE */}
+      {/* mobile */}
       <Box display={{ base: "block", lg: "none" }} as="nav">
         <NavLinksMobile />
       </Box>
 
-      {/* DESKTOP */}
+      {/* desktop */}
       <Box display={{ base: "none", lg: "block" }} as="nav">
         <NavLinksBase />
       </Box>
@@ -60,13 +60,7 @@ const NavLinksMobile = () => {
 
   return (
     <>
-      <Box
-        as="button"
-        display={{ base: "block", lg: "none" }}
-        onClick={() => setVisible(true)}
-      >
-        <HamburgerIcon w={6} h={6} />
-      </Box>
+      <MenuToggler onToggle={() => setVisible(true)} />
 
       <Box
         position="fixed"
@@ -87,6 +81,18 @@ const NavLinksMobile = () => {
         </Box>
       </Box>
     </>
+  );
+};
+
+interface MenuTogglerProps {
+  onToggle: () => void;
+}
+
+const MenuToggler = ({ onToggle }: MenuTogglerProps) => {
+  return (
+    <Box as="button" display={{ base: "block", lg: "none" }} onClick={onToggle}>
+      <HamburgerIcon w={6} h={6} />
+    </Box>
   );
 };
 

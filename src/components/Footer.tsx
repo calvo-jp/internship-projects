@@ -13,14 +13,12 @@ const Footer = () => {
         <Wrap spacing={4}>
           {icons.map((SVGIcon, index) => (
             <WrapItem key={index}>
-              <a href="#" target="_blank" rel="noreferrer">
-                <Icon as={SVGIcon} w={30} h={30} />
-              </a>
+              <Icon as={SVGIcon} w={30} h={30} />
             </WrapItem>
           ))}
         </Wrap>
 
-        <Text fontSize="14px">Copyright ©2020 All rights reserved</Text>
+        <Text fontSize="14px">Copyright &copy;2020 All rights reserved</Text>
       </VStack>
     </Box>
   );
