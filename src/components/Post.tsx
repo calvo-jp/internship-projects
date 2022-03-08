@@ -46,9 +46,7 @@ const Post = ({ data, featured }: PostProps) => {
           </Text>
         </HStack>
 
-        <Text fontSize="16px" mt={4}>
-          {data.body}
-        </Text>
+        <Text mt={4}>{data.body}</Text>
       </Box>
     </Link>
   );
