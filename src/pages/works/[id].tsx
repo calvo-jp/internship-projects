@@ -68,7 +68,7 @@ const Section1 = () => {
 
 const Section2 = () => {
   return (
-    <Box as="section" mt={16}>
+    <Box as="section" mt={12}>
       <Heading as="h2" fontSize={{ base: "26px", lg: "30px" }} fontWeight={500}>
         Heading 1
       </Heading>
