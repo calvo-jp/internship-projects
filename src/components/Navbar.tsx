@@ -66,7 +66,7 @@ const NavLinksMobile = () => {
       <Box
         position="fixed"
         display={{ base: visible ? "flex" : "none", lg: "none" }}
-        h="full"
+        h="50%"
         w="full"
         top={0}
         left={0}
