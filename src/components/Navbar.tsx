@@ -3,12 +3,13 @@ import {
   Box,
   Flex,
   Link as ChakraLink,
+  useDisclosure,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const Navbar = () => {
   const navbarRef = useRef<HTMLDivElement>(null);
@@ -57,15 +58,15 @@ const NavLinks = () => {
 };
 
 const NavLinksMobile = () => {
-  const [visible, setVisible] = useState(false);
+  const { isOpen, onToggle } = useDisclosure();
 
   return (
     <>
-      <MenuToggler onToggle={() => setVisible(true)} />
+      <MenuToggler onToggle={onToggle} />
 
       <Box
         position="fixed"
-        display={{ base: visible ? "flex" : "none", lg: "none" }}
+        display={{ base: isOpen ? "flex" : "none", lg: "none" }}
         h="50%"
         w="full"
         top={0}
@@ -75,7 +76,7 @@ const NavLinksMobile = () => {
         justifyContent="center"
         bgColor="brand.white"
       >
-        <CloseButton onClose={() => setVisible(false)} />
+        <CloseButton onClose={onToggle} />
 
         <Box>
           <NavLinksBase />
