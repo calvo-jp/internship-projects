@@ -123,7 +123,11 @@ const About = () => {
           align={{ base: "center", lg: "start" }}
           textAlign={{ base: "center", lg: "left" }}
         >
-          <Heading fontWeight={700} fontSize={{ base: "32px", lg: "44px" }}>
+          <Heading
+            as="h1"
+            fontWeight={700}
+            fontSize={{ base: "32px", lg: "44px" }}
+          >
             <div>Hi, I am John,</div>
             <div>Creative Technologist</div>
           </Heading>
