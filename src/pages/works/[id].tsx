@@ -29,15 +29,20 @@ const Section1 = () => {
   return (
     <Box as="section">
       <Box>
-        <Heading fontSize={{ base: "30px", lg: "34px" }} as="h1" maxW="500px">
+        <Heading
+          fontSize={{ base: "3xl", lg: "4xl" }}
+          fontWeight="bold"
+          as="h1"
+          maxW="505px"
+        >
           Designing Dashboards with usability in mind
         </Heading>
 
         <Flex
+          mt={{ base: 6, lg: 8 }}
           align="flex-start"
-          gap={4}
-          mt={4}
-          fontSize={{ base: "18px", lg: "20px" }}
+          gap={6}
+          fontSize={{ base: "lg", lg: "xl" }}
         >
           <Badge
             bgColor="brand.maroon"
@@ -49,17 +54,17 @@ const Section1 = () => {
             2020
           </Badge>
 
-          <Text fontWeight={400}>Dashboard, User Experience Design</Text>
+          <Text>Dashboard, User Experience Design</Text>
         </Flex>
 
-        <Text mt={4}>
+        <Text mt={6}>
           Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
           sint. Velit officia consequat duis enim velit mollit. Exercitation
           veniam consequat sunt nostrud amet.
         </Text>
       </Box>
 
-      <Box mt={8}>
+      <Box mt={{ base: 6, lg: 12 }}>
         <Image alt="" src="/images/attachments/ui.png" />
       </Box>
     </Box>
@@ -68,15 +73,15 @@ const Section1 = () => {
 
 const Section2 = () => {
   return (
-    <Box as="section" mt={12}>
-      <Heading fontSize={{ base: "26px", lg: "30px" }} fontWeight={500}>
+    <Box as="section" mt={{ base: 8, lg: 14 }}>
+      <Heading fontSize={{ base: "3xl", lg: "4xl" }} fontWeight={500}>
         Heading 1
       </Heading>
 
       <Heading
         as="h3"
-        fontSize={{ base: "20px", lg: "24px" }}
-        fontWeight={500}
+        fontSize={{ base: "xl", lg: "2xl" }}
+        fontWeight="medium"
         mt={2}
       >
         Heading 2
@@ -88,11 +93,11 @@ const Section2 = () => {
         veniam consequat sunt nostrud amet.
       </Text>
 
-      <Box mt={4}>
+      <Box mt={{ base: 6, lg: 8 }}>
         <Image alt="" src="/images/attachments/car.png" />
       </Box>
 
-      <Box mt={4}>
+      <Box mt={{ base: 6, lg: 8 }}>
         <Image alt="" src="/images/attachments/date-picker.png" />
       </Box>
     </Box>

@@ -13,33 +13,29 @@ const Post = ({ data, featured }: PostProps) => {
     <Link passHref href={`/blog/${data.id}`}>
       <Box w="full" as="a">
         <Heading
-          fontWeight={featured ? 700 : 500}
+          fontWeight={featured ? "bold" : "medium"}
           fontSize={
             featured
-              ? { base: "22px", md: "26px" } /* on landing */
-              : { base: "26px", md: "30px" } /* on blog */
+              ? { base: "xl", md: "2xl" } /* on landing */
+              : { base: "2xl", md: "3xl" } /* on blog */
           }
         >
           {data.title}
         </Heading>
 
         <HStack
-          mt={1}
+          mt={4}
           gap={2}
           align="center"
           fontSize={
             featured
-              ? { base: "16px", md: "18px" } /* on landing */
-              : { base: "16px", md: "20px" } /* on blog */
+              ? { base: "md", md: "lg" } /* on landing */
+              : { base: "md", md: "xl" } /* on blog */
           }
         >
           <Text>{data.createdAt}</Text>
 
-          <Divider
-            height="18px"
-            borderColor="brand.black"
-            orientation="vertical"
-          />
+          <Divider h={4} borderColor="brand.black" orientation="vertical" />
 
           <Text color={featured ? "inherit" : "brand.gray"}>
             {data.tags.join(", ")}

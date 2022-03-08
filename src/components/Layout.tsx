@@ -12,13 +12,19 @@ const Layout = ({ title, children }: PropsWithChildren<LayoutProps>) => {
     <>
       <Navbar />
 
-      <Box as="main" maxW="750px" mx="auto" p={{ base: 4, lg: 8 }}>
+      <Box
+        as="main"
+        maxW="750px"
+        mx="auto"
+        p={{ base: 4, lg: 8 }}
+        mt={{ base: 6, lg: 16 }}
+      >
         {title && (
           <Heading
             as="h1"
-            fontWeight={700}
-            fontSize={{ base: "30px", lg: "44px" }}
-            mb={{ base: 8, lg: 16 }}
+            fontWeight="bold"
+            fontSize={{ base: "3xl", lg: "4xl" }}
+            mb={{ base: 5, lg: 14 }}
           >
             {title}
           </Heading>

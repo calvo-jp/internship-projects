@@ -31,16 +31,16 @@ const Project = ({ data }: ProjectProps) => {
           />
 
           <Flex justify="space-between" direction="column" gap={4}>
-            <Heading fontWeight={700} fontSize={{ base: "24px", lg: "30px" }}>
+            <Heading fontWeight="bold" fontSize={{ base: "2xl", lg: "3xl" }}>
               {data.title}
             </Heading>
 
-            <HStack gap={4}>
+            <HStack gap={{ base: 4, lg: 6 }}>
               <Badge
                 bgColor="brand.indigo"
                 color="white"
-                fontWeight={900}
-                fontSize={{ lg: "18px" }}
+                fontWeight="black"
+                fontSize={{ base: "md", lg: "lg" }}
                 py={1}
                 px={3}
                 rounded="full"
@@ -57,7 +57,7 @@ const Project = ({ data }: ProjectProps) => {
           </Flex>
         </Stack>
 
-        <Divider mt={8} />
+        <Divider mt={{ base: 4, lg: 8 }} />
       </Box>
     </Link>
   );

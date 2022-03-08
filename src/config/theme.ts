@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, theme as originalTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
 
 const breakpoints = createBreakpoints({
@@ -11,6 +11,7 @@ const breakpoints = createBreakpoints({
 });
 
 const theme = extendTheme({
+  ...originalTheme,
   fonts: {
     body: "'Heebo', sans-serif",
     heading: "'Heebo', sans-serif",

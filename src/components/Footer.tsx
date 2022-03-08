@@ -8,9 +8,9 @@ const Footer = () => {
   const icons = [FacebookIcon, InstagramIcon, TwitterIcon, LinkedInIcon];
 
   return (
-    <Box as="footer" p={8} mt={24}>
-      <VStack spacing={4}>
-        <Wrap spacing={4}>
+    <Box as="footer" p={12} mt={24}>
+      <VStack spacing={6}>
+        <Wrap spacing={9}>
           {icons.map((SVGIcon, index) => (
             <WrapItem key={index}>
               <Icon as={SVGIcon} w={30} h={30} />
@@ -18,7 +18,7 @@ const Footer = () => {
           ))}
         </Wrap>
 
-        <Text fontSize="14px">Copyright &copy;2020 All rights reserved</Text>
+        <Text fontSize="sm">Copyright &copy;2020 All rights reserved</Text>
       </VStack>
     </Box>
   );

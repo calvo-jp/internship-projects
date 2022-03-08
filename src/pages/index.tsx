@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  ChakraComponent,
   Flex,
   Heading,
   HStack,
@@ -17,7 +18,7 @@ import Post from "components/Post";
 import Project from "components/Project";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { PropsWithChildren } from "react";
+import { ComponentProps, PropsWithChildren } from "react";
 import services from "services";
 import IPost from "types/post";
 import IProject from "types/project";
@@ -47,9 +48,19 @@ const Landing: NextPage<Props> = ({ posts, projects }) => {
       <Navbar />
 
       <Box as="main">
-        <About />
-        <RecentPosts items={posts} />
-        <FeaturedProjects items={projects} />
+        <Wrapper py={{ base: 15, lg: 18 }}>
+          <About />
+        </Wrapper>
+
+        <Box bgColor="brand.light">
+          <Wrapper>
+            <RecentPosts items={posts} />
+          </Wrapper>
+        </Box>
+
+        <Wrapper>
+          <FeaturedProjects items={projects} />
+        </Wrapper>
       </Box>
 
       <Footer />
@@ -59,17 +70,17 @@ const Landing: NextPage<Props> = ({ posts, projects }) => {
 
 const FeaturedProjects = ({ items }: Itemable<IProject>) => {
   return (
-    <Wrapper>
+    <>
       <Heading
-        fontSize="22px"
-        fontWeight={400}
+        fontSize={{ base: "xl", lg: "2xl" }}
+        fontWeight="normal"
         textAlign={{ base: "center", lg: "left" }}
       >
         Featured works
       </Heading>
 
-      <Box mt={8}>
-        <Wrap spacing={8}>
+      <Box mt={{ base: 4, lg: 8 }}>
+        <Wrap spacing={{ base: 4, lg: 8 }}>
           {items.map((project) => (
             <WrapItem key={project.id}>
               <Project data={project} />
@@ -77,100 +88,99 @@ const FeaturedProjects = ({ items }: Itemable<IProject>) => {
           ))}
         </Wrap>
       </Box>
-    </Wrapper>
+    </>
   );
 };
 
 const RecentPosts = ({ items }: Itemable<IPost>) => {
   return (
-    <Box bgColor="brand.light">
-      <Wrapper>
-        <HStack
-          align="center"
-          justify={{ base: "center", lg: "space-between" }}
-        >
-          <Heading fontSize={{ base: "18px", lg: "22px" }} fontWeight={400}>
-            Recent Posts
-          </Heading>
+    <>
+      <HStack align="center" justify={{ base: "center", lg: "space-between" }}>
+        <Heading fontSize={{ base: "lg", lg: "xl" }} fontWeight="normal">
+          Recent Posts
+        </Heading>
 
-          <Box display={{ base: "none", lg: "block" }}>
-            <ChakraLink color="brand.sky">View all</ChakraLink>
+        <Box display={{ base: "none", lg: "block" }}>
+          <ChakraLink color="brand.sky">View all</ChakraLink>
+        </Box>
+      </HStack>
+
+      <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={5} mt={4}>
+        {items.map((post) => (
+          <Box
+            bgColor="brand.white"
+            shadow="sm"
+            rounded="md"
+            p={{ base: 3, lg: 6 }}
+            key={post.id}
+          >
+            <Post data={post} featured />
           </Box>
-        </HStack>
-
-        <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4} mt={4}>
-          {items.map((post) => (
-            <Box
-              bgColor="brand.white"
-              shadow="sm"
-              rounded="md"
-              p={8}
-              key={post.id}
-            >
-              <Post data={post} featured />
-            </Box>
-          ))}
-        </SimpleGrid>
-      </Wrapper>
-    </Box>
+        ))}
+      </SimpleGrid>
+    </>
   );
 };
 
 const About = () => {
   return (
-    <Wrapper>
+    <>
       <Flex
         py={{ base: 8, lg: 16 }}
-        gap={{ base: 8, lg: 16 }}
+        gap={{ base: 12, lg: 16 }}
         align={{ base: "center", lg: "start" }}
-        justify={{ lg: "space-between" }}
+        justify={{ base: "flex-start", lg: "space-between" }}
         direction={{ base: "column", lg: "row" }}
       >
-        <Flex
-          direction="column"
-          gap={{ base: 4, lg: 8 }}
-          order={{ base: 1, lg: 0 }}
-          align={{ base: "center", lg: "start" }}
+        <Box
           textAlign={{ base: "center", lg: "left" }}
+          order={{ base: 1, lg: 0 }}
         >
           <Heading
             as="h1"
-            fontWeight={700}
-            fontSize={{ base: "32px", lg: "44px" }}
+            fontWeight="bold"
+            fontSize={{ base: "4xl", lg: "5xl" }}
           >
             <div>Hi, I am John,</div>
             <div>Creative Technologist</div>
           </Heading>
 
-          <Text maxW="500px">
+          <Text maxW="500px" mt={{ base: 5, lg: 10 }}>
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
             sint. Velit officia consequat duis enim velit mollit. Exercitation
             veniam consequat sunt nostrud amet.
           </Text>
 
-          <Button bgColor="brand.maroon" color="white" rounded="sm">
+          <Button
+            bgColor="brand.maroon"
+            color="white"
+            rounded="sm"
+            mt={{ base: 7, lg: 10 }}
+          >
             Download Resume
           </Button>
-        </Flex>
+        </Box>
 
         <Avatar
           order={{ base: 0, lg: 1 }}
           src="/images/selfie.png"
-          h={{ base: "200px", lg: "245px" }}
-          w={{ base: "200px", lg: "245px" }}
-          borderWidth={8}
+          h={{ base: "175px", lg: "245px" }}
+          w={{ base: "175px", lg: "245px" }}
+          borderWidth={{ base: 4, lg: 8 }}
           borderStyle="solid"
           borderColor="brand.light"
         />
       </Flex>
-    </Wrapper>
+    </>
   );
 };
 
-const Wrapper = (props: PropsWithChildren<{}>) => {
+type WrapperProps = ComponentProps<ChakraComponent<"div", {}>>;
+
+const Wrapper = ({ children, ...all }: WrapperProps) => {
   return (
-    <Box maxW="900px" mx="auto" p={{ base: 4, lg: 8 }}>
-      {props.children}
+    <Box maxW="900px" mx="auto" p={{ base: 4, lg: 8 }} {...all}>
+      {children}
     </Box>
   );
 };

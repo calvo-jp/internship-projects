@@ -25,7 +25,6 @@ const Navbar = () => {
       ref={navbarRef}
       py={{ base: 4, lg: 8 }}
       px={{ base: 6, lg: 12 }}
-      mb={{ base: 2, lg: 8 }}
       justify="end"
       bgColor="brand.white"
       position="sticky"
@@ -140,8 +139,8 @@ const NavLinksBase = () => {
             >
               <NextLink href={href} passHref>
                 <ChakraLink
-                  fontWeight={500}
-                  fontSize="20px"
+                  fontWeight="medium"
+                  fontSize="xl"
                   color={active ? "brand.maroon" : "inherit"}
                   _hover={{ textDecor: "none" }}
                 >
