@@ -1,12 +1,4 @@
-import {
-  Badge,
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  Text,
-} from "@chakra-ui/react";
+import { Badge, Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import Layout from "components/Layout";
 import Head from "next/head";
 
