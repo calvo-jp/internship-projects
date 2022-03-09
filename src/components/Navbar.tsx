@@ -29,7 +29,7 @@ const Navbar = () => {
       bgColor="brand.white"
       position="sticky"
       top={0}
-      zIndex={99}
+      zIndex="banner"
       transitionProperty="position"
       transitionDuration="slow"
     >
@@ -70,7 +70,7 @@ const NavLinksMobile = () => {
         w="full"
         top={0}
         left={0}
-        zIndex={99}
+        zIndex="modal"
         alignItems="center"
         justifyContent="center"
         bgColor="brand.white"
@@ -107,7 +107,7 @@ const CloseButton = (props: CloseButtonProps) => {
       as="button"
       display={{ base: "block", lg: "none" }}
       position="absolute"
-      zIndex={999}
+      zIndex="modal"
       right={7}
       top={4}
       onClick={props.onClose}
