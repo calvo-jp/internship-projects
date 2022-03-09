@@ -45,12 +45,9 @@ const links = ["Works", "Blog", "Contact"];
 const NavLinks = () => {
   return (
     <>
-      {/* mobile */}
       <Box display={{ base: "block", lg: "none" }} as="nav">
         <NavLinksMobile />
       </Box>
-
-      {/* desktop */}
       <Box display={{ base: "none", lg: "block" }} as="nav">
         <NavLinksBase />
       </Box>
