@@ -1,6 +1,7 @@
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
+  CloseButton,
   Flex,
   IconButton,
   Link as ChakraLink,
@@ -76,7 +77,15 @@ const NavLinksMobile = () => {
         justifyContent="center"
         bgColor="brand.white"
       >
-        <CloseButton onClose={onClose} />
+        <CloseButton
+          onClick={onClose}
+          position="absolute"
+          zIndex="modal"
+          right={6}
+          top={4}
+          size="lg"
+          display={{ base: "block", lg: "none" }}
+        />
 
         <Box>
           <NavLinksBase />
@@ -98,30 +107,6 @@ const MenuToggler = ({ onToggle }: MenuTogglerProps) => {
       bgColor="transparent"
       icon={<HamburgerIcon w={6} h={6} />}
       display={{ base: "block", lg: "none" }}
-      _hover={{ bgColor: "transparent" }}
-      _active={{ bgColor: "transparent", boxShadow: "none" }}
-    />
-  );
-};
-
-interface CloseButtonProps {
-  onClose: () => void;
-}
-
-const CloseButton = (props: CloseButtonProps) => {
-  return (
-    <IconButton
-      onClick={props.onClose}
-      aria-label="close menu"
-      icon={<CloseIcon w={4} h={4} />}
-      bgColor="transparent"
-      position="absolute"
-      zIndex="modal"
-      right={6}
-      top={4}
-      display={{ base: "block", lg: "none" }}
-      _hover={{ bgColor: "transparent" }}
-      _active={{ bgColor: "transparent", boxShadow: "none" }}
     />
   );
 };
