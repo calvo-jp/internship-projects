@@ -57,11 +57,11 @@ const NavLinks = () => {
 };
 
 const NavLinksMobile = () => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <>
-      <MenuToggler onToggle={onToggle} />
+      <MenuToggler onToggle={onOpen} />
 
       <Box
         position="fixed"
@@ -75,7 +75,7 @@ const NavLinksMobile = () => {
         justifyContent="center"
         bgColor="brand.white"
       >
-        <CloseButton onClose={onToggle} />
+        <CloseButton onClose={onClose} />
 
         <Box>
           <NavLinksBase />
