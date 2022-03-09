@@ -16,8 +16,8 @@ const Post = ({ data, featured }: PostProps) => {
           fontWeight={featured ? "bold" : "medium"}
           fontSize={
             featured
-              ? { base: "xl", md: "2xl" } /* on landing */
-              : { base: "2xl", md: "3xl" } /* on blog */
+              ? { base: "xl", lg: "2xl" } /* on landing */
+              : { base: "2xl", lg: "3xl" } /* on blog */
           }
         >
           {data.title}
@@ -27,11 +27,9 @@ const Post = ({ data, featured }: PostProps) => {
           mt={4}
           gap={2}
           align="center"
-          fontSize={
-            featured
-              ? { base: "md", md: "lg" } /* on landing */
-              : { base: "md", md: "xl" } /* on blog */
-          }
+          fontSize={{
+            lg: featured ? "lg" /* on landing */ : "xl" /* on blog */,
+          }}
         >
           <Text>{data.createdAt}</Text>
 

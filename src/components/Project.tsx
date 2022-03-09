@@ -40,7 +40,7 @@ const Project = ({ data }: ProjectProps) => {
                 bgColor="brand.indigo"
                 color="white"
                 fontWeight="black"
-                fontSize={{ base: "md", lg: "lg" }}
+                fontSize={{ lg: "lg" }}
                 py={1}
                 px={3}
                 rounded="full"
@@ -48,7 +48,7 @@ const Project = ({ data }: ProjectProps) => {
                 {data.createdAt}
               </Badge>
 
-              <Text fontSize={{ lg: "20px" }} color="#8695A4">
+              <Text fontSize={{ lg: "xl" }} color="#8695A4">
                 {data.tags.join(", ")}
               </Text>
             </HStack>
