@@ -156,6 +156,7 @@ const About = () => {
             color="white"
             rounded="sm"
             mt={{ base: 7, lg: 10 }}
+            _hover={{ bgColor: "brand.maroon" }}
           >
             Download Resume
           </Button>
