@@ -1,4 +1,4 @@
-import { Box, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Divider, VStack, Wrap, WrapItem } from "@chakra-ui/react";
 import Layout from "components/Layout";
 import Project from "components/Project";
 import { GetStaticProps, NextPage } from "next";
@@ -29,6 +29,8 @@ const Works: NextPage<Props> = ({ data }) => {
 
       <Layout title="Works">
         <Projects items={data} />
+
+        <Divider mt={{ base: 4, lg: 8 }} />
       </Layout>
     </>
   );
@@ -36,15 +38,11 @@ const Works: NextPage<Props> = ({ data }) => {
 
 const Projects = ({ items }: { items: IProject[] }) => {
   return (
-    <Box>
-      <Wrap spacing={8}>
-        {items.map((project) => (
-          <WrapItem key={project.id}>
-            <Project data={project} />
-          </WrapItem>
-        ))}
-      </Wrap>
-    </Box>
+    <VStack spacing={{ base: 4, lg: 8 }} divider={<Divider />}>
+      {items.map((project) => (
+        <Project key={project.id} data={project} />
+      ))}
+    </VStack>
   );
 };
 

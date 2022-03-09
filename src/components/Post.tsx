@@ -30,11 +30,11 @@ const Post = ({ data, featured }: PostProps) => {
           fontSize={{
             lg: featured ? "lg" /* on landing */ : "xl" /* on blog */,
           }}
+          divider={
+            <Divider h={4} borderColor="brand.black" orientation="vertical" />
+          }
         >
           <Text>{data.createdAt}</Text>
-
-          <Divider h={4} borderColor="brand.black" orientation="vertical" />
-
           <Text color={featured ? "inherit" : "brand.gray"}>
             {data.tags.join(", ")}
           </Text>

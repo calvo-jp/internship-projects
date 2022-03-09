@@ -2,6 +2,7 @@ import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
+  IconButton,
   Link as ChakraLink,
   useDisclosure,
   Wrap,
@@ -91,9 +92,15 @@ interface MenuTogglerProps {
 
 const MenuToggler = ({ onToggle }: MenuTogglerProps) => {
   return (
-    <Box as="button" display={{ base: "block", lg: "none" }} onClick={onToggle}>
-      <HamburgerIcon w={6} h={6} />
-    </Box>
+    <IconButton
+      onClick={onToggle}
+      aria-label="toggle menu"
+      bgColor="transparent"
+      icon={<HamburgerIcon w={6} h={6} />}
+      display={{ base: "block", lg: "none" }}
+      _hover={{ bgColor: "transparent" }}
+      _active={{ bgColor: "transparent", boxShadow: "none" }}
+    />
   );
 };
 
@@ -103,17 +110,19 @@ interface CloseButtonProps {
 
 const CloseButton = (props: CloseButtonProps) => {
   return (
-    <Box
-      as="button"
-      display={{ base: "block", lg: "none" }}
+    <IconButton
+      onClick={props.onClose}
+      aria-label="close menu"
+      icon={<CloseIcon w={4} h={4} />}
+      bgColor="transparent"
       position="absolute"
       zIndex="modal"
-      right={7}
+      right={6}
       top={4}
-      onClick={props.onClose}
-    >
-      <CloseIcon w={4} h={4} />
-    </Box>
+      display={{ base: "block", lg: "none" }}
+      _hover={{ bgColor: "transparent" }}
+      _active={{ bgColor: "transparent", boxShadow: "none" }}
+    />
   );
 };
 

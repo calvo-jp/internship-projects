@@ -3,12 +3,14 @@ import {
   Box,
   Button,
   ChakraComponent,
+  Divider,
   Flex,
   Heading,
   HStack,
   Link as ChakraLink,
   SimpleGrid,
   Text,
+  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -79,15 +81,17 @@ const FeaturedProjects = ({ items }: Itemable<IProject>) => {
         Featured works
       </Heading>
 
-      <Box mt={{ base: 4, lg: 8 }}>
-        <Wrap spacing={{ base: 4, lg: 8 }}>
-          {items.map((project) => (
-            <WrapItem key={project.id}>
-              <Project data={project} />
-            </WrapItem>
-          ))}
-        </Wrap>
-      </Box>
+      <VStack
+        mt={{ base: 4, lg: 8 }}
+        spacing={{ base: 4, lg: 8 }}
+        divider={<Divider />}
+      >
+        {items.map((project) => (
+          <Project data={project} key={project.id} />
+        ))}
+      </VStack>
+
+      <Divider mt={{ base: 4, lg: 8 }} />
     </>
   );
 };
@@ -100,9 +104,9 @@ const RecentPosts = ({ items }: Itemable<IPost>) => {
           Recent Posts
         </Heading>
 
-        <Box display={{ base: "none", lg: "block" }}>
-          <ChakraLink color="brand.sky">View all</ChakraLink>
-        </Box>
+        <ChakraLink display={{ base: "none", lg: "block" }} color="brand.sky">
+          View all
+        </ChakraLink>
       </HStack>
 
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={5} mt={4}>
