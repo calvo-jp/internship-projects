@@ -1,10 +1,10 @@
 import {
-  Badge,
   Flex,
   Heading,
   HStack,
   Image,
   Stack,
+  Tag,
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -33,7 +33,7 @@ const Project = ({ data }: ProjectProps) => {
           </Heading>
 
           <HStack gap={{ base: 4, lg: 6 }}>
-            <Badge
+            <Tag
               bgColor="brand.indigo"
               color="white"
               fontWeight="black"
@@ -43,7 +43,7 @@ const Project = ({ data }: ProjectProps) => {
               rounded="full"
             >
               {data.createdAt}
-            </Badge>
+            </Tag>
 
             <Text fontSize={{ lg: "xl" }} color="#8695A4">
               {data.tags.join(", ")}

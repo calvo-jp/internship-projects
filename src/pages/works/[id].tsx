@@ -1,4 +1,4 @@
-import { Badge, Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Badge, Box, Flex, Heading, Image, Tag, Text } from "@chakra-ui/react";
 import Layout from "components/Layout";
 import Head from "next/head";
 
@@ -36,7 +36,7 @@ const Section1 = () => {
           align="flex-start"
           fontSize={{ base: "lg", lg: "xl" }}
         >
-          <Badge
+          <Tag
             bgColor="brand.maroon"
             rounded="full"
             color="brand.white"
@@ -44,9 +44,9 @@ const Section1 = () => {
             px={2}
           >
             2020
-          </Badge>
+          </Tag>
 
-          <Text>Dashboard, User Experience Design</Text>
+          <Text>Dashboard, User Experience, Design</Text>
         </Flex>
 
         <Text mt={6}>
