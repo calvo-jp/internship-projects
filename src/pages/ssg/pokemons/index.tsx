@@ -4,7 +4,7 @@ import apolloClient from "config/apollo/client";
 import { GET_POKEMONS } from "graphql/queries";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GetPokemons, GetPokemonsVariables } from "types/GetPokemons";
 
 interface Props {
