@@ -1,14 +1,10 @@
 import { useLazyQuery } from "@apollo/client";
-import { Stack } from "@chakra-ui/react";
-import Header from "components/Header";
-import InfiniteScroll from "components/InfiniteScroll";
-import PokemonList from "components/PokemonList";
-import ScrollToTopButton from "components/ScrollToTopButton";
+import Pokemons from "components/Pokemons";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMONS } from "graphql/queries";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GetPokemons, GetPokemonsVariables } from "types/GetPokemons";
 
 interface Props {
@@ -21,7 +17,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data } = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
     query: GET_POKEMONS,
     variables: {
-      limit: 30,
+      limit: 6,
     },
   });
 
@@ -33,16 +29,16 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   };
 };
 
-const Pokemons: NextPage<Props> = ({ data }) => {
+const PokemonsPage: NextPage<Props> = ({ data }) => {
   const [rows, setRows] = useState(data);
 
-  const [, { loading, fetchMore }] = useLazyQuery<
+  const [, { loading, error, fetchMore, refetch }] = useLazyQuery<
     GetPokemons,
     GetPokemonsVariables
   >(GET_POKEMONS, {
     variables: {
       offset: data.length,
-      limit: 30,
+      limit: 6,
     },
     notifyOnNetworkStatusChange: true,
     onCompleted({ pokemons }) {
@@ -55,7 +51,7 @@ const Pokemons: NextPage<Props> = ({ data }) => {
       variables: {
         offset: rows.length,
       },
-    });
+    }).then(console.log);
   };
 
   return (
@@ -64,18 +60,16 @@ const Pokemons: NextPage<Props> = ({ data }) => {
         <title>(SSG) Pokedex</title>
       </Head>
 
-      <Header />
-
-      <Stack as="main" p={{ base: 2, md: 4 }} spacing={{ base: 2, md: 4 }}>
-        <PokemonList pokemons={rows} isSSG />
-
-        {loading && <div>Loading...</div>}
-      </Stack>
-
-      <InfiniteScroll callback={next} paused={loading} />
-      <ScrollToTopButton />
+      <Pokemons
+        data={rows}
+        loading={loading}
+        retry={!!error}
+        onRetry={refetch}
+        onNextPage={next}
+        isSSG
+      />
     </>
   );
 };
 
-export default Pokemons;
+export default PokemonsPage;

@@ -2,18 +2,17 @@ import { useQuery } from "@apollo/client";
 import { Flex, Spinner } from "@chakra-ui/react";
 import PokemonWidget from "components/PokemonWidget";
 import { GET_POKEMON } from "graphql/queries";
+import useSearchParams from "hooks/useSearchParams";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import NotFound from "pages/404";
 import { GetPokemon, GetPokemonVariables } from "types/GetPokemon";
 
 const Pokemon = () => {
-  const router = useRouter();
-  const id = router.query.id as string;
+  const id = useSearchParams("id").get("id");
 
   const { data, loading, error } = useQuery<GetPokemon, GetPokemonVariables>(
     GET_POKEMON,
-    { variables: { id: parseInt(id) } }
+    { skip: isNumeric(id), variables: { id: parseInt(id!) } }
   );
 
   if (loading) {
@@ -42,6 +41,10 @@ const Pokemon = () => {
       <PokemonWidget data={data.pokemon} redirectUrl="/csr/pokemons" />
     </>
   );
+};
+
+const isNumeric = (subject: any): subject is string => {
+  return typeof subject === "string" && /^[0-9]$/.test(subject);
 };
 
 export default Pokemon;
