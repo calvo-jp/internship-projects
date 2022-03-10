@@ -16,6 +16,7 @@ const Pokemons = () => {
   >(GET_POKEMONS, {
     notifyOnNetworkStatusChange: true,
     variables: {
+      offset: 0,
       limit: 20,
     },
   });
