@@ -2,6 +2,7 @@ import { Box, Heading, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { GetPokemons } from "types/GetPokemons";
+import getPokemonImage from "utils/getPokemonImage";
 
 interface PokemonCardProps {
   data: GetPokemons["pokemon_v2_pokemon"][number];
@@ -34,7 +35,7 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
       >
         <Box position="relative" height={100}>
           <Box h="full" position="relative" maxW={100} mx="auto">
-            {/* <Image src="unknown.png" alt="" layout="fill" /> */}
+            <Image src={getPokemonImage(data)} alt="" layout="fill" />
           </Box>
         </Box>
 
