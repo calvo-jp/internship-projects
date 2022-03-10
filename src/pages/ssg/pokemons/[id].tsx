@@ -1,10 +1,12 @@
 import { Flex, Spinner } from "@chakra-ui/react";
 import PokemonWidget from "components/PokemonWidget";
+import apolloClient from "config/apollo/client";
+import { GET_POKEMON, GET_POKEMONS } from "graphql/queries";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import services from "services";
-import IPokemon from "types/pokemon";
+import { GetPokemon, GetPokemonVariables } from "types/GetPokemon";
+import { GetPokemons } from "types/GetPokemons";
 
 interface Params {
   [key: string]: string;
@@ -12,29 +14,38 @@ interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const data = await services.pokemons.read.all();
+  const { data } = await apolloClient.query<GetPokemons>({
+    query: GET_POKEMONS,
+  });
 
   return {
-    paths: data.rows.map(({ id }) => ({ params: { id: id.toString() } })),
     fallback: true,
+    paths: data.pokemon_v2_pokemon.map(({ id }) => ({
+      params: { id: id.toString() },
+    })),
   };
 };
 
 interface Props {
-  data: IPokemon;
+  data: NonNullable<GetPokemon["pokemon_v2_pokemon_by_pk"]>;
 }
 
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const data = await services.pokemons.read.one({ id: params!.id });
+  const { data } = await apolloClient.query<GetPokemon, GetPokemonVariables>({
+    query: GET_POKEMON,
+    variables: {
+      id: parseInt(params!.id),
+    },
+  });
 
-  if (!data) return { notFound: true };
+  if (!data.pokemon_v2_pokemon_by_pk) return { notFound: true };
 
   return {
     revalidate: 60 * 60 * 24 * 7,
     props: {
-      data,
+      data: data.pokemon_v2_pokemon_by_pk,
     },
   };
 };

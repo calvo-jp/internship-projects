@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "apollo:generate": "apollo client:codegen --target typescript --config apollo.config.js --outputFlat \"./src/types\""
+    "apollo:generate": "apollo client:codegen --target typescript --config apollo.config.js --outputFlat \"src/types\""
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",

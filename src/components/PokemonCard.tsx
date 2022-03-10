@@ -1,10 +1,10 @@
 import { Box, Heading, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import IPokemon from "types/pokemon";
+import { GetPokemons } from "types/GetPokemons";
 
 interface PokemonCardProps {
-  data: IPokemon;
+  data: GetPokemons["pokemon_v2_pokemon"][number];
   isSSG?: boolean;
 }
 
@@ -34,7 +34,7 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
       >
         <Box position="relative" height={100}>
           <Box h="full" position="relative" maxW={100} mx="auto">
-            <Image src={data.image} alt="" layout="fill" />
+            {/* <Image src="unknown.png" alt="" layout="fill" /> */}
           </Box>
         </Box>
 
@@ -45,9 +45,19 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
 
           <Wrap spacing={2} color="gray.500" fontSize="xs">
             {[
-              ["Types", data.types.length],
-              ["Abilities", data.abilities.length],
-              ["Moves", data.moves.length],
+              [
+                "Types",
+                data.pokemon_v2_pokemontypes_aggregate.aggregate?.count || 0,
+              ],
+              [
+                "Abilities",
+                data.pokemon_v2_pokemonabilities_aggregate.aggregate?.count ||
+                  0,
+              ],
+              [
+                "Moves",
+                data.pokemon_v2_pokemonmoves_aggregate.aggregate?.count || 0,
+              ],
             ].map(([label, count]) => (
               <WrapItem key={label}>
                 {label}: {count}

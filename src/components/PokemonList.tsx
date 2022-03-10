@@ -1,9 +1,9 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import IPokemon from "types/pokemon";
+import { GetPokemons } from "types/GetPokemons";
 import PokemonCard from "./PokemonCard";
 
 interface PokemonListProps {
-  pokemons: IPokemon[];
+  pokemons: GetPokemons["pokemon_v2_pokemon"];
   isSSG?: boolean;
 }
 

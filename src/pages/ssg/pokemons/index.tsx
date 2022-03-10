@@ -1,35 +1,34 @@
 import { RepeatIcon } from "@chakra-ui/icons";
 import { Box, CircularProgress, Flex, Stack, Text } from "@chakra-ui/react";
 import Header from "components/Header";
-import InfiniteScroll from "components/InfiniteScroll";
 import PokemonList from "components/PokemonList";
 import ScrollToTopButton from "components/ScrollToTopButton";
-import useSSGPagination from "hooks/useSSGPagination";
+import apolloClient from "config/apollo/client";
+import { GET_POKEMONS } from "graphql/queries";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import services from "services";
-import IPaginated from "types/paginated";
+import { GetPokemons } from "types/GetPokemons";
 
 interface Props {
-  data: IPaginated;
+  data: GetPokemons["pokemon_v2_pokemon"];
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   // pre-render only 50 rows,
   // other data will be fetched on the client-side
-  const data = await services.pokemons.read.all({ pageSize: 50 });
+  const { data } = await apolloClient.query<GetPokemons>({
+    query: GET_POKEMONS,
+  });
 
   return {
     revalidate: 60 * 60 * 24 * 7,
     props: {
-      data,
+      data: data.pokemon_v2_pokemon,
     },
   };
 };
 
 const Pokemons: NextPage<Props> = ({ data }) => {
-  const { hasNext, next, rows, fetching, error } = useSSGPagination(data);
-
   return (
     <>
       <Head>
@@ -39,13 +38,13 @@ const Pokemons: NextPage<Props> = ({ data }) => {
       <Header />
 
       <Stack as="main" p={{ base: 2, md: 4 }} spacing={{ base: 2, md: 4 }}>
-        <PokemonList pokemons={rows} isSSG />
+        <PokemonList pokemons={data} isSSG />
 
-        {fetching && <Loader />}
-        {!fetching && error && <ReloadTrigger onReload={next} />}
+        {/* {fetching && <Loader />}
+        {!fetching && error && <ReloadTrigger onReload={next} />} */}
       </Stack>
 
-      <InfiniteScroll callback={next} paused={fetching || !hasNext} />
+      {/* <InfiniteScroll callback={next} paused={fetching || !hasNext} /> */}
       <ScrollToTopButton />
     </>
   );

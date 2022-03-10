@@ -15,10 +15,10 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
-import IPokemon from "types/pokemon";
+import { GetPokemon } from "types/GetPokemon";
 
 interface WidgetProps {
-  data: IPokemon;
+  data: NonNullable<GetPokemon["pokemon_v2_pokemon_by_pk"]>;
   redirectUrl: string;
 }
 
@@ -28,33 +28,25 @@ const PokemonWidget = ({ data, ...etc }: WidgetProps) => {
       <Header data={data} {...etc} />
 
       <Stack spacing={{ base: 2, md: 4 }} p={{ base: 2, md: 4 }}>
-        <Stats stats={data.stats} />
-        <Moves moves={data.moves} />
-        <Abilities abilities={data.abilities} />
+        <Stats stats={data.pokemon_v2_pokemonstats} />
+        <Moves moves={data.pokemon_v2_pokemonmoves} />
+        <Abilities abilities={data.pokemon_v2_pokemonabilities} />
       </Stack>
     </Stack>
   );
 };
 
-const Abilities = ({ abilities }: { abilities: string[] }) => {
+interface AbilitiesProps {
+  abilities: WidgetProps["data"]["pokemon_v2_pokemonabilities"];
+}
+
+const Abilities = ({ abilities }: AbilitiesProps) => {
   return (
     <Card title="Abilities">
       <Wrap direction="column" spacing={1} fontSize="sm">
         {abilities.map((ability) => (
-          <WrapItem key={ability}>{ability}</WrapItem>
-        ))}
-      </Wrap>
-    </Card>
-  );
-};
-
-const Moves = ({ moves }: { moves: string[] }) => {
-  return (
-    <Card title="Moves">
-      <Wrap spacing={1}>
-        {moves.map((move) => (
-          <WrapItem key={move} fontSize="sm" bg="orange.100" p={2} rounded="md">
-            {move}
+          <WrapItem key={ability.id}>
+            {ability.pokemon_v2_ability?.name}
           </WrapItem>
         ))}
       </Wrap>
@@ -62,26 +54,54 @@ const Moves = ({ moves }: { moves: string[] }) => {
   );
 };
 
-const Stats = ({ stats }: { stats: IPokemon["stats"] }) => {
+interface MovesProps {
+  moves: WidgetProps["data"]["pokemon_v2_pokemonmoves"];
+}
+
+const Moves = ({ moves }: MovesProps) => {
+  return (
+    <Card title="Moves">
+      <Wrap spacing={1}>
+        {moves.map((move) => (
+          <WrapItem
+            key={move.id}
+            fontSize="sm"
+            bg="orange.100"
+            p={2}
+            rounded="md"
+          >
+            {move.pokemon_v2_move?.name}
+          </WrapItem>
+        ))}
+      </Wrap>
+    </Card>
+  );
+};
+
+interface StatsProps {
+  stats: WidgetProps["data"]["pokemon_v2_pokemonstats"];
+}
+
+const Stats = ({ stats }: StatsProps) => {
   return (
     <Card title="Stats">
       {stats.map((stat) => {
         return (
-          <Stack key={stat.name} spacing={0}>
+          <Stack key={stat.id} spacing={0}>
             <Text fontSize="sm" color="gray.600">
-              {stat.name}
+              {stat.pokemon_v2_stat?.name}
             </Text>
 
             <Flex alignItems="center" gap={2}>
               <Progress
-                value={stat.value}
+                value={stat.base_stat}
                 size="xs"
                 rounded="sm"
                 colorScheme="orange"
                 flexGrow={1}
               />
 
-              <Text fontSize="xs">{stat.value}</Text>
+              <Text fontSize="xs">{stat.base_stat}</Text>
             </Flex>
           </Stack>
         );
@@ -121,13 +141,13 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
       <BackButton href={redirectUrl} />
 
       <VStack align="center">
-        <Avatar src={data.image} />
+        {/* <Avatar src={data.image} /> */}
 
         <Heading color="white" fontWeight="bold" fontSize="4xl">
           {data.name}
         </Heading>
 
-        <Types items={data.types} />
+        <Types types={data.pokemon_v2_pokemontypes} />
       </VStack>
     </Center>
   );
@@ -158,19 +178,23 @@ const BackButton = ({ href }: { href: string }) => {
   );
 };
 
-const Types = ({ items }: { items: string[] }) => {
+interface TypesProps {
+  types: WidgetProps["data"]["pokemon_v2_pokemontypes"];
+}
+
+const Types = ({ types }: TypesProps) => {
   return (
     <Wrap>
-      {items.map((item) => (
+      {types.map((type) => (
         <WrapItem
-          key={item}
+          key={type.id}
           bgColor="whiteAlpha.300"
           py={1}
           px={4}
           rounded="full"
         >
           <Text fontWeight="bold" color="white">
-            {item}
+            {type.pokemon_v2_type?.name}
           </Text>
         </WrapItem>
       ))}

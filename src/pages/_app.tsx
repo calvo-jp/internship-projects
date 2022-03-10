@@ -3,7 +3,7 @@ import { Box, ChakraProvider, Container } from "@chakra-ui/react";
 import "@fontsource/pt-sans/400.css";
 import "@fontsource/pt-sans/700.css";
 import PageLoader from "components/PageLoader";
-import client from "config/graphql/client";
+import apolloClient from "config/apollo/client";
 import theme from "config/theme";
 import type { AppProps } from "next/app";
 import Head from "next/head";
@@ -17,7 +17,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta name="description" content="NextJS SSG and SSR Demo" />
       </Head>
 
-      <ApolloProvider client={client}>
+      <ApolloProvider client={apolloClient}>
         <ChakraProvider theme={theme}>
           <PageLoader />
 
