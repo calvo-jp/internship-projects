@@ -23,7 +23,7 @@ interface WidgetProps {
   redirectUrl: string;
 }
 
-const PokemonWidget = ({ data, ...etc }: WidgetProps) => {
+const Pokemon = ({ data, ...etc }: WidgetProps) => {
   return (
     <Stack spacing={0}>
       <Header data={data} {...etc} />
@@ -211,4 +211,4 @@ const Avatar = ({ src }: { src: string }) => {
   );
 };
 
-export default PokemonWidget;
+export default Pokemon;

@@ -1,5 +1,5 @@
 import { Flex, Spinner } from "@chakra-ui/react";
-import PokemonWidget from "components/PokemonWidget";
+import Pokemon from "components/Pokemon";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/queries";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   };
 };
 
-const Pokemon: NextPage<Props> = ({ data }) => {
+const PokemonPage: NextPage<Props> = ({ data }) => {
   const router = useRouter();
 
   if (router.isFallback) return <Loader />;
@@ -63,7 +63,7 @@ const Pokemon: NextPage<Props> = ({ data }) => {
       <Head>
         <title>(SSG) Pokedex | {data.name}</title>
       </Head>
-      <PokemonWidget data={data} redirectUrl="/ssg/pokemons" />
+      <Pokemon data={data} redirectUrl="/ssg/pokemons" />
     </>
   );
 };
@@ -89,4 +89,4 @@ const Loader = () => {
   );
 };
 
-export default Pokemon;
+export default PokemonPage;
