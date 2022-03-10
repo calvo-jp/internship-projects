@@ -6,7 +6,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { GetPokemon, GetPokemonVariables } from "types/GetPokemon";
-import { GetPokemons } from "types/GetPokemons";
+import { GetPokemons, GetPokemonsVariables } from "types/GetPokemons";
 
 interface Params {
   [key: string]: string;
@@ -14,8 +14,11 @@ interface Params {
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const { data } = await apolloClient.query<GetPokemons>({
+  const { data } = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
     query: GET_POKEMONS,
+    variables: {
+      limit: 50,
+    },
   });
 
   return {
