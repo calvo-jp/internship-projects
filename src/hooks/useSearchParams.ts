@@ -16,7 +16,7 @@ const useSearchParams = <T extends string>(...args: T[]) => {
 
   return {
     get(key: keyof typeof obj) {
-      return [obj[key]].flat(1).at(0);
+      if (key in obj) return [obj[key]].flat(1).at(0);
     },
 
     getAll(key: keyof typeof obj): string[] {
