@@ -15,21 +15,7 @@ const PokemonPage = () => {
     { skip: !isNumeric(id), variables: { id: parseInt(id!) } }
   );
 
-  if (loading) {
-    return (
-      <Flex minH="100vh" align="center" justify="center">
-        <Spinner
-          thickness="0.5rem"
-          speed="800ms"
-          emptyColor="gray.300"
-          color="orange.400"
-          h={125}
-          w={125}
-        />
-      </Flex>
-    );
-  }
-
+  if (loading) return <Loader />;
   if (error || !data?.pokemon) return <NotFound />;
 
   return (
@@ -40,6 +26,21 @@ const PokemonPage = () => {
 
       <Pokemon data={data.pokemon} redirectUrl="/csr/pokemons" />
     </>
+  );
+};
+
+const Loader = () => {
+  return (
+    <Flex minH="100vh" align="center" justify="center">
+      <Spinner
+        thickness="0.5rem"
+        speed="800ms"
+        emptyColor="gray.300"
+        color="orange.400"
+        h={125}
+        w={125}
+      />
+    </Flex>
   );
 };
 

@@ -12,7 +12,7 @@ const PokemonsPage = () => {
     notifyOnNetworkStatusChange: true,
     variables: {
       offset: 0,
-      limit: 20,
+      limit: 30,
     },
   });
 
@@ -20,7 +20,6 @@ const PokemonsPage = () => {
     fetchMore({
       variables: {
         offset: data ? data.pokemons.length : 0,
-        limit: 20,
       },
     });
   };
