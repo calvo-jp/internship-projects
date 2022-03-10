@@ -17,7 +17,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data } = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
     query: GET_POKEMONS,
     variables: {
-      limit: 6,
+      limit: 30,
     },
   });
 
@@ -38,7 +38,7 @@ const PokemonsPage: NextPage<Props> = ({ data }) => {
   >(GET_POKEMONS, {
     variables: {
       offset: data.length,
-      limit: 6,
+      limit: 30,
     },
     notifyOnNetworkStatusChange: true,
     onCompleted({ pokemons }) {
@@ -51,7 +51,7 @@ const PokemonsPage: NextPage<Props> = ({ data }) => {
       variables: {
         offset: rows.length,
       },
-    }).then(console.log);
+    });
   };
 
   return (
@@ -63,7 +63,7 @@ const PokemonsPage: NextPage<Props> = ({ data }) => {
       <Pokemons
         data={rows}
         loading={loading}
-        retry={!!error}
+        shouldRetry={!!error}
         onRetry={refetch}
         onNextPage={next}
         isSSG

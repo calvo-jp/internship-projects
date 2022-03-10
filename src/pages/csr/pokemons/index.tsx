@@ -32,9 +32,9 @@ const PokemonsPage = () => {
       </Head>
 
       <Pokemons
-        data={data?.pokemons || []}
+        data={data?.pokemons}
         loading={loading}
-        retry={!!error}
+        shouldRetry={!!error}
         onRetry={refetch}
         onNextPage={next}
       />

@@ -8,7 +8,7 @@ import { GetPokemons } from "types/GetPokemons";
 
 interface PokemonsProps {
   data?: GetPokemons["pokemons"];
-  retry?: boolean;
+  shouldRetry?: boolean;
   onRetry?: () => void;
   loading?: boolean;
   onNextPage?: () => void;
@@ -17,7 +17,7 @@ interface PokemonsProps {
 
 const Pokemons = ({
   data,
-  retry,
+  shouldRetry,
   onRetry,
   loading,
   onNextPage,
@@ -30,7 +30,7 @@ const Pokemons = ({
       <Stack as="main" p={{ base: 2, md: 4 }} spacing={{ base: 4, md: 8 }}>
         {data && <PokemonList pokemons={data} isSSG={isSSG} />}
         {loading && <Loader />}
-        {!loading && retry && <ReloadTrigger onReload={onRetry} />}
+        {!loading && shouldRetry && <ReloadTrigger onReload={onRetry} />}
       </Stack>
 
       <InfiniteScroll callback={onNextPage} paused={loading} />
