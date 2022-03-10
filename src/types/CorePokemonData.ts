@@ -7,7 +7,7 @@
 // GraphQL fragment: CorePokemonData
 // ====================================================
 
-export interface CorePokemonData_pokemon_v2_pokemonsprites {
+export interface CorePokemonData_sprites {
   __typename: "pokemon_v2_pokemonsprites";
   sprites: string;
 }
@@ -19,5 +19,5 @@ export interface CorePokemonData {
   /**
    * An array relationship
    */
-  pokemon_v2_pokemonsprites: CorePokemonData_pokemon_v2_pokemonsprites[];
+  sprites: CorePokemonData_sprites[];
 }

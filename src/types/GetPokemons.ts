@@ -7,68 +7,68 @@
 // GraphQL query operation: GetPokemons
 // ====================================================
 
-export interface GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonabilities_aggregate_aggregate {
+export interface GetPokemons_pokemons_abilities_aggregate {
   __typename: "pokemon_v2_pokemonability_aggregate_fields";
   count: number;
 }
 
-export interface GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonabilities_aggregate {
+export interface GetPokemons_pokemons_abilities {
   __typename: "pokemon_v2_pokemonability_aggregate";
-  aggregate: GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonabilities_aggregate_aggregate | null;
+  aggregate: GetPokemons_pokemons_abilities_aggregate | null;
 }
 
-export interface GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonmoves_aggregate_aggregate {
+export interface GetPokemons_pokemons_moves_aggregate {
   __typename: "pokemon_v2_pokemonmove_aggregate_fields";
   count: number;
 }
 
-export interface GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonmoves_aggregate {
+export interface GetPokemons_pokemons_moves {
   __typename: "pokemon_v2_pokemonmove_aggregate";
-  aggregate: GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonmoves_aggregate_aggregate | null;
+  aggregate: GetPokemons_pokemons_moves_aggregate | null;
 }
 
-export interface GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemontypes_aggregate_aggregate {
+export interface GetPokemons_pokemons_types_aggregate {
   __typename: "pokemon_v2_pokemontype_aggregate_fields";
   count: number;
 }
 
-export interface GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemontypes_aggregate {
+export interface GetPokemons_pokemons_types {
   __typename: "pokemon_v2_pokemontype_aggregate";
-  aggregate: GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemontypes_aggregate_aggregate | null;
+  aggregate: GetPokemons_pokemons_types_aggregate | null;
 }
 
-export interface GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonsprites {
+export interface GetPokemons_pokemons_sprites {
   __typename: "pokemon_v2_pokemonsprites";
   sprites: string;
 }
 
-export interface GetPokemons_pokemon_v2_pokemon {
+export interface GetPokemons_pokemons {
   __typename: "pokemon_v2_pokemon";
   /**
    * An aggregate relationship
    */
-  pokemon_v2_pokemonabilities_aggregate: GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonabilities_aggregate;
+  abilities: GetPokemons_pokemons_abilities;
   /**
    * An aggregate relationship
    */
-  pokemon_v2_pokemonmoves_aggregate: GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonmoves_aggregate;
+  moves: GetPokemons_pokemons_moves;
   /**
    * An aggregate relationship
    */
-  pokemon_v2_pokemontypes_aggregate: GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemontypes_aggregate;
+  types: GetPokemons_pokemons_types;
   id: number;
   name: string;
   /**
    * An array relationship
    */
-  pokemon_v2_pokemonsprites: GetPokemons_pokemon_v2_pokemon_pokemon_v2_pokemonsprites[];
+  sprites: GetPokemons_pokemons_sprites[];
 }
 
 export interface GetPokemons {
   /**
    * fetch data from the table: "pokemon_v2_pokemon"
    */
-  pokemon_v2_pokemon: GetPokemons_pokemon_v2_pokemon[];
+  pokemons: GetPokemons_pokemons[];
 }
 
 export interface GetPokemonsVariables {

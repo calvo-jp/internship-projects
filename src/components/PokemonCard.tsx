@@ -5,7 +5,7 @@ import { GetPokemons } from "types/GetPokemons";
 import getPokemonImage from "utils/getPokemonImage";
 
 interface PokemonCardProps {
-  data: GetPokemons["pokemon_v2_pokemon"][number];
+  data: GetPokemons["pokemons"][number];
   isSSG?: boolean;
 }
 
@@ -46,19 +46,9 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
 
           <Wrap spacing={2} color="gray.500" fontSize="xs">
             {[
-              [
-                "Types",
-                data.pokemon_v2_pokemontypes_aggregate.aggregate?.count || 0,
-              ],
-              [
-                "Abilities",
-                data.pokemon_v2_pokemonabilities_aggregate.aggregate?.count ||
-                  0,
-              ],
-              [
-                "Moves",
-                data.pokemon_v2_pokemonmoves_aggregate.aggregate?.count || 0,
-              ],
+              ["Types", coalesceToZero(data.abilities.aggregate?.count)],
+              ["Abilities", coalesceToZero(data.abilities.aggregate?.count)],
+              ["Moves", coalesceToZero(data.moves.aggregate?.count)],
             ].map(([label, count]) => (
               <WrapItem key={label}>
                 {label}: {count}
@@ -69,6 +59,10 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
       </Box>
     </Link>
   );
+};
+
+const coalesceToZero = (subject: null | undefined | number) => {
+  return !subject ? 0 : subject;
 };
 
 export default PokemonCard;

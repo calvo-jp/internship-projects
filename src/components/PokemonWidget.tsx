@@ -19,7 +19,7 @@ import { GetPokemon } from "types/GetPokemon";
 import getPokemonImage from "utils/getPokemonImage";
 
 interface WidgetProps {
-  data: NonNullable<GetPokemon["pokemon_v2_pokemon_by_pk"]>;
+  data: NonNullable<GetPokemon["pokemon"]>;
   redirectUrl: string;
 }
 
@@ -29,16 +29,16 @@ const PokemonWidget = ({ data, ...etc }: WidgetProps) => {
       <Header data={data} {...etc} />
 
       <Stack spacing={{ base: 2, md: 4 }} p={{ base: 2, md: 4 }}>
-        <Stats stats={data.pokemon_v2_pokemonstats} />
-        <Moves moves={data.pokemon_v2_pokemonmoves} />
-        <Abilities abilities={data.pokemon_v2_pokemonabilities} />
+        <Stats stats={data.stats} />
+        <Moves moves={data.moves} />
+        <Abilities abilities={data.abilities} />
       </Stack>
     </Stack>
   );
 };
 
 interface AbilitiesProps {
-  abilities: WidgetProps["data"]["pokemon_v2_pokemonabilities"];
+  abilities: WidgetProps["data"]["abilities"];
 }
 
 const Abilities = ({ abilities }: AbilitiesProps) => {
@@ -46,9 +46,7 @@ const Abilities = ({ abilities }: AbilitiesProps) => {
     <Card title="Abilities">
       <Wrap direction="column" spacing={1} fontSize="sm">
         {abilities.map((ability) => (
-          <WrapItem key={ability.id}>
-            {ability.pokemon_v2_ability?.name}
-          </WrapItem>
+          <WrapItem key={ability.id}>{ability.ability?.name}</WrapItem>
         ))}
       </Wrap>
     </Card>
@@ -56,7 +54,7 @@ const Abilities = ({ abilities }: AbilitiesProps) => {
 };
 
 interface MovesProps {
-  moves: WidgetProps["data"]["pokemon_v2_pokemonmoves"];
+  moves: WidgetProps["data"]["moves"];
 }
 
 const Moves = ({ moves }: MovesProps) => {
@@ -71,7 +69,7 @@ const Moves = ({ moves }: MovesProps) => {
             p={2}
             rounded="md"
           >
-            {move.pokemon_v2_move?.name}
+            {move.move?.name}
           </WrapItem>
         ))}
       </Wrap>
@@ -80,7 +78,7 @@ const Moves = ({ moves }: MovesProps) => {
 };
 
 interface StatsProps {
-  stats: WidgetProps["data"]["pokemon_v2_pokemonstats"];
+  stats: WidgetProps["data"]["stats"];
 }
 
 const Stats = ({ stats }: StatsProps) => {
@@ -90,19 +88,19 @@ const Stats = ({ stats }: StatsProps) => {
         return (
           <Stack key={stat.id} spacing={0}>
             <Text fontSize="sm" color="gray.600">
-              {stat.pokemon_v2_stat?.name}
+              {stat.stat?.name}
             </Text>
 
             <Flex alignItems="center" gap={2}>
               <Progress
-                value={stat.base_stat}
+                value={stat.value}
                 size="xs"
                 rounded="sm"
                 colorScheme="orange"
                 flexGrow={1}
               />
 
-              <Text fontSize="xs">{stat.base_stat}</Text>
+              <Text fontSize="xs">{stat.value}</Text>
             </Flex>
           </Stack>
         );
@@ -148,7 +146,7 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
           {data.name}
         </Heading>
 
-        <Types types={data.pokemon_v2_pokemontypes} />
+        <Types types={data.types} />
       </VStack>
     </Center>
   );
@@ -180,7 +178,7 @@ const BackButton = ({ href }: { href: string }) => {
 };
 
 interface TypesProps {
-  types: WidgetProps["data"]["pokemon_v2_pokemontypes"];
+  types: WidgetProps["data"]["types"];
 }
 
 const Types = ({ types }: TypesProps) => {
@@ -195,7 +193,7 @@ const Types = ({ types }: TypesProps) => {
           rounded="full"
         >
           <Text fontWeight="bold" color="white">
-            {type.pokemon_v2_type?.name}
+            {type.type?.name}
           </Text>
         </WrapItem>
       ))}

@@ -20,14 +20,14 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 
   return {
     fallback: true,
-    paths: data.pokemon_v2_pokemon.map(({ id }) => ({
+    paths: data.pokemons.map(({ id }) => ({
       params: { id: id.toString() },
     })),
   };
 };
 
 interface Props {
-  data: NonNullable<GetPokemon["pokemon_v2_pokemon_by_pk"]>;
+  data: NonNullable<GetPokemon["pokemon"]>;
 }
 
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
@@ -40,12 +40,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     },
   });
 
-  if (!data.pokemon_v2_pokemon_by_pk) return { notFound: true };
+  if (!data.pokemon) return { notFound: true };
 
   return {
     revalidate: 60 * 60 * 24 * 7,
     props: {
-      data: data.pokemon_v2_pokemon_by_pk,
+      data: data.pokemon,
     },
   };
 };

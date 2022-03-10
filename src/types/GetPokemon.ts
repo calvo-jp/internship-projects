@@ -7,99 +7,99 @@
 // GraphQL query operation: GetPokemon
 // ====================================================
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemontypes_pokemon_v2_type {
+export interface GetPokemon_pokemon_types_type {
   __typename: "pokemon_v2_type";
   name: string;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemontypes {
+export interface GetPokemon_pokemon_types {
   __typename: "pokemon_v2_pokemontype";
   id: number;
   /**
    * An object relationship
    */
-  pokemon_v2_type: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemontypes_pokemon_v2_type | null;
+  type: GetPokemon_pokemon_types_type | null;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonabilities_pokemon_v2_ability {
+export interface GetPokemon_pokemon_abilities_ability {
   __typename: "pokemon_v2_ability";
   name: string;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonabilities {
+export interface GetPokemon_pokemon_abilities {
   __typename: "pokemon_v2_pokemonability";
   id: number;
   /**
    * An object relationship
    */
-  pokemon_v2_ability: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonabilities_pokemon_v2_ability | null;
+  ability: GetPokemon_pokemon_abilities_ability | null;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonstats_pokemon_v2_stat {
+export interface GetPokemon_pokemon_stats_stat {
   __typename: "pokemon_v2_stat";
   name: string;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonstats {
+export interface GetPokemon_pokemon_stats {
   __typename: "pokemon_v2_pokemonstat";
   id: number;
-  base_stat: number;
   /**
    * An object relationship
    */
-  pokemon_v2_stat: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonstats_pokemon_v2_stat | null;
+  stat: GetPokemon_pokemon_stats_stat | null;
+  value: number;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonmoves_pokemon_v2_move {
+export interface GetPokemon_pokemon_moves_move {
   __typename: "pokemon_v2_move";
   name: string;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonmoves {
+export interface GetPokemon_pokemon_moves {
   __typename: "pokemon_v2_pokemonmove";
   id: number;
   /**
    * An object relationship
    */
-  pokemon_v2_move: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonmoves_pokemon_v2_move | null;
+  move: GetPokemon_pokemon_moves_move | null;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonsprites {
+export interface GetPokemon_pokemon_sprites {
   __typename: "pokemon_v2_pokemonsprites";
   sprites: string;
 }
 
-export interface GetPokemon_pokemon_v2_pokemon_by_pk {
+export interface GetPokemon_pokemon {
   __typename: "pokemon_v2_pokemon";
   /**
    * An array relationship
    */
-  pokemon_v2_pokemontypes: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemontypes[];
+  types: GetPokemon_pokemon_types[];
   /**
    * An array relationship
    */
-  pokemon_v2_pokemonabilities: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonabilities[];
+  abilities: GetPokemon_pokemon_abilities[];
   /**
    * An array relationship
    */
-  pokemon_v2_pokemonstats: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonstats[];
+  stats: GetPokemon_pokemon_stats[];
   /**
    * An array relationship
    */
-  pokemon_v2_pokemonmoves: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonmoves[];
+  moves: GetPokemon_pokemon_moves[];
   id: number;
   name: string;
   /**
    * An array relationship
    */
-  pokemon_v2_pokemonsprites: GetPokemon_pokemon_v2_pokemon_by_pk_pokemon_v2_pokemonsprites[];
+  sprites: GetPokemon_pokemon_sprites[];
 }
 
 export interface GetPokemon {
   /**
    * fetch data from the table: "pokemon_v2_pokemon" using primary key columns
    */
-  pokemon_v2_pokemon_by_pk: GetPokemon_pokemon_v2_pokemon_by_pk | null;
+  pokemon: GetPokemon_pokemon | null;
 }
 
 export interface GetPokemonVariables {

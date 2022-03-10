@@ -9,7 +9,7 @@ import Head from "next/head";
 import { GetPokemons, GetPokemonsVariables } from "types/GetPokemons";
 
 interface Props {
-  data: GetPokemons["pokemon_v2_pokemon"];
+  data: GetPokemons["pokemons"];
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     revalidate: 60 * 60 * 24 * 7,
     props: {
-      data: data.pokemon_v2_pokemon,
+      data: data.pokemons,
     },
   };
 };

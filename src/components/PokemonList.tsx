@@ -3,7 +3,7 @@ import { GetPokemons } from "types/GetPokemons";
 import PokemonCard from "./PokemonCard";
 
 interface PokemonListProps {
-  pokemons: GetPokemons["pokemon_v2_pokemon"];
+  pokemons: GetPokemons["pokemons"];
   isSSG?: boolean;
 }
 

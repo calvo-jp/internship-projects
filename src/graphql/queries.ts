@@ -4,7 +4,7 @@ const CORE_POKEMON_DATA = gql`
   fragment CorePokemonData on pokemon_v2_pokemon {
     id
     name
-    pokemon_v2_pokemonsprites {
+    sprites: pokemon_v2_pokemonsprites {
       sprites
     }
   }
@@ -12,18 +12,18 @@ const CORE_POKEMON_DATA = gql`
 
 export const GET_POKEMONS = gql`
   query GetPokemons($limit: Int, $offset: Int) {
-    pokemon_v2_pokemon(limit: $limit, offset: $offset) {
-      pokemon_v2_pokemonabilities_aggregate {
+    pokemons: pokemon_v2_pokemon(limit: $limit, offset: $offset) {
+      abilities: pokemon_v2_pokemonabilities_aggregate {
         aggregate {
           count
         }
       }
-      pokemon_v2_pokemonmoves_aggregate {
+      moves: pokemon_v2_pokemonmoves_aggregate {
         aggregate {
           count
         }
       }
-      pokemon_v2_pokemontypes_aggregate {
+      types: pokemon_v2_pokemontypes_aggregate {
         aggregate {
           count
         }
@@ -37,29 +37,29 @@ export const GET_POKEMONS = gql`
 
 export const GET_POKEMON = gql`
   query GetPokemon($id: Int!) {
-    pokemon_v2_pokemon_by_pk(id: $id) {
-      pokemon_v2_pokemontypes {
+    pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
+      types: pokemon_v2_pokemontypes {
         id
-        pokemon_v2_type {
+        type: pokemon_v2_type {
           name
         }
       }
-      pokemon_v2_pokemonabilities {
+      abilities: pokemon_v2_pokemonabilities {
         id
-        pokemon_v2_ability {
+        ability: pokemon_v2_ability {
           name
         }
       }
-      pokemon_v2_pokemonstats {
+      stats: pokemon_v2_pokemonstats {
         id
-        base_stat
-        pokemon_v2_stat {
+        stat: pokemon_v2_stat {
           name
         }
+        value: base_stat
       }
-      pokemon_v2_pokemonmoves(limit: 25) {
+      moves: pokemon_v2_pokemonmoves(limit: 25) {
         id
-        pokemon_v2_move {
+        move: pokemon_v2_move {
           name
         }
       }

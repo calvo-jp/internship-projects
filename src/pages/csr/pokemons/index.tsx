@@ -23,7 +23,7 @@ const Pokemons = () => {
   const next = () => {
     fetchMore({
       variables: {
-        offset: data ? data.pokemon_v2_pokemon.length : 0,
+        offset: data ? data.pokemons.length : 0,
         limit: 20,
       },
     });
@@ -38,7 +38,7 @@ const Pokemons = () => {
       <Header />
 
       <Stack as="main" p={{ base: 2, md: 4 }} spacing={{ base: 2, md: 4 }}>
-        {data && <PokemonList pokemons={data.pokemon_v2_pokemon} />}
+        {data && <PokemonList pokemons={data.pokemons} />}
         {loading && <Loader />}
         {!loading && error && <ReloadTrigger onReload={refetch} />}
       </Stack>

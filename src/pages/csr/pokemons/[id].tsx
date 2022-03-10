@@ -31,18 +31,15 @@ const Pokemon = () => {
     );
   }
 
-  if (error || !data?.pokemon_v2_pokemon_by_pk) return <NotFound />;
+  if (error || !data?.pokemon) return <NotFound />;
 
   return (
     <>
       <Head>
-        <title>(CSR) Pokedex | {data.pokemon_v2_pokemon_by_pk.name}</title>
+        <title>(CSR) Pokedex | {data.pokemon.name}</title>
       </Head>
 
-      <PokemonWidget
-        data={data.pokemon_v2_pokemon_by_pk}
-        redirectUrl="/csr/pokemons"
-      />
+      <PokemonWidget data={data.pokemon} redirectUrl="/csr/pokemons" />
     </>
   );
 };
