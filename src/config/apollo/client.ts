@@ -1,6 +1,15 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { offsetLimitPagination } from "@apollo/client/utilities";
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        pokemon_v2_pokemon: offsetLimitPagination(),
+      },
+    },
+  },
+});
 
 const apolloClient = new ApolloClient({
   cache,

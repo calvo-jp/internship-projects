@@ -11,8 +11,8 @@ const CORE_POKEMON_DATA = gql`
 `;
 
 export const GET_POKEMONS = gql`
-  query GetPokemons {
-    pokemon_v2_pokemon {
+  query GetPokemons($limit: Int, $offset: Int) {
+    pokemon_v2_pokemon(limit: $limit, offset: $offset) {
       pokemon_v2_pokemonabilities_aggregate {
         aggregate {
           count

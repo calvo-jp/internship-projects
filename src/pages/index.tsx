@@ -38,9 +38,9 @@ export default function Landing() {
           />
 
           <Link
-            href="/ssr/pokemons"
-            label="SSR"
-            helperText="Server Side Rendering"
+            href="/csr/pokemons"
+            label="CSR"
+            helperText="Client Side Rendering"
           />
         </Stack>
 

@@ -10,7 +10,7 @@ interface PokemonCardProps {
 }
 
 const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
-  const baseUrl = isSSG ? "/ssg/pokemons/" : "/ssr/pokemons/";
+  const baseUrl = isSSG ? "/ssg/pokemons/" : "/csr/pokemons/";
 
   return (
     <Link passHref href={baseUrl + data.id}>
