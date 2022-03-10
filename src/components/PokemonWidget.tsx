@@ -16,6 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 import { GetPokemon } from "types/GetPokemon";
+import getPokemonImage from "utils/getPokemonImage";
 
 interface WidgetProps {
   data: NonNullable<GetPokemon["pokemon_v2_pokemon_by_pk"]>;
@@ -141,7 +142,7 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
       <BackButton href={redirectUrl} />
 
       <VStack align="center">
-        {/* <Avatar src={data.image} /> */}
+        <Avatar src={getPokemonImage(data)} />
 
         <Heading color="white" fontWeight="bold" fontSize="4xl">
           {data.name}
