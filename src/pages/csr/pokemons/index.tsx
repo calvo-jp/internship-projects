@@ -28,7 +28,7 @@ const PokemonsPage = () => {
   return (
     <>
       <Head>
-        <title>(SSR) Pokedex</title>
+        <title>(CSR) Pokedex</title>
       </Head>
 
       <Pokemons

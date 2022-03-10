@@ -16,7 +16,7 @@ export default function Landing() {
   return (
     <>
       <Head>
-        <title>Pokedex - SSG & SSR Demo using NextJS</title>
+        <title>Pokedex - GraphQL + Next SSG and CSR Demo</title>
       </Head>
 
       <VStack
@@ -123,7 +123,7 @@ const Brand = () => {
       </Heading>
 
       <Text as="p" textAlign="center" fontSize="sm" color="gray.500">
-        Next SSG and SSR Demo
+        GraphQL + Next SSG and CSR Demo
       </Text>
     </Box>
   );

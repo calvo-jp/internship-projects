@@ -14,7 +14,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="NextJS SSG and SSR Demo" />
+        <meta name="description" content="GraphQL + NextJS SSG and CSR Demo" />
       </Head>
 
       <ApolloProvider client={apolloClient}>
