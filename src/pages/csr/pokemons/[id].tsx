@@ -1,41 +1,48 @@
+import { useQuery } from "@apollo/client";
+import { Flex, Spinner } from "@chakra-ui/react";
 import PokemonWidget from "components/PokemonWidget";
-import apolloClient from "config/apollo/client";
 import { GET_POKEMON } from "graphql/queries";
-import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import NotFound from "pages/404";
 import { GetPokemon, GetPokemonVariables } from "types/GetPokemon";
 
-interface Props {
-  data: NonNullable<GetPokemon["pokemon_v2_pokemon_by_pk"]>;
-}
+const Pokemon = () => {
+  const router = useRouter();
+  const id = router.query.id as string;
 
-interface Params {
-  [key: string]: string;
-  id: string;
-}
+  const { data, loading, error } = useQuery<GetPokemon, GetPokemonVariables>(
+    GET_POKEMON,
+    { variables: { id: parseInt(id) } }
+  );
 
-export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
-  params,
-}) => {
-  const { data } = await apolloClient.query<GetPokemon, GetPokemonVariables>({
-    query: GET_POKEMON,
-    variables: {
-      id: parseInt(params!.id),
-    },
-  });
+  if (loading) {
+    return (
+      <Flex minH="100vh" align="center" justify="center">
+        <Spinner
+          thickness="0.5rem"
+          speed="800ms"
+          emptyColor="gray.300"
+          color="orange.400"
+          h={125}
+          w={125}
+        />
+      </Flex>
+    );
+  }
 
-  return !data.pokemon_v2_pokemon_by_pk
-    ? { notFound: true }
-    : { props: { data: data.pokemon_v2_pokemon_by_pk } };
-};
+  if (error || !data?.pokemon_v2_pokemon_by_pk) return <NotFound />;
 
-const Pokemon: NextPage<Props> = ({ data }) => {
   return (
     <>
       <Head>
-        <title>(CSR) Pokedex | {data.name}</title>
+        <title>(CSR) Pokedex | {data.pokemon_v2_pokemon_by_pk.name}</title>
       </Head>
-      <PokemonWidget data={data} redirectUrl="/csr/pokemons" />;
+
+      <PokemonWidget
+        data={data.pokemon_v2_pokemon_by_pk}
+        redirectUrl="/csr/pokemons"
+      />
     </>
   );
 };
