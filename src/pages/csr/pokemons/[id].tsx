@@ -45,7 +45,7 @@ const Loader = () => {
 };
 
 const isNumeric = (subject: any): subject is string => {
-  return typeof subject === "string" && /^[0-9]$/.test(subject);
+  return typeof subject === "string" && /^[0-9]+$/.test(subject);
 };
 
 export default PokemonPage;
