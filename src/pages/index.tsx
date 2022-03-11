@@ -122,7 +122,7 @@ const Brand = () => {
         POKEDEX
       </Heading>
 
-      <Text as="p" textAlign="center" fontSize="sm" color="gray.500">
+      <Text textAlign="center" fontSize="sm" color="gray.500">
         GraphQL + Next SSG and CSR Demo
       </Text>
     </Box>

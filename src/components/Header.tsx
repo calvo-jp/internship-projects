@@ -49,7 +49,7 @@ const Brand = () => {
           POKEDEX
         </Heading>
 
-        <Text as="p" lineHeight={0.8} opacity="0.9">
+        <Text lineHeight={0.8} opacity="0.9">
           Powered by pokeapi
         </Text>
       </VStack>
