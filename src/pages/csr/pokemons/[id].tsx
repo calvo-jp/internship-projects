@@ -15,7 +15,6 @@ const PokemonPage = () => {
     {
       skip: !isNumeric(id),
       variables: { id: parseInt(id!) },
-      pollInterval: 1000 * 60 * 1, // 1hr
     }
   );
 
