@@ -2,13 +2,13 @@ import { useQuery } from "@apollo/client";
 import Pokemons from "components/Pokemons";
 import { GET_POKEMONS } from "graphql/queries";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GetPokemons, GetPokemonsVariables } from "types/GetPokemons";
 
 const PokemonsPage = () => {
   const [hasNext, setHasNext] = useState(true);
   // recent length of data
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState<number>();
   const { loading, fetchMore, data, error, refetch } = useQuery<
     GetPokemons,
     GetPokemonsVariables
@@ -21,7 +21,7 @@ const PokemonsPage = () => {
     onCompleted({ pokemons }) {
       setCounter(pokemons.length);
       // no more rows
-      if (counter >= pokemons.length) setHasNext(false);
+      if (counter && counter >= pokemons.length) setHasNext(false);
     },
   });
 
@@ -34,6 +34,13 @@ const PokemonsPage = () => {
       });
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setCounter(undefined);
+      setHasNext(true);
+    };
+  }, []);
 
   return (
     <>
