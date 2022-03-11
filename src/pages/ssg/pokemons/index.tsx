@@ -4,7 +4,7 @@ import apolloClient from "config/apollo/client";
 import { GET_POKEMONS } from "graphql/queries";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GetPokemons, GetPokemonsVariables } from "types/GetPokemons";
 
 interface Props {
@@ -59,6 +59,13 @@ const PokemonsPage: NextPage<Props> = ({ data }) => {
       });
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setRows(data);
+      setHasNext(true);
+    };
+  }, [data]);
 
   return (
     <>
