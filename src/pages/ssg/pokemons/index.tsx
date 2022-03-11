@@ -31,6 +31,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 const PokemonsPage: NextPage<Props> = ({ data }) => {
   const [rows, setRows] = useState(data);
+  const [hasNext, setHasNext] = useState(true);
 
   const [, { loading, error, fetchMore, refetch }] = useLazyQuery<
     GetPokemons,
@@ -42,16 +43,21 @@ const PokemonsPage: NextPage<Props> = ({ data }) => {
     },
     notifyOnNetworkStatusChange: true,
     onCompleted({ pokemons }) {
-      setRows([...data, ...pokemons]);
+      const array = [...data, ...pokemons];
+      // no new rows added
+      if (array.length <= rows.length) setHasNext(false);
+      else setRows(array);
     },
   });
 
   const next = async () => {
-    await fetchMore({
-      variables: {
-        offset: rows.length,
-      },
-    });
+    if (hasNext) {
+      await fetchMore({
+        variables: {
+          offset: rows.length,
+        },
+      });
+    }
   };
 
   return (

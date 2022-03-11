@@ -1,6 +1,7 @@
 import { Box, Heading, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { GetPokemons } from "types/GetPokemons";
 import getPokemonImage from "utils/getPokemonImage";
 
@@ -35,7 +36,7 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
       >
         <Box position="relative" height={100}>
           <Box h="full" position="relative" maxW={100} mx="auto">
-            <Image src={getPokemonImage(data)} alt="" layout="fill" />
+            <ImageWithFallback src={getPokemonImage(data)} />
           </Box>
         </Box>
 
@@ -58,6 +59,19 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
         </Box>
       </Box>
     </Link>
+  );
+};
+
+const ImageWithFallback = ({ src }: { src: string }) => {
+  const [source, setSource] = useState(src);
+
+  return (
+    <Image
+      src={source}
+      alt=""
+      layout="fill"
+      onError={() => setSource("/pokeball.png")}
+    />
   );
 };
 
