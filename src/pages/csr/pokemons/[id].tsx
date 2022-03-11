@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { Flex, Spinner } from "@chakra-ui/react";
+import Error from "components/Error";
 import Pokemon from "components/Pokemon";
 import { GET_POKEMON } from "graphql/queries";
 import useSearchParams from "hooks/useSearchParams";
 import Head from "next/head";
-import NotFound from "pages/404";
 import { GetPokemon, GetPokemonVariables } from "types/GetPokemon";
 
 const PokemonPage = () => {
@@ -16,7 +16,8 @@ const PokemonPage = () => {
   );
 
   if (loading) return <Loader />;
-  if (error || !data?.pokemon) return <NotFound />;
+  if (error) return <InternalError />;
+  if (!data?.pokemon) return <NotFound />;
 
   return (
     <>
@@ -26,6 +27,26 @@ const PokemonPage = () => {
 
       <Pokemon data={data.pokemon} redirectUrl="/csr/pokemons" />
     </>
+  );
+};
+
+const NotFound = () => {
+  return (
+    <Error
+      title="ERROR 404"
+      message="The page you are looking for does not exist"
+      redirect="/csr/pokemons"
+    />
+  );
+};
+
+const InternalError = () => {
+  return (
+    <Error
+      title="ERROR 503"
+      message="Something went wrong."
+      redirect="/csr/pokemons"
+    />
   );
 };
 
