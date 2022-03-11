@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import { Flex, Spinner } from "@chakra-ui/react";
 import Error from "components/Error";
 import Loader from "components/Loader";
 import Pokemon from "components/Pokemon";
