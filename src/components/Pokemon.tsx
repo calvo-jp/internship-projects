@@ -4,6 +4,7 @@ import {
   Center,
   Flex,
   Heading,
+  HStack,
   IconButton,
   Progress,
   Stack,
@@ -25,7 +26,7 @@ interface WidgetProps {
 
 const Pokemon = ({ data, ...etc }: WidgetProps) => {
   return (
-    <Stack spacing={0}>
+    <VStack spacing={0}>
       <Header data={data} {...etc} />
 
       <Stack spacing={{ base: 2, md: 4 }} p={{ base: 2, md: 4 }}>
@@ -33,7 +34,7 @@ const Pokemon = ({ data, ...etc }: WidgetProps) => {
         <Moves moves={data.moves} />
         <Abilities abilities={data.abilities} />
       </Stack>
-    </Stack>
+    </VStack>
   );
 };
 
@@ -116,13 +117,13 @@ interface CardProps {
 const Card = ({ title, children }: PropsWithChildren<CardProps>) => {
   return (
     <Box p={6} bg="white" shadow="md" rounded="sm">
-      <Flex align="center" gap={2}>
+      <HStack align="center">
         <SettingsIcon color="gray.400" w={4} h={4} />
 
         <Text as="h4" fontSize="lg">
           {title}
         </Text>
-      </Flex>
+      </HStack>
 
       <Box mt={8}>{children}</Box>
     </Box>
@@ -132,6 +133,7 @@ const Card = ({ title, children }: PropsWithChildren<CardProps>) => {
 const Header = ({ data, redirectUrl }: WidgetProps) => {
   return (
     <Center
+      w="full"
       position="relative"
       bgGradient="linear(to right, orange.400, yellow.500)"
       roundedBottom={{ base: 0, md: "3xl" }}
@@ -139,7 +141,7 @@ const Header = ({ data, redirectUrl }: WidgetProps) => {
     >
       <BackButton href={redirectUrl} />
 
-      <VStack align="center">
+      <VStack>
         <Avatar src={getPokemonImage(data)} />
 
         <Heading color="white" fontWeight="bold" fontSize="4xl">
@@ -156,8 +158,8 @@ const BackButton = ({ href }: { href: string }) => {
   return (
     <Link href={href} passHref>
       <IconButton
-        aria-label="Go back"
         as="a"
+        aria-label="Go back"
         rounded="full"
         position="absolute"
         bg={{ base: "blackAlpha.300", lg: "orange.400" }}

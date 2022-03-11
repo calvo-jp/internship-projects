@@ -1,4 +1,4 @@
-import { Box, Heading, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Heading, LinkBox, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -15,7 +15,7 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
 
   return (
     <Link passHref href={baseUrl + data.id}>
-      <Box
+      <LinkBox
         as="a"
         display="block"
         border={1}
@@ -57,7 +57,7 @@ const PokemonCard = ({ data, isSSG }: PokemonCardProps) => {
             ))}
           </Wrap>
         </Box>
-      </Box>
+      </LinkBox>
     </Link>
   );
 };

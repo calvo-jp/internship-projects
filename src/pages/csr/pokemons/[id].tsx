@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { Flex, Spinner } from "@chakra-ui/react";
 import Error from "components/Error";
+import Loader from "components/Loader";
 import Pokemon from "components/Pokemon";
 import { GET_POKEMON } from "graphql/queries";
 import useSearchParams from "hooks/useSearchParams";
@@ -12,7 +13,11 @@ const PokemonPage = () => {
 
   const { data, loading, error } = useQuery<GetPokemon, GetPokemonVariables>(
     GET_POKEMON,
-    { skip: !isNumeric(id), variables: { id: parseInt(id!) } }
+    {
+      skip: !isNumeric(id),
+      variables: { id: parseInt(id!) },
+      pollInterval: 1000 * 60 * 1, // 1hr
+    }
   );
 
   if (loading) return <Loader />;
@@ -47,21 +52,6 @@ const InternalError = () => {
       message="Something went wrong."
       redirect="/csr/pokemons"
     />
-  );
-};
-
-const Loader = () => {
-  return (
-    <Flex minH="100vh" align="center" justify="center">
-      <Spinner
-        thickness="0.5rem"
-        speed="800ms"
-        emptyColor="gray.300"
-        color="orange.400"
-        h={125}
-        w={125}
-      />
-    </Flex>
   );
 };
 
