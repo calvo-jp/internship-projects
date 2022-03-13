@@ -4,6 +4,7 @@ module.exports = {
       name: "graphql-api",
       url: "",
     },
+    excludes: ["./src/api/**/*.ts"],
     includes: ["./src/graphql/**/*.ts"],
   },
 };

@@ -531,6 +531,8 @@ const Catalog = () => {
     ],
   ];
 
+  const [active, setActive] = useState(0);
+
   return (
     <Box px={24} py={16}>
       <Box textAlign="center" maxW="container.md" mx="auto">
@@ -550,10 +552,23 @@ const Catalog = () => {
 
       <Center mt={14}>
         <Wrap textTransform="uppercase" spacing={8}>
-          <WrapItem>All Cats</WrapItem>
-          <WrapItem>Small</WrapItem>
-          <WrapItem>Medium</WrapItem>
-          <WrapItem>Large</WrapItem>
+          {"all cats.small.medium.large".split(/\./).map((label, idx) => {
+            const isActive = idx === active;
+
+            return (
+              <WrapItem
+                key={label}
+                px={1}
+                pb={2}
+                borderBottom={isActive ? "2px" : ""}
+                borderColor={isActive ? "brand.yellow" : ""}
+                cursor="pointer"
+                onClick={() => setActive(idx)}
+              >
+                {label}
+              </WrapItem>
+            );
+          })}
         </Wrap>
       </Center>
 
