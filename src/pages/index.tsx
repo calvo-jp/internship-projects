@@ -35,18 +35,25 @@ import {
 import FacebookIcon from "components/icons/Facebook";
 import LinkedInIcon from "components/icons/LinkedIn";
 import TwitterIcon from "components/icons/Twitter";
+import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import {
+  MouseEvent,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const Landing = () => {
   return (
     <>
       <Head>
-        <title>NextJS Auth0</title>
+        <title>NextJS Auth</title>
       </Head>
 
-      <Box>
+      <Box scrollBehavior="smooth" bgColor="white">
         <Header />
         <Banner />
         <About />
@@ -197,7 +204,7 @@ const Footer = () => {
 
 const Contact = () => {
   return (
-    <Box p={24}>
+    <Box p={24} id="contact">
       <Center fontSize="xl" textTransform="uppercase" color="brand.red">
         Contacts
       </Center>
@@ -266,7 +273,7 @@ const Contact = () => {
 
 const Thumbnails = () => {
   return (
-    <SimpleGrid p={8} gap={8} columns={4}>
+    <SimpleGrid p={8} gap={8} columns={4} id="gallery">
       <Box
         h="300px"
         bgImage="url(/images/grid/1.jpg)"
@@ -685,6 +692,13 @@ const revealOnScrollUp = (elem: HTMLElement) => {
 
 const Header = () => {
   const headerRef = useRef<HTMLDivElement>(null);
+  const { status } = useSession();
+
+  const handleLogout: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault();
+
+    signOut({ redirect: false });
+  };
 
   useEffect(() => {
     const header = headerRef.current;
@@ -710,13 +724,27 @@ const Header = () => {
       <Brand />
 
       <Wrap textTransform="uppercase" spacing={6}>
-        <WrapItem>Gallery</WrapItem>
-        <WrapItem>Contact</WrapItem>
-        <WrapItem>About</WrapItem>
         <WrapItem>
-          <Link href="/login" passHref>
-            <Box as="a">Login</Box>
-          </Link>
+          <a href="#gallery">Gallery</a>
+        </WrapItem>
+        <WrapItem>
+          <a href="#contact">Contact</a>
+        </WrapItem>
+        <WrapItem>
+          <a href="#about">About</a>
+        </WrapItem>
+        <WrapItem>
+          {status === "loading" && <Box color="gray.400">Loading...</Box>}
+          {status === "authenticated" && (
+            <a href="#" onClick={handleLogout}>
+              Logout
+            </a>
+          )}
+          {status === "unauthenticated" && (
+            <Link href="/login" passHref>
+              <Box as="a">Login</Box>
+            </Link>
+          )}
         </WrapItem>
       </Wrap>
     </Flex>
@@ -740,7 +768,7 @@ const Brand = ({ dark }: { dark?: boolean }) => {
 
 const About = () => {
   return (
-    <Flex p={24} align="center">
+    <Flex p={24} align="center" id="about">
       <Image src="/images/poor-cat.jpg" alt="" />
 
       <Box p={12}>

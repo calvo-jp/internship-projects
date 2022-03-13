@@ -1,12 +1,17 @@
 import { Button } from "@chakra-ui/react";
 import Protected from "components/Protected";
 import { signOut, useSession } from "next-auth/react";
+import Head from "next/head";
 
 const Dashboard = () => {
   const { data } = useSession();
 
   return (
     <Protected>
+      <Head>
+        <title>NextJS Auth | Dashboard</title>
+      </Head>
+
       <div>
         <div>
           <code>

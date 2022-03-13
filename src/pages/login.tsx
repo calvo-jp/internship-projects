@@ -4,7 +4,6 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
-  Button,
   Center,
   CloseButton,
   Collapse,
@@ -12,11 +11,12 @@ import {
   Heading,
   IconButton,
   Image,
-  Input,
   Text,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
+import Button from "components/Button";
+import TextField from "components/TextField";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -32,7 +32,7 @@ interface Credential {
 }
 
 const Login = () => {
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
   const { status } = useSession();
 
   const [loginError, setLoginError] = useState<boolean>();
@@ -69,6 +69,7 @@ const Login = () => {
   }, []);
 
   if (status === "loading") return null;
+
   if (status === "authenticated") {
     replace("/dashboard");
     return null;
@@ -77,7 +78,7 @@ const Login = () => {
   return (
     <>
       <Head>
-        <title>NextJS Auth0 | Login</title>
+        <title>NextJS Auth | Login</title>
       </Head>
 
       <Flex minH="100vh" flexDir="column" justify="center" py={24}>
@@ -108,29 +109,25 @@ const Login = () => {
                 </Alert>
               </Collapse>
 
-              <form onSubmit={handleSubmit}>
-                <Input
-                  rounded="sm"
-                  px={4}
-                  py={6}
+              <form onSubmit={handleSubmit} noValidate>
+                <TextField
                   name="email"
                   placeholder="email"
                   value={credential.email}
                   onChange={handleChange}
                   autoFocus
+                  isRequired
                 />
 
                 <Box w="full" mt={4}>
-                  <Input
-                    rounded="sm"
-                    px={4}
-                    py={6}
-                    placeholder="password"
+                  <TextField
                     mb={2}
                     type="password"
                     name="password"
+                    placeholder="password"
                     value={credential.password}
                     onChange={handleChange}
+                    isRequired
                   />
 
                   <Link href="/forgot-password" passHref>
@@ -140,15 +137,7 @@ const Login = () => {
                   </Link>
                 </Box>
 
-                <Button
-                  type="submit"
-                  mt={8}
-                  bgColor="brand.red"
-                  rounded="sm"
-                  color="white"
-                  p={6}
-                  w="full"
-                >
+                <Button type="submit" w="full">
                   Login
                 </Button>
               </form>
