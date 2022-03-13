@@ -32,6 +32,9 @@ import {
   MailIcon,
   PhoneIcon,
 } from "@heroicons/react/solid";
+import FacebookIcon from "components/icons/Facebook";
+import LinkedInIcon from "components/icons/LinkedIn";
+import TwitterIcon from "components/icons/Twitter";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -139,6 +142,18 @@ const Footer = () => {
               info@demolink.com
             </ListItem>
           </List>
+
+          <Wrap mt={8} align="center">
+            <WrapItem>
+              <Icon as={FacebookIcon} w={5} h={5} fill="white" />
+            </WrapItem>
+            <WrapItem>
+              <Icon as={TwitterIcon} w={6} h={6} fill="white" />
+            </WrapItem>
+            <WrapItem>
+              <Icon as={LinkedInIcon} w={6} h={6} fill="white" />
+            </WrapItem>
+          </Wrap>
         </Box>
 
         <Box>
