@@ -40,7 +40,7 @@ export default NextAuth({
         // facebook and linkedin
         if (account.access_token) token.accessToken = account.access_token;
         if (account.refresh_token) token.refreshToken = account.refresh_token;
-        // twitter
+        // twitter API v1
         if (account.oauth_token) token.accessToken = account.oauth_token;
         if (account.oauth_token_secret)
           token.refreshToken = account.oauth_token_secret;
@@ -50,8 +50,7 @@ export default NextAuth({
     },
     async session({ session, token }) {
       // save user to session for client access
-      if (token.user) session.user = token.user as Record<string, any>;
-
+      if (token.user) session.user = token.user as any;
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       return session;

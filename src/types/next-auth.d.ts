@@ -1,15 +1,17 @@
-import { DefaultSession } from "next-auth";
 import NextAuth from "next-auth/next";
 
 declare module "next-auth" {
   interface Session {
     user: {
+      name: string;
+      email: string;
+      image?: string;
       gender?: "male" | "female";
-    } & DefaultSession["user"];
-    accessToken?: string;
+    };
   }
 
   interface Account {
+    // twitter API v1
     oauth_token?: string;
     oauth_token_secret?: string;
   }
