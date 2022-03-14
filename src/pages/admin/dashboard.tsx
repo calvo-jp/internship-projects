@@ -5,6 +5,12 @@ import {
   Icon,
   SimpleGrid,
   StackProps,
+  Stat,
+  StatArrow,
+  StatGroup,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
   Text,
   VStack,
 } from "@chakra-ui/react";
