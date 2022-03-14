@@ -1,4 +1,4 @@
-import { Box, Button, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, HStack, Icon, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,44 +21,45 @@ const Sidebar = () => {
       bottom={0}
       bgColor="white"
     >
-      <Wrap
-        direction="column"
-        textTransform="uppercase"
-        fontSize="lg"
-        fontWeight="light"
-      >
-        <SidebarLink href="/admin/dashboard" label="Dashboard" />
-        <SidebarLink href="/admin/account" label="Account" />
-
-        <WrapItem>
-          <Box
-            as="button"
-            onClick={logout}
-            fontSize="lg"
-            fontWeight="light"
-            textTransform="uppercase"
-          >
-            Logout
-          </Box>
-        </WrapItem>
+      <Wrap direction="column">
+        <SidebarLink label="Dashboard" href="/admin/dashboard" />
+        <SidebarLink label="Account" href="/admin/account" />
+        <SidebarLink label="Logout" onClick={logout} />
       </Wrap>
     </Box>
   );
 };
 
 interface SidebarLinkProps {
-  href: string;
   label: string;
+  href?: string;
+  onClick?: () => void;
 }
 
-const SidebarLink = ({ href, label }: SidebarLinkProps) => {
+const SidebarLink = ({ href, label, onClick }: SidebarLinkProps) => {
   const { pathname } = useRouter();
 
+  const active = href && pathname.startsWith(href);
+  const content = (
+    <Box as="a" cursor="pointer">
+      {label}
+    </Box>
+  );
+
   return (
-    <WrapItem color={pathname.startsWith(href) ? "brand.red" : ""}>
-      <Link href={href}>
-        <a>{label}</a>
-      </Link>
+    <WrapItem
+      color={active ? "brand.red" : ""}
+      onClick={onClick}
+      fontSize="lg"
+      fontWeight="light"
+      textTransform="uppercase"
+    >
+      {!href && content}
+      {href && (
+        <Link href={href} passHref>
+          {content}
+        </Link>
+      )}
     </WrapItem>
   );
 };
