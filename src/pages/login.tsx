@@ -21,9 +21,8 @@ import Button from "components/widgets/Button";
 import TextField from "components/widgets/TextField";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { forwardRef, PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
