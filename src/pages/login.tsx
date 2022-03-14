@@ -73,6 +73,7 @@ const Login = () => {
   }, []);
 
   if (status === "loading") return null;
+
   if (status === "authenticated") {
     replace("/admin/dashboard");
     return null;
