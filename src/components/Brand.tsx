@@ -14,7 +14,7 @@ const Brand = ({ small, dark }: BrandProps) => {
           <Image src="/images/logo.png" alt="" h={small ? 50 : 70} />
 
           <Box color={dark ? "white" : "inherit"}>
-            <Heading fontSize="3xl" fontWeight="bold" lineHeight={1}>
+            <Heading fontSize="3xl" lineHeight={1}>
               Shelter
             </Heading>
 
