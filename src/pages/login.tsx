@@ -117,14 +117,14 @@ const Login = () => {
             </Button>
           </VStack>
 
-          <Box mt={8}>
+          <VStack mt={8} spacing={8}>
             <Center fontSize="sm" color="gray.600">
               or login using
             </Center>
-            <Center mt={8}>
+            <Center>
               <Socials />
             </Center>
-          </Box>
+          </VStack>
         </Box>
       </Wrapper>
     </>
