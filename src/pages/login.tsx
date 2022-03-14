@@ -4,20 +4,22 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
+  Button,
   Center,
   CloseButton,
   Collapse,
   Flex,
+  FormControl,
+  FormErrorMessage,
   Heading,
   IconButton,
   Image,
+  Input,
   Text,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Button from "components/Button";
-import TextField from "components/TextField";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -48,6 +50,7 @@ const Login = () => {
 
   const login = handleSubmit(async (data) => {
     await signIn("credentials", {
+      ...data,
       redirect: false,
       callbackUrl: "/admin/dashboard",
     });
@@ -62,7 +65,7 @@ const Login = () => {
   if (status === "loading") return null;
 
   if (status === "authenticated") {
-    replace("/dashboard");
+    replace("/admin/dashboard");
     return null;
   }
 
@@ -84,21 +87,38 @@ const Login = () => {
                 onClose={() => setLoginError(false)}
               />
 
-              <form noValidate onSubmit={login}>
-                <TextField
-                  placeholder="email"
-                  autoFocus
-                  isRequired
-                  {...register("email")}
-                />
+              <form noValidate onSubmit={login} autoComplete="off">
+                <FormControl isInvalid={!!formState.errors.email}>
+                  <Input
+                    px={4}
+                    py={6}
+                    rounded="sm"
+                    placeholder="email"
+                    autoFocus
+                    isRequired
+                    {...register("email")}
+                  />
+                  <FormErrorMessage>
+                    {formState.errors.email?.message}
+                  </FormErrorMessage>
+                </FormControl>
 
                 <Box w="full" mt={4}>
-                  <TextField
-                    type="password"
-                    placeholder="password"
-                    isRequired
-                    {...register("password")}
-                  />
+                  <FormControl isInvalid={!!formState.errors.password}>
+                    <Input
+                      px={4}
+                      py={6}
+                      rounded="sm"
+                      type="password"
+                      placeholder="password"
+                      isRequired
+                      {...register("password")}
+                    />
+
+                    <FormErrorMessage>
+                      {formState.errors.password?.message}
+                    </FormErrorMessage>
+                  </FormControl>
 
                   <Link href="/forgot-password" passHref>
                     <Box
@@ -113,7 +133,18 @@ const Login = () => {
                   </Link>
                 </Box>
 
-                <Button type="submit" w="full">
+                <Button
+                  type="submit"
+                  w="full"
+                  p={6}
+                  mt={8}
+                  bgColor="brand.red"
+                  color="white"
+                  rounded="sm"
+                  transition="background 300ms ease-in-out"
+                  _hover={{ bgColor: "black" }}
+                  _focus={{ bgColor: "black", boxShadow: "none" }}
+                >
                   Login
                 </Button>
               </form>

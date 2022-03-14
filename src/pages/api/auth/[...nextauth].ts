@@ -16,7 +16,7 @@ export default NextAuth({
         if (credentials) {
           const { email, password } = credentials;
 
-          if (email === "admin" && password === "admin") {
+          if (email === "admin@gmail.com" && password === "admin") {
             return {
               name: "john doe",
               email: "johndoe@dummy.co",

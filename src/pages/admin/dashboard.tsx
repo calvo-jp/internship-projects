@@ -7,25 +7,28 @@ import {
   HStack,
   Image,
   Text,
-  Wrap,
-  WrapItem,
 } from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import { Fragment } from "react";
+import sha256 from "utils/sha256";
 
 const Dashboard = () => {
+  const { status } = useSession({ required: true });
+
+  if (status === "loading") return <Loader />;
+
   return (
-    <>
+    <Fragment>
       <Head>
         <title>NextJS Auth | Dashboard</title>
       </Head>
 
       <Box bgColor="brand.lightGray" minH="100vh">
         <Header />
-
         <Main />
       </Box>
-    </>
+    </Fragment>
   );
 };
 
@@ -38,17 +41,15 @@ const Main = () => {
 };
 
 const Header = () => {
-  const { data, status } = useSession({ required: true });
+  const { data } = useSession({ required: true });
 
-  if (status === "loading") return <div>Loading...</div>;
-  if (!data) return <></>;
+  if (!data || !data.user) return <Fragment />;
 
-  const user = data.user!;
-  const image = user.image || "";
+  const user = data.user;
+  const image = user.image || gravatar(user.email!);
 
   const handleLogout = async () => {
     await signOut({
-      redirect: false,
       callbackUrl: "/login",
     });
   };
@@ -99,6 +100,20 @@ const Header = () => {
         <Button onClick={handleLogout}>Logout</Button>
       </HStack>
     </Flex>
+  );
+};
+
+const gravatar = (email: string) => {
+  const hash = sha256(email);
+
+  return `https://www.gravatar.com/avatar/${hash}?d=retro&s=150`;
+};
+
+const Loader = () => {
+  return (
+    <Box fontSize="sm" p={4}>
+      Loading...
+    </Box>
   );
 };
 
