@@ -4,28 +4,25 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
-  Button,
   Center,
   CloseButton,
   Collapse,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  Heading,
   IconButton,
   Image,
-  Input,
-  Text,
+  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Brand from "components/Brand";
+import Button from "components/widgets/Button";
+import TextField from "components/widgets/TextField";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { forwardRef, PropsWithChildren, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -38,6 +35,8 @@ const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().min(5).max(25).required(),
 });
+
+const textfields: (keyof Credential)[] = ["email", "password"];
 
 const Login = () => {
   const { replace } = useRouter();
@@ -76,76 +75,41 @@ const Login = () => {
       </Head>
 
       <Wrapper>
-        <Brand />
+        <Brand small />
 
-        <Box mt={16}>
+        <Box mt={10}>
           <LoginError
             open={loginError}
             message="Invalid username or password"
             onClose={() => setLoginError(false)}
           />
 
-          <form noValidate onSubmit={login} autoComplete="off">
-            <FormControl isInvalid={!!formState.errors.email}>
-              <Input
-                px={4}
-                py={6}
-                rounded="sm"
-                placeholder="email"
-                autoFocus
-                isRequired
-                {...register("email")}
+          <VStack
+            spacing={4}
+            as="form"
+            noValidate
+            onSubmit={login}
+            autoComplete="off"
+          >
+            {textfields.map((textfield) => (
+              <TextField
+                key={textfield}
+                type={textfield}
+                placeholder={textfield}
+                error={formState.errors[textfield]?.message}
+                {...register(textfield)}
               />
-              <FormErrorMessage>
-                {formState.errors.email?.message}
-              </FormErrorMessage>
-            </FormControl>
+            ))}
 
-            <Box w="full" mt={4}>
-              <FormControl isInvalid={!!formState.errors.password}>
-                <Input
-                  px={4}
-                  py={6}
-                  rounded="sm"
-                  type="password"
-                  placeholder="password"
-                  isRequired
-                  {...register("password")}
-                />
-
-                <FormErrorMessage>
-                  {formState.errors.password?.message}
-                </FormErrorMessage>
-              </FormControl>
-
-              <Link href="/forgot-password" passHref>
-                <Box as="a" mt={2} display="block" fontSize="xs" tabIndex={-1}>
-                  Forgot Password
-                </Box>
-              </Link>
-            </Box>
-
-            <Button
-              type="submit"
-              w="full"
-              p={6}
-              mt={8}
-              bgColor="brand.red"
-              color="white"
-              rounded="sm"
-              transition="background 300ms ease-in-out"
-              _hover={{ bgColor: "black" }}
-              _focus={{ bgColor: "black", boxShadow: "none" }}
-            >
+            <Button type="submit" w="full">
               Login
             </Button>
-          </form>
+          </VStack>
 
           <Box mt={8}>
-            <Text textAlign="center" fontSize="sm" color="gray.600">
+            <Center fontSize="sm" color="gray.600">
               or login using
-            </Text>
-
+            </Center>
             <Center mt={8}>
               <Socials />
             </Center>
