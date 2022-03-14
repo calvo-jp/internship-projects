@@ -1,30 +1,27 @@
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  InMemoryCache,
-} from "@apollo/client";
-import { useSession } from "next-auth/react";
+import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { getSession } from "next-auth/react";
 
-const authMiddleware = new ApolloLink((operation, forward) => {
-  const session = useSession();
+const authLink = setContext(async (request, originalContext) => {
+  const session = await getSession();
 
-  if (session.data && session.data.accessToken) {
-    operation.setContext({
-      headers: {
-        authorization: "Bearer " + session.data.accessToken,
-      },
-    });
-  }
+  const context = {
+    ...originalContext,
+    headers: {
+      ...originalContext.headers,
+      authorization:
+        session && session.accessToken ? "Bearer " + session.accessToken : "",
+    },
+  };
 
-  return forward(operation);
+  return context;
 });
 
-const link = new HttpLink({ uri: process.env.GRAPHQL_ENDPOINT });
+const link = new HttpLink({ uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT });
 const cache = new InMemoryCache();
 
 const apolloClient = new ApolloClient({
-  link: authMiddleware.concat(link),
+  link: from([authLink, link]),
   cache,
 });
 

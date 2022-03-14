@@ -2,6 +2,7 @@ import {
   Alert,
   AlertDescription,
   AlertIcon,
+  AlertProps,
   AlertTitle,
   Box,
   Center,
@@ -26,24 +27,34 @@ import { forwardRef, PropsWithChildren, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-interface Credential {
-  email: string;
-  password: string;
-}
-
-const schema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().min(5).max(25).required(),
-});
-
-const textfields: (keyof Credential)[] = ["email", "password"];
+const schema = yup
+  .object()
+  .shape({
+    email: yup
+      .string()
+      .email("malformed email")
+      .trim()
+      .required("email is required"),
+    password: yup
+      .string()
+      .min(5, "password must be 5 or more characters")
+      .max(50, "password must not be greater than 50 characters")
+      .trim()
+      .required("password is required"),
+  })
+  .required("username and password are required");
 
 const Login = () => {
   const { replace } = useRouter();
   const { status } = useSession();
 
-  const { handleSubmit, register, formState } = useForm<Credential>({
+  const { handleSubmit, register, formState } = useForm({
+    mode: "onChange",
     resolver: yupResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const [loginError, setLoginError] = useState<boolean>();
@@ -79,6 +90,7 @@ const Login = () => {
 
         <Box mt={10}>
           <LoginError
+            mb={4}
             open={loginError}
             message="Invalid username or password"
             onClose={() => setLoginError(false)}
@@ -91,7 +103,7 @@ const Login = () => {
             onSubmit={login}
             autoComplete="off"
           >
-            {textfields.map((textfield) => (
+            {(["email", "password"] as const).map((textfield) => (
               <TextField
                 key={textfield}
                 type={textfield}
@@ -138,10 +150,15 @@ interface LoginErrorProps {
   onClose?: () => void;
 }
 
-const LoginError = ({ open, onClose, message }: LoginErrorProps) => {
+const LoginError = ({
+  open,
+  onClose,
+  message,
+  ...all
+}: LoginErrorProps & AlertProps) => {
   return (
     <Collapse in={open} animateOpacity>
-      <Alert status="error" mb={4} fontSize="sm">
+      <Alert status="error" fontSize="sm" {...all}>
         <AlertIcon />
         <AlertTitle>Error:</AlertTitle>
         <AlertDescription flexGrow={1}>{message}</AlertDescription>

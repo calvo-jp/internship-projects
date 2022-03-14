@@ -5,12 +5,6 @@ import {
   Icon,
   SimpleGrid,
   StackProps,
-  Stat,
-  StatArrow,
-  StatGroup,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -44,7 +38,7 @@ const Dashboard = () => {
 
 const Cards = () => {
   return (
-    <SimpleGrid columns={3} spacing={4} color="white" w="full">
+    <SimpleGrid columns={{ lg: 2, xl: 3 }} spacing={4} color="white" w="full">
       <Card
         bgGradient="linear(to-r, #F97316, #F59E0B)"
         icon={DollarIcon}

@@ -27,6 +27,7 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt({ token, account, user }) {
+      // using credential
       // store user data and original jwt for client use
       // will be passed down to Session.token.user
       if (user) {
@@ -34,6 +35,7 @@ export default NextAuth({
         token.accessToken = user.accessToken;
       }
 
+      // using 3rd party
       if (account) {
         // facebook and linkedin
         if (account.access_token) token.accessToken = account.access_token;

@@ -1,9 +1,9 @@
 module.exports = {
   client: {
-    includes: ["./src/graphql/**/*.ts"],
     service: {
-      name: "graphql-api",
+      name: "countries",
       url: "http://countries.trevorblades.com/",
     },
+    excludes: "./src/types",
   },
 };
