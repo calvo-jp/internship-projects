@@ -259,7 +259,7 @@ const Contact = () => {
           height="400"
           allowFullScreen
           loading="lazy"
-        ></iframe>
+        />
       </HStack>
     </Box>
   );
