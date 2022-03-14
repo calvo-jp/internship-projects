@@ -1,9 +1,10 @@
 import { Input, InputProps } from "@chakra-ui/react";
-import { ComponentProps } from "react";
+import { forwardRef } from "react";
 
-export default function TextField(props: InputProps) {
+const TextField = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   return (
     <Input
+      ref={ref}
       rounded="sm"
       px={4}
       py={6}
@@ -14,4 +15,7 @@ export default function TextField(props: InputProps) {
       {...props}
     />
   );
-}
+});
+
+TextField.displayName = "TextField";
+export default TextField;

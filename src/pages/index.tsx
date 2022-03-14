@@ -38,13 +38,7 @@ import TwitterIcon from "components/icons/Twitter";
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import {
-  MouseEvent,
-  MouseEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
 
 const Landing = () => {
   return (

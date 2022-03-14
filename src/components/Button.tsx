@@ -1,6 +1,6 @@
 import { Button as ChakraButton, ButtonProps } from "@chakra-ui/react";
 
-export default function Button({ children, ...all }: ButtonProps) {
+const Button = ({ children, ...all }: ButtonProps) => {
   return (
     <ChakraButton
       bgColor="brand.red"
@@ -16,4 +16,6 @@ export default function Button({ children, ...all }: ButtonProps) {
       {children}
     </ChakraButton>
   );
-}
+};
+
+export default Button;
