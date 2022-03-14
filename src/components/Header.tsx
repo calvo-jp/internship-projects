@@ -71,9 +71,7 @@ const Header = () => {
 };
 
 const gravatar = (email: string) => {
-  const hash = sha256(email);
-
-  return `https://www.gravatar.com/avatar/${hash}?d=retro&s=150`;
+  return "https://www.gravatar.com/avatar/" + sha256(email) + "?d=retro&s=150";
 };
 
 export default Header;
