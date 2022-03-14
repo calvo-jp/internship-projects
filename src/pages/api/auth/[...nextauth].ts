@@ -19,32 +19,16 @@ export default NextAuth({
       clientSecret: process.env.LINKEDIN_SECRET!,
     }),
     CredentialProvider({
-      type: "credentials",
-      credentials: {
-        email: { type: "email" },
-        password: { type: "password" },
-      },
-      async authorize(credentials, request) {
-        if (credentials) {
-          const { email, password } = credentials;
-
-          if (email === "admin@gmail.com" && password === "admin") {
-            return {
-              name: "john doe",
-              email: "johndoe@dummy.co",
-              gender: "male",
-              accessToken: "accessTokenGeneratedFromBackendServer",
-            };
-          }
-        }
-
-        return null;
+      credentials: { email: { type: "email" }, password: { type: "password" } },
+      async authorize(credentials) {
+        return credentials ? await getUserFromBackend(credentials) : null;
       },
     }),
   ],
   callbacks: {
     async jwt({ token, account, user }) {
       // store user data and original jwt for client use
+      // will be passed down to Session.token.user
       if (user) {
         token.user = user;
         token.accessToken = user.accessToken;
@@ -54,7 +38,7 @@ export default NextAuth({
         // facebook and linkedin
         if (account.access_token) token.accessToken = account.access_token;
         if (account.refresh_token) token.refreshToken = account.refresh_token;
-        // used by twitter
+        // twitter
         if (account.oauth_token) token.accessToken = account.oauth_token;
         if (account.oauth_token_secret)
           token.refreshToken = account.oauth_token_secret;
@@ -75,3 +59,19 @@ export default NextAuth({
     signIn: "/login",
   },
 });
+
+const getUserFromBackend = async ({
+  email,
+  password,
+}: Record<"email" | "password", string>) => {
+  if (email === "johndoe@dum.my" && password === "password") {
+    return {
+      name: "john doe",
+      email,
+      gender: "male",
+      accessToken: "accessTokenGeneratedFromBackendServer",
+    };
+  }
+
+  return null;
+};
