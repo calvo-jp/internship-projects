@@ -11,6 +11,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { Fragment } from "react";
 import sha256 from "utils/sha256";
+import Brand from "./Brand";
 
 const Header = () => {
   const { data } = useSession({ required: true });
@@ -36,7 +37,7 @@ const Header = () => {
       top={0}
       h="75px"
     >
-      <Brand />
+      <Brand small />
 
       <HStack spacing={4}>
         <Image
@@ -67,23 +68,6 @@ const Header = () => {
         <Button onClick={handleLogout}>Logout</Button>
       </HStack>
     </Flex>
-  );
-};
-
-const Brand = () => {
-  return (
-    <HStack spacing={4}>
-      <Image src="/images/logo.png" alt="" h={12} />
-
-      <Box>
-        <Heading fontSize="2xl" lineHeight={1}>
-          Shelter
-        </Heading>
-        <Text color="gray.500" fontSize="sm">
-          Help Animals
-        </Text>
-      </Box>
-    </HStack>
   );
 };
 

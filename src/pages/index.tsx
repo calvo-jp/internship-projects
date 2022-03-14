@@ -3,7 +3,6 @@ import {
   Button,
   Center,
   Flex,
-  Heading,
   HStack,
   Icon,
   IconButton,
@@ -32,6 +31,7 @@ import {
   MailIcon,
   PhoneIcon,
 } from "@heroicons/react/solid";
+import Brand from "components/Brand";
 import FacebookIcon from "components/icons/Facebook";
 import LinkedInIcon from "components/icons/LinkedIn";
 import TwitterIcon from "components/icons/Twitter";
@@ -741,21 +741,6 @@ const Header = () => {
           )}
         </WrapItem>
       </Wrap>
-    </Flex>
-  );
-};
-
-const Brand = ({ dark }: { dark?: boolean }) => {
-  return (
-    <Flex gap={6} alignItems="center" display="flex">
-      <Image src="/images/logo.png" alt="" height={70} />
-
-      <Box color={dark ? "white" : "inherit"}>
-        <Heading fontSize="3xl" fontWeight="bold" lineHeight={1}>
-          Shelter
-        </Heading>
-        <Text color={dark ? "inherit" : "gray.500"}>Help Animals</Text>
-      </Box>
     </Flex>
   );
 };

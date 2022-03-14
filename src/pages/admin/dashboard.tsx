@@ -27,7 +27,7 @@ const Dashboard = () => {
       </Head>
 
       <Layout>
-        <VStack flexGrow={1} p={8} align="start" spacing={4}>
+        <VStack flexGrow={1} p={8} align="start" spacing={8}>
           <Heading color="gray.700">Dashboard</Heading>
           <Cards />
         </VStack>
@@ -38,19 +38,19 @@ const Dashboard = () => {
 
 const Cards = () => {
   return (
-    <SimpleGrid columns={3} spacing={4} color="white">
+    <SimpleGrid columns={3} spacing={4} color="white" w="full">
       <Card
         bgGradient="linear(to-r, #F97316, #F59E0B)"
         icon={DollarIcon}
         label="Total Profit"
-        value="100, 000"
+        value="10.5k"
       />
 
       <Card
         bgGradient="linear(to-r, #10B981, #14B8A6)"
         icon={BasketIcon}
         label="Total Adopted"
-        value="109"
+        value="115"
       />
 
       <Card
@@ -69,26 +69,23 @@ interface CardProps {
   icon: typeof DollarIcon;
 }
 
-const Card = ({
-  label,
-  value,
-  icon: SVGIcon,
-  ...all
-}: CardProps & StackProps) => {
+const Card = ({ label, value, icon, ...all }: CardProps & StackProps) => {
   return (
     <HStack
-      bgGradient="linear(to-r, #F97316, #F59E0B)"
       p={8}
+      bgGradient="linear(to-r, #F97316, #F59E0B)"
       rounded="sm"
       shadow="md"
       spacing={4}
       {...all}
     >
-      <Icon as={SVGIcon} w={20} h={16} fill="white" />
+      <Icon as={icon} w={20} h={16} fill="white" />
 
       <Box>
         <Text>{label}</Text>
-        <Heading>{value}</Heading>
+        <Text fontSize="4xl" fontWeight="bold" lineHeight={1}>
+          {value}
+        </Text>
       </Box>
     </HStack>
   );

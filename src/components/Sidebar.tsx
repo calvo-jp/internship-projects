@@ -12,12 +12,13 @@ const Sidebar = () => {
 
   return (
     <Box
+      as="nav"
       p={8}
-      pos="fixed"
-      left={0}
-      top="75px"
-      bottom={0}
       w="300px"
+      pos="fixed"
+      top="75px"
+      left={0}
+      bottom={0}
       bgColor="white"
     >
       <Wrap
