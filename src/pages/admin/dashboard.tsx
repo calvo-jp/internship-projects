@@ -1,28 +1,19 @@
 import {
   Box,
-  Button,
-  Divider,
-  Flex,
   Heading,
   HStack,
   Icon,
-  Image,
   SimpleGrid,
   StackProps,
   Text,
-  Wrap,
-  WrapItem,
+  VStack,
 } from "@chakra-ui/react";
-import Header from "components/Header";
 import BasketIcon from "components/icons/Basket";
 import DollarIcon from "components/icons/Dollar";
 import UsersIcon from "components/icons/Users";
 import Layout from "components/Layout";
-import Sidebar from "components/Sidebar";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { Fragment } from "react";
-import sha256 from "utils/sha256";
 
 const Dashboard = () => {
   const { status } = useSession({ required: true });
@@ -36,34 +27,39 @@ const Dashboard = () => {
       </Head>
 
       <Layout>
-        <Box flexGrow={1} p={8}>
+        <VStack flexGrow={1} p={8} align="start" spacing={4}>
           <Heading color="gray.700">Dashboard</Heading>
-
-          <SimpleGrid columns={3} mt={4} spacing={4} color="white">
-            <Card
-              bgGradient="linear(to-r, #F97316, #F59E0B)"
-              icon={DollarIcon}
-              label="Total Profit"
-              value="100, 000"
-            />
-
-            <Card
-              bgGradient="linear(to-r, #10B981, #14B8A6)"
-              icon={BasketIcon}
-              label="Total Adopted"
-              value="109"
-            />
-
-            <Card
-              bgGradient="linear(to-r, #FB7185, #EC4899)"
-              icon={UsersIcon}
-              label="Unique Visitors"
-              value="1, 015"
-            />
-          </SimpleGrid>
-        </Box>
+          <Cards />
+        </VStack>
       </Layout>
     </>
+  );
+};
+
+const Cards = () => {
+  return (
+    <SimpleGrid columns={3} spacing={4} color="white">
+      <Card
+        bgGradient="linear(to-r, #F97316, #F59E0B)"
+        icon={DollarIcon}
+        label="Total Profit"
+        value="100, 000"
+      />
+
+      <Card
+        bgGradient="linear(to-r, #10B981, #14B8A6)"
+        icon={BasketIcon}
+        label="Total Adopted"
+        value="109"
+      />
+
+      <Card
+        bgGradient="linear(to-r, #FB7185, #EC4899)"
+        icon={UsersIcon}
+        label="Unique Visitors"
+        value="1, 015"
+      />
+    </SimpleGrid>
   );
 };
 
