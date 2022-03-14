@@ -6,6 +6,18 @@ import TwitterProvider from "next-auth/providers/twitter";
 
 export default NextAuth({
   providers: [
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID!,
+      clientSecret: process.env.FACEBOOK_SECRET!,
+    }),
+    TwitterProvider({
+      clientId: process.env.TWITTER_ID!,
+      clientSecret: process.env.TWITTER_SECRET!,
+    }),
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_ID!,
+      clientSecret: process.env.LINKEDIN_SECRET!,
+    }),
     CredentialProvider({
       type: "credentials",
       credentials: {
@@ -20,6 +32,7 @@ export default NextAuth({
             return {
               name: "john doe",
               email: "johndoe@dummy.co",
+              gender: "male",
               accessToken: "accessTokenGeneratedFromBackendServer",
             };
           }
@@ -28,23 +41,14 @@ export default NextAuth({
         return null;
       },
     }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_ID!,
-      clientSecret: process.env.FACEBOOK_SECRET!,
-    }),
-    TwitterProvider({
-      clientId: process.env.TWITTER_ID!,
-      clientSecret: process.env.TWITTER_SECRET!,
-    }),
-    LinkedInProvider({
-      clientId: process.env.LINKEDIN_ID!,
-      clientSecret: process.env.LINKEDIN_SECRET!,
-    }),
   ],
   callbacks: {
     async jwt({ token, account, user }) {
-      // credentials
-      if (user) token.accessToken = user.accessToken;
+      // store user data and original jwt for client use
+      if (user) {
+        token.user = user;
+        token.accessToken = user.accessToken;
+      }
 
       if (account) {
         // facebook and linkedin
@@ -58,7 +62,10 @@ export default NextAuth({
 
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
+      // save user to session for client access
+      if (token.user) session.user = token.user as Record<string, any>;
+
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       return session;
