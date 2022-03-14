@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 const authMiddleware = new ApolloLink((operation, forward) => {
   const session = useSession();
 
-  if (!!session.data) {
+  if (session.data && session.data.accessToken) {
     operation.setContext({
       headers: {
         authorization: "Bearer " + session.data.accessToken,

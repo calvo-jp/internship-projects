@@ -93,7 +93,7 @@ const Card = ({ label, value, icon, ...all }: CardProps & StackProps) => {
 
 const Loader = () => {
   return (
-    <Box fontSize="sm" p={4}>
+    <Box fontSize="sm" p={4} color="gray.500">
       Loading...
     </Box>
   );
