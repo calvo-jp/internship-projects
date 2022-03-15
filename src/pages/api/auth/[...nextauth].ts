@@ -21,7 +21,7 @@ export default NextAuth({
     CredentialProvider({
       credentials: { email: { type: "email" }, password: { type: "password" } },
       async authorize(credentials) {
-        return credentials ? await getUserFromBackend(credentials) : null;
+        return credentials ? await callExternalAPI(credentials) : null;
       },
     }),
   ],
@@ -51,8 +51,8 @@ export default NextAuth({
     async session({ session, token }) {
       // save user to session for client access
       if (token.user) session.user = token.user as any;
-      session.accessToken = token.accessToken;
-      session.refreshToken = token.refreshToken;
+      session.accessToken = token.accessToken as string;
+      session.refreshToken = token.refreshToken as string;
       return session;
     },
   },
@@ -61,18 +61,14 @@ export default NextAuth({
   },
 });
 
-const getUserFromBackend = async ({
-  email,
-  password,
-}: Record<"email" | "password", string>) => {
-  if (email === "johndoe@dum.my" && password === "password") {
-    return {
-      name: "john doe",
-      email,
-      gender: "male",
-      accessToken: "accessTokenGeneratedFromBackendServer",
-    };
-  }
+type Credential = Record<"email" | "password", string>;
 
-  return null;
+const callExternalAPI = async (credential: Credential) => {
+  return {
+    name: "John Doe",
+    email: "johndoe@gmail.com",
+    gender: "male",
+    accessToken: "accessTokenGeneratedFromExternalAPI",
+    refreshToken: "accessTokenGeneratedFromExternalAPI",
+  };
 };

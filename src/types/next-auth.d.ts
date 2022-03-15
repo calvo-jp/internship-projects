@@ -9,6 +9,9 @@ declare module "next-auth" {
       image?: string;
       gender?: "male" | "female";
     };
+    accessToken: string;
+    refreshToken: string;
+    [key: string]: any;
   }
 
   interface Account {
@@ -17,15 +20,9 @@ declare module "next-auth" {
     oauth_token_secret?: string;
   }
 
-  interface User {
-    accessToken?: string;
-    refreshToken?: string;
-  }
+  interface User {}
 }
 
 declare module "next-auth/jwt" {
-  interface JWT {
-    accessToken?: string;
-    refreshToken?: string;
-  }
+  interface JWT {}
 }

@@ -16,9 +16,11 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 
 const Dashboard = () => {
-  const { status } = useSession({ required: true });
+  const { status, data } = useSession({ required: true });
 
   if (status === "loading") return <Loader />;
+
+  console.log(data);
 
   return (
     <>

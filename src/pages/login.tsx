@@ -19,6 +19,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Brand from "components/Brand";
 import Button from "components/widgets/Button";
 import TextField from "components/widgets/TextField";
+import useCallbackUrl from "hooks/useCallbackUrl";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -46,6 +47,7 @@ const schema = yup
 const Login = () => {
   const { replace } = useRouter();
   const { status } = useSession();
+  const callbackUrl = useCallbackUrl();
 
   const { handleSubmit, register, formState } = useForm({
     mode: "onChange",
@@ -62,7 +64,6 @@ const Login = () => {
     await signIn("credentials", {
       ...data,
       redirect: false,
-      callbackUrl: "/admin/dashboard",
     });
 
     setLoginError(true);
@@ -75,7 +76,7 @@ const Login = () => {
   if (status === "loading") return null;
 
   if (status === "authenticated") {
-    replace("/admin/dashboard");
+    replace(callbackUrl);
     return null;
   }
 
@@ -166,11 +167,12 @@ const socialMedias = ["facebook", "twitter", "linkedin"] as const;
 type SocialMedia = typeof socialMedias[number];
 
 const Socials = () => {
+  const callbackUrl = useCallbackUrl();
+
   const handleLoginWithSocialMedia = (socmed: SocialMedia) => {
     return () => {
       signIn(socmed, {
-        callbackUrl: "/admin/dashboard",
-        redirect: false,
+        callbackUrl,
       });
     };
   };

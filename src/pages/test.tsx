@@ -27,7 +27,7 @@ const Test = () => {
   return (
     <Box p={8}>
       <Code w="full" p={16}>
-        <pre>{JSON.stringify(data, null, 4)}</pre>
+        <pre>{JSON.stringify(session, null, 4)}</pre>
       </Code>
     </Box>
   );
