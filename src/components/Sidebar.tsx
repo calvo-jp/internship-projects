@@ -1,4 +1,4 @@
-import { Box, HStack, Icon, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Wrap, WrapItem } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";

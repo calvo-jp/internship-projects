@@ -8,14 +8,13 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/react";
-import { Fragment } from "react";
 import sha256 from "utils/sha256";
 import Brand from "./Brand";
 
 const Header = () => {
-  const { data } = useSession({ required: true });
+  const { data, status } = useSession({ required: true });
 
-  if (!data?.user) return <Fragment />;
+  if (status !== "authenticated") return null;
 
   const currentUser = data.user;
   const handleLogout = async () => {
@@ -42,7 +41,7 @@ const Header = () => {
         <HStack spacing={3}>
           <Avatar
             as="a"
-            src={currentUser.image || gravatar(currentUser.email!)}
+            src={currentUser.image || gravatar(currentUser.email)}
             size="md"
           />
 
