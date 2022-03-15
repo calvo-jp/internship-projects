@@ -96,13 +96,7 @@ const Login = () => {
             onClose={() => setLoginError(false)}
           />
 
-          <VStack
-            spacing={4}
-            as="form"
-            noValidate
-            onSubmit={login}
-            autoComplete="off"
-          >
+          <VStack spacing={4} as="form" noValidate onSubmit={login}>
             {(["email", "password"] as const).map((textfield) => (
               <TextField
                 key={textfield}
