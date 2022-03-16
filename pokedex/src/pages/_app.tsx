@@ -1,5 +1,5 @@
 import { ApolloProvider } from "@apollo/client";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
 import "@fontsource/inter/100.css";
 import "@fontsource/inter/200.css";
 import "@fontsource/inter/300.css";
@@ -13,6 +13,7 @@ import apolloClient from "config/apollo/client";
 import theme from "config/theme";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { PropsWithChildren } from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -23,10 +24,20 @@ const App = ({ Component, pageProps }: AppProps) => {
 
       <ApolloProvider client={apolloClient}>
         <ChakraProvider theme={theme}>
-          <Component {...pageProps} />
+          <Root>
+            <Component {...pageProps} />
+          </Root>
         </ChakraProvider>
       </ApolloProvider>
     </>
+  );
+};
+
+const Root = ({ children }: PropsWithChildren<{}>) => {
+  return (
+    <Box bgColor="brand.gray.900" minH="100vh" color="white">
+      {children}
+    </Box>
   );
 };
 
