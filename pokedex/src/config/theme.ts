@@ -11,6 +11,7 @@ const theme = extendTheme({
       tertiary: "#3F81E4",
       gray: {
         50: "#F7FAFC",
+        100: "#EDF2F7",
         400: "#A0AEC0",
         500: "#718096",
         800: "#1F2937",
@@ -18,6 +19,9 @@ const theme = extendTheme({
       },
       red: {
         500: "#EF4444",
+      },
+      amber: {
+        400: "#FFCA28",
       },
     },
   },
