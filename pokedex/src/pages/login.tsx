@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Heading, HStack, VStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "components/Link";
 import Button from "components/widgets/Button";
@@ -65,6 +65,8 @@ const LoginForm = () => {
       <Box as="form" mt={8}>
         <VStack spacing={4}>
           <TextField
+            size="lg"
+            fontSize="md"
             label="Email"
             placeholder="Enter email"
             error={formState.errors.email?.message}
@@ -72,6 +74,8 @@ const LoginForm = () => {
           />
 
           <TextField
+            size="lg"
+            fontSize="md"
             label="Password"
             placeholder="Enter Password"
             error={formState.errors.password?.message}
@@ -79,21 +83,19 @@ const LoginForm = () => {
           />
         </VStack>
 
-        <Button mt={6} w="full">
+        <Button size="lg" fontSize="sm" mt={6} w="full">
           Sign In
         </Button>
       </Box>
 
-      <Center mt={12}>
+      <VStack spacing={2} mt={12} fontSize="sm">
         <Link href="/account-recovery">Forgot Password</Link>
-      </Center>
 
-      <Center mt={2} fontSize="sm">
         <HStack>
           <Box>Don&apos;t have an account?</Box>
           <Link href="/create-account">Sign up</Link>
         </HStack>
-      </Center>
+      </VStack>
     </Box>
   );
 };

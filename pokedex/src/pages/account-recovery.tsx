@@ -63,6 +63,8 @@ const AccountRecoveryForm = () => {
       <Box as="form" mt={8}>
         <VStack spacing={4}>
           <TextField
+            size="lg"
+            fontSize="sm"
             label="Email"
             placeholder="Enter email"
             error={formState.errors.email?.message}
@@ -70,13 +72,13 @@ const AccountRecoveryForm = () => {
           />
         </VStack>
 
-        <Button mt={6} w="full">
+        <Button size="lg" fontSize="sm" mt={6} w="full">
           Sign In
         </Button>
       </Box>
 
       <Center mt={12} fontSize="sm">
-        <HStack>
+        <HStack spacing={0.5}>
           <Box>Remember your password?</Box>
           <Link href="/login">Log in</Link>
         </HStack>
