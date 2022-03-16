@@ -10,7 +10,6 @@ import {
   HStack,
   Icon,
   IconButton,
-  Image,
   Menu,
   MenuButton,
   MenuItem,
@@ -41,7 +40,7 @@ const Pokemons = () => {
 
       <Layout>
         <HStack justify="space-between">
-          <Heading fontSize="2xl" color="#EDF2F7">
+          <Heading fontSize="2xl" color="brand.gray.100" fontWeight="semibold">
             Choose Pokemon
           </Heading>
 
@@ -71,19 +70,19 @@ const Pagination = () => {
         <HStack>
           <IconButton
             aria-label=""
-            icon={<Icon as={ChevronLeftIcon} fontSize="md" />}
             bgColor="transparent"
+            icon={<Icon as={ChevronLeftIcon} stroke="brand.gray.100" />}
           />
-          <Button aria-label="" rounded="md" color="#1F2937">
+          <Button aria-label="" color="brand.gray.800">
             1
           </Button>
-          <Button aria-label="" rounded="md" bgColor="#FFD12D" color="#1F2937">
+          <Button aria-label="" bgColor="brand.primary" color="brand.gray.800">
             2
           </Button>
           <IconButton
             aria-label=""
-            icon={<Icon as={ChevronRightIcon} />}
             bgColor="transparent"
+            icon={<Icon as={ChevronRightIcon} stroke="brand.gray.100" />}
           />
         </HStack>
       </Center>
@@ -96,9 +95,7 @@ interface ItemsProps {
 }
 
 const Items = ({ table }: ItemsProps) => {
-  if (table) return <TableView />;
-
-  return <GridView />;
+  return table ? <TableView /> : <GridView />;
 };
 
 const GridView = () => {
@@ -134,7 +131,7 @@ const GridView = () => {
 const TableView = () => {
   return (
     <Box>
-      <Table bg="#374151" color="#F7FAFC">
+      <Table bgColor="brand.gray.700" color="brand.gray.50">
         <Thead fontSize="sm" fontWeight="bold">
           <Tr>
             <Td w="1%" whiteSpace="nowrap">
@@ -173,33 +170,44 @@ const Toolbar = () => {
   return (
     <Wrap spacing={8}>
       <WrapItem>
-        <Menu closeOnSelect={false}>
-          <MenuButton>
-            <Icon as={FilterIcon} fill="#E2E8F0" fontSize="xl" />
-          </MenuButton>
-          <MenuList color="#374151" ml={-5}>
-            {["Normal", "Fire", "Water", "Grass", "Flying", "Fighting"].map(
-              (item) => (
-                <MenuItem
-                  key={item}
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <Text fontSize="sm">{item}</Text>
-                  <Checkbox colorScheme="yellow" />
-                </MenuItem>
-              )
-            )}
-          </MenuList>
-        </Menu>
+        <FilterTool />
       </WrapItem>
       <WrapItem>
-        <Icon as={ViewListIcon} fill="#E2E8F0" fontSize="xl" />
+        <Icon as={ViewListIcon} fill="brand.gray.200" fontSize="xl" />
       </WrapItem>
       <WrapItem>
-        <Icon as={ViewGridIcon} fill="#E2E8F0" fontSize="xl" />
+        <Icon as={ViewGridIcon} fill="brand.gray.200" fontSize="xl" />
       </WrapItem>
     </Wrap>
+  );
+};
+
+const FilterTool = () => {
+  // prettier-ignore
+  const items = [
+    "Normal",
+    "Fire",
+    "Water",
+    "Grass",
+    "Flying",
+    "Fighting"
+  ];
+
+  return (
+    <Menu closeOnSelect={false}>
+      <MenuButton>
+        <Icon as={FilterIcon} fill="brand.gray.200" fontSize="xl" />
+      </MenuButton>
+      <MenuList color="brand.gray.700" ml={-5}>
+        {items.map((item) => (
+          <MenuItem key={item} display="flex" justifyContent="space-between">
+            <Text fontSize="sm">{item}</Text>
+
+            <Checkbox />
+          </MenuItem>
+        ))}
+      </MenuList>
+    </Menu>
   );
 };
 
