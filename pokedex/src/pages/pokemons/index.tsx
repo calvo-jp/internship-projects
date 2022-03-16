@@ -5,14 +5,17 @@ import {
   Center,
   Checkbox,
   Flex,
+  GridItem,
   Heading,
   HStack,
   Icon,
   IconButton,
+  Image,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  SimpleGrid,
   Table,
   Tbody,
   Td,
@@ -26,6 +29,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { FilterIcon, ViewGridIcon, ViewListIcon } from "@heroicons/react/solid";
 import Layout from "components/layout";
 import Head from "next/head";
+import NextImage from "next/image";
+import Link from "next/link";
 
 const Pokemons = () => {
   return (
@@ -44,7 +49,7 @@ const Pokemons = () => {
         </HStack>
 
         <Box mt={12}>
-          <Items table />
+          <Items />
         </Box>
 
         <Box mt={4}>
@@ -93,7 +98,37 @@ interface ItemsProps {
 const Items = ({ table }: ItemsProps) => {
   if (table) return <TableView />;
 
-  return null;
+  return <GridView />;
+};
+
+const GridView = () => {
+  return (
+    <SimpleGrid columns={4} gap={8}>
+      {Array(8)
+        .fill(1)
+        .map((val, idx) => val + idx)
+        .map((v) => (
+          <Link key={v} passHref href={"/pokemons/" + v}>
+            <GridItem
+              as="a"
+              h="260px"
+              rounded="sm"
+              shadow="md"
+              position="relative"
+              overflow="hidden"
+            >
+              <NextImage
+                src={`/assets/samples/${v}.png`}
+                alt=""
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
+              />
+            </GridItem>
+          </Link>
+        ))}
+    </SimpleGrid>
+  );
 };
 
 const TableView = () => {
