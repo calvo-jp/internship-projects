@@ -1,17 +1,10 @@
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, HStack, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "components/Link";
 import Button from "components/widgets/Button";
 import TextField from "components/widgets/TextField";
 import Head from "next/head";
-import NextLink from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -23,8 +16,14 @@ const Login = () => {
       </Head>
 
       <Flex minH="100vh">
-        <Box h="100vh" w="40%">
-          <BackgroundImage />
+        <Box h="100vh" w="600px" maxW="40%" pos="relative">
+          <Image
+            src="/assets/bg/sign-in.png"
+            alt=""
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+          />
         </Box>
 
         <Flex flexGrow={1} p={4} direction="column" justify="center">
@@ -36,18 +35,6 @@ const Login = () => {
         </Flex>
       </Flex>
     </>
-  );
-};
-
-const BackgroundImage = () => {
-  return (
-    <Box
-      bgImage="url(/assets/bg/sign-in.png)"
-      backgroundSize="cover"
-      backgroundPosition="center"
-      w="full"
-      h="full"
-    />
   );
 };
 
@@ -98,19 +85,13 @@ const LoginForm = () => {
       </Box>
 
       <Center mt={12}>
-        <NextLink passHref href="/account-recovery">
-          <Link fontSize="sm" color="brand.primary">
-            Forgot Password
-          </Link>
-        </NextLink>
+        <Link href="/account-recovery">Forgot Password</Link>
       </Center>
 
       <Center mt={2} fontSize="sm">
         <HStack>
           <Box>Don&apos;t have an account?</Box>
-          <NextLink passHref href="/create-account">
-            <Link color="brand.primary">Sign up</Link>
-          </NextLink>
+          <Link href="/create-account">Sign up</Link>
         </HStack>
       </Center>
     </Box>

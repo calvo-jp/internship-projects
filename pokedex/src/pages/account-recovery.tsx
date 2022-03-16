@@ -1,23 +1,10 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  HStack,
-  Input,
-  InputProps,
-  Link,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, HStack, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "components/Link";
+import Button from "components/widgets/Button";
 import TextField from "components/widgets/TextField";
 import Head from "next/head";
-import NextLink from "next/link";
-import { forwardRef } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -29,8 +16,14 @@ const AccountRecovery = () => {
       </Head>
 
       <Flex minH="100vh">
-        <Box h="100vh" w="40%">
-          <BackgroundImage />
+        <Box h="100vh" w="600px" maxW="40%" pos="relative">
+          <Image
+            src="/assets/bg/forgot-password.png"
+            alt=""
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+          />
         </Box>
 
         <Flex flexGrow={1} p={4} direction="column" justify="center">
@@ -42,18 +35,6 @@ const AccountRecovery = () => {
         </Flex>
       </Flex>
     </>
-  );
-};
-
-const BackgroundImage = () => {
-  return (
-    <Box
-      bgImage="url(/assets/bg/forgot-password.png)"
-      backgroundSize="cover"
-      backgroundPosition="center"
-      w="full"
-      h="full"
-    />
   );
 };
 
@@ -89,14 +70,7 @@ const AccountRecoveryForm = () => {
           />
         </VStack>
 
-        <Button
-          bgColor="#1E40AF"
-          color="#F7FAFC"
-          size="lg"
-          fontSize="sm"
-          mt={6}
-          w="full"
-        >
+        <Button mt={6} w="full">
           Sign In
         </Button>
       </Box>
@@ -104,9 +78,7 @@ const AccountRecoveryForm = () => {
       <Center mt={12} fontSize="sm">
         <HStack>
           <Box>Remember your password?</Box>
-          <NextLink passHref href="/login">
-            <Link color="brand.primary">Log in</Link>
-          </NextLink>
+          <Link href="/login">Log in</Link>
         </HStack>
       </Center>
     </Box>
