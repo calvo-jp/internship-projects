@@ -1,9 +1,25 @@
 import { Box, Image } from "@chakra-ui/react";
 
+type Size = [
+  /** width in pixels */
+  width: number,
+  /** height in pixels */
+  height: number
+];
+
+type Position = [
+  /** position left or right in percentage */
+  leftOrRight: number,
+  /** position bottom in pixels */
+  bottom: number
+];
+
 type Item = [
+  /** name of svg */
   name: string,
-  size: [width: number, height: number],
-  posit: [leftOrRight: number, bottom: number],
+  size: Size,
+  posit: Position,
+  /** how many degrees should we rotate the element */
   rotate: number,
   anchor: "left" | "right"
 ];

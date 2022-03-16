@@ -39,20 +39,31 @@ const Pokemons = () => {
       </Head>
 
       <Layout>
-        <HStack justify="space-between">
-          <Heading fontSize="2xl" color="brand.gray.100" fontWeight="semibold">
-            Choose Pokemon
-          </Heading>
+        <Box
+          maxW="container.lg"
+          mx="auto"
+          p={{ base: 4, lg: 12 }}
+          bgColor="transparent"
+        >
+          <HStack justify="space-between">
+            <Heading
+              fontSize="2xl"
+              color="brand.gray.100"
+              fontWeight="semibold"
+            >
+              Choose Pokemon
+            </Heading>
 
-          <Toolbar />
-        </HStack>
+            <Toolbar />
+          </HStack>
 
-        <Box mt={12}>
-          <Items />
-        </Box>
+          <Box mt={12}>
+            <Items />
+          </Box>
 
-        <Box mt={4}>
-          <Pagination />
+          <Box mt={4}>
+            <Pagination />
+          </Box>
         </Box>
       </Layout>
     </>
@@ -202,7 +213,6 @@ const FilterTool = () => {
         {items.map((item) => (
           <MenuItem key={item} display="flex" justifyContent="space-between">
             <Text fontSize="sm">{item}</Text>
-
             <Checkbox />
           </MenuItem>
         ))}
