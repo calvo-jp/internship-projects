@@ -55,7 +55,7 @@ export default function Landing() {
 const GithubLink = () => {
   return (
     <ChakraLink
-      href="https://github.com/calvo-jp/pokedex-chakra"
+      href="https://github.com/calvo-jp/internship-projects/tree/main/pokemon"
       isExternal
       position="absolute"
       right={2}
