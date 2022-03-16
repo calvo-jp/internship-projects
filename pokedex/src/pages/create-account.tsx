@@ -1,19 +1,15 @@
 import {
   Box,
-  Button,
   Center,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
   Heading,
   HStack,
-  Input,
-  InputProps,
   Link,
   VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Button from "components/widgets/Button";
+import TextField from "components/widgets/TextField";
 import Head from "next/head";
 import NextLink from "next/link";
 import { forwardRef } from "react";
@@ -27,7 +23,7 @@ const CreateAccount = () => {
         <title>Pokedex | Create Account</title>
       </Head>
 
-      <Flex minH="100vh" color="#F7FAFC" bgColor="#111827">
+      <Flex minH="100vh">
         <Box h="100vh" w="600px" maxW="40%">
           <BackgroundImage />
         </Box>
@@ -76,15 +72,13 @@ const CreateAccountForm = () => {
 
   return (
     <Box>
-      <Heading as="h1" fontSize="5xl" color="white">
+      <Heading as="h1" fontSize="5xl">
         Sign up
       </Heading>
 
       <Box as="form" mt={8}>
         <VStack spacing={4}>
           <TextField
-            size="lg"
-            fontSize="md"
             label="Email"
             placeholder="Enter email"
             error={formState.errors.email?.message}
@@ -92,8 +86,6 @@ const CreateAccountForm = () => {
           />
 
           <TextField
-            size="lg"
-            fontSize="md"
             label="Password"
             placeholder="Enter Password"
             error={formState.errors.password?.message}
@@ -101,14 +93,7 @@ const CreateAccountForm = () => {
           />
         </VStack>
 
-        <Button
-          bgColor="#FFC107"
-          color="#1F2937"
-          size="lg"
-          fontSize="sm"
-          mt={6}
-          w="full"
-        >
+        <Button mt={6} w="full">
           Create Account
         </Button>
       </Box>
@@ -117,43 +102,12 @@ const CreateAccountForm = () => {
         <HStack>
           <Box>Already have an account?</Box>
           <NextLink passHref href="/login">
-            <Link color="#FFC107">Log in</Link>
+            <Link color="brand.primary">Log in</Link>
           </NextLink>
         </HStack>
       </Center>
     </Box>
   );
 };
-
-interface TextFieldProps {
-  error?: string;
-  label?: string;
-}
-
-const TextField = forwardRef<HTMLInputElement, TextFieldProps & InputProps>(
-  ({ error, label, ...props }, ref) => {
-    return (
-      <FormControl isInvalid={!!error}>
-        {label && (
-          <FormLabel fontWeight="medium" color="#F7FAFC">
-            {label}
-          </FormLabel>
-        )}
-
-        <Input
-          mt={2}
-          ref={ref}
-          borderColor="#718096"
-          bgColor="#1F2937"
-          {...props}
-        />
-
-        <FormErrorMessage fontSize="sm">{error}</FormErrorMessage>
-      </FormControl>
-    );
-  }
-);
-
-TextField.displayName = "TextField";
 
 export default CreateAccount;

@@ -14,6 +14,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import TextField from "components/widgets/TextField";
 import Head from "next/head";
 import NextLink from "next/link";
 import { forwardRef } from "react";
@@ -27,7 +28,7 @@ const AccountRecovery = () => {
         <title>Pokedex | Recover Account</title>
       </Head>
 
-      <Flex minH="100vh" color="gray.800">
+      <Flex minH="100vh">
         <Box h="100vh" w="40%">
           <BackgroundImage />
         </Box>
@@ -81,8 +82,6 @@ const AccountRecoveryForm = () => {
       <Box as="form" mt={8}>
         <VStack spacing={4}>
           <TextField
-            size="lg"
-            fontSize="md"
             label="Email"
             placeholder="Enter email"
             error={formState.errors.email?.message}
@@ -106,33 +105,12 @@ const AccountRecoveryForm = () => {
         <HStack>
           <Box>Remember your password?</Box>
           <NextLink passHref href="/login">
-            <Link color="brand.tertiary">Log in</Link>
+            <Link color="brand.primary">Log in</Link>
           </NextLink>
         </HStack>
       </Center>
     </Box>
   );
 };
-
-interface TextFieldProps {
-  error?: string;
-  label?: string;
-}
-
-const TextField = forwardRef<HTMLInputElement, TextFieldProps & InputProps>(
-  ({ error, label, ...props }, ref) => {
-    return (
-      <FormControl isInvalid={!!error}>
-        {label && <FormLabel fontWeight="medium">{label}</FormLabel>}
-
-        <Input mt={2} borderColor="gray.100" ref={ref} {...props} />
-
-        <FormErrorMessage fontSize="sm">{error}</FormErrorMessage>
-      </FormControl>
-    );
-  }
-);
-
-TextField.displayName = "TextField";
 
 export default AccountRecovery;
