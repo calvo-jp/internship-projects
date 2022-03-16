@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { FilterIcon, ViewGridIcon, ViewListIcon } from "@heroicons/react/solid";
-import Layout from "components/Layout";
+import Layout from "components/layout";
 import Head from "next/head";
 
 const Pokemons = () => {
