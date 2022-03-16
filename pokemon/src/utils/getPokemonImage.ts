@@ -1,10 +1,10 @@
 import { CorePokemonData } from "types/CorePokemonData";
 
 const getPokemonImage = (pokemon: CorePokemonData) => {
-  const sprites = pokemon.sprites.at(0);
+  try {
+    const sprites = pokemon.sprites.at(0);
 
-  if (!!sprites) {
-    try {
+    if (!!sprites) {
       const obj = JSON.parse(sprites.sprites);
 
       const img =
@@ -13,10 +13,10 @@ const getPokemonImage = (pokemon: CorePokemonData) => {
         obj.front_default;
 
       if (img) return img;
-    } catch {}
+    }
+  } catch {
+    return getCdn(pokemon.id);
   }
-
-  return getCdn(pokemon.id);
 };
 
 const getCdn = (id: number | string) => {
