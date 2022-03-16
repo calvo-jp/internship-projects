@@ -27,11 +27,11 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt({ token, account, user }) {
-      // using credential
       // store user data and original jwt for client use
       // will be passed down to Session.token.user
       if (user) {
         token.user = user;
+        // using credential
         token.accessToken = user.accessToken;
       }
 
