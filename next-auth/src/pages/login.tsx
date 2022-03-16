@@ -45,7 +45,7 @@ const schema = yup
   .required("username and password are required");
 
 const Login = () => {
-  const { replace } = useRouter();
+  const { replace, prefetch } = useRouter();
   const { status } = useSession();
   const callbackUrl = useCallbackUrl();
 
@@ -70,8 +70,9 @@ const Login = () => {
   });
 
   useEffect(() => {
+    prefetch(callbackUrl);
     return () => setLoginError(false);
-  }, []);
+  }, [callbackUrl, prefetch]);
 
   if (status === "loading") return null;
 
