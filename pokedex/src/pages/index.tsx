@@ -1,5 +1,7 @@
+import { Box } from "@chakra-ui/react";
+
 const Landing = () => {
-  return <div></div>;
+  return <Box>Hello world</Box>;
 };
 
 export default Landing;
