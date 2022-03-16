@@ -15,29 +15,31 @@ import ChevronDownIcon from "@heroicons/react/outline/ChevronDownIcon";
 const Header = () => {
   return (
     <Flex
-      px={16}
+      as="header"
       py={6}
+      px={16}
       align="center"
       justify="space-between"
-      bgColor="#1F2937"
+      bgColor="brand.gray.800"
+      shadow="md"
       zIndex={100}
-      as="header"
-      position="sticky"
+      pos="sticky"
+      top={0}
     >
-      <Heading fontSize="4xl" color="#FFCA28">
+      <Heading fontSize="4xl" color="brand.amber.400">
         Pokedex
       </Heading>
 
       <HStack spacing={5}>
-        <Text color="white">Welcome, JP</Text>
+        <Text>Welcome, JP</Text>
         <Avatar w="57px" h="57px" />
 
         <Menu>
           <MenuButton>
-            <Icon p={0} as={ChevronDownIcon} fontSize="xl" stroke="white" />
+            <Icon as={ChevronDownIcon} fontSize="xl" stroke="brand.gray.100" />
           </MenuButton>
-          <MenuList mt={3} w="175px">
-            <MenuItem color="#EF4444">Logout</MenuItem>
+          <MenuList mt={3}>
+            <MenuItem color="brand.red.500">Logout</MenuItem>
           </MenuList>
         </Menu>
       </HStack>
