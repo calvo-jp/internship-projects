@@ -8,11 +8,35 @@ import Head from "next/head";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
+const AccountRecovery = () => {
+  return (
+    <>
+      <Head>
+        <title>Pokedex | Recover Account</title>
+      </Head>
+
+      <AccountLayout
+        heading="Forgot Password"
+        backgroundUrl="/assets/bg/sign-in.png"
+      >
+        <AccountRecoveryForm />
+
+        <Center mt={12} fontSize="sm">
+          <HStack spacing={1}>
+            <Box>Remember your password?</Box>
+            <Link href="/login">Log in</Link>
+          </HStack>
+        </Center>
+      </AccountLayout>
+    </>
+  );
+};
+
 const schema = yup.object().shape({
   email: yup.string().email().required(),
 });
 
-const AccountRecovery = () => {
+const AccountRecoveryForm = () => {
   const { register, formState, handleSubmit } = useForm({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -24,40 +48,22 @@ const AccountRecovery = () => {
   const recoverAccount = handleSubmit(async (data) => {});
 
   return (
-    <>
-      <Head>
-        <title>Pokedex | Recover Account</title>
-      </Head>
+    <Box as="form" onSubmit={recoverAccount}>
+      <VStack spacing={4}>
+        <TextField
+          size="lg"
+          fontSize="sm"
+          label="Email"
+          placeholder="Enter email"
+          error={formState.errors.email?.message}
+          {...register("email")}
+        />
+      </VStack>
 
-      <AccountLayout
-        heading="Forgot Password"
-        backgroundUrl="/assets/bg/sign-in.png"
-      >
-        <Box as="form" onSubmit={recoverAccount}>
-          <VStack spacing={4}>
-            <TextField
-              size="lg"
-              fontSize="sm"
-              label="Email"
-              placeholder="Enter email"
-              error={formState.errors.email?.message}
-              {...register("email")}
-            />
-          </VStack>
-
-          <Button size="lg" fontSize="sm" mt={6} w="full">
-            Send password reset link
-          </Button>
-        </Box>
-
-        <Center mt={12} fontSize="sm">
-          <HStack spacing={1}>
-            <Box>Remember your password?</Box>
-            <Link href="/login">Log in</Link>
-          </HStack>
-        </Center>
-      </AccountLayout>
-    </>
+      <Button type="submit" size="lg" fontSize="sm" mt={6} w="full">
+        Send password reset link
+      </Button>
+    </Box>
   );
 };
 

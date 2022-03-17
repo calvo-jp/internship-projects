@@ -13,7 +13,6 @@ import apolloClient from "config/apollo/client";
 import theme from "config/theme";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { PropsWithChildren } from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -24,20 +23,12 @@ const App = ({ Component, pageProps }: AppProps) => {
 
       <ApolloProvider client={apolloClient}>
         <ChakraProvider theme={theme}>
-          <Root>
+          <Box bgColor="brand.gray.900" minH="100vh" color="white">
             <Component {...pageProps} />
-          </Root>
+          </Box>
         </ChakraProvider>
       </ApolloProvider>
     </>
-  );
-};
-
-const Root = ({ children }: PropsWithChildren<{}>) => {
-  return (
-    <Box bgColor="brand.gray.900" minH="100vh" color="white">
-      {children}
-    </Box>
   );
 };
 
