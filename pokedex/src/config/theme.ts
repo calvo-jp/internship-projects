@@ -34,7 +34,7 @@ const theme = extendTheme({
       amber: {
         400: "#FFCA28",
         // this was only added here since progress component
-        // only picks up the 500 weight
+        // only picks up the 500 shade in a pallete
         500: "#FFA000",
         700: "#FFA000",
       },
@@ -57,6 +57,7 @@ const theme = extendTheme({
       },
       inconsistent: {
         gray: {
+          // there are 2 different shade of gray.800 found in figma
           800: "#1A202C",
         },
       },
