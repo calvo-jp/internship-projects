@@ -31,10 +31,11 @@ import useStore from "hooks/useStore";
 import Head from "next/head";
 import NextImage from "next/image";
 import Link from "next/link";
+import { Fragment } from "react";
 
 const Pokemons = () => {
   return (
-    <>
+    <Fragment>
       <Head>
         <title>Pokedex</title>
       </Head>
@@ -67,7 +68,7 @@ const Pokemons = () => {
           </Box>
         </Box>
       </HomepageLayout>
-    </>
+    </Fragment>
   );
 };
 
