@@ -8,10 +8,6 @@ import {
   Icon,
   Progress,
   SimpleGrid,
-  Stat,
-  StatGroup,
-  StatHelpText,
-  StatLabel,
   Tab,
   TabList,
   TabPanel,
@@ -29,8 +25,9 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/outline";
 import HomepageLayout from "components/layouts/homepage";
-import Card from "components/widgets/Card";
-import CardHeading from "components/widgets/CardHeading";
+import Card from "components/widgets/card";
+import CardHeading from "components/widgets/card/Heading";
+import CardTag from "components/widgets/card/Tag";
 import IconButton from "components/widgets/IconButton";
 import Head from "next/head";
 import Image from "next/image";
@@ -45,18 +42,16 @@ const Pokemon = () => {
       </Head>
 
       <HomepageLayout>
-        <Box pt={6} pb={20}>
-          <Box w="fit-content" mx="auto">
-            <Tree />
+        <Box w="fit-content" mx="auto" pt={6} pb={20}>
+          <Tree />
 
-            <Flex gap={16} mt={14}>
-              <LeftPane />
+          <Flex gap={16} mt={14}>
+            <LeftPane />
 
-              <Box w="799px">
-                <RightPane />
-              </Box>
-            </Flex>
-          </Box>
+            <Box w="799px">
+              <RightPane />
+            </Box>
+          </Flex>
         </Box>
       </HomepageLayout>
     </Fragment>
@@ -175,7 +170,7 @@ const RightPane = () => {
 const Moves = () => {
   return (
     <Card w="full">
-      <SimpleGrid>
+      <SimpleGrid columns={2}>
         <CardHeading>Quick Moves</CardHeading>
       </SimpleGrid>
     </Card>
@@ -189,9 +184,8 @@ const Evolution = () => {
         There are currently a total of 9 Pokémon in the Eevee family. Flareon
         evolves from Eevee which costs{" "}
         <Text as="b" fontWeight="semibold">
-          25 Candy
+          25 Candy.
         </Text>
-        .
       </Text>
 
       <Card mt={4} w="full">
@@ -250,25 +244,23 @@ const Statistics = () => {
   return (
     <VStack spacing={16} align="start">
       <Card w="full">
-        <Box>
-          {stats.map(({ label, value, colorScheme }) => (
-            <Flex align="center" fontWeight="medium" key={label}>
-              <Text w="45px">{label}</Text>
+        {stats.map(({ label, value, colorScheme }) => (
+          <Flex align="center" fontWeight="medium" key={label}>
+            <Text w="45px">{label}</Text>
 
-              <Progress
-                colorScheme={colorScheme}
-                size="xs"
-                flexGrow="1"
-                ml={8}
-                mr={4}
-                value={value}
-                rounded="sm"
-              />
+            <Progress
+              colorScheme={colorScheme}
+              size="xs"
+              flexGrow="1"
+              ml={8}
+              mr={4}
+              value={value}
+              rounded="sm"
+            />
 
-              <Text w="35px">{value}%</Text>
-            </Flex>
-          ))}
-        </Box>
+            <Text w="35px">{value}%</Text>
+          </Flex>
+        ))}
       </Card>
 
       <Card w="full">
@@ -277,15 +269,7 @@ const Statistics = () => {
         <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
           {["Rock", "Ground", "Water"].map((weakness) => (
             <HStack spacing={6} key={weakness}>
-              <Tag
-                py={2}
-                px={8}
-                color="brand.red.700"
-                bgColor="brand.red.50"
-                fontSize="xs"
-              >
-                {weakness}
-              </Tag>
+              <CardTag variant="error">{weakness}</CardTag>
 
               <Text>
                 <Box as="span" color="brand.red.500" mr={1}>
@@ -307,15 +291,7 @@ const Statistics = () => {
             .fill(null)
             .map((_, idx) => (
               <HStack spacing={6} key={idx}>
-                <Tag
-                  py={2}
-                  px={8}
-                  color="brand.green.700"
-                  bgColor="brand.green.50"
-                  fontSize="xs"
-                >
-                  Bug
-                </Tag>
+                <CardTag variant="success">Bug</CardTag>
 
                 <Text>
                   <Box as="span" color="brand.green.500" mr={1}>
@@ -342,52 +318,47 @@ const About = () => {
         id nibh sagittis. Ipsum ornare quam vitae praesent.
       </Text>
 
-      <Card>
-        <StatGroup gap={6} alignItems="center">
+      <Card py={4}>
+        <HStack
+          gap={6}
+          divider={
+            <Divider
+              h="75px"
+              orientation="vertical"
+              borderColor="brand.gray.700"
+            />
+          }
+        >
           {[
             ["Weight", "220.0 KG"],
             ["Height", "220.0 KG"],
-          ].map(([label, value], idx, arr) => (
-            <Fragment key={label}>
-              <Stat>
-                <StatLabel color="brand.blue.400" fontWeight="semibold">
-                  {label}
-                </StatLabel>
+          ].map(([label, value]) => (
+            <VStack key={label} spacing={2} align="start">
+              <CardHeading>{label}</CardHeading>
 
-                <StatHelpText mt={2} mb={0} color="brand.gray.50">
-                  {value}
-                </StatHelpText>
-              </Stat>
-
-              {idx + 1 < arr.length && (
-                <Divider orientation="vertical" h="60px" my="auto" />
-              )}
-            </Fragment>
+              <Text color="brand.gray.50">{value}</Text>
+            </VStack>
           ))}
-        </StatGroup>
+        </HStack>
       </Card>
 
       <Card>
-        <Stat>
-          <StatLabel color="brand.blue.400" fontWeight="semibold">
-            Breed
-          </StatLabel>
+        <CardHeading>Breed</CardHeading>
 
-          <Wrap spacing={8} mt={3}>
-            {[
-              ["Gender", "87.8% Male"],
-              ["Egg Group", "Monster"],
-              ["Egg Cycle", "Grass"],
-            ].map(([label, value]) => (
-              <WrapItem key={label}>
-                <Text color="brand.gray.400">{label}:</Text>
-                <Text color="brand.gray.50" ml={1}>
-                  {value}
-                </Text>
-              </WrapItem>
-            ))}
-          </Wrap>
-        </Stat>
+        <Wrap spacing={8} mt={3}>
+          {[
+            ["Gender", "87.8% Male"],
+            ["Egg Group", "Monster"],
+            ["Egg Cycle", "Grass"],
+          ].map(([label, value]) => (
+            <WrapItem key={label}>
+              <Text color="brand.gray.400">{label}:</Text>
+              <Text color="brand.gray.50" ml={2}>
+                {value}
+              </Text>
+            </WrapItem>
+          ))}
+        </Wrap>
       </Card>
     </VStack>
   );
