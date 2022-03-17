@@ -844,6 +844,11 @@
   resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.5.tgz#d4e52e8a0c84b93abae46efd4c43bd7a7f23907f"
   integrity sha512-mWnePEroLfaJQWmynipzOVcH6JwT8Jta3+yLsC5Pm/snHBXnOiAOnjBqYjKnvXwJ4eUPt2AaAhyrtwCgWQRGOg==
 
+"@fontsource/public-sans@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@fontsource/public-sans/-/public-sans-4.5.3.tgz#2627e0eec0b3b1eeeb906f5ac0a9f0b84235a22b"
+  integrity sha512-/3PC3AhNyHNfGt0iFVZ7NrwFOlbKLgD/ZH4k/ERkNCymxbJX5zF9OzYwsrfjbTmvh9Mkhlq2ZGU9XwBY7GsSDg==
+
 "@graphql-typed-document-node/core@^3.0.0":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
