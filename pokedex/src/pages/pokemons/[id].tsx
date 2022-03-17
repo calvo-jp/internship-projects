@@ -7,7 +7,6 @@ import {
   Heading,
   HStack,
   Icon,
-  Link as ChakraLink,
   Progress,
   SimpleGrid,
   Tab,
@@ -41,7 +40,7 @@ import IconButton from "components/widgets/IconButton";
 import Head from "next/head";
 import Image from "next/image";
 import NextLink from "next/link";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
 const Pokemon = () => {
   return (
