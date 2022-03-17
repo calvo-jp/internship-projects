@@ -41,12 +41,7 @@ const Pokemons = () => {
       </Head>
 
       <HomepageLayout>
-        <Box
-          maxW="container.lg"
-          mx="auto"
-          p={{ base: 4, lg: 12 }}
-          bgColor="transparent"
-        >
+        <Box maxW="container.lg" mx="auto" p={12} bgColor="transparent">
           <HStack justify="space-between">
             <Heading
               fontSize="2xl"
@@ -140,39 +135,37 @@ const GridView = () => {
 
 const TableView = () => {
   return (
-    <Box>
-      <Table bgColor="brand.gray.700" color="brand.gray.50">
-        <Thead fontSize="sm" fontWeight="bold">
-          <Tr>
-            <Td w="1%" whiteSpace="nowrap">
-              #
-            </Td>
-            <Td w="1%" whiteSpace="nowrap"></Td>
-            <Td>Pokemon</Td>
-            <Td>Type</Td>
-            <Td>Level</Td>
-          </Tr>
-        </Thead>
+    <Table bgColor="brand.gray.700" color="brand.gray.50">
+      <Thead fontSize="sm" fontWeight="bold">
+        <Tr>
+          <Td w="1%" whiteSpace="nowrap">
+            #
+          </Td>
+          <Td w="1%" whiteSpace="nowrap"></Td>
+          <Td>Pokemon</Td>
+          <Td>Type</Td>
+          <Td>Level</Td>
+        </Tr>
+      </Thead>
 
-        <Tbody>
-          {new Array(10).fill(null).map((_, idx) => {
-            return (
-              <Tr key={idx}>
-                <Td w="1%" whiteSpace="nowrap">
-                  1
-                </Td>
-                <Td w="1%" whiteSpace="nowrap">
-                  <Avatar w="32px" h="32px" />
-                </Td>
-                <Td>Pikachu</Td>
-                <Td>Electric</Td>
-                <Td>Lvl 3</Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-    </Box>
+      <Tbody>
+        {new Array(10).fill(null).map((_, idx) => {
+          return (
+            <Tr key={idx}>
+              <Td w="1%" whiteSpace="nowrap">
+                1
+              </Td>
+              <Td w="1%" whiteSpace="nowrap">
+                <Avatar w="32px" h="32px" />
+              </Td>
+              <Td>Pikachu</Td>
+              <Td>Electric</Td>
+              <Td>Lvl 3</Td>
+            </Tr>
+          );
+        })}
+      </Tbody>
+    </Table>
   );
 };
 
