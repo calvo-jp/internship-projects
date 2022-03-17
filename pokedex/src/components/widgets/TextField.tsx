@@ -14,8 +14,22 @@ interface TextFieldProps {
 
 /**
  *
- * WARNING: other props except label and error are being added to input
+ * @description
+ * An input component wrapped in `FormControl` and
+ * optionally accepts label or error message and `InputProps`
+ *
+ * __WARNING__: other props except label and error are being added to input
  * be careful when using margin
+ *
+ * @usage
+ * ```javascript
+ * <TextField
+ *    name="field"
+ *    label="Field"
+ *    error="Invalid field value"
+ *    ...
+ * />
+ * ```
  *
  */
 const TextField = forwardRef<HTMLInputElement, TextFieldProps & InputProps>(
