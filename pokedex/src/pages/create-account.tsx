@@ -1,8 +1,8 @@
 import { Box, Center, HStack, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AccountLayout from "components/layouts/account";
-import Link from "components/Link";
 import Button from "components/widgets/Button";
+import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
