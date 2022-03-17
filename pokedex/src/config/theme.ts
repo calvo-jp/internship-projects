@@ -33,6 +33,9 @@ const theme = extendTheme({
       },
       amber: {
         400: "#FFCA28",
+        // this was only added here since progress component
+        // only picks up the 500 weight
+        500: "#FFA000",
         700: "#FFA000",
       },
       green: {
@@ -46,9 +49,16 @@ const theme = extendTheme({
       },
       teal: {
         400: "#2DD4BF",
+        // see above comment
+        500: "#2DD4BF",
       },
       purple: {
         500: "#8B5CF6",
+      },
+      inconsistent: {
+        gray: {
+          800: "#1A202C",
+        },
       },
     },
   },
