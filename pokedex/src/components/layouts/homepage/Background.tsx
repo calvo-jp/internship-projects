@@ -57,7 +57,7 @@ const Background = () => {
         alt=""
         position="absolute"
         left={0}
-        bottom={0}
+        bottom={4}
       />
 
       {items.map(
