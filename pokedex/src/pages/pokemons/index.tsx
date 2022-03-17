@@ -27,6 +27,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { FilterIcon, ViewGridIcon, ViewListIcon } from "@heroicons/react/solid";
 import Layout from "components/layout";
+import useStore from "hooks/useStore";
 import Head from "next/head";
 import NextImage from "next/image";
 import Link from "next/link";
@@ -101,12 +102,9 @@ const Pagination = () => {
   );
 };
 
-interface ItemsProps {
-  table?: boolean;
-}
-
-const Items = ({ table }: ItemsProps) => {
-  return table ? <TableView /> : <GridView />;
+const Items = () => {
+  const listView = useStore((state) => state.listView);
+  return listView ? <TableView /> : <GridView />;
 };
 
 const GridView = () => {
@@ -178,16 +176,28 @@ const TableView = () => {
 };
 
 const Toolbar = () => {
+  const toggleListView = useStore((state) => state.toggleListView);
+
   return (
     <Wrap spacing={8}>
       <WrapItem>
         <FilterTool />
       </WrapItem>
       <WrapItem>
-        <Icon as={ViewListIcon} fill="brand.gray.200" fontSize="xl" />
+        <Icon
+          as={ViewListIcon}
+          fill="brand.gray.200"
+          fontSize="xl"
+          onClick={() => toggleListView(true)}
+        />
       </WrapItem>
       <WrapItem>
-        <Icon as={ViewGridIcon} fill="brand.gray.200" fontSize="xl" />
+        <Icon
+          as={ViewGridIcon}
+          fill="brand.gray.200"
+          fontSize="xl"
+          onClick={() => toggleListView(false)}
+        />
       </WrapItem>
     </Wrap>
   );
