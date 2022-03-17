@@ -1,10 +1,6 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 
-interface CardProps {
-  fullWidth?: boolean;
-}
-
 /**
  *
  * @description
@@ -22,11 +18,7 @@ interface CardProps {
  * </Card>
  *
  */
-const Card = ({
-  children,
-  fullWidth,
-  ...props
-}: PropsWithChildren<CardProps & BoxProps>) => {
+const Card = ({ children, ...props }: PropsWithChildren<BoxProps>) => {
   return (
     <Box
       py={6}
@@ -34,7 +26,6 @@ const Card = ({
       border="1px"
       borderColor="brand.gray.500"
       bgColor="brand.gray.800"
-      w={fullWidth ? "full" : "fit-content"}
       rounded="sm"
       fontSize="md"
       {...props}
