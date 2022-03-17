@@ -33,7 +33,7 @@ import { Fragment } from "react";
 
 const Pokemon = () => {
   return (
-    <>
+    <Fragment>
       <Head>
         <title>Pokedex | Pikachu</title>
       </Head>
@@ -53,7 +53,7 @@ const Pokemon = () => {
           </Box>
         </Box>
       </HomepageLayout>
-    </>
+    </Fragment>
   );
 };
 
@@ -182,9 +182,7 @@ const Evolution = () => {
         .
       </Text>
 
-      <Box mt={4}>
-        <Card fullWidth></Card>
-      </Box>
+      <Card mt={4} fullWidth></Card>
     </Box>
   );
 };
