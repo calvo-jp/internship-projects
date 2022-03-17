@@ -1,42 +1,37 @@
 import { Box, Image } from "@chakra-ui/react";
 
-type Size = [
-  /** width in pixels */
-  width: number,
-  /** height in pixels */
-  height: number
-];
-
-type Position = [
-  /** position left or right in percentage */
-  leftOrRight: number,
-  /** position bottom in pixels */
-  bottom: number
-];
-
 type Item = [
   /** name of svg */
   name: string,
-  size: Size,
-  posit: Position,
+  /** size in pixels */
+  size: [width: number, height: number],
+  position: [
+    /** position left or right in percentage */
+    leftOrRight: number,
+    /** position bottom in pixels */
+    bottom: number
+  ],
   /** how many degrees should we rotate the element */
   rotate: number,
+  /** the horiz pos where the element should be placed */
   anchor: "left" | "right"
 ];
+
+// screen: 1440px
 
 const Background = () => {
   const items: Item[] = [
     // left
-    ["fire", [40, 51], [10, 350], 20.05, "left"],
-    ["electric", [54, 56], [2, 270], 8.37, "left"],
-    ["metal", [38, 33], [12, 229], 0, "left"],
-    ["grass", [65, 89], [5, 45], 0, "left"],
-    ["steel", [36, 44], [18, 33], -25.7, "left"],
+    ["fire", [40, 51], [11.4, 372], 20.05, "left"],
+    ["electric", [54, 56], [0.175, 273], 8.37, "left"],
+    ["metal", [38, 33], [13.5, 230], 0, "left"],
+    ["grass", [65, 89], [4.8, 45], 0, "left"],
+    ["steel", [36, 44], [21, 34], -25.7, "left"],
     // right
-    ["stone", [27, 30], [6, 354], 22.96, "right"],
-    ["fairy", [38, 56], [9, 185], -27.98, "right"],
-    ["poison", [34, 52], [3, 120], 14.5, "right"],
-    ["water", [59, 100], [15, 37], 0, "right"],
+    ["stone", [27, 30], [5, 354], 22.96, "right"],
+    ["fairy", [38, 56], [9.12, 186], -27.98, "right"],
+    ["poison", [34, 52], [0.9, 120], 14.5, "right"],
+    ["water", [59, 100], [13, 37], 0, "right"],
   ];
 
   return (
@@ -46,7 +41,7 @@ const Background = () => {
         alt=""
         position="absolute"
         right={0}
-        top={0}
+        top={-16}
       />
 
       <Image
