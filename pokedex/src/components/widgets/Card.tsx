@@ -1,11 +1,33 @@
-import { Box } from "@chakra-ui/react";
+import { Box, BoxProps } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 
 interface CardProps {
   fullWidth?: boolean;
 }
 
-const Card = ({ children, fullWidth }: PropsWithChildren<CardProps>) => {
+/**
+ *
+ * @description
+ * an overridable Card component that
+ * comes with the following props set
+ * - `padding`
+ * - `borderColor`
+ * - `bgColor`
+ * - `borderRadius`
+ * - `fontSize`
+ *
+ * @usage
+ * ```javascript
+ * <Card mt={4}>
+ * ...
+ * </Card>
+ * ```
+ *
+ */
+const Card = ({
+  children,
+  fullWidth,
+}: PropsWithChildren<CardProps & BoxProps>) => {
   return (
     <Box
       py={6}
