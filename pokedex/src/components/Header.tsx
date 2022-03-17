@@ -11,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import ChevronDownIcon from "@heroicons/react/outline/ChevronDownIcon";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -26,9 +27,13 @@ const Header = () => {
       pos="sticky"
       top={0}
     >
-      <Heading fontSize="4xl" color="brand.amber.400">
-        Pokedex
-      </Heading>
+      <Link passHref href="/pokemons">
+        <a>
+          <Heading as="h1" fontSize="4xl" color="brand.amber.400">
+            Pokedex
+          </Heading>
+        </a>
+      </Link>
 
       <HStack spacing={5}>
         <Text>Welcome, JP</Text>
