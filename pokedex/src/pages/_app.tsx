@@ -11,6 +11,7 @@ import "@fontsource/inter/800.css";
 import "@fontsource/inter/900.css";
 import apolloClient from "config/apollo/client";
 import theme from "config/theme";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 
@@ -21,13 +22,15 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <ApolloProvider client={apolloClient}>
-        <ChakraProvider theme={theme}>
-          <Box bgColor="brand.gray.900" minH="100vh" color="white">
-            <Component {...pageProps} />
-          </Box>
-        </ChakraProvider>
-      </ApolloProvider>
+      <SessionProvider session={pageProps.session}>
+        <ApolloProvider client={apolloClient}>
+          <ChakraProvider theme={theme}>
+            <Box bgColor="brand.gray.900" minH="100vh" color="white">
+              <Component {...pageProps} />
+            </Box>
+          </ChakraProvider>
+        </ApolloProvider>
+      </SessionProvider>
     </>
   );
 };
