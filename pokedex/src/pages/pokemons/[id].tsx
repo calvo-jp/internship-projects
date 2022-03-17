@@ -1,5 +1,6 @@
 import {
   Box,
+  Center,
   Divider,
   Flex,
   Heading,
@@ -22,9 +23,14 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
+import {
+  ArrowNarrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/outline";
 import HomepageLayout from "components/layouts/homepage";
 import Card from "components/widgets/Card";
+import CardHeading from "components/widgets/CardHeading";
 import IconButton from "components/widgets/IconButton";
 import Head from "next/head";
 import Image from "next/image";
@@ -134,7 +140,7 @@ const RightPane = () => {
         </Tag>
       </VStack>
 
-      <Tabs mt={14} variant="unstyled">
+      <Tabs mt={16} variant="unstyled">
         <TabList gap={4}>
           {["About", "Statistics", "Evolution", "Moves"].map((tab) => (
             <Tab
@@ -167,7 +173,13 @@ const RightPane = () => {
 };
 
 const Moves = () => {
-  return null;
+  return (
+    <Card w="full">
+      <SimpleGrid>
+        <CardHeading>Quick Moves</CardHeading>
+      </SimpleGrid>
+    </Card>
+  );
 };
 
 const Evolution = () => {
@@ -182,7 +194,46 @@ const Evolution = () => {
         .
       </Text>
 
-      <Card mt={4} fullWidth></Card>
+      <Card mt={4} w="full">
+        <VStack spacing={6}>
+          {Array(6)
+            .fill(null)
+            .map((_, idx) => (
+              <Center key={idx}>
+                <HStack spacing={44}>
+                  <VStack spacing={2}>
+                    <Box
+                      w="88px"
+                      h="88px"
+                      bgColor="brand.inconsistent.gray.800"
+                      rounded="md"
+                    />
+                    <Text fontSize="sm">Eevee</Text>
+                  </VStack>
+
+                  <Box>
+                    <Icon
+                      as={ArrowNarrowRightIcon}
+                      stroke="brand.primary"
+                      fontSize="2xl"
+                    />
+
+                    <Text>25</Text>
+                  </Box>
+                  <VStack spacing={2}>
+                    <Box
+                      w="88px"
+                      h="88px"
+                      bgColor="brand.inconsistent.gray.800"
+                      rounded="md"
+                    />
+                    <Text fontSize="sm">Flareon</Text>
+                  </VStack>
+                </HStack>
+              </Center>
+            ))}
+        </VStack>
+      </Card>
     </Box>
   );
 };
@@ -198,7 +249,7 @@ const Statistics = () => {
 
   return (
     <VStack spacing={16} align="start">
-      <Card fullWidth>
+      <Card w="full">
         <Box>
           {stats.map(({ label, value, colorScheme }) => (
             <Flex align="center" fontWeight="medium" key={label}>
@@ -220,10 +271,8 @@ const Statistics = () => {
         </Box>
       </Card>
 
-      <Card fullWidth>
-        <Text fontWeight="semibold" color="brand.blue.400">
-          Weaknesses
-        </Text>
+      <Card w="full">
+        <CardHeading>Weaknesses</CardHeading>
 
         <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
           {["Rock", "Ground", "Water"].map((weakness) => (
@@ -250,10 +299,8 @@ const Statistics = () => {
         </Flex>
       </Card>
 
-      <Card fullWidth>
-        <Text fontWeight="semibold" color="brand.blue.400">
-          Resistant
-        </Text>
+      <Card w="full">
+        <CardHeading>Resistant</CardHeading>
 
         <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
           {Array(6)
