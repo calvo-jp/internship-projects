@@ -3,6 +3,12 @@ import { PropsWithChildren } from "react";
 import Header from "../../Header";
 import Background from "./Background";
 
+/**
+ *
+ * @description
+ * Base layout of pages with authenticated users
+ *
+ */
 const HomepageLayout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <Flex minH="100vh" direction="column">

@@ -7,6 +7,12 @@ interface AccountLayoutProps {
   backgroundUrl: string;
 }
 
+/**
+ *
+ * @description
+ * Base layout of pages related to account eg. Login, etc.
+ *
+ */
 const AccountLayout = ({
   heading,
   backgroundUrl,
