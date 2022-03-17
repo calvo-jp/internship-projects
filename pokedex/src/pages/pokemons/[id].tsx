@@ -1,26 +1,35 @@
 import {
   Box,
+  Button,
   Center,
   Divider,
   Flex,
   Heading,
   HStack,
   Icon,
+  Link as ChakraLink,
   Progress,
   SimpleGrid,
   Tab,
+  Table,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
   Tag,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
   VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import {
   ArrowNarrowRightIcon,
+  ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/outline";
@@ -31,7 +40,7 @@ import CardTag from "components/widgets/card/Tag";
 import IconButton from "components/widgets/IconButton";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
+import NextLink from "next/link";
 import { Fragment } from "react";
 
 const Pokemon = () => {
@@ -61,11 +70,11 @@ const Pokemon = () => {
 const Tree = () => {
   return (
     <HStack fontSize="sm" spacing={3}>
-      <Link href="/pokemons" passHref>
+      <NextLink href="/pokemons" passHref>
         <Text as="a" color="brand.gray.500">
           Home
         </Text>
-      </Link>
+      </NextLink>
 
       <Icon stroke="brand.gray.400" as={ChevronRightIcon} />
       <Text color="brand.gray.50">Pokemon details</Text>
@@ -169,11 +178,103 @@ const RightPane = () => {
 
 const Moves = () => {
   return (
-    <Card w="full">
-      <SimpleGrid columns={2}>
-        <CardHeading>Quick Moves</CardHeading>
-      </SimpleGrid>
-    </Card>
+    <VStack spacing={8}>
+      <Card w="full">
+        <SimpleGrid columns={2}>
+          <Box>
+            <VStack spacing={6} align="start">
+              <CardHeading>Quick Moves</CardHeading>
+              <CardTag variant="info">Ember</CardTag>
+              <CardTag variant="info">Fire Spin</CardTag>
+            </VStack>
+          </Box>
+
+          <Box>
+            <Table>
+              <Thead>
+                <Tr>
+                  {["Damage", "DPS", "EPS"].map((heading) => (
+                    <Th
+                      pt={0}
+                      color="brand.gray.100"
+                      borderColor="brand.gray.50"
+                      key={heading}
+                    >
+                      {heading}
+                    </Th>
+                  ))}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {[
+                  [10, 10, 10],
+                  [14, 9.1, 6.4],
+                  [12, 6.5, 8],
+                  [13, 3, 8],
+                ].map(([damage, dps, eps], idx) => (
+                  <Tr key={idx}>
+                    <Td textAlign="center">{damage}</Td>
+                    <Td textAlign="center">{dps}</Td>
+                    <Td textAlign="center">{eps}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Box>
+        </SimpleGrid>
+      </Card>
+
+      <Card w="full">
+        <SimpleGrid columns={2}>
+          <Box>
+            <VStack spacing={6} align="start">
+              <CardHeading>Quick Moves</CardHeading>
+
+              {["Fireblast", "Flame Thrower", "Heat wave", "Overheat"].map(
+                (value) => (
+                  <CardTag variant="info" key={value}>
+                    {value}
+                  </CardTag>
+                )
+              )}
+            </VStack>
+          </Box>
+
+          <Box>
+            <Table>
+              <Thead>
+                <Tr>
+                  {["Damage", "DPS", "EPS"].map((heading) => (
+                    <Th
+                      pt={0}
+                      color="brand.gray.100"
+                      borderColor="brand.gray.50"
+                      key={heading}
+                    >
+                      {heading}
+                    </Th>
+                  ))}
+                </Tr>
+              </Thead>
+              <Tbody color="brand.gray.50">
+                {[
+                  [10, 10, 10],
+                  [14, 9.1, 6.4],
+                  [12, 6.5, 8],
+                  [13, 3, 8],
+                ].map(([damage, dps, eps], idx) => (
+                  <Tr key={idx}>
+                    <Td textAlign="center">{damage}</Td>
+                    <Td textAlign="center">{dps}</Td>
+                    <Td textAlign="center">{eps}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Box>
+        </SimpleGrid>
+      </Card>
+    </VStack>
   );
 };
 
@@ -302,6 +403,21 @@ const Statistics = () => {
                 </Text>
               </HStack>
             ))}
+        </Flex>
+
+        <Flex mt={5} justify="right">
+          <Button
+            p={0}
+            m={0}
+            h="fit-content"
+            bgColor="transparent"
+            rightIcon={<Icon as={ChevronDownIcon} />}
+            fontWeight="normal"
+            fontSize="sm"
+            color="brand.primary"
+          >
+            See more
+          </Button>
         </Flex>
       </Card>
     </VStack>
