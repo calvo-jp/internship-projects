@@ -5,12 +5,13 @@ import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
 import Head from "next/head";
+import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const Login = () => {
   return (
-    <>
+    <Fragment>
       <Head>
         <title>Pokedex | Log in</title>
       </Head>
@@ -22,7 +23,7 @@ const Login = () => {
           <Links />
         </Box>
       </AccountLayout>
-    </>
+    </Fragment>
   );
 };
 
