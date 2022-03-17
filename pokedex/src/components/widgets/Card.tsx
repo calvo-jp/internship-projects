@@ -16,12 +16,10 @@ interface CardProps {
  * - `borderRadius`
  * - `fontSize`
  *
- * @usage
- * ```javascript
+ * @example
  * <Card mt={4}>
  * ...
  * </Card>
- * ```
  *
  */
 const Card = ({

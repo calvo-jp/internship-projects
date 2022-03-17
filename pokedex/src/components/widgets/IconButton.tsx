@@ -19,10 +19,8 @@ interface IconButtonProps {
  * with default `bgColor`, `color`, `size` and `borderColor`,
  * but can be modified using regular chakra props
  *
- * @usage
- * ```javascript
+ * @example
  * <IconButton icon={ArrowDownIcon} />
- * ```
  *
  */
 const IconButton = ({

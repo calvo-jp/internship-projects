@@ -14,10 +14,8 @@ interface LinkProps extends ChakraLinkProps {
  * @description
  * Integration of Chakra's Link and NextJS' Link.
  *
- * @usage
- * ```javascript
+ * @example
  * <Link href="/me" color="blue.400">Profile</Link>
- * ```
  *
  */
 const Link = ({ children, href, ...props }: PropsWithChildren<LinkProps>) => {
