@@ -20,7 +20,7 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import Layout from "components/layout";
+import HomepageLayout from "components/layouts/homepage";
 import Head from "next/head";
 import Image from "next/image";
 import { PropsWithChildren } from "react";
@@ -32,14 +32,14 @@ const Pokemon = () => {
         <title>Pokedex | Pikachu</title>
       </Head>
 
-      <Layout>
+      <HomepageLayout>
         <Box p={{ lg: 20 }} pb={{ lg: 24 }}>
           <Flex gap={16} w="fit-content" mx="auto">
             <LeftPane />
             <RightPane />
           </Flex>
         </Box>
-      </Layout>
+      </HomepageLayout>
     </>
   );
 };

@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { FilterIcon, ViewGridIcon, ViewListIcon } from "@heroicons/react/solid";
-import Layout from "components/layout";
+import HomepageLayout from "components/layouts/homepage";
 import useStore from "hooks/useStore";
 import Head from "next/head";
 import NextImage from "next/image";
@@ -39,7 +39,7 @@ const Pokemons = () => {
         <title>Pokedex</title>
       </Head>
 
-      <Layout>
+      <HomepageLayout>
         <Box
           maxW="container.lg"
           mx="auto"
@@ -66,7 +66,7 @@ const Pokemons = () => {
             <Pagination />
           </Box>
         </Box>
-      </Layout>
+      </HomepageLayout>
     </>
   );
 };

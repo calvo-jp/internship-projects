@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
-import Header from "../Header";
+import Header from "../../Header";
 import Background from "./Background";
 
-const Layout = ({ children }: PropsWithChildren<{}>) => {
+const HomepageLayout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <>
       <Flex minH="100vh" direction="column">
@@ -21,4 +21,4 @@ const Layout = ({ children }: PropsWithChildren<{}>) => {
   );
 };
 
-export default Layout;
+export default HomepageLayout;
