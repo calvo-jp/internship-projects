@@ -25,6 +25,7 @@ interface CardProps {
 const Card = ({
   children,
   fullWidth,
+  ...props
 }: PropsWithChildren<CardProps & BoxProps>) => {
   return (
     <Box
@@ -36,6 +37,7 @@ const Card = ({
       w={fullWidth ? "full" : "fit-content"}
       rounded="sm"
       fontSize="md"
+      {...props}
     >
       {children}
     </Box>
