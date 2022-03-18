@@ -3,12 +3,11 @@ import {
   IconButton as ChakraIconButton,
   IconButtonProps as ChakraIconButtonProps,
 } from "@chakra-ui/react";
-import { ComponentProps } from "react";
-
+import * as React from "react";
 type BaseProps = Omit<ChakraIconButtonProps, "icon" | "aria-label">;
 
 interface IconButtonProps {
-  icon: (props: ComponentProps<"svg">) => JSX.Element;
+  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
   active?: boolean;
 }
 

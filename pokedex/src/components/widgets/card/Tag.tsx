@@ -1,5 +1,5 @@
 import { Tag, TagProps } from "@chakra-ui/react";
-import { PropsWithChildren } from "react";
+import * as React from "react";
 import valx from "utils/valx";
 
 type BaseProps = Omit<TagProps, "variant">;
@@ -12,7 +12,7 @@ const CardTag = ({
   variant,
   children,
   ...props
-}: PropsWithChildren<CardTagProps & BaseProps>) => {
+}: React.PropsWithChildren<CardTagProps & BaseProps>) => {
   return (
     <Tag
       py={2}
