@@ -50,13 +50,13 @@ const Pokemon = () => {
       </Head>
 
       <HomepageLayout>
-        <Box w="fit-content" mx="auto" pt={6} pb={20}>
+        <Box w="fit-content" mx="auto" p={6} pb={20}>
           <Tree />
 
-          <Flex gap={16} mt={14}>
+          <Flex gap={16} mt={14} direction={{ base: "column", lg: "row" }}>
             <LeftPane />
 
-            <Box w="799px">
+            <Box w={{ xl: "799px", base: "auto" }}>
               <RightPane />
             </Box>
           </Flex>
@@ -130,7 +130,7 @@ const LeftPane = () => {
 const RightPane = () => {
   return (
     <Box>
-      <VStack spacing={6} align="start">
+      <VStack spacing={6} align={{ base: "center", lg: "start" }}>
         <Heading>Pikachu</Heading>
         <Tag
           bgColor="brand.red.500"
@@ -144,7 +144,7 @@ const RightPane = () => {
       </VStack>
 
       <Tabs mt={16} variant="unstyled">
-        <TabList gap={4}>
+        <TabList gap={4} flexWrap="wrap">
           {["About", "Statistics", "Evolution", "Moves"].map((tab) => (
             <Tab
               key={tab}
@@ -460,7 +460,7 @@ const About = () => {
       <Card>
         <CardHeading>Breed</CardHeading>
 
-        <Wrap spacing={8} mt={3}>
+        <Wrap mt={3} spacing={8}>
           {[
             ["Gender", "87.8% Male"],
             ["Egg Group", "Monster"],
