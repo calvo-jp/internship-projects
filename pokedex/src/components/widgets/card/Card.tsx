@@ -3,7 +3,6 @@ import * as React from "react";
 
 /**
  *
- * @description
  * an overridable Card component that
  * comes with the following props set
  * - `padding`
