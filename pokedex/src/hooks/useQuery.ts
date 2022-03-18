@@ -2,10 +2,8 @@ import { useRouter } from "next/router";
 
 /**
  *
- * @description
- * Type-safe hook that parses search params from url.
- * this uses `useRouter` underneath and
- * can only be used inside a React component
+ * Abstraction of `useRouter` which only returns specified
+ * keys and is typesafe
  *
  * @example
  * const query = useQuery("id", "someQuery")
