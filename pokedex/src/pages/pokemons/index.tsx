@@ -31,7 +31,7 @@ import useStore from "hooks/useStore";
 import Head from "next/head";
 import NextImage from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, PropsWithChildren } from "react";
 
 const Pokemons = () => {
   return (
@@ -143,13 +143,11 @@ const TableView = () => {
     <Table bgColor="brand.gray.700" color="brand.gray.50">
       <Thead fontSize="sm" fontWeight="bold">
         <Tr>
-          <Td w="1%" whiteSpace="nowrap">
-            #
-          </Td>
-          <Td w="1%" whiteSpace="nowrap"></Td>
+          <FitTd>#</FitTd>
+          <FitTd></FitTd>
           <Td>Pokemon</Td>
-          <Td>Type</Td>
-          <Td>Level</Td>
+          <Td display={{ base: "none", md: "table-cell" }}>Type</Td>
+          <Td display={{ base: "none", lg: "table-cell" }}>Level</Td>
         </Tr>
       </Thead>
 
@@ -157,20 +155,26 @@ const TableView = () => {
         {new Array(10).fill(null).map((_, idx) => {
           return (
             <Tr key={idx}>
-              <Td w="1%" whiteSpace="nowrap">
-                1
-              </Td>
-              <Td w="1%" whiteSpace="nowrap">
+              <FitTd>1</FitTd>
+              <FitTd>
                 <Avatar w="32px" h="32px" />
-              </Td>
+              </FitTd>
               <Td>Pikachu</Td>
-              <Td>Electric</Td>
-              <Td>Lvl 3</Td>
+              <Td display={{ base: "none", md: "table-cell" }}>Electric</Td>
+              <Td display={{ base: "none", lg: "table-cell" }}>Lvl 3</Td>
             </Tr>
           );
         })}
       </Tbody>
     </Table>
+  );
+};
+
+const FitTd = ({ children }: PropsWithChildren<{}>) => {
+  return (
+    <Td w="1%" whiteSpace="nowrap">
+      {children}
+    </Td>
   );
 };
 
