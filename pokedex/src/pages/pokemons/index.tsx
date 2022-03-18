@@ -31,11 +31,11 @@ import useStore from "hooks/useStore";
 import Head from "next/head";
 import NextImage from "next/image";
 import Link from "next/link";
-import { Fragment, PropsWithChildren } from "react";
+import * as React from "react";
 
 const Pokemons = () => {
   return (
-    <Fragment>
+    <React.Fragment>
       <Head>
         <title>Pokedex</title>
       </Head>
@@ -68,7 +68,7 @@ const Pokemons = () => {
           </Box>
         </Box>
       </HomepageLayout>
-    </Fragment>
+    </React.Fragment>
   );
 };
 
@@ -170,7 +170,7 @@ const TableView = () => {
   );
 };
 
-const FitTd = ({ children }: PropsWithChildren<{}>) => {
+const FitTd = ({ children }: React.PropsWithChildren<{}>) => {
   return (
     <Td w="1%" whiteSpace="nowrap">
       {children}
@@ -180,6 +180,9 @@ const FitTd = ({ children }: PropsWithChildren<{}>) => {
 
 const Toolbar = () => {
   const toggleListView = useStore((state) => state.toggleListView);
+  const handleToggle = (value?: boolean) => {
+    return () => toggleListView(value);
+  };
 
   return (
     <Wrap spacing={8}>
@@ -187,20 +190,14 @@ const Toolbar = () => {
         <FilterTool />
       </WrapItem>
       <WrapItem>
-        <Icon
-          as={ViewListIcon}
-          fill="brand.gray.200"
-          fontSize="xl"
-          onClick={() => toggleListView(true)}
-        />
+        <button onClick={handleToggle(true)}>
+          <ToolbarIcon icon={ViewListIcon} />
+        </button>
       </WrapItem>
       <WrapItem>
-        <Icon
-          as={ViewGridIcon}
-          fill="brand.gray.200"
-          fontSize="xl"
-          onClick={() => toggleListView(false)}
-        />
+        <button onClick={handleToggle(false)}>
+          <ToolbarIcon icon={ViewGridIcon} />
+        </button>
       </WrapItem>
     </Wrap>
   );
@@ -220,7 +217,7 @@ const FilterTool = () => {
   return (
     <Menu closeOnSelect={false}>
       <MenuButton>
-        <Icon as={FilterIcon} fill="brand.gray.200" fontSize="xl" />
+        <ToolbarIcon icon={FilterIcon} />
       </MenuButton>
       <MenuList color="brand.gray.700" ml={-5}>
         {items.map((item) => (
@@ -232,6 +229,14 @@ const FilterTool = () => {
       </MenuList>
     </Menu>
   );
+};
+
+interface ToolbarIconProps {
+  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
+}
+
+const ToolbarIcon = ({ icon }: ToolbarIconProps) => {
+  return <Icon as={icon} fill="brand.gray.200" fontSize="xl" display="block" />;
 };
 
 export default Pokemons;

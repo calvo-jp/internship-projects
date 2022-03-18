@@ -10,18 +10,12 @@ import {
   Progress,
   SimpleGrid,
   Tab,
-  Table,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
   Tag,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   VStack,
   Wrap,
   WrapItem,
@@ -41,11 +35,11 @@ import IconButton from "components/widgets/IconButton";
 import Head from "next/head";
 import Image from "next/image";
 import NextLink from "next/link";
-import { Fragment, useState } from "react";
+import * as React from "react";
 
 const Pokemon = () => {
   return (
-    <Fragment>
+    <React.Fragment>
       <Head>
         <title>Pokedex | Pikachu</title>
       </Head>
@@ -63,7 +57,7 @@ const Pokemon = () => {
           </Flex>
         </Box>
       </HomepageLayout>
-    </Fragment>
+    </React.Fragment>
   );
 };
 
