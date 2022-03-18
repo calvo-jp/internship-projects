@@ -11,9 +11,18 @@ import {
   Text,
 } from "@chakra-ui/react";
 import ChevronDownIcon from "@heroicons/react/outline/ChevronDownIcon";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const { push } = useRouter();
+
+  const logout = async () => {
+    await signOut({ redirect: false });
+    await push("/");
+  };
+
   return (
     <Flex
       as="header"
@@ -44,7 +53,9 @@ const Header = () => {
             <Icon as={ChevronDownIcon} fontSize="xl" stroke="brand.gray.100" />
           </MenuButton>
           <MenuList mt={3}>
-            <MenuItem color="brand.red.500">Logout</MenuItem>
+            <MenuItem color="brand.red.500" onClick={logout}>
+              Logout
+            </MenuItem>
           </MenuList>
         </Menu>
       </HStack>
