@@ -25,7 +25,7 @@ const AccountLayout = ({
       </Box>
 
       <Flex flexGrow={1} p={4} direction="column" justify="center">
-        <Box w="full" maxW="400px" mx="auto">
+        <Box w="full" maxW="400px" mx="auto" pt={24} pb={12}>
           <Heading as="h1" fontSize="5xl">
             {heading}
           </Heading>
