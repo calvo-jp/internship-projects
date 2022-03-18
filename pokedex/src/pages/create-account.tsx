@@ -42,6 +42,8 @@ const CreateAccountForm = () => {
     mode: "onChange",
     resolver: yupResolver(schema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     },
@@ -53,20 +55,30 @@ const CreateAccountForm = () => {
     <Box as="form" onSubmit={signup}>
       <VStack spacing={4}>
         <TextField
-          size="lg"
-          fontSize="sm"
+          label="First name"
+          placeholder="eg. John"
+          error={formState.errors.firstName?.message}
+          {...register("firstName")}
+        />
+
+        <TextField
+          label="Last name"
+          placeholder="eg. Doe"
+          error={formState.errors.firstName?.message}
+          {...register("lastName")}
+        />
+
+        <TextField
           label="Email"
-          placeholder="Enter email"
-          error={formState.errors.email?.message}
+          placeholder="eg. johndoe@domain.co"
+          error={formState.errors.firstName?.message}
           {...register("email")}
         />
 
         <TextField
-          size="lg"
-          fontSize="sm"
           label="Password"
-          placeholder="Enter Password"
-          error={formState.errors.password?.message}
+          placeholder="eg. Password1!"
+          error={formState.errors.firstName?.message}
           {...register("password")}
         />
       </VStack>

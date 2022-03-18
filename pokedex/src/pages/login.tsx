@@ -63,8 +63,6 @@ const LoginForm = () => {
         {(["email", "password"] as const).map((textfield) => (
           <TextField
             key={textfield}
-            size="lg"
-            fontSize="md"
             label={textfield}
             placeholder={"Enter " + textfield}
             error={formState.errors[textfield]?.message}

@@ -51,8 +51,6 @@ const AccountRecoveryForm = () => {
     <Box as="form" onSubmit={recoverAccount}>
       <VStack spacing={4}>
         <TextField
-          size="lg"
-          fontSize="sm"
           label="Email"
           placeholder="Enter email"
           error={formState.errors.email?.message}
