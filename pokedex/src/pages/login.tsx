@@ -4,14 +4,15 @@ import AccountLayout from "components/layouts/account";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
-import { Fragment } from "react";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const Login = () => {
   return (
-    <Fragment>
+    <React.Fragment>
       <Head>
         <title>Pokedex | Log in</title>
       </Head>
@@ -23,20 +24,7 @@ const Login = () => {
           <Links />
         </Box>
       </AccountLayout>
-    </Fragment>
-  );
-};
-
-const Links = () => {
-  return (
-    <VStack spacing={2} fontSize="sm">
-      <Link href="/account-recovery">Forgot Password</Link>
-
-      <HStack>
-        <Box>Don&apos;t have an account?</Box>
-        <Link href="/create-account">Sign up</Link>
-      </HStack>
-    </VStack>
+    </React.Fragment>
   );
 };
 
@@ -55,7 +43,16 @@ const LoginForm = () => {
     },
   });
 
-  const login = handleSubmit(async (data) => {});
+  const [error, setLoginError] = React.useState(false);
+
+  const login = handleSubmit(async (data) => {
+    await signIn("credentials", {
+      ...data,
+      redirect: false,
+    });
+
+    setLoginError(true);
+  });
 
   return (
     <Box as="form" onSubmit={login}>
@@ -75,6 +72,19 @@ const LoginForm = () => {
         Sign In
       </Button>
     </Box>
+  );
+};
+
+const Links = () => {
+  return (
+    <VStack spacing={2} fontSize="sm">
+      <Link href="/account-recovery">Forgot Password</Link>
+
+      <HStack>
+        <Box>Don&apos;t have an account?</Box>
+        <Link href="/create-account">Sign up</Link>
+      </HStack>
+    </VStack>
   );
 };
 
