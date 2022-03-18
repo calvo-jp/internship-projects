@@ -1,6 +1,9 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import useCallbackUrl from "hooks/useCallbackUrl";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { PropsWithChildren } from "react";
+import { useRouter } from "next/router";
+import * as React from "react";
 
 interface AccountLayoutProps {
   heading: string;
@@ -11,13 +14,29 @@ interface AccountLayoutProps {
  *
  * @description
  * Base layout of pages related to account eg. Login, etc.
+ * this handles redirection out-of-the-box for authenticated users
  *
  */
 const AccountLayout = ({
   heading,
   backgroundUrl,
   children,
-}: PropsWithChildren<AccountLayoutProps>) => {
+}: React.PropsWithChildren<AccountLayoutProps>) => {
+  const { status } = useSession();
+  const { replace, prefetch } = useRouter();
+  const callbackUrl = useCallbackUrl();
+
+  React.useEffect(() => {
+    prefetch(callbackUrl);
+  }, [callbackUrl, prefetch]);
+
+  if (status === "loading") return null;
+
+  if (status === "authenticated") {
+    replace(callbackUrl);
+    return null;
+  }
+
   return (
     <Flex minH="100vh">
       <Box
