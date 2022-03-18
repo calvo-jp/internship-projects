@@ -4,7 +4,14 @@ const maxValue = Number.MAX_VALUE;
 let prefix = minValue;
 let currentId = minValue;
 
-const createIdGenerator = () => {
+/**
+ *
+ * @example
+ * const generateId = randomIdGenerator()
+ * console.log(generateId()) // <number>
+ *
+ */
+const randomIdGenerator = () => {
   // This does not normally happen, but just in case it does
   if (prefix >= maxValue) {
     // TODO: fallback
@@ -23,4 +30,4 @@ const createIdGenerator = () => {
   };
 };
 
-export default createIdGenerator;
+export default randomIdGenerator;

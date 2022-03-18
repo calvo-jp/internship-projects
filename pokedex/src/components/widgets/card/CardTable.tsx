@@ -1,5 +1,5 @@
 import { Table, TableProps, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import createIdGenerator from "utils/createIdGenerator";
+import randomIdGenerator from "utils/randomIdGenerator";
 
 interface CardTableProps {
   headings: string[];
@@ -62,5 +62,5 @@ const CardTable = ({
   );
 };
 
-const generateId = createIdGenerator();
+const generateId = randomIdGenerator();
 export default CardTable;
