@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
 
 /**
+ *
  * Gets `callbackUrl` query from url normally provided by next-auth.
  * Otherwise, defaults to `/pokemons`
+ *
  */
 const useCallbackUrl = () => {
   const router = useRouter();

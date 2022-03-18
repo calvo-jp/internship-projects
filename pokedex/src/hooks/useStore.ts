@@ -4,9 +4,17 @@ import { devtools, persist } from "zustand/middleware";
 interface Store {
   listView?: boolean;
   toggleListView: (value?: boolean) => void;
-  /** previously viewed pokemons */
+  /**
+   *
+   * previously viewed pokemons
+   *
+   */
   history: [];
-  /** add new item to previously viewed pokemons */
+  /**
+   *
+   * add new item to previously viewed pokemons
+   *
+   */
   saveHistory: () => void;
   clearHistory: () => void;
 }
