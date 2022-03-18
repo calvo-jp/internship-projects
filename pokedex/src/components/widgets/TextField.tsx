@@ -42,6 +42,8 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps & InputProps>(
         <Input
           mt={2}
           ref={ref}
+          size="lg"
+          fontSize="md"
           bgColor="brand.gray.800"
           borderColor="brand.gray.500"
           _placeholder={{
