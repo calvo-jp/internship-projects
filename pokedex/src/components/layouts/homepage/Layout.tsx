@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
-import Header from "components/Header";
 import { PropsWithChildren } from "react";
 import Background from "./Background";
+import Header from "./Header";
 
 /**
  *
