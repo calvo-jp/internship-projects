@@ -1,5 +1,4 @@
-const endpoint =
-  "https://frontend-engineer-onboarding-api-thxaa.ondigitalocean.app/graphql";
+const endpoint = "https://beta.pokeapi.co/graphql/v1beta";
 
 module.exports = {
   client: {
