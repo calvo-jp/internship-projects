@@ -1,5 +1,3 @@
-type Value = string | number | boolean | null | undefined | (() => Value);
-
 /**
  *
  * @description
@@ -17,14 +15,28 @@ type Value = string | number | boolean | null | undefined | (() => Value);
  * </Alert/>
  *
  */
-const valx = (o: Record<string, Value>) => {
-  for (const [k, v] of Object.entries(o)) {
+const valx = (o: Record<string, any>) => {
+  for (const [key, value] of Object.entries(o)) {
+    // mixed
+    if (isTruthy(value)) return key;
     // function
-    if (typeof v === "function") if (!!v()) return k;
-
-    // other values
-    if (!!v) return k;
+    if (typeof value === "function" && isTruthy(value())) return key;
+    // array
+    if (Array.isArray(value) && value.every(isTruthy)) return key;
   }
+};
+
+const isTruthy = (subject: any) => {
+  return isMixed(subject) && !!subject;
+};
+
+type Mixed = string | number | boolean | null | undefined;
+
+const isMixed = (subject: any): subject is Mixed => {
+  return (
+    subject === null ||
+    "string number boolean undefined".split(/\s/).includes(typeof subject)
+  );
 };
 
 export default valx;
