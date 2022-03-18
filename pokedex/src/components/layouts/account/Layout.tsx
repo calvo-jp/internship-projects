@@ -20,7 +20,12 @@ const AccountLayout = ({
 }: PropsWithChildren<AccountLayoutProps>) => {
   return (
     <Flex minH="100vh">
-      <Box alignSelf="stretch" w="600px" maxW="40%">
+      <Box
+        w="600px"
+        maxW="40%"
+        alignSelf="stretch"
+        display={{ base: "none", lg: "block" }}
+      >
         <BackgroundImage src={backgroundUrl} />
       </Box>
 
