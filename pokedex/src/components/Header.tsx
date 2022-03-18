@@ -17,8 +17,8 @@ const Header = () => {
   return (
     <Flex
       as="header"
-      py={6}
-      px={16}
+      py={{ base: 2, md: 4, lg: 6 }}
+      px={{ base: 4, md: 8, lg: 16 }}
       align="center"
       justify="space-between"
       bgColor="brand.gray.800"
