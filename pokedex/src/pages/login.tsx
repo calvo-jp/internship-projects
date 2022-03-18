@@ -63,6 +63,10 @@ const LoginForm = () => {
     setLoginError(true);
   });
 
+  React.useEffect(() => {
+    return () => setLoginError(false);
+  }, []);
+
   return (
     <Box as="form" onSubmit={login}>
       <VStack spacing={4}>
