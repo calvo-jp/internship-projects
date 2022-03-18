@@ -294,7 +294,7 @@ const Evolution = () => {
             .fill(null)
             .map((_, idx) => (
               <Center key={idx}>
-                <HStack spacing={44}>
+                <HStack spacing={{ base: 12, md: 24, lg: 44 }}>
                   <VStack spacing={2}>
                     <Box
                       w="88px"
