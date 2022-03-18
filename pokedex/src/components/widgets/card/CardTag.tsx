@@ -17,6 +17,8 @@ const CardTag = ({
     <Tag
       py={2}
       px={8}
+      fontFamily="'Public Sans', sans-serif"
+      fontSize="xs"
       border="1px"
       color={valx({
         "brand.red.700": variant === "error",
@@ -33,8 +35,6 @@ const CardTag = ({
         "brand.blue.200": variant === "info",
         "brand.green.200": variant === "success",
       })}
-      fontFamily="'Public Sans', sans-serif"
-      fontSize="xs"
       {...props}
     >
       {children}
