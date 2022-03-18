@@ -35,6 +35,7 @@ import {
 import HomepageLayout from "components/layouts/homepage";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
+import CardTable from "components/widgets/card/CardTable";
 import CardTag from "components/widgets/card/CardTag";
 import IconButton from "components/widgets/IconButton";
 import Head from "next/head";
@@ -189,36 +190,13 @@ const Moves = () => {
           </Box>
 
           <Box>
-            <Table>
-              <Thead>
-                <Tr>
-                  {["Damage", "DPS", "EPS"].map((heading) => (
-                    <Th
-                      pt={0}
-                      color="brand.gray.100"
-                      borderColor="brand.gray.50"
-                      key={heading}
-                    >
-                      {heading}
-                    </Th>
-                  ))}
-                </Tr>
-              </Thead>
-              <Tbody>
-                {[
-                  [10, 10, 10],
-                  [14, 9.1, 6.4],
-                  [12, 6.5, 8],
-                  [13, 3, 8],
-                ].map(([damage, dps, eps], idx) => (
-                  <Tr key={idx}>
-                    <Td textAlign="center">{damage}</Td>
-                    <Td textAlign="center">{dps}</Td>
-                    <Td textAlign="center">{eps}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
+            <CardTable
+              headings={["Damage", "DPS", "EPS"]}
+              data={[
+                [10, 10, 10],
+                [14, 9.1, 6.4],
+              ]}
+            />
           </Box>
         </SimpleGrid>
       </Card>
@@ -240,36 +218,15 @@ const Moves = () => {
           </Box>
 
           <Box>
-            <Table>
-              <Thead>
-                <Tr>
-                  {["Damage", "DPS", "EPS"].map((heading) => (
-                    <Th
-                      pt={0}
-                      color="brand.gray.100"
-                      borderColor="brand.gray.50"
-                      key={heading}
-                    >
-                      {heading}
-                    </Th>
-                  ))}
-                </Tr>
-              </Thead>
-              <Tbody color="brand.gray.50">
-                {[
-                  [10, 10, 10],
-                  [14, 9.1, 6.4],
-                  [12, 6.5, 8],
-                  [13, 3, 8],
-                ].map(([damage, dps, eps], idx) => (
-                  <Tr key={idx}>
-                    <Td textAlign="center">{damage}</Td>
-                    <Td textAlign="center">{dps}</Td>
-                    <Td textAlign="center">{eps}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
+            <CardTable
+              headings={["Damage", "DPS", "EPS"]}
+              data={[
+                [10, 10, 10],
+                [14, 9.1, 6.4],
+                [12, 6.5, 8],
+                [13, 3, 8],
+              ]}
+            />
           </Box>
         </SimpleGrid>
       </Card>
