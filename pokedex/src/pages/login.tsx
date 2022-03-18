@@ -30,7 +30,7 @@ const Login = () => {
 
 const schema = yup.object().shape({
   email: yup.string().trim().email().required(),
-  password: yup.string().trim().required(),
+  password: yup.string().trim().min(5).max(100).required(),
 });
 
 const LoginForm = () => {
@@ -57,15 +57,21 @@ const LoginForm = () => {
   return (
     <Box as="form" onSubmit={login}>
       <VStack spacing={4}>
-        {(["email", "password"] as const).map((textfield) => (
-          <TextField
-            key={textfield}
-            label={textfield}
-            placeholder={"Enter " + textfield}
-            error={formState.errors[textfield]?.message}
-            {...register(textfield)}
-          />
-        ))}
+        <TextField
+          type="email"
+          label="Email"
+          placeholder="Enter email"
+          error={formState.errors.email?.message}
+          {...register("email")}
+        />
+
+        <TextField
+          type="password"
+          label="Password"
+          placeholder="Enter password"
+          error={formState.errors.password?.message}
+          {...register("password")}
+        />
       </VStack>
 
       <Button type="submit" size="lg" fontSize="sm" mt={6} w="full">

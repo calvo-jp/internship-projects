@@ -48,9 +48,10 @@ const AccountRecoveryForm = () => {
   const recoverAccount = handleSubmit(async (data) => {});
 
   return (
-    <Box as="form" onSubmit={recoverAccount}>
+    <Box as="form" onSubmit={recoverAccount} noValidate>
       <VStack spacing={4}>
         <TextField
+          type="email"
           label="Email"
           placeholder="Enter email"
           error={formState.errors.email?.message}

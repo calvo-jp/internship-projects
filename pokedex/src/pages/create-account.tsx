@@ -29,13 +29,12 @@ const CreateAccount = () => {
   );
 };
 
-const schema = yup
-  .object()
-  .shape({
-    email: yup.string().email().required(),
-    password: yup.string().trim().required(),
-  })
-  .required();
+const schema = yup.object().shape({
+  firstName: yup.string().trim().min(3).max(25).required(),
+  lastName: yup.string().trim().min(3).max(25).required(),
+  email: yup.string().trim().email().required(),
+  password: yup.string().min(5).max(100).trim().required(),
+});
 
 const CreateAccountForm = () => {
   const { register, formState, handleSubmit } = useForm({
@@ -52,7 +51,7 @@ const CreateAccountForm = () => {
   const signup = handleSubmit(async (data) => {});
 
   return (
-    <Box as="form" onSubmit={signup}>
+    <Box as="form" onSubmit={signup} noValidate>
       <VStack spacing={4}>
         <TextField
           label="First name"
@@ -64,21 +63,23 @@ const CreateAccountForm = () => {
         <TextField
           label="Last name"
           placeholder="eg. Doe"
-          error={formState.errors.firstName?.message}
+          error={formState.errors.lastName?.message}
           {...register("lastName")}
         />
 
         <TextField
+          type="email"
           label="Email"
           placeholder="eg. johndoe@domain.co"
-          error={formState.errors.firstName?.message}
+          error={formState.errors.email?.message}
           {...register("email")}
         />
 
         <TextField
+          type="password"
           label="Password"
           placeholder="eg. Password1!"
-          error={formState.errors.firstName?.message}
+          error={formState.errors.password?.message}
           {...register("password")}
         />
       </VStack>
