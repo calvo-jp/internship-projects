@@ -15,10 +15,13 @@ interface TextFieldProps {
 /**
  *
  * @description
- * An input component wrapped in `FormControl` and
- * optionally accepts label or error message and `InputProps`
- * __WARNING__: other props except label and error are being added to input
- * be careful when using margin
+ * An input component wrapped in `FormControl`
+ * with an input size of `lg` and a fontSize of `md`,
+ * but is overridable by passing `InputProps`.
+ *
+ * __WARNING__: other props other than label and error
+ * are being passed down to input component.
+ * Please be careful when using margins
  *
  * @example
  * <TextField
@@ -27,6 +30,9 @@ interface TextFieldProps {
  *    error="Invalid field value"
  *    ...
  * />
+ *
+ * @see
+ * https://chakra-ui.com/docs/components/form/form-control
  *
  */
 const TextField = forwardRef<HTMLInputElement, TextFieldProps & InputProps>(
