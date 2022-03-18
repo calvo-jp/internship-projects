@@ -29,8 +29,17 @@ const Login = () => {
 };
 
 const schema = yup.object().shape({
-  email: yup.string().trim().email().required(),
-  password: yup.string().trim().min(5).max(100).required(),
+  email: yup
+    .string()
+    .trim()
+    .email("Invalid email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .trim()
+    .min(5, "Password must be 5 or more characters")
+    .max(100, "Password must not be more than 100 charaters")
+    .required("Password is required"),
 });
 
 const LoginForm = () => {

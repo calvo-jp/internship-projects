@@ -30,10 +30,29 @@ const CreateAccount = () => {
 };
 
 const schema = yup.object().shape({
-  firstName: yup.string().trim().min(3).max(25).required(),
-  lastName: yup.string().trim().min(3).max(25).required(),
-  email: yup.string().trim().email().required(),
-  password: yup.string().min(5).max(100).trim().required(),
+  firstName: yup
+    .string()
+    .trim()
+    .min(3, "First name must be 3 characters or more")
+    .max(25, "First name must not be more than 25 characters")
+    .required("First name is required"),
+  lastName: yup
+    .string()
+    .trim()
+    .min(3, "Last name must be 3 characters or more")
+    .max(25, "Last name must not be more than 25 characters")
+    .required("Last name is required"),
+  email: yup
+    .string()
+    .trim()
+    .email("Invalid email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .trim()
+    .min(5, "Password must be 5 or more characters")
+    .max(100, "Password must not be more than 100 charaters")
+    .required("Password is required"),
 });
 
 const CreateAccountForm = () => {

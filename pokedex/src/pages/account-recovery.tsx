@@ -33,7 +33,11 @@ const AccountRecovery = () => {
 };
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  email: yup
+    .string()
+    .trim()
+    .email("Invalid email")
+    .required("Email is required"),
 });
 
 const AccountRecoveryForm = () => {
