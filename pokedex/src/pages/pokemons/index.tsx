@@ -41,7 +41,12 @@ const Pokemons = () => {
       </Head>
 
       <HomepageLayout>
-        <Box maxW="container.lg" mx="auto" p={12} bgColor="transparent">
+        <Box
+          maxW="container.lg"
+          mx="auto"
+          p={{ base: 4, md: 8, lg: 12 }}
+          bgColor="transparent"
+        >
           <HStack justify="space-between">
             <Heading
               fontSize="2xl"
@@ -54,11 +59,11 @@ const Pokemons = () => {
             <Toolbar />
           </HStack>
 
-          <Box mt={12}>
+          <Box mt={{ base: 6, lg: 12 }}>
             <Items />
           </Box>
 
-          <Box mt={4}>
+          <Box mt={{ base: 2, lg: 4 }}>
             <Pagination />
           </Box>
         </Box>
@@ -105,7 +110,7 @@ const Items = () => {
 
 const GridView = () => {
   return (
-    <SimpleGrid columns={4} gap={8}>
+    <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={{ base: 4, lg: 8 }}>
       {Array(8)
         .fill(1)
         .map((val, idx) => val + idx)
