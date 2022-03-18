@@ -28,9 +28,9 @@ import {
 } from "@heroicons/react/outline";
 import HomepageLayout from "components/layouts/homepage";
 import Card from "components/widgets/card";
-import CardHeading from "components/widgets/card/Heading";
-import CardTable from "components/widgets/card/Table";
-import CardTag from "components/widgets/card/Tag";
+import CardHeading from "components/widgets/card/CardHeading";
+import CardTable from "components/widgets/card/CardTable";
+import CardTag from "components/widgets/card/CardTag";
 import IconButton from "components/widgets/IconButton";
 import Head from "next/head";
 import Image from "next/image";
