@@ -1,6 +1,7 @@
 import { Box, HStack, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AccountLayout from "components/layouts/account";
+import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
@@ -52,7 +53,7 @@ const LoginForm = () => {
     },
   });
 
-  const [error, setLoginError] = React.useState(false);
+  const [loginError, setLoginError] = React.useState(false);
 
   const login = handleSubmit(async (data) => {
     await signIn("credentials", {
@@ -69,7 +70,14 @@ const LoginForm = () => {
 
   return (
     <Box as="form" onSubmit={login}>
-      <VStack spacing={4}>
+      <VStack spacing={4} align="stretch">
+        <Alert
+          open={loginError}
+          variant="error"
+          message="Invalid username or password"
+          onClose={() => setLoginError(false)}
+        />
+
         <TextField
           type="email"
           label="Email"
