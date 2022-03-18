@@ -1,4 +1,4 @@
-import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { Table, TableProps, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { v4 as uuid } from "uuid";
 
 interface CardTableProps {
@@ -6,9 +6,30 @@ interface CardTableProps {
   data: (string | number)[][];
 }
 
-const CardTable = ({ headings, data }: CardTableProps) => {
+/**
+ * @description
+ * Overridable simple table. Does not support colSpan, rowSpan, etc.
+ *
+ * @example
+ * <CardTable
+ *    mt={2}
+ *    mb={4}
+ *    headings={["heading1", "heading2", "heading3"]}
+ *    data={[
+ *      [1, 2, 3],
+ *      [4, 5, 6],
+ *      [7, 8, 9],
+ *    ]}
+ *    ...
+ * />
+ */
+const CardTable = ({
+  headings,
+  data,
+  ...props
+}: CardTableProps & TableProps) => {
   return (
-    <Table>
+    <Table {...props}>
       <Thead>
         <Tr>
           {headings.map((heading) => (
@@ -23,6 +44,7 @@ const CardTable = ({ headings, data }: CardTableProps) => {
           ))}
         </Tr>
       </Thead>
+
       <Tbody>
         {data.map((row) => {
           return (
