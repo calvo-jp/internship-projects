@@ -25,7 +25,7 @@ const useQuery = <T extends string>(...keys: T[]) => {
   }
 
   return {
-    // explicit return due to an existing issue
+    // explicit return type due to an existing issue
     // found at https://stackoverflow.com/questions/58876457/why-type-inference-is-lost-when-using-array-isarray
     getAll(key: T): string[] {
       const value = params[key];
