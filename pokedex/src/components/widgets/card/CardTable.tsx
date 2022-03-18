@@ -1,5 +1,5 @@
 import { Table, TableProps, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { v4 as uuid } from "uuid";
+import createIdGenerator from "utils/createIdGenerator";
 
 interface CardTableProps {
   headings: string[];
@@ -48,9 +48,9 @@ const CardTable = ({
       <Tbody>
         {data.map((row) => {
           return (
-            <Tr key={uuid()}>
+            <Tr key={generateId()}>
               {row.map((value) => (
-                <Td key={uuid()} textAlign="center">
+                <Td key={generateId()} textAlign="center">
                   {value}
                 </Td>
               ))}
@@ -62,4 +62,5 @@ const CardTable = ({
   );
 };
 
+const generateId = createIdGenerator();
 export default CardTable;
