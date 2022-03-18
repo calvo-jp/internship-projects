@@ -14,7 +14,6 @@ interface TextFieldProps {
 
 /**
  *
- * @description
  * An input component wrapped in `FormControl`
  * with an input size of `lg` and a fontSize of `md`,
  * but is overridable by passing `InputProps`.

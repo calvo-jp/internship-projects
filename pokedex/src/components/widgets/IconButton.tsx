@@ -13,7 +13,6 @@ interface IconButtonProps {
 
 /**
  *
- * @description
  * A rounded outlined button for icons
  * with default `bgColor`, `color`, `size` and `borderColor`,
  * but can be modified using regular chakra props

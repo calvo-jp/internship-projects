@@ -12,7 +12,6 @@ interface AccountLayoutProps {
 
 /**
  *
- * @description
  * Base layout of pages related to account eg. Login, etc.
  * this handles redirection out-of-the-box for authenticated users
  *

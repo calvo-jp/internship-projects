@@ -11,7 +11,6 @@ interface LinkProps extends ChakraLinkProps {
 
 /**
  *
- * @description
  * Integration of Chakra's Link and NextJS' Link.
  *
  * @example

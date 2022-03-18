@@ -2,7 +2,6 @@ import { Button as ChakraButton, ButtonProps } from "@chakra-ui/react";
 
 /**
  *
- * @description
  * Abstracted Button component with default `bgColor` and `color`
  *
  * @example

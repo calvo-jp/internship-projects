@@ -5,7 +5,6 @@ import Header from "./Header";
 
 /**
  *
- * @description
  * Base layout of pages with authenticated users
  *
  */

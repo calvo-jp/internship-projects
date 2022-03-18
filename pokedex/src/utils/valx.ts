@@ -1,6 +1,5 @@
 /**
  *
- * @description
  * Helps in resolving prop values that depends on other props.
  *
  * @example

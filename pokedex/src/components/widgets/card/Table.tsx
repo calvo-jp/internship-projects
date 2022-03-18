@@ -7,7 +7,7 @@ interface CardTableProps {
 }
 
 /**
- * @description
+ *
  * Overridable simple table. Does not support colSpan, rowSpan, etc.
  *
  * @example

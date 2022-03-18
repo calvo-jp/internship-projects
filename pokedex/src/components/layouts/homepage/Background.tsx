@@ -2,28 +2,48 @@ import { Box, Image } from "@chakra-ui/react";
 
 type Item = [
   /**
+   *
    * name of svg
    * will be used to link to the asset in public dir
    * eg. "fire" -> "/assets/icons/fire.svg"
+   *
    */
   name: string,
-  /** size in pixels */
+  /**
+   *
+   * size in pixels
+   *
+   */
   size: [width: number, height: number],
   position: [
     /**
+     *
      * position left or right in percentage (or left: <number>%)
      * values here were calculated using the vw (1440px) found in figma
      * and the margin left or right of each background icons.
      * website used to calculate percent values can be found
      * at https://www.pixelconverter.com/
+     *
      */
     leftOrRight: number,
-    /** position bottom in pixels (or bottom: <number>px) */
+    /**
+     *
+     * position bottom in pixels (or bottom: <number>px)
+     *
+     */
     bottom: number
   ],
-  /** how many degrees should we rotate the element */
+  /**
+   *
+   * how many degrees should we rotate the element
+   *
+   */
   rotate: number,
-  /** the horiz pos where the element should be placed */
+  /**
+   *
+   * the horiz pos where the element should be placed
+   *
+   */
   anchor: "left" | "right"
 ];
 
