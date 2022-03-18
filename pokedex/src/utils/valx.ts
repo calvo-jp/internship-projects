@@ -5,11 +5,11 @@
  *
  * @example
  * <Alert
- *    bgColor={{
+ *    bgColor={valx({
  *      "red-200": variant === "error",
  *      "blue-200": variant === "info",
  *      "green-200": variant === "success",
- *    }}
+ *    })}
  * >
  * ...
  * </Alert/>
