@@ -1,5 +1,8 @@
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Center,
   Divider,
@@ -50,33 +53,34 @@ const Pokemon = () => {
 
       <HomepageLayout>
         <Box w="fit-content" mx="auto" p={6} pb={20}>
-          <Tree />
+          <Breadcrumb
+            as="section"
+            fontSize="sm"
+            spacing={3}
+            separator={<Icon stroke="brand.gray.400" as={ChevronRightIcon} />}
+          >
+            <BreadcrumbItem color="brand.gray.500">
+              <NextLink href="/pokemons" passHref>
+                <BreadcrumbLink>Home</BreadcrumbLink>
+              </NextLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem color="brand.gray.50" isCurrentPage>
+              <BreadcrumbLink>Pokemon details</BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
 
-          <Flex gap={16} mt={14} direction={{ base: "column", lg: "row" }}>
+          <Flex
+            as="section"
+            gap={16}
+            mt={14}
+            direction={{ base: "column", lg: "row" }}
+          >
             <LeftPane />
-
-            <Box w={{ xl: "799px", base: "auto" }}>
-              <RightPane />
-            </Box>
+            <RightPane />
           </Flex>
         </Box>
       </HomepageLayout>
     </React.Fragment>
-  );
-};
-
-const Tree = () => {
-  return (
-    <HStack fontSize="sm" spacing={3}>
-      <NextLink href="/pokemons" passHref>
-        <Text as="a" color="brand.gray.500">
-          Home
-        </Text>
-      </NextLink>
-
-      <Icon stroke="brand.gray.400" as={ChevronRightIcon} />
-      <Text color="brand.gray.50">Pokemon details</Text>
-    </HStack>
   );
 };
 
@@ -128,7 +132,7 @@ const LeftPane = () => {
 
 const RightPane = () => {
   return (
-    <Box>
+    <Box w={{ xl: "799px", base: "auto" }}>
       <VStack spacing={6} align={{ base: "center", lg: "start" }}>
         <Heading>Pikachu</Heading>
         <Tag
@@ -179,55 +183,58 @@ const Moves = () => {
     <VStack spacing={8}>
       <Card w="full">
         <SimpleGrid columns={2}>
-          <Box>
-            <VStack spacing={6} align="start">
-              <CardHeading>Quick Moves</CardHeading>
-              <CardTag variant="info">Ember</CardTag>
-              <CardTag variant="info">Fire Spin</CardTag>
-            </VStack>
-          </Box>
+          <MovesTags
+            heading="Quick Moves"
+            items={"Ember|Fire Spin".split(/\|/)}
+          />
 
-          <Box>
-            <MovesTable
-              headings={"Damage|DPS|EPS".split(/\|/)}
-              data={[
-                [10, 10, 10],
-                [14, 9.1, 6.4],
-              ]}
-            />
-          </Box>
+          <MovesTable
+            headings={"Damage|DPS|EPS".split(/\|/)}
+            data={[
+              [10, 10, 10],
+              [14, 9.1, 6.4],
+            ]}
+          />
         </SimpleGrid>
       </Card>
 
       <Card w="full">
         <SimpleGrid columns={2}>
-          <Box>
-            <VStack spacing={6} align="start">
-              <CardHeading>Quick Moves</CardHeading>
+          <MovesTags
+            heading="Main Moves"
+            items={"Fireblast|Flame Thrower|Heat wave|Overheat".split(/\|/)}
+          />
 
-              {"Fireblast|Flame Thrower|Heat wave|Overheat"
-                .split(/\|/)
-                .map((value) => (
-                  <CardTag variant="info" key={value}>
-                    {value}
-                  </CardTag>
-                ))}
-            </VStack>
-          </Box>
-
-          <Box>
-            <MovesTable
-              headings={"Damage|DPS|EPS".split(/\|/)}
-              data={[
-                [10, 10, 10],
-                [14, 9.1, 6.4],
-                [12, 6.5, 8],
-                [13, 3, 8],
-              ]}
-            />
-          </Box>
+          <MovesTable
+            headings={"Damage|DPS|EPS".split(/\|/)}
+            data={[
+              [10, 10, 10],
+              [14, 9.1, 6.4],
+              [12, 6.5, 8],
+              [13, 3, 8],
+            ]}
+          />
         </SimpleGrid>
       </Card>
+    </VStack>
+  );
+};
+
+interface MovesTagsProps {
+  heading: string;
+  items: string[];
+}
+
+const MovesTags = ({ heading, items }: MovesTagsProps) => {
+  return (
+    <VStack spacing={6} align="start">
+      <CardHeading>{heading}</CardHeading>
+
+      {items.map((tag) => (
+        <CardTag variant="info" key={generateId()}>
+          {tag}
+        </CardTag>
+      ))}
     </VStack>
   );
 };
