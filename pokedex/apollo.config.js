@@ -1,11 +1,10 @@
-const endpoint = "https://beta.pokeapi.co/graphql/v1beta";
-
 module.exports = {
   client: {
-    excludes: ["./src/types"],
+    includes: ["./src/graphql/**/*.ts"],
     service: {
-      name: "GraphQL Server",
-      url: endpoint,
+      name: "PokeAPI",
+      url: "https://beta.pokeapi.co/graphql/v1beta",
+      skipSSLValidation: true,
     },
   },
 };
