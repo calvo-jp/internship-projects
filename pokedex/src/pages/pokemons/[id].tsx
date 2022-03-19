@@ -418,7 +418,7 @@ const About = () => {
         id nibh sagittis. Ipsum ornare quam vitae praesent.
       </Text>
 
-      <Card py={4}>
+      <Card py={4} bgColor="brand.inconsistent.gray.800">
         <HStack
           gap={6}
           divider={
@@ -442,7 +442,7 @@ const About = () => {
         </HStack>
       </Card>
 
-      <Card>
+      <Card bgColor="brand.inconsistent.gray.800">
         <CardHeading>Breed</CardHeading>
 
         <Wrap mt={3} spacing={8}>
