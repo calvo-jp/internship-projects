@@ -14,6 +14,7 @@ const theme = extendTheme({
   colors: {
     brand: {
       primary: "#FFD12D",
+      primaryDark: "#806917",
       tertiary: "#3F81E4",
       gray: {
         50: "#F7FAFC",
@@ -42,8 +43,8 @@ const theme = extendTheme({
       amber: {
         400: "#FFCA28",
         700: "#FFA000",
-        // this was only added here since progress component
-        // only picks up the 200 shade (on dark mode and 500 in light)
+        // this was only added here due to components with colorScheme
+        // only picking up the 200 shade (on dark mode and 500 in light)
         // in the pallete
         200: "#FFA000",
       },
@@ -67,6 +68,11 @@ const theme = extendTheme({
         500: "#8B5CF6",
         // see above comment
         200: "#8B5CF6",
+      },
+      yellow: {
+        // using primary color here
+        // see above comment
+        200: "#FFD12D",
       },
       inconsistent: {
         gray: {
