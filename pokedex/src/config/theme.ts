@@ -43,10 +43,6 @@ const theme = extendTheme({
       amber: {
         400: "#FFCA28",
         700: "#FFA000",
-        // this was only added here due to components with colorScheme
-        // only picking up the 200 shade (on dark mode and 500 in light)
-        // in the pallete
-        200: "#FFA000",
       },
       green: {
         50: "#ECFDF5",
@@ -56,34 +52,54 @@ const theme = extendTheme({
       },
       rose: {
         500: "#F43F5E",
-        // see above comment
-        200: "#F43F5E",
       },
       teal: {
         400: "#2DD4BF",
-        // see above comment
-        200: "#2DD4BF",
       },
       purple: {
         500: "#8B5CF6",
-        // see above comment
-        200: "#8B5CF6",
       },
+    },
+
+    /**
+     *
+     * Colors with conflicts to brand colors
+     *
+     */
+
+    others: {
+      gray: {
+        800: "#1A202C",
+      },
+    },
+
+    /**
+     *
+     * This is here due to components which
+     * only accepts colorScheme to change their backgrounds.
+     * Color scheme needs to be a palette and only 200 shade/variant
+     * if on dark mode and 500 in light mode will be picked up.
+     *
+     */
+
+    colorSchemeHacks: {
       yellow: {
-        // using primary color here
-        // see above comment
         200: "#FFD12D",
       },
-      // this is gray.500
-      // see above comment
-      black: {
-        200: "#718096",
+      rose: {
+        200: "#F43F5E",
       },
-      inconsistent: {
-        gray: {
-          // there are 2 different shade of gray.800 found in figma
-          800: "#1A202C",
-        },
+      teal: {
+        200: "#2DD4BF",
+      },
+      amber: {
+        200: "#FFA000",
+      },
+      purple: {
+        200: "#8B5CF6",
+      },
+      gray: {
+        200: "#718096",
       },
     },
   },
