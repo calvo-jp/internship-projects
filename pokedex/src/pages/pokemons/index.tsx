@@ -32,6 +32,7 @@ import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
+import valx from "utils/valx";
 
 const Pokemons = () => {
   return (
@@ -42,7 +43,17 @@ const Pokemons = () => {
 
       <HomepageLayout>
         <Box p={{ base: 4, md: 8, lg: 12 }} maxW="container.lg" mx="auto">
-          <Section1 />
+          <HStack as="section" justify="space-between">
+            <Heading
+              fontSize="2xl"
+              color="brand.gray.100"
+              fontWeight="semibold"
+            >
+              Choose Pokemon
+            </Heading>
+
+            <Toolbar />
+          </HStack>
 
           <Flex
             as="section"
@@ -56,18 +67,6 @@ const Pokemons = () => {
         </Box>
       </HomepageLayout>
     </React.Fragment>
-  );
-};
-
-const Section1 = () => {
-  return (
-    <HStack justify="space-between" as="section">
-      <Heading fontSize="2xl" color="brand.gray.100" fontWeight="semibold">
-        Choose Pokemon
-      </Heading>
-
-      <Toolbar />
-    </HStack>
   );
 };
 
@@ -110,11 +109,15 @@ const FilterTool = () => {
       <MenuButton>
         <ToolbarIcon icon={FilterIcon} />
       </MenuButton>
-      <MenuList color="brand.gray.700" ml={-5}>
+      <MenuList color="brand.gray.700" bgColor="white">
         {items.map((item) => (
           <MenuItem key={item} display="flex" justifyContent="space-between">
-            <Text fontSize="sm">{item}</Text>
-            <Checkbox />
+            <Text>{item}</Text>
+            <Checkbox
+              colorScheme="brand.yellow"
+              borderColor="brand.gray.400"
+              iconColor="brand.primaryDark"
+            />
           </MenuItem>
         ))}
       </MenuList>
@@ -163,8 +166,6 @@ const GridViewItem = ({ v }: any) => {
   );
 };
 
-const listViewHeadings = "#||Pokemon|Type|Level".split(/\|/);
-
 const ListView = () => {
   const router = useRouter();
   const handleClick = (id: string) => () => router.push(`/pokemons/${id}`);
@@ -177,7 +178,7 @@ const ListView = () => {
         borderColor="brand.gray.300"
         borderBottom="1px"
       >
-        {listViewHeadings.map((heading) => (
+        {"#||Pokemon|Type|Level".split(/\|/).map((heading) => (
           <GridTableHeading key={heading}>{heading}</GridTableHeading>
         ))}
       </GridTableRow>
@@ -224,12 +225,26 @@ const Pagination = () => {
       <Center>
         <HStack>
           <PageControl action="prev" />
-          <Button aria-label="" color="brand.gray.800" bgColor="brand.gray.100">
-            1
-          </Button>
-          <Button aria-label="" bgColor="brand.primary" color="brand.gray.800">
-            2
-          </Button>
+          {Array(2)
+            .fill(1)
+            .map((n, idx) => n + idx)
+            .map((value) => (
+              <Button
+                aria-label=""
+                key={value}
+                bgColor={valx({
+                  "brand.primary": value === 1,
+                  "brand.gray.800": value > 1,
+                })}
+                color={valx({
+                  "brand.gray.800": value === 1,
+                  "brand.gray.100": value > 1,
+                })}
+              >
+                {value}
+              </Button>
+            ))}
+
           <PageControl action="next" />
         </HStack>
       </Center>
