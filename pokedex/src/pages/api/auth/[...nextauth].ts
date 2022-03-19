@@ -1,5 +1,6 @@
 import apolloClient from "config/apollo/client";
 import { AUTHENTICATE, SIGN_UP } from "graphql/auth-api/mutations/auth";
+import { PROFILE } from "graphql/auth-api/queries/users";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -11,16 +12,6 @@ import {
   AuthenticateVariables,
 } from "__generated__/Authenticate";
 import { SignUp, SignUpVariables } from "__generated__/SignUp";
-
-const loginSchema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().min(5).max(100).required(),
-});
-
-const signupSchema = loginSchema.shape({
-  firstName: yup.string().min(3).max(50).required(),
-  lastName: yup.string().min(3).max(50).required(),
-});
 
 export default NextAuth({
   providers: [
@@ -37,14 +28,19 @@ export default NextAuth({
       clientSecret: process.env.LINKEDIN_SECRET!,
     }),
     CredentialsProvider({
-      credentials: { email: {}, password: {}, lastName: {}, firstName: {} },
+      credentials: {
+        email: {},
+        password: {},
+        lastName: {},
+        firstName: {},
+      },
       async authorize(credentials) {
         if (!credentials) return null;
 
         try {
           let accessToken: string | null;
 
-          if (credentials.firstName) {
+          if ("firstName" in credentials) {
             const data = await signupSchema.validate(credentials);
             accessToken = await signup(data);
           } else {
@@ -62,13 +58,26 @@ export default NextAuth({
   callbacks: {
     async jwt({ user, token }) {
       if (user) token.accessToken = user.accessToken;
+
       return token;
     },
     async session({ token, session }) {
-      session.accessToken = token.accessToken;
-      return session;
+      return { ...session, ...token };
     },
   },
+  pages: {
+    signIn: "/login",
+  },
+});
+
+const loginSchema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().min(5).max(100).required(),
+});
+
+const signupSchema = loginSchema.shape({
+  firstName: yup.string().min(3).max(50).required(),
+  lastName: yup.string().min(3).max(50).required(),
 });
 
 const authenticate = async (credentials: yup.InferType<typeof loginSchema>) => {
