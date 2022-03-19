@@ -41,10 +41,10 @@ const theme = extendTheme({
       },
       amber: {
         400: "#FFCA28",
+        700: "#FFA000",
         // this was only added here since progress component
         // only picks up the 500 shade in a pallete
-        500: "#FFA000",
-        700: "#FFA000",
+        200: "#FFA000",
       },
       green: {
         50: "#ECFDF5",
@@ -54,14 +54,18 @@ const theme = extendTheme({
       },
       rose: {
         500: "#F43F5E",
+        // see above comment
+        200: "#F43F5E",
       },
       teal: {
         400: "#2DD4BF",
         // see above comment
-        500: "#2DD4BF",
+        200: "#2DD4BF",
       },
       purple: {
         500: "#8B5CF6",
+        // see above comment
+        200: "#8B5CF6",
       },
       inconsistent: {
         gray: {

@@ -29,13 +29,17 @@ import {
 import HomepageLayout from "components/layouts/homepage";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
-import CardTable from "components/widgets/card/CardTable";
 import CardTag from "components/widgets/card/CardTag";
+import GridTable from "components/widgets/grid-table";
+import GridTableCell from "components/widgets/grid-table/GridTableCell";
+import GridTableHeading from "components/widgets/grid-table/GridTableHeading";
+import GridTableRow from "components/widgets/grid-table/GridTableRow";
 import IconButton from "components/widgets/IconButton";
 import Head from "next/head";
 import Image from "next/image";
 import NextLink from "next/link";
 import * as React from "react";
+import randomIdGenerator from "utils/randomIdGenerator";
 
 const Pokemon = () => {
   return (
@@ -184,8 +188,8 @@ const Moves = () => {
           </Box>
 
           <Box>
-            <CardTable
-              headings={["Damage", "DPS", "EPS"]}
+            <MovesTable
+              headings={"Damage|DPS|EPS".split(/\|/)}
               data={[
                 [10, 10, 10],
                 [14, 9.1, 6.4],
@@ -201,19 +205,19 @@ const Moves = () => {
             <VStack spacing={6} align="start">
               <CardHeading>Quick Moves</CardHeading>
 
-              {["Fireblast", "Flame Thrower", "Heat wave", "Overheat"].map(
-                (value) => (
+              {"Fireblast|Flame Thrower|Heat wave|Overheat"
+                .split(/\|/)
+                .map((value) => (
                   <CardTag variant="info" key={value}>
                     {value}
                   </CardTag>
-                )
-              )}
+                ))}
             </VStack>
           </Box>
 
           <Box>
-            <CardTable
-              headings={["Damage", "DPS", "EPS"]}
+            <MovesTable
+              headings={"Damage|DPS|EPS".split(/\|/)}
               data={[
                 [10, 10, 10],
                 [14, 9.1, 6.4],
@@ -225,6 +229,38 @@ const Moves = () => {
         </SimpleGrid>
       </Card>
     </VStack>
+  );
+};
+
+interface MovesTableProps {
+  headings: string[];
+  /** should match the number of headings */
+  data: (string | number)[][];
+}
+
+const MovesTable = ({ headings, data, ...props }: MovesTableProps) => {
+  const length = headings.length;
+
+  return (
+    <GridTable columns={`repeat(${length}, 1fr)`} {...props}>
+      <GridTableRow p={2} borderBottom="1px">
+        {headings.map((heading) => (
+          <GridTableHeading textAlign="center" key={heading}>
+            {heading}
+          </GridTableHeading>
+        ))}
+      </GridTableRow>
+
+      {data.map((cells) => (
+        <GridTableRow key={generateId()} p={4} borderBottom="1px">
+          {cells.map((cell) => (
+            <GridTableCell key={generateId()} textAlign="center">
+              {cell}
+            </GridTableCell>
+          ))}
+        </GridTableRow>
+      ))}
+    </GridTable>
   );
 };
 
@@ -300,13 +336,13 @@ const Statistics = () => {
             <Text w="45px">{label}</Text>
 
             <Progress
-              colorScheme={colorScheme}
-              size="xs"
-              flexGrow="1"
               ml={8}
               mr={4}
+              size="xs"
+              colorScheme={colorScheme}
+              bgColor="brand.gray.200"
+              flexGrow="1"
               value={value}
-              rounded="sm"
             />
 
             <Text w="35px">{value}%</Text>
@@ -314,7 +350,7 @@ const Statistics = () => {
         ))}
       </Card>
 
-      <Card w="full">
+      <Card w="full" bgColor="brand.inconsistent.gray.800">
         <CardHeading>Weaknesses</CardHeading>
 
         <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
@@ -326,15 +362,14 @@ const Statistics = () => {
                 <Box as="span" color="brand.red.500" mr={1}>
                   160%
                 </Box>
-
-                <Box as="span">damage</Box>
+                <span>damage</span>
               </Text>
             </HStack>
           ))}
         </Flex>
       </Card>
 
-      <Card w="full">
+      <Card w="full" bgColor="brand.inconsistent.gray.800">
         <CardHeading>Resistant</CardHeading>
 
         <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
@@ -348,8 +383,7 @@ const Statistics = () => {
                   <Box as="span" color="brand.green.500" mr={1}>
                     65%
                   </Box>
-
-                  <Box as="span">damage</Box>
+                  <span>damage</span>
                 </Text>
               </HStack>
             ))}
@@ -429,5 +463,7 @@ const About = () => {
     </VStack>
   );
 };
+
+const generateId = randomIdGenerator();
 
 export default Pokemon;
