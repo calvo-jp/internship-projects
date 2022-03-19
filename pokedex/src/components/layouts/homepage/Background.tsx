@@ -1,113 +1,237 @@
 import { Box, Image } from "@chakra-ui/react";
+import valx from "utils/valx";
 
-type Item = [
-  /**
-   *
-   * name of svg
-   * will be used to link to the asset in public dir
-   * eg. "fire" -> "/assets/icons/fire.svg"
-   *
-   */
-  name: string,
-  /**
-   *
-   * size in pixels
-   *
-   */
-  size: [width: number, height: number],
-  position: [
-    /**
-     *
-     * position left or right in percentage (or left: <number>%)
-     * values here were calculated using the vw (1440px) found in figma
-     * and the margin left or right of each background icons.
-     * website used to calculate percent values can be found
-     * at https://www.pixelconverter.com/
-     *
-     */
-    leftOrRight: number,
-    /**
-     *
-     * position bottom in pixels (or bottom: <number>px)
-     *
-     */
-    bottom: number
-  ],
-  /**
-   *
-   * how many degrees should we rotate the element
-   *
-   */
-  rotate: number,
-  /**
-   *
-   * the horiz pos where the element should be placed
-   *
-   */
-  anchor: "left" | "right"
-];
+interface Size {
+  /** width in pixels */
+  width: number;
+  /** height in pixels */
+  height: number;
+}
+
+interface Placement {
+  x: "left" | "right";
+  y: "top" | "bottom";
+}
+
+interface Position {
+  /** horizontal position in degress */
+  x: number;
+  /** vertical position in pixels */
+  y: number;
+}
+
+interface BackgroundImage {
+  src: string;
+  size?: Size;
+  position: Position;
+  placement: Placement;
+  /** rotation in degrees */
+  rotation: number;
+}
 
 const Background = () => {
-  const items: Item[] = [
-    // left
-    ["fire", [40, 51], [11.4, 372], 20.05, "left"],
-    ["electric", [54, 56], [0.175, 273], 8.37, "left"],
-    ["metal", [38, 33], [13.5, 230], 0, "left"],
-    ["grass", [65, 89], [4.8, 45], 0, "left"],
-    ["steel", [36, 44], [21, 34], -25.7, "left"],
-    // right
-    ["stone", [27, 30], [5, 354], 22.96, "right"],
-    ["fairy", [38, 56], [9.12, 186], -27.98, "right"],
-    ["poison", [34, 52], [0.9, 120], 14.5, "right"],
-    ["water", [59, 100], [13, 37], 0, "right"],
-  ];
-
   return (
     <Box position="absolute" w="full" h="full" top={0} left={0}>
-      <Image
-        src="/assets/pokeball-lg.png"
-        alt=""
-        position="absolute"
-        right={0}
-        top={-16}
-      />
-
-      <Image
-        src="/assets/pokeball-sm.png"
-        alt=""
-        position="absolute"
-        left={0}
-        bottom={4}
-      />
-
-      {items.map(
-        ([
-          name,
-          [width, height],
-          [verticalPosition, bottomPos],
-          rotate,
-          anchor,
-        ]) => {
-          const isAnchoredLeft = anchor === "left";
-
-          return (
-            <Image
-              key={name}
-              src={`/assets/icons/${name}.svg`}
-              alt=""
-              w={`${width}px`}
-              h={`${height}px`}
-              left={isAnchoredLeft ? `${verticalPosition}%` : undefined}
-              right={!isAnchoredLeft ? `${verticalPosition}%` : undefined}
-              bottom={`${bottomPos}px`}
-              position="absolute"
-              transform={`rotate(${rotate}deg)`}
-            />
-          );
-        }
-      )}
+      {backgroundImgs.map(({ src, size, position, placement, rotation }) => (
+        <Image
+          key={src}
+          src={src}
+          alt=""
+          position="absolute"
+          top={valx({
+            [`${position.y}px`]: placement.y === "top",
+          })}
+          bottom={valx({
+            [`${position.y}px`]: placement.y === "bottom",
+          })}
+          left={valx({
+            [`${position.x}%`]: placement.x === "left",
+          })}
+          right={valx({
+            [`${position.x}%`]: placement.x === "right",
+          })}
+          width={valx({
+            [`${size?.width}px`]: !!size,
+          })}
+          height={valx({
+            [`${size?.height}px`]: !!size,
+          })}
+          transform={`rotate(${rotation}deg)`}
+        />
+      ))}
     </Box>
   );
 };
+
+const backgroundImgs: BackgroundImage[] = [
+  {
+    src: "/assets/pokeball-lg.png",
+    position: {
+      x: 0,
+      y: 0,
+    },
+    placement: {
+      x: "right",
+      y: "top",
+    },
+    rotation: 0,
+  },
+  {
+    src: "/assets/pokeball-sm.png",
+    position: {
+      x: 0,
+      y: 80,
+    },
+    placement: {
+      x: "left",
+      y: "bottom",
+    },
+    rotation: 0,
+  },
+  {
+    src: "/assets/icons/fire.svg",
+    size: {
+      width: 40,
+      height: 51,
+    },
+    position: {
+      x: 11.4,
+      y: 372,
+    },
+    placement: {
+      x: "left",
+      y: "bottom",
+    },
+    rotation: 20.05,
+  },
+  {
+    src: "/assets/icons/electric.svg",
+    size: {
+      width: 54,
+      height: 56,
+    },
+    position: {
+      x: 0.175,
+      y: 273,
+    },
+    placement: {
+      x: "left",
+      y: "bottom",
+    },
+    rotation: 8.37,
+  },
+  {
+    src: "/assets/icons/metal.svg",
+    size: {
+      width: 38,
+      height: 33,
+    },
+    position: {
+      x: 13.5,
+      y: 230,
+    },
+    placement: {
+      x: "left",
+      y: "bottom",
+    },
+    rotation: 0,
+  },
+  {
+    src: "/assets/icons/grass.svg",
+    size: {
+      width: 65,
+      height: 89,
+    },
+    position: {
+      x: 4.8,
+      y: 45,
+    },
+    placement: {
+      x: "left",
+      y: "bottom",
+    },
+    rotation: 0,
+  },
+  {
+    src: "/assets/icons/steel.svg",
+    size: {
+      width: 36,
+      height: 44,
+    },
+    position: {
+      x: 21,
+      y: 34,
+    },
+    placement: {
+      x: "left",
+      y: "bottom",
+    },
+    rotation: -25.7,
+  },
+  {
+    src: "/assets/icons/stone.svg",
+    size: {
+      width: 27,
+      height: 30,
+    },
+    position: {
+      x: 5,
+      y: 354.33,
+    },
+    placement: {
+      x: "right",
+      y: "bottom",
+    },
+    rotation: 22.96,
+  },
+  {
+    src: "/assets/icons/fairy.svg",
+    size: {
+      width: 38,
+      height: 56,
+    },
+    position: {
+      x: 9.12,
+      y: 186,
+    },
+    placement: {
+      x: "right",
+      y: "bottom",
+    },
+    rotation: -27.98,
+  },
+  {
+    src: "/assets/icons/poison.svg",
+    size: {
+      width: 34,
+      height: 52,
+    },
+    position: {
+      x: 0.9,
+      y: 120,
+    },
+    placement: {
+      x: "right",
+      y: "bottom",
+    },
+    rotation: 14.5,
+  },
+  {
+    src: "/assets/icons/water.svg",
+    size: {
+      width: 59,
+      height: 100,
+    },
+    position: {
+      x: 13,
+      y: 37,
+    },
+    placement: {
+      x: "right",
+      y: "bottom",
+    },
+    rotation: 0,
+  },
+];
 
 export default Background;
