@@ -7,7 +7,7 @@ import {
   Collapse,
 } from "@chakra-ui/react";
 
-type BaseProps = Omit<ChakraAlertProps, "in" | "status">;
+type BaseProps = Omit<ChakraAlertProps, "in" | "status" | "variant">;
 
 interface AlertProps {
   open?: boolean;
