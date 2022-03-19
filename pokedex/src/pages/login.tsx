@@ -53,19 +53,26 @@ const LoginForm = () => {
     },
   });
 
+  const [loading, setLoading] = React.useState(false);
   const [loginError, setLoginError] = React.useState(false);
 
   const login = handleSubmit(async (data) => {
+    setLoading(true);
+
     await signIn("credentials", {
       ...data,
       redirect: false,
     });
 
+    setLoading(false);
     setLoginError(true);
   });
 
   React.useEffect(() => {
-    return () => setLoginError(false);
+    return () => {
+      setLoading(false);
+      setLoginError(false);
+    };
   }, []);
 
   return (
@@ -95,7 +102,14 @@ const LoginForm = () => {
         />
       </VStack>
 
-      <Button type="submit" size="lg" fontSize="sm" mt={6} w="full">
+      <Button
+        w="full"
+        mt={6}
+        size="lg"
+        type="submit"
+        fontSize="sm"
+        isLoading={loading}
+      >
         Sign In
       </Button>
     </Box>
