@@ -30,6 +30,7 @@ import useStore from "hooks/useStore";
 import Head from "next/head";
 import NextImage from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
 
 const Pokemons = () => {
@@ -165,19 +166,16 @@ const GridViewItem = ({ v }: any) => {
 const listViewHeadings = "#||Pokemon|Type|Level".split(/\|/);
 
 const ListView = () => {
+  const router = useRouter();
+  const handleClick = (id: string) => () => router.push(`/pokemons/${id}`);
+
   return (
-    <GridTable
-      columns="49px 75px 1fr 1fr 1fr"
-      bgColor="brand.gray.700"
-      color="brand.gray.50"
-    >
+    <GridTable columns="49px 75px 1fr 1fr 1fr" bgColor="brand.gray.700">
       <GridTableRow
         px={4}
         py={3}
         borderColor="brand.gray.300"
         borderBottom="1px"
-        fontSize="sm"
-        color="brand.gray.100"
       >
         {listViewHeadings.map((heading) => (
           <GridTableHeading key={heading}>{heading}</GridTableHeading>
@@ -186,31 +184,32 @@ const ListView = () => {
 
       {Array(10)
         .fill("1|/assets/samples/2.png|Pikachu|Electric|Lvl 3".split(/\|/))
-        .map(([id, image, name, type, level], idx) => {
-          return (
-            <GridTableRow
-              key={idx}
-              py={3}
-              px={4}
-              borderColor="brand.gray.300"
-              borderBottom="1px"
-            >
-              <GridTableCell>{id}</GridTableCell>
-              <GridTableCell>
-                <Avatar
-                  src={image}
-                  w="32px"
-                  h="32px"
-                  showBorder
-                  borderColor="brand.gray.400"
-                />
-              </GridTableCell>
-              <GridTableCell>{name}</GridTableCell>
-              <GridTableCell>{type}</GridTableCell>
-              <GridTableCell>{level}</GridTableCell>
-            </GridTableRow>
-          );
-        })}
+        .map(([id, image, name, type, level], idx) => (
+          <GridTableRow
+            key={idx}
+            py={3}
+            px={4}
+            borderColor="brand.gray.300"
+            borderBottom="1px"
+            cursor="pointer"
+            _hover={{ bgColor: "brand.gray.600" }}
+            onClick={handleClick(id)}
+          >
+            <GridTableCell>{id}</GridTableCell>
+            <GridTableCell>
+              <Avatar
+                src={image}
+                w="32px"
+                h="32px"
+                showBorder
+                borderColor="brand.gray.400"
+              />
+            </GridTableCell>
+            <GridTableCell>{name}</GridTableCell>
+            <GridTableCell>{type}</GridTableCell>
+            <GridTableCell>{level}</GridTableCell>
+          </GridTableRow>
+        ))}
     </GridTable>
   );
 };
