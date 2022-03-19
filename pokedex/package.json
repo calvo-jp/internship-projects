@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen:pokeapi": "apollo client:codegen --target typescript --includes='./src/graphql/pokeapi/**/*.ts' --outputFlat --endpoint='https://beta.pokeapi.co/graphql/v1beta' 'src/types'",
-    "codegen:auth-api": "apollo client:codegen --target typescript --includes='./src/graphql/auth-api/**/*.ts' --outputFlat --endpoint='https://frontend-engineer-onboarding-api-thxaa.ondigitalocean.app/graphql' 'src/types'",
-    "apollo:codegen": "concurrently 'yarn codegen:pokeapi' 'yarn  codegen:auth-api'"
+    "codegen:pokeapi": "apollo client:codegen --target typescript --includes=\"./src/graphql/pokeapi/**/*.ts\" --outputFlat --endpoint=\"https://beta.pokeapi.co/graphql/v1beta\" \"src/types\"",
+    "codegen:auth-api": "apollo client:codegen --target typescript --includes=\"./src/graphql/auth-api/**/*.ts\" --outputFlat --endpoint=\"https://frontend-engineer-onboarding-api-thxaa.ondigitalocean.app/graphql\" \"src/types\"",
+    "apollo:codegen": "concurrently \"yarn codegen:pokeapi\" \"yarn  codegen:auth-api\""
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
