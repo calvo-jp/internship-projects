@@ -5,11 +5,11 @@ import {
   Center,
   Checkbox,
   Flex,
-  GridItem,
   Heading,
   HStack,
   Icon,
   IconButton,
+  LinkBox,
   Menu,
   MenuButton,
   MenuItem,
@@ -146,7 +146,7 @@ const GridView = () => {
 const GridViewItem = ({ v }: any) => {
   return (
     <Link key={v} passHref href={"/pokemons/" + v}>
-      <GridItem
+      <LinkBox
         as="a"
         h="260px"
         rounded="sm"
@@ -161,7 +161,7 @@ const GridViewItem = ({ v }: any) => {
           objectFit="cover"
           objectPosition="center"
         />
-      </GridItem>
+      </LinkBox>
     </Link>
   );
 };
