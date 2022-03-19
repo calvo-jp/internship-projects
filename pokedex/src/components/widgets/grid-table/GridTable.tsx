@@ -18,6 +18,7 @@ const GridTable = ({
         if (!React.isValidElement(child)) return child;
         return React.cloneElement(child, {
           templateColumns: columns,
+          alignItems: "center",
         });
       })}
     </Box>
