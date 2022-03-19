@@ -43,7 +43,8 @@ const theme = extendTheme({
         400: "#FFCA28",
         700: "#FFA000",
         // this was only added here since progress component
-        // only picks up the 500 shade in a pallete
+        // only picks up the 200 shade (on dark mode and 500 in light)
+        // in the pallete
         200: "#FFA000",
       },
       green: {
