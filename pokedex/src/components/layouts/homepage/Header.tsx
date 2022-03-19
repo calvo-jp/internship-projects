@@ -46,13 +46,13 @@ const Header = () => {
 
       <HStack spacing={5}>
         <Text>Welcome, JP</Text>
-        <Avatar w="57px" h="57px" />
+        <Avatar w="57px" h="57px" showBorder borderColor="brand.primary" />
 
         <Menu>
           <MenuButton>
             <Icon as={ChevronDownIcon} fontSize="xl" stroke="brand.gray.100" />
           </MenuButton>
-          <MenuList mt={3}>
+          <MenuList mt={3} bgColor="white">
             <MenuItem color="brand.red.500" onClick={logout}>
               Logout
             </MenuItem>
