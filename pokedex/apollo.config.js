@@ -2,9 +2,9 @@ module.exports = {
   client: {
     includes: ["./src/graphql/**/*.ts"],
     service: {
-      name: "PokeAPI",
-      url: "https://beta.pokeapi.co/graphql/v1beta",
       skipSSLValidation: true,
+      name: "PokeAPI",
+      url: "https://frontend-engineer-onboarding-api-thxaa.ondigitalocean.app/graphql",
     },
   },
 };

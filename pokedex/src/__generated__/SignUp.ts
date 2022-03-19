@@ -3,18 +3,16 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { SignUpInput } from "./globalTypes";
-
 // ====================================================
-// GraphQL mutation operation: CreateAccount
+// GraphQL mutation operation: SignUp
 // ====================================================
 
-export interface CreateAccount_signUp {
+export interface SignUp_signUp {
   __typename: "Authentication";
   token: string;
 }
 
-export interface CreateAccount {
+export interface SignUp {
   /**
    * ### Description
    * Sign up a user and get an access token if successful.
@@ -22,9 +20,12 @@ export interface CreateAccount {
    * ### Error Codes
    * `BAD_USER_INPUT` - Email address already used.
    */
-  signUp: CreateAccount_signUp;
+  signUp: SignUp_signUp;
 }
 
-export interface CreateAccountVariables {
-  input: SignUpInput;
+export interface SignUpVariables {
+  firstName: string;
+  lastName: string;
+  email: any;
+  password: string;
 }

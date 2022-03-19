@@ -3,18 +3,16 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AuthenticateInput } from "./globalTypes";
-
 // ====================================================
-// GraphQL mutation operation: Login
+// GraphQL mutation operation: Authenticate
 // ====================================================
 
-export interface Login_authenticate {
+export interface Authenticate_authenticate {
   __typename: "Authentication";
   token: string;
 }
 
-export interface Login {
+export interface Authenticate {
   /**
    * ### Description
    * Authenticate a user to get an access token if credentials are valid.
@@ -22,9 +20,10 @@ export interface Login {
    * ### Error Codes
    * `BAD_USER_INPUT` - Invalid credentials.
    */
-  authenticate: Login_authenticate;
+  authenticate: Authenticate_authenticate;
 }
 
-export interface LoginVariables {
-  input: AuthenticateInput;
+export interface AuthenticateVariables {
+  email: any;
+  password: string;
 }
