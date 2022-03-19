@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client";
 import {
   Avatar,
   Flex,
@@ -12,10 +13,20 @@ import {
 } from "@chakra-ui/react";
 import ChevronDownIcon from "@heroicons/react/outline/ChevronDownIcon";
 import Link from "components/widgets/Link";
+import { PROFILE } from "graphql/auth-api/queries/users";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import sha256 from "utils/sha256";
+import { Profile } from "__generated__/Profile";
 
 const Header = () => {
+  const { loading, data } = useQuery<Profile>(PROFILE);
+
+  // TODO: add skeleton
+  if (loading) return null;
+  // TODO: properly handle this
+  if (!data) return null;
+
   return (
     <Flex
       as="header"
@@ -36,8 +47,15 @@ const Header = () => {
       </Link>
 
       <HStack spacing={5}>
-        <Text>Welcome, JP</Text>
-        <Avatar w="57px" h="57px" showBorder borderColor="brand.primary" />
+        <Text>Welcome, {data.me.firstname}</Text>
+
+        <Avatar
+          src={gravatar(data.me.email)}
+          w="57px"
+          h="57px"
+          showBorder
+          borderColor="brand.primary"
+        />
         <Dropdown />
       </HStack>
     </Flex>
@@ -64,6 +82,10 @@ const Dropdown = () => {
       </MenuList>
     </Menu>
   );
+};
+
+const gravatar = (email: string) => {
+  return "https://www.gravatar.com/avatar/" + sha256(email) + "?d=retro&s=150";
 };
 
 export default Header;
