@@ -332,7 +332,7 @@ const Statistics = () => {
     { label: "ATK", value: 30, colorScheme: "brand.amber" },
     { label: "DEF", value: 40, colorScheme: "brand.teal" },
     { label: "SPD", value: 12, colorScheme: "brand.purple" },
-    { label: "EXP", value: 90, colorScheme: "brand.gray" },
+    { label: "EXP", value: 90, colorScheme: "brand.black" },
   ];
 
   return (

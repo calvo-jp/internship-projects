@@ -74,6 +74,11 @@ const theme = extendTheme({
         // see above comment
         200: "#FFD12D",
       },
+      // this is gray.500
+      // see above comment
+      black: {
+        200: "#718096",
+      },
       inconsistent: {
         gray: {
           // there are 2 different shade of gray.800 found in figma
