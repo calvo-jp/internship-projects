@@ -114,7 +114,7 @@ const FilterTool = () => {
           <MenuItem key={item} display="flex" justifyContent="space-between">
             <Text>{item}</Text>
             <Checkbox
-              colorScheme="brand.yellow"
+              colorScheme="colorSchemeHacks.yellow"
               borderColor="brand.gray.400"
               iconColor="brand.primaryDark"
             />

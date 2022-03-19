@@ -293,7 +293,7 @@ const Evolution = () => {
                     <Box
                       w="88px"
                       h="88px"
-                      bgColor="brand.inconsistent.gray.800"
+                      bgColor="others.gray.800"
                       rounded="md"
                     />
                     <Text fontSize="sm">Eevee</Text>
@@ -312,7 +312,7 @@ const Evolution = () => {
                     <Box
                       w="88px"
                       h="88px"
-                      bgColor="brand.inconsistent.gray.800"
+                      bgColor="others.gray.800"
                       rounded="md"
                     />
                     <Text fontSize="sm">Flareon</Text>
@@ -328,11 +328,11 @@ const Evolution = () => {
 
 const Statistics = () => {
   const stats = [
-    { label: "HP", value: 20, colorScheme: "brand.rose" },
-    { label: "ATK", value: 30, colorScheme: "brand.amber" },
-    { label: "DEF", value: 40, colorScheme: "brand.teal" },
-    { label: "SPD", value: 12, colorScheme: "brand.purple" },
-    { label: "EXP", value: 90, colorScheme: "brand.black" },
+    { label: "HP", value: 20, colorScheme: "colorSchemeHacks.rose" },
+    { label: "ATK", value: 30, colorScheme: "colorSchemeHacks.amber" },
+    { label: "DEF", value: 40, colorScheme: "colorSchemeHacks.teal" },
+    { label: "SPD", value: 12, colorScheme: "colorSchemeHacks.purple" },
+    { label: "EXP", value: 90, colorScheme: "colorSchemeHacks.gray" },
   ];
 
   return (
@@ -357,7 +357,7 @@ const Statistics = () => {
         ))}
       </Card>
 
-      <Card w="full" bgColor="brand.inconsistent.gray.800">
+      <Card w="full" bgColor="others.gray.800">
         <CardHeading>Weaknesses</CardHeading>
 
         <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
@@ -376,7 +376,7 @@ const Statistics = () => {
         </Flex>
       </Card>
 
-      <Card w="full" bgColor="brand.inconsistent.gray.800">
+      <Card w="full" bgColor="others.gray.800">
         <CardHeading>Resistant</CardHeading>
 
         <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
@@ -425,7 +425,7 @@ const About = () => {
         id nibh sagittis. Ipsum ornare quam vitae praesent.
       </Text>
 
-      <Card py={4} bgColor="brand.inconsistent.gray.800">
+      <Card py={4} bgColor="others.gray.800">
         <HStack
           gap={6}
           divider={
@@ -449,7 +449,7 @@ const About = () => {
         </HStack>
       </Card>
 
-      <Card bgColor="brand.inconsistent.gray.800">
+      <Card bgColor="others.gray.800">
         <CardHeading>Breed</CardHeading>
 
         <Wrap mt={3} spacing={8}>
