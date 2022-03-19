@@ -6,7 +6,7 @@ export const PROFILE = gql`
       id
       firstname
       lastname
-      emailAddress
+      email: emailAddress
       createdAt
       updatedAt
     }

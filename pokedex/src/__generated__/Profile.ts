@@ -12,7 +12,7 @@ export interface Profile_me {
   id: any;
   firstname: string;
   lastname: string;
-  emailAddress: any;
+  email: any;
   createdAt: any;
   updatedAt: any;
 }
