@@ -1,4 +1,3 @@
-import { useMutation } from "@apollo/client";
 import { Box, Center, HStack, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AccountLayout from "components/layouts/account";
@@ -6,13 +5,11 @@ import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
-import { SIGN_UP } from "graphql/auth-api/mutations/auth";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { SignUp, SignUpVariables } from "__generated__/SignUp";
 
 const CreateAccount = () => {
   return (
@@ -131,7 +128,14 @@ const CreateAccountForm = () => {
         />
       </VStack>
 
-      <Button type="submit" size="lg" fontSize="sm" mt={6} w="full">
+      <Button
+        w="full"
+        mt={6}
+        size="lg"
+        type="submit"
+        fontSize="sm"
+        isLoading={loading}
+      >
         Create Account
       </Button>
     </Box>
