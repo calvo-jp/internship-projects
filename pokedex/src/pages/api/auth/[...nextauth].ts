@@ -43,11 +43,6 @@ export default NextAuth({
         // store provider profile to user object
         if (account.type === "oauth") {
           token.accessToken = account.access_token || account.oauth_token;
-
-          // facebook: id, name, email, picture.data.url
-          // twitter: id, name, email, profile_image_url
-          // linkedin: id, localizedFirstName, localizedLastName,
-
           token.user = {
             name: token.name,
             email: token.email,
