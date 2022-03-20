@@ -1,13 +1,27 @@
 type Dict = Record<string, any>;
 
-const pick = <T extends Dict, K extends keyof T>(obj: T, ...keys: K[]) => {
-  const picked: {
-    [I in K]?: T[I];
-  } = {};
+/**
+ *
+ * Picks key-value pairs from an object
+ * and creates new object out of it
+ *
+ * @example
+ * const o = {
+ *    prop1: 1,
+ *    prop2: 2,
+ *    prop3: 3
+ * }
+ *
+ * pick(o, "prop1", "prop2") // { [key]: number | undefined }
+ *
+ *
+ */
+const pick = <O extends Dict, K extends keyof O>(o: O, ...keys: K[]) => {
+  const picked: { [I in K]?: O[I] } = {};
 
   for (const key of keys) {
-    if (obj[key]) {
-      picked[key] = obj[key];
+    if (key in o) {
+      picked[key] = o[key];
     }
   }
 
