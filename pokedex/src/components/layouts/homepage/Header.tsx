@@ -45,7 +45,6 @@ const Header = () => {
 
       <HStack spacing={5}>
         <Text>Welcome, {profile.name}</Text>
-
         <Avatar
           src={profile.image ? profile.image : loadGravatar(profile.email)}
           w="57px"
