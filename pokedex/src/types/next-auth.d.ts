@@ -1,20 +1,22 @@
 import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 
-// ref: https://next-auth.js.org/getting-started/typescript
+interface UserViaOAuth {
+  name: string;
+  email: string;
+  image?: string;
+  __auth_method__: "oauth";
+}
+
+interface UserViaCredential {
+  __auth_method__: "credential";
+}
+
 declare module "next-auth" {
   interface Session {
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      image?: string;
-    };
+    accessToken: string;
+    user: UserViaOAuth | UserViaCredential;
   }
-
-  interface User {}
-  interface Account {}
-  interface Profile {}
 }
 
 declare module "next-auth/jwt" {
