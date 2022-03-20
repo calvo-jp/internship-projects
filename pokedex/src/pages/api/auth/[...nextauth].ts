@@ -38,9 +38,10 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ user, token, account, profile }) {
+    async jwt({ user, token, account }) {
       if (account) {
-        // store provider profile to user object
+        // store parsed details in user
+        // to be passed down to session
         if (account.type === "oauth") {
           token.accessToken = account.access_token || account.oauth_token;
           token.user = {
