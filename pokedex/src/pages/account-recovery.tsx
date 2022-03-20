@@ -17,7 +17,7 @@ const AccountRecovery = () => {
 
       <AccountLayout
         heading="Forgot Password"
-        backgroundUrl="/assets/bg/sign-in.png"
+        backgroundUrl="/assets/bg/forgot-password.png"
       >
         <AccountRecoveryForm />
 
