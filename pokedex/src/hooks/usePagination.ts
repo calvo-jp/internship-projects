@@ -7,13 +7,10 @@ interface Props<T> {
   currentPage?: number;
 }
 
-const usePagination = <T>(props: Props<T>) => {
+const usePagination = <T = any>(props: Props<T>) => {
   const [currentPage, setCurrentPage] = React.useState(props.currentPage || 1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(props.rowsPerPage || 10);
-
-  const [chunks, setChunks] = React.useState(
-    arrayChunk(props.data, rowsPerPage)
-  );
+  const [rowsPerPage] = React.useState(props.rowsPerPage || 10);
+  const [chunks] = React.useState(arrayChunk(props.data, rowsPerPage));
 
   const [hasNext, setHasNext] = React.useState(false);
   const [hasPrev, setHasPrev] = React.useState(false);
@@ -27,20 +24,12 @@ const usePagination = <T>(props: Props<T>) => {
   };
 
   React.useEffect(() => {
-    if (currentPage >= chunks.length) setHasNext(false);
-    if (currentPage <= 1) setHasPrev(false);
-
-    return () => {
-      setChunks([]);
-      setRowsPerPage(10);
-      setCurrentPage(1);
-      setHasNext(false);
-      setHasPrev(false);
-    };
+    setHasNext(currentPage < chunks.length);
+    setHasPrev(currentPage > 1);
   }, [chunks.length, currentPage]);
 
   return {
-    rows: chunks.at(currentPage) || [],
+    rows: chunks.at(currentPage - 1) || [],
     currentPage,
     rowsPerPage,
     totalPages: chunks.length,
