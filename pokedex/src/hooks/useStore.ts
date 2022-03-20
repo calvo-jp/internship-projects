@@ -35,7 +35,7 @@ const useStore = createStore<Store>(
         }));
       },
     })),
-    { name: "currentState" }
+    { name: "POKEDEX" }
   )
 );
 
