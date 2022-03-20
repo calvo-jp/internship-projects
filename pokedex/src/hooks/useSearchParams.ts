@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
  * query.getAll("someQuery")  // string[]
  *
  */
-const useQuery = <T extends string>(...keys: T[]) => {
+const useSearchParams = <T extends string>(...keys: T[]) => {
   const { query } = useRouter();
 
   const params: Partial<Record<T, string | string[] | undefined>> = {};
@@ -37,4 +37,4 @@ const useQuery = <T extends string>(...keys: T[]) => {
   };
 };
 
-export default useQuery;
+export default useSearchParams;
