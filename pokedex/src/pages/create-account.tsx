@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client";
 import { Box, Center, HStack, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AccountLayout from "components/layouts/account";
@@ -5,11 +6,13 @@ import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
+import { SIGN_UP } from "graphql/auth-api/mutations/auth";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { SignUp, SignUpVariables } from "__generated__/SignUp";
 
 const CreateAccount = () => {
   return (
@@ -70,31 +73,30 @@ const CreateAccountForm = () => {
     },
   });
 
-  const [error, setError] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [signUp, { error, loading, reset }] = useMutation<
+    SignUp,
+    SignUpVariables
+  >(SIGN_UP);
 
-  const signup = handleSubmit(async (data) => {
-    signIn("credentials", {
-      ...data,
-      redirect: false,
-    });
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      await signUp({ variables: data });
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+    } catch {}
   });
 
-  React.useEffect(() => {
-    return () => {
-      setError(false);
-      setLoading(false);
-    };
-  }, []);
-
   return (
-    <Box as="form" onSubmit={signup} noValidate>
+    <Box as="form" onSubmit={onSubmit} noValidate>
       <VStack spacing={4} align="stretch">
         <Alert
-          open={error}
+          open={!!error}
           variant="error"
-          message="Something went wrong."
-          onClose={() => setError(false)}
+          message={error?.message}
+          onClose={reset}
         />
 
         <TextField

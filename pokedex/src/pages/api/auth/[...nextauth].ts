@@ -1,6 +1,5 @@
 import apolloClient from "config/apollo/client";
-import { AUTHENTICATE, SIGN_UP } from "graphql/auth-api/mutations/auth";
-import { PROFILE } from "graphql/auth-api/queries/users";
+import { AUTHENTICATE } from "graphql/auth-api/mutations/auth";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -11,7 +10,6 @@ import {
   Authenticate,
   AuthenticateVariables,
 } from "__generated__/Authenticate";
-import { SignUp, SignUpVariables } from "__generated__/SignUp";
 
 export default NextAuth({
   providers: [
@@ -28,30 +26,14 @@ export default NextAuth({
       clientSecret: process.env.LINKEDIN_SECRET!,
     }),
     CredentialsProvider({
-      credentials: {
-        email: {},
-        password: {},
-        lastName: {},
-        firstName: {},
-      },
+      credentials: { email: {}, password: {} },
       async authorize(credentials) {
         if (!credentials) return null;
 
-        try {
-          let accessToken: string | null;
+        const data = await loginSchema.validate(credentials);
+        const accessToken = await authenticate(data);
 
-          if ("firstName" in credentials) {
-            const data = await signupSchema.validate(credentials);
-            accessToken = await signup(data);
-          } else {
-            const data = await loginSchema.validate(credentials);
-            accessToken = await authenticate(data);
-          }
-
-          if (!!accessToken) return { accessToken };
-        } catch {}
-
-        return null;
+        return !!accessToken ? { accessToken } : null;
       },
     }),
   ],
@@ -75,24 +57,12 @@ const loginSchema = yup.object().shape({
   password: yup.string().min(5).max(100).required(),
 });
 
-const signupSchema = loginSchema.shape({
-  firstName: yup.string().min(3).max(50).required(),
-  lastName: yup.string().min(3).max(50).required(),
-});
-
 const authenticate = async (credentials: yup.InferType<typeof loginSchema>) => {
   const result = await apolloClient.mutate<Authenticate, AuthenticateVariables>(
     { mutation: AUTHENTICATE, variables: credentials }
   );
 
-  return !result.data ? null : result.data.authenticate.token;
-};
-
-const signup = async (credentials: yup.InferType<typeof signupSchema>) => {
-  const result = await apolloClient.mutate<SignUp, SignUpVariables>({
-    mutation: SIGN_UP,
-    variables: credentials,
-  });
-
-  return !result.data ? null : result.data.signUp.token;
+  return !result.errors && !!result.data
+    ? result.data.authenticate.token
+    : null;
 };
