@@ -80,7 +80,7 @@ const backgroundImgs: BackgroundImage[] = [
     src: "/assets/pokeball-sm.png",
     position: {
       x: 0,
-      y: 80,
+      y: 51,
     },
     placement: {
       x: "left",
