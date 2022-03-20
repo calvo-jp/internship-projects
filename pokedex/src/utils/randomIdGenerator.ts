@@ -1,8 +1,13 @@
 const minValue = Number.MIN_VALUE;
 const maxValue = Number.MAX_VALUE;
 
-let prefix = minValue;
+let alphabet = "ABCDEFGHIGJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"[
+  Symbol.iterator
+]();
+
 let currentId = minValue;
+let prefix = minValue;
+let suffix = alphabet.next().value;
 
 /**
  *
@@ -12,10 +17,11 @@ let currentId = minValue;
  *
  */
 const randomIdGenerator = () => {
-  // This does not normally happen, but just in case it does
-  if (prefix >= maxValue) {
-    // TODO: fallback
-  }
+  // This does not normally happen,
+  // but just in case we ranout of numbers.
+  // If alphabet runs out, then goodbye world. 💀💀
+  if (prefix >= maxValue && !alphabet.next().done)
+    suffix = alphabet.next().value;
 
   return () => {
     // check if currentId needs to be reset
@@ -24,7 +30,7 @@ const randomIdGenerator = () => {
       prefix += minValue;
     }
 
-    const id = `__${prefix}__${currentId}__`;
+    const id = `__${prefix}__${currentId}__${suffix}__`;
     currentId += minValue;
     return id;
   };
