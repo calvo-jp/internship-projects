@@ -30,13 +30,16 @@ const usePagination = <T = any>(props: Props<T>) => {
 
   return {
     rows: chunks.at(currentPage - 1) || [],
-    currentPage,
+    totalRows: props.data.length,
     rowsPerPage,
+    currentPage,
     totalPages: chunks.length,
-    hasNext,
-    hasPrev,
-    next,
     prev,
+    next,
+    hasPrev,
+    hasNext,
+    prevPage: hasPrev ? currentPage - 1 : null,
+    nextPage: hasNext ? currentPage + 1 : null,
   };
 };
 
