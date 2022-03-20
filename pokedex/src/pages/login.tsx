@@ -1,10 +1,14 @@
-import { Box, HStack, VStack } from "@chakra-ui/react";
+import { Box, HStack, Icon, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import FacebookIcon from "components/icons/Facebook";
+import LinkedInIcon from "components/icons/LinkedIn";
+import TwitterIcon from "components/icons/Twitter";
 import AccountLayout from "components/layouts/account";
 import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
+import useCallbackUrl from "hooks/useCallbackUrl";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import * as React from "react";
@@ -20,7 +24,9 @@ const Login = () => {
 
       <AccountLayout heading="Log in" backgroundUrl="/assets/bg/sign-in.png">
         <LoginForm />
-
+        <Box mt={8}>
+          <Socials />
+        </Box>
         <Box mt={12}>
           <Links />
         </Box>
@@ -126,6 +132,32 @@ const Links = () => {
         <Link href="/create-account">Sign up</Link>
       </HStack>
     </VStack>
+  );
+};
+
+// index matters here
+const providers = ["facebook", "linkedin", "twitter"] as const;
+const providerIcons = [FacebookIcon, TwitterIcon, LinkedInIcon];
+
+const Socials = () => {
+  const callbackUrl = useCallbackUrl();
+
+  const handleLogin = (provider: typeof providers[number]) => {
+    return async () => {
+      await signIn(provider, {
+        callbackUrl,
+      });
+    };
+  };
+
+  return (
+    <HStack spacing={4} justify="center">
+      {providers.map((provider, index) => (
+        <button key={provider} onClick={handleLogin(provider)}>
+          <Icon as={providerIcons[index]} fill="white" />
+        </button>
+      ))}
+    </HStack>
   );
 };
 
