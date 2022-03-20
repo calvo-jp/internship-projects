@@ -24,10 +24,10 @@ const Login = () => {
 
       <AccountLayout heading="Log in" backgroundUrl="/assets/bg/sign-in.png">
         <LoginForm />
-        <Box mt={8}>
+        <Box mt={10}>
           <Socials />
         </Box>
-        <Box mt={12}>
+        <Box mt={8}>
           <Links />
         </Box>
       </AccountLayout>
@@ -136,7 +136,7 @@ const Links = () => {
 };
 
 // index matters here
-const providers = ["facebook", "linkedin", "twitter"] as const;
+const providers = ["facebook", "twitter", "linkedin"] as const;
 const providerIcons = [FacebookIcon, TwitterIcon, LinkedInIcon];
 
 const Socials = () => {
