@@ -18,7 +18,7 @@ interface AlertProps {
 
 /**
  *
- * Abstraction of Chakra's `Alert` with more sensible props.
+ * Abstraction of Chakra's `Alert`.
  * This component is wrapped inside a `Collapse` and is hidden by default.
  *
  * @example
