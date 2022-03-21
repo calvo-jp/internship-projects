@@ -1,5 +1,5 @@
 import apolloClient from "config/apollo/client";
-import { AUTHENTICATE } from "graphql/auth-api/mutations/auth";
+import { AUTHENTICATE } from "graphql/auth-api/mutations";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";

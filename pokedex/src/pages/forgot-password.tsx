@@ -6,7 +6,7 @@ import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
-import { TRIGGER_PASSWORD_RESET } from "graphql/auth-api/mutations/auth";
+import { TRIGGER_PASSWORD_RESET } from "graphql/auth-api/mutations";
 import Head from "next/head";
 import * as React from "react";
 import { useForm } from "react-hook-form";

@@ -5,7 +5,7 @@ import AccountLayout from "components/layouts/account";
 import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import TextField from "components/widgets/TextField";
-import { RESET_PASSWORD } from "graphql/auth-api/mutations/auth";
+import { RESET_PASSWORD } from "graphql/auth-api/mutations";
 import useSearchParams from "hooks/useSearchParams";
 import { signIn } from "next-auth/react";
 import Head from "next/head";

@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import { PROFILE } from "graphql/auth-api/queries/users";
+import { PROFILE } from "graphql/auth-api/queries";
 import { useSession } from "next-auth/react";
 import * as React from "react";
 import { Profile } from "__generated__/Profile";
@@ -15,7 +15,7 @@ const useProfile = () => {
   const [profile, setProfile] = React.useState<IProfile>();
   const [fetchProfile, { loading }] = useLazyQuery<Profile>(PROFILE, {
     context: {
-      targetAPI: "auth",
+      client: "auth",
     },
   });
 

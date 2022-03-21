@@ -125,7 +125,7 @@ const LoginForm = () => {
 const Links = () => {
   return (
     <VStack spacing={2} fontSize="sm">
-      <Link href="/account-recovery">Forgot Password</Link>
+      <Link href="/forgot-password">Forgot Password</Link>
 
       <HStack>
         <Box>Don&apos;t have an account?</Box>
