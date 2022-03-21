@@ -8,7 +8,7 @@ import Head from "next/head";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-const AccountRecovery = () => {
+const ForgotPassword = () => {
   return (
     <>
       <Head>
@@ -19,7 +19,7 @@ const AccountRecovery = () => {
         heading="Forgot Password"
         backgroundUrl="/assets/bg/forgot-password.png"
       >
-        <AccountRecoveryForm />
+        <ForgotPasswordForm />
 
         <Center mt={12} fontSize="sm">
           <HStack spacing={1}>
@@ -40,7 +40,7 @@ const schema = yup.object().shape({
     .required("Email is required"),
 });
 
-const AccountRecoveryForm = () => {
+const ForgotPasswordForm = () => {
   const { register, formState, handleSubmit } = useForm({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -70,4 +70,4 @@ const AccountRecoveryForm = () => {
   );
 };
 
-export default AccountRecovery;
+export default ForgotPassword;
