@@ -36,6 +36,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
+import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
 interface Props {
@@ -198,7 +199,7 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
         <ImageWithFallback
           maxW="80%"
           maxH="80%"
-          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${data.id}.svg`}
+          src={getPokemonImageUrl(data.id)}
           alt=""
           loader={<Spinner size="xl" />}
         />
@@ -242,7 +243,7 @@ const ListView = ({ pokemons }: ListViewProps) => {
             <Avatar
               w="32px"
               h="32px"
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`}
+              src={getPokemonImageUrl(id)}
               bgColor="transparent"
             />
           </GridTableCell>
