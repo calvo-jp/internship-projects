@@ -1,16 +1,15 @@
 import * as React from "react";
 import arrayChunk from "utils/arrayChunk";
 
-interface Props<T> {
-  data: T[];
+interface Config {
   rowsPerPage?: number;
   currentPage?: number;
 }
 
-const usePagination = <T = any>(props: Props<T>) => {
-  const [currentPage, setCurrentPage] = React.useState(props.currentPage || 1);
-  const [rowsPerPage] = React.useState(props.rowsPerPage || 10);
-  const [chunks] = React.useState(arrayChunk(props.data, rowsPerPage));
+const usePagination = <T = any>(data: T[], config: Config = {}) => {
+  const [currentPage, setCurrentPage] = React.useState(config.currentPage || 1);
+  const [rowsPerPage] = React.useState(config.rowsPerPage || 20);
+  const [chunks] = React.useState(arrayChunk(data, rowsPerPage));
 
   const [hasNext, setHasNext] = React.useState(false);
   const [hasPrev, setHasPrev] = React.useState(false);
@@ -30,7 +29,7 @@ const usePagination = <T = any>(props: Props<T>) => {
 
   return {
     rows: chunks.at(currentPage - 1) || [],
-    totalRows: props.data.length,
+    totalRows: data.length,
     rowsPerPage,
     currentPage,
     totalPages: chunks.length,
