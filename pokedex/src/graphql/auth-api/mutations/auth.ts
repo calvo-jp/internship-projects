@@ -27,3 +27,19 @@ export const SIGN_UP = gql`
     }
   }
 `;
+
+export const TRIGGER_PASSWORD_RESET = gql`
+  mutation TriggerPasswordReset($email: EmailAddress!) {
+    triggerPasswordReset(input: { emailAddress: $email })
+  }
+`;
+
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($newPassword: String!, $code: String!) {
+    resetPassword(
+      input: { newPassword: $newPassword, passwordResetCode: $code }
+    ) {
+      token
+    }
+  }
+`;
