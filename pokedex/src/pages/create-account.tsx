@@ -6,7 +6,7 @@ import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
-import { SIGN_UP } from "graphql/auth-api/mutations/auth";
+import { SIGN_UP } from "graphql/auth-api/mutations";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import * as React from "react";
