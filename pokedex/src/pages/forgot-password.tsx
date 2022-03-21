@@ -1,12 +1,20 @@
-import { Box, Center, HStack, VStack } from "@chakra-ui/react";
+import { useMutation } from "@apollo/client";
+import { Box, Center, HStack, Text, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AccountLayout from "components/layouts/account";
+import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
+import { TRIGGER_PASSWORD_RESET } from "graphql/auth-api/mutations/auth";
 import Head from "next/head";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import {
+  TriggerPasswordReset,
+  TriggerPasswordResetVariables,
+} from "__generated__/TriggerPasswordReset";
 
 const ForgotPassword = () => {
   return (
@@ -41,7 +49,7 @@ const schema = yup.object().shape({
 });
 
 const ForgotPasswordForm = () => {
-  const { register, formState, handleSubmit } = useForm({
+  const { register, formState, handleSubmit, ...form } = useForm({
     mode: "onChange",
     resolver: yupResolver(schema),
     defaultValues: {
@@ -49,11 +57,37 @@ const ForgotPasswordForm = () => {
     },
   });
 
-  const onSubmit = handleSubmit(async (data) => {});
+  const [triggerPswdReset, { loading, data, error, reset }] = useMutation<
+    TriggerPasswordReset,
+    TriggerPasswordResetVariables
+  >(TRIGGER_PASSWORD_RESET, {
+    context: {
+      client: "auth",
+    },
+  });
+
+  const onSubmit = handleSubmit(async ({ email }) => {
+    await triggerPswdReset({ variables: { email } });
+    form.reset();
+  });
 
   return (
     <Box as="form" noValidate onSubmit={onSubmit}>
       <VStack spacing={4}>
+        <Alert
+          open={!!data && data.triggerPasswordReset}
+          message="Reset password link has been sent. Please check your email"
+          variant="success"
+          onClose={reset}
+        />
+
+        <Alert
+          open={!!error}
+          message={error?.message}
+          variant="error"
+          onClose={reset}
+        />
+
         <TextField
           type="email"
           label="Email"
@@ -63,7 +97,14 @@ const ForgotPasswordForm = () => {
         />
       </VStack>
 
-      <Button type="submit" size="lg" fontSize="sm" mt={6} w="full">
+      <Button
+        w="full"
+        mt={6}
+        size="lg"
+        type="submit"
+        fontSize="sm"
+        isLoading={loading}
+      >
         Send password reset link
       </Button>
     </Box>

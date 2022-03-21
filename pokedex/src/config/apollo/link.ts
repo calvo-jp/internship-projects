@@ -25,7 +25,7 @@ const pokeAPI = new HttpLink({
 });
 
 const endpoint = ApolloLink.split(
-  (operation) => operation.getContext().targetAPI === "auth",
+  (operation) => operation.getContext().client === "auth",
   authAPI,
   pokeAPI
 );

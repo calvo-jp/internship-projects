@@ -76,7 +76,11 @@ const CreateAccountForm = () => {
   const [signUp, { error, loading, reset }] = useMutation<
     SignUp,
     SignUpVariables
-  >(SIGN_UP);
+  >(SIGN_UP, {
+    context: {
+      client: "auth",
+    },
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     try {
