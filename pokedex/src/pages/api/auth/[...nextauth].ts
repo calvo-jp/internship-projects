@@ -92,7 +92,7 @@ const authenticate = async (credentials: yup.InferType<typeof schema>) => {
       mutation: AUTHENTICATE,
       variables: credentials,
       context: {
-        targetAPI: "auth",
+        client: "auth",
       },
     }
   );
