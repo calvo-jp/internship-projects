@@ -16,6 +16,15 @@ type UserProfile =
   | { loading: true; profile: undefined }
   | { loading: false; profile: IProfile };
 
+/**
+ *
+ * gets user profile regardless if they are
+ * logged in using oauth or credential.
+ *
+ * __WARNING__: this should only be used inside
+ * an authenticated route
+ *
+ */
 const useProfile = (): UserProfile => {
   const session = useSession({ required: true });
   const [profile, setProfile] = React.useState<IProfile>();
@@ -36,10 +45,13 @@ const useProfile = (): UserProfile => {
   }, [fetchProfile]);
 
   React.useEffect(() => {
-    if (session.status === "loading") return;
-    if (session.data.user.__auth_method__ === "oauth")
-      return setProfile(session.data.user);
-    getServerProfile();
+    if (session.status === "authenticated") {
+      if (session.data.user.__auth_method__ === "oauth")
+        setProfile(session.data.user);
+      else getServerProfile();
+    }
+
+    return () => setProfile(undefined);
   }, [getServerProfile, session]);
 
   // please see comment above
