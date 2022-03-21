@@ -29,8 +29,8 @@ const AccountLayout = ({
     prefetch(callbackUrl);
   }, [callbackUrl, prefetch]);
 
-  if (status === "loading") return null;
-
+  // TODO: show status
+  // something like "Signing in..."
   if (status === "authenticated") {
     replace(callbackUrl);
     return null;
