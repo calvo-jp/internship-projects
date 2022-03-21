@@ -1,4 +1,4 @@
-import { from, HttpLink } from "@apollo/client";
+import { ApolloLink, from, HttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { getSession } from "next-auth/react";
 
@@ -16,9 +16,19 @@ const authLink = setContext(async (_, originalContext) => {
   };
 });
 
-const link = new HttpLink({
+const authAPI = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_AUTH,
 });
 
-const apolloLink = from([authLink, link]);
+const pokeAPI = new HttpLink({
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_MAIN,
+});
+
+const endpoint = ApolloLink.split(
+  (operation) => operation.getContext().targetAPI === "auth",
+  authAPI,
+  pokeAPI
+);
+
+const apolloLink = from([authLink, endpoint]);
 export default apolloLink;
