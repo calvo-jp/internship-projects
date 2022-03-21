@@ -8,6 +8,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Skeleton,
   Text,
 } from "@chakra-ui/react";
 import ChevronDownIcon from "@heroicons/react/outline/ChevronDownIcon";
@@ -20,9 +21,6 @@ import loadGravatar from "utils/loadGravatar";
 
 const Header = () => {
   const { loading, profile } = useProfile();
-
-  if (loading) return null;
-  if (!profile) return null;
 
   return (
     <Flex
@@ -44,14 +42,26 @@ const Header = () => {
       </Link>
 
       <HStack spacing={5}>
-        <Text>Welcome, {profile.name}</Text>
-        <Avatar
-          src={profile.image ? profile.image : loadGravatar(profile.email)}
-          w="57px"
-          h="57px"
-          showBorder
-          borderColor="brand.primary"
-        />
+        <Skeleton isLoaded={!loading} rounded="xl">
+          <Text>Welcome, {loading ? "loading..." : profile.name}</Text>
+        </Skeleton>
+
+        <Skeleton isLoaded={!loading} rounded="full">
+          <Avatar
+            src={
+              loading
+                ? undefined
+                : profile.image
+                ? profile.image
+                : loadGravatar(profile.email)
+            }
+            w={{ base: "40px", lg: "57px" }}
+            h={{ base: "40px", lg: "57px" }}
+            showBorder
+            borderColor="brand.primary"
+          />
+        </Skeleton>
+
         <Dropdown />
       </HStack>
     </Flex>
