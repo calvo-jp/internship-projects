@@ -36,6 +36,9 @@ const ImageWithFallback = ({
     return () => {
       setLoading(true);
       setError(false);
+
+      image.onload = null;
+      image.onerror = null;
     };
   }, [src]);
 
