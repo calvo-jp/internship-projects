@@ -52,15 +52,14 @@ export const GET_POKEMON = gql`
         }
         pokemon_v2_generation {
           name
-
         }
       }
 
       ...CorePokemonDetails
     }
-
-    ${CORE_POKEMON_DETAILS}
   }
+
+  ${CORE_POKEMON_DETAILS}
 `;
 
 export const GET_POKEMON_STATS = gql`
