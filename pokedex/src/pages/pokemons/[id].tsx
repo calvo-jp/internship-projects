@@ -12,6 +12,7 @@ import {
   Icon,
   Progress,
   SimpleGrid,
+  Skeleton,
   Tab,
   TabList,
   TabPanel,
@@ -38,17 +39,70 @@ import GridTableCell from "components/widgets/grid-table/GridTableCell";
 import GridTableHeading from "components/widgets/grid-table/GridTableHeading";
 import GridTableRow from "components/widgets/grid-table/GridTableRow";
 import IconButton from "components/widgets/IconButton";
+import ImageWithFallback from "components/widgets/ImageWithFallback";
+import apolloClient from "config/apollo/client";
+import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import NextLink from "next/link";
 import * as React from "react";
+import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import randomIdGenerator from "utils/randomIdGenerator";
+import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
+import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
-const Pokemon = () => {
+interface Params {
+  id: string;
+  [key: string]: any;
+}
+
+export const getStaticPaths: GetStaticPaths<Params> = async () => {
+  const result = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
+    query: GET_POKEMONS,
+    variables: {
+      limit: 100,
+      offset: 0,
+    },
+  });
+
+  return {
+    fallback: true,
+    paths: result.data.pokemons.map(({ id }) => ({
+      params: { id: id.toString() },
+    })),
+  };
+};
+
+interface Props {
+  pokemon: NonNullable<GetPokemon["pokemon"]>;
+}
+
+export const getStaticProps: GetStaticProps<Props, Params> = async ({
+  params,
+}) => {
+  const id = params!.id;
+
+  const result = await apolloClient.query<GetPokemon, GetPokemonVariables>({
+    query: GET_POKEMON,
+    variables: { id: parseInt(id) },
+  });
+
+  if (!result.data.pokemon) return { notFound: true };
+
+  return {
+    revalidate: 60 * 60 * 24 * 3,
+    props: {
+      pokemon: result.data.pokemon,
+    },
+  };
+};
+
+const Pokemon = ({ pokemon }: Props) => {
   return (
     <React.Fragment>
       <Head>
-        <title>Pokedex | Pikachu</title>
+        <title>Pokedex | {pokemon.name}</title>
       </Head>
 
       <HomepageLayout>
@@ -75,8 +129,8 @@ const Pokemon = () => {
             mt={14}
             direction={{ base: "column", lg: "row" }}
           >
-            <LeftPane />
-            <RightPane />
+            <LeftPane data={pokemon} />
+            <RightPane data={pokemon} />
           </Flex>
         </Box>
       </HomepageLayout>
@@ -84,18 +138,30 @@ const Pokemon = () => {
   );
 };
 
-const LeftPane = () => {
+interface LeftPaneProps {
+  data: NonNullable<GetPokemon["pokemon"]>;
+}
+
+const LeftPane = ({ data }: LeftPaneProps) => {
   return (
     <VStack spacing={12}>
-      <Box pos="relative" h="390px" w="325px" rounded="md" overflow="hidden">
-        <Image
+      <Flex
+        h="390px"
+        w="325px"
+        rounded="md"
+        bgColor="brand.gray.800"
+        align="center"
+        justify="center"
+        shadow="md"
+      >
+        <ImageWithFallback
+          maxW="80%"
+          maxH="80%"
           alt=""
-          src="/assets/samples/1.png"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          src={getPokemonImageUrl(data.id)}
+          loader={<Skeleton h="full" w="full" />}
         />
-      </Box>
+      </Flex>
 
       <HStack spacing={5}>
         <IconButton icon={ChevronLeftIcon} />
@@ -130,20 +196,33 @@ const LeftPane = () => {
   );
 };
 
-const RightPane = () => {
+interface RightPaneProps {
+  data: NonNullable<GetPokemon["pokemon"]>;
+}
+
+const RightPane = ({ data }: RightPaneProps) => {
   return (
     <Box w={{ xl: "799px", base: "auto" }}>
       <VStack spacing={6} align={{ base: "center", lg: "start" }}>
-        <Heading>Pikachu</Heading>
-        <Tag
-          bgColor="brand.red.500"
-          color="brand.gray.50"
-          rounded="full"
-          py={2}
-          px={4}
-        >
-          Fire Type
-        </Tag>
+        <Heading>{data.name}</Heading>
+        <HStack>
+          {data.types.map(({ type, id }) => {
+            if (!type) return null;
+
+            return (
+              <Tag
+                key={id}
+                color="brand.gray.50"
+                bgColor="brand.red.500"
+                rounded="full"
+                py={2}
+                px={4}
+              >
+                {type.name}
+              </Tag>
+            );
+          })}
+        </HStack>
       </VStack>
 
       <Tabs mt={16} variant="unstyled">
@@ -167,13 +246,224 @@ const RightPane = () => {
         </TabList>
 
         <TabPanels mt={14}>
-          {[About, Statistics, Evolution, Moves].map((Component, idx) => (
-            <TabPanel p={0} key={idx}>
-              <Component />
-            </TabPanel>
-          ))}
+          <TabPanel p={0}>
+            <About data={data} />
+          </TabPanel>
+          <TabPanel p={0}>
+            <Statistics />
+          </TabPanel>
+          <TabPanel p={0}>
+            <Evolution />
+          </TabPanel>
+          <TabPanel p={0}>
+            <Moves />
+          </TabPanel>
         </TabPanels>
       </Tabs>
+    </Box>
+  );
+};
+
+interface AboutProps {
+  data: NonNullable<GetPokemon["pokemon"]>;
+}
+
+const About = ({ data }: AboutProps) => {
+  return (
+    <VStack spacing={8} align="start">
+      <Text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sollicitudin
+        mauris tempus consectetur arcu maecenas id mauris pretium. Integer
+        laoreet morbi cursus consectetur. Ipsum turpis id quisque morbi est in
+        id nibh sagittis. Ipsum ornare quam vitae praesent.
+      </Text>
+
+      <Card py={4} bgColor="others.gray.800">
+        <HStack
+          gap={6}
+          divider={
+            <Divider
+              h="75px"
+              orientation="vertical"
+              borderColor="brand.gray.700"
+            />
+          }
+        >
+          {[
+            ["Weight", data.weight],
+            ["Height", data.height],
+          ].map(([label, value]) => (
+            <VStack key={label} spacing={2} align="start">
+              <CardHeading>{label}</CardHeading>
+
+              <Text color="brand.gray.50">{value} KG</Text>
+            </VStack>
+          ))}
+        </HStack>
+      </Card>
+
+      <Card bgColor="others.gray.800">
+        <CardHeading>Breed</CardHeading>
+
+        <Wrap mt={3} spacing={8}>
+          {[
+            ["Gender", "87.8% Male"],
+            ["Egg Group", "Monster"],
+            ["Egg Cycle", "Grass"],
+          ].map(([label, value]) => (
+            <WrapItem key={label}>
+              <Text color="brand.gray.400">{label}:</Text>
+              <Text color="brand.gray.50" ml={2}>
+                {value}
+              </Text>
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Card>
+    </VStack>
+  );
+};
+
+const Statistics = () => {
+  const stats = [
+    { label: "HP", value: 20, colorScheme: "colorSchemeHacks.rose" },
+    { label: "ATK", value: 30, colorScheme: "colorSchemeHacks.amber" },
+    { label: "DEF", value: 40, colorScheme: "colorSchemeHacks.teal" },
+    { label: "SPD", value: 12, colorScheme: "colorSchemeHacks.purple" },
+    { label: "EXP", value: 90, colorScheme: "colorSchemeHacks.gray" },
+  ];
+
+  return (
+    <VStack spacing={16} align="start">
+      <Card w="full">
+        {stats.map(({ label, value, colorScheme }) => (
+          <Flex align="center" fontWeight="medium" key={label}>
+            <Text w="45px">{label}</Text>
+
+            <Progress
+              ml={8}
+              mr={4}
+              size="xs"
+              colorScheme={colorScheme}
+              bgColor="brand.gray.200"
+              flexGrow="1"
+              value={value}
+            />
+
+            <Text w="35px">{value}%</Text>
+          </Flex>
+        ))}
+      </Card>
+
+      <Card w="full" bgColor="others.gray.800">
+        <CardHeading>Weaknesses</CardHeading>
+
+        <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
+          {["Rock", "Ground", "Water"].map((weakness) => (
+            <HStack spacing={6} key={weakness}>
+              <CardTag variant="error">{weakness}</CardTag>
+
+              <Text>
+                <Box as="span" color="brand.red.500" mr={1}>
+                  160%
+                </Box>
+                <span>damage</span>
+              </Text>
+            </HStack>
+          ))}
+        </Flex>
+      </Card>
+
+      <Card w="full" bgColor="others.gray.800">
+        <CardHeading>Resistant</CardHeading>
+
+        <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
+          {Array(6)
+            .fill(null)
+            .map((_, idx) => (
+              <HStack spacing={6} key={idx}>
+                <CardTag variant="success">Bug</CardTag>
+
+                <Text>
+                  <Box as="span" color="brand.green.500" mr={1}>
+                    65%
+                  </Box>
+                  <span>damage</span>
+                </Text>
+              </HStack>
+            ))}
+        </Flex>
+
+        <Flex mt={5} justify="right">
+          <Button
+            p={0}
+            m={0}
+            h="fit-content"
+            bgColor="transparent"
+            rightIcon={<Icon as={ChevronDownIcon} />}
+            fontWeight="normal"
+            fontSize="sm"
+            color="brand.primary"
+          >
+            See more
+          </Button>
+        </Flex>
+      </Card>
+    </VStack>
+  );
+};
+
+const Evolution = () => {
+  return (
+    <Box>
+      <Text maxW="403px" fontSize="sm">
+        There are currently a total of 9 Pokémon in the Eevee family. Flareon
+        evolves from Eevee which costs{" "}
+        <Text as="b" fontWeight="semibold">
+          25 Candy.
+        </Text>
+      </Text>
+
+      <Card mt={4} w="full">
+        <VStack spacing={6}>
+          {Array(6)
+            .fill(null)
+            .map((_, idx) => (
+              <Center key={idx}>
+                <HStack spacing={{ base: 12, md: 24, lg: 44 }}>
+                  <VStack spacing={2}>
+                    <Box
+                      w="88px"
+                      h="88px"
+                      bgColor="others.gray.800"
+                      rounded="md"
+                    />
+                    <Text fontSize="sm">Eevee</Text>
+                  </VStack>
+
+                  <Box>
+                    <Icon
+                      as={ArrowNarrowRightIcon}
+                      stroke="brand.primary"
+                      fontSize="2xl"
+                    />
+
+                    <Text>25</Text>
+                  </Box>
+                  <VStack spacing={2}>
+                    <Box
+                      w="88px"
+                      h="88px"
+                      bgColor="others.gray.800"
+                      rounded="md"
+                    />
+                    <Text fontSize="sm">Flareon</Text>
+                  </VStack>
+                </HStack>
+              </Center>
+            ))}
+        </VStack>
+      </Card>
     </Box>
   );
 };
@@ -268,206 +558,6 @@ const MovesTable = ({ headings, data, ...props }: MovesTableProps) => {
         </GridTableRow>
       ))}
     </GridTable>
-  );
-};
-
-const Evolution = () => {
-  return (
-    <Box>
-      <Text maxW="403px" fontSize="sm">
-        There are currently a total of 9 Pokémon in the Eevee family. Flareon
-        evolves from Eevee which costs{" "}
-        <Text as="b" fontWeight="semibold">
-          25 Candy.
-        </Text>
-      </Text>
-
-      <Card mt={4} w="full">
-        <VStack spacing={6}>
-          {Array(6)
-            .fill(null)
-            .map((_, idx) => (
-              <Center key={idx}>
-                <HStack spacing={{ base: 12, md: 24, lg: 44 }}>
-                  <VStack spacing={2}>
-                    <Box
-                      w="88px"
-                      h="88px"
-                      bgColor="others.gray.800"
-                      rounded="md"
-                    />
-                    <Text fontSize="sm">Eevee</Text>
-                  </VStack>
-
-                  <Box>
-                    <Icon
-                      as={ArrowNarrowRightIcon}
-                      stroke="brand.primary"
-                      fontSize="2xl"
-                    />
-
-                    <Text>25</Text>
-                  </Box>
-                  <VStack spacing={2}>
-                    <Box
-                      w="88px"
-                      h="88px"
-                      bgColor="others.gray.800"
-                      rounded="md"
-                    />
-                    <Text fontSize="sm">Flareon</Text>
-                  </VStack>
-                </HStack>
-              </Center>
-            ))}
-        </VStack>
-      </Card>
-    </Box>
-  );
-};
-
-const Statistics = () => {
-  const stats = [
-    { label: "HP", value: 20, colorScheme: "colorSchemeHacks.rose" },
-    { label: "ATK", value: 30, colorScheme: "colorSchemeHacks.amber" },
-    { label: "DEF", value: 40, colorScheme: "colorSchemeHacks.teal" },
-    { label: "SPD", value: 12, colorScheme: "colorSchemeHacks.purple" },
-    { label: "EXP", value: 90, colorScheme: "colorSchemeHacks.gray" },
-  ];
-
-  return (
-    <VStack spacing={16} align="start">
-      <Card w="full">
-        {stats.map(({ label, value, colorScheme }) => (
-          <Flex align="center" fontWeight="medium" key={label}>
-            <Text w="45px">{label}</Text>
-
-            <Progress
-              ml={8}
-              mr={4}
-              size="xs"
-              colorScheme={colorScheme}
-              bgColor="brand.gray.200"
-              flexGrow="1"
-              value={value}
-            />
-
-            <Text w="35px">{value}%</Text>
-          </Flex>
-        ))}
-      </Card>
-
-      <Card w="full" bgColor="others.gray.800">
-        <CardHeading>Weaknesses</CardHeading>
-
-        <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
-          {["Rock", "Ground", "Water"].map((weakness) => (
-            <HStack spacing={6} key={weakness}>
-              <CardTag variant="error">{weakness}</CardTag>
-
-              <Text>
-                <Box as="span" color="brand.red.500" mr={1}>
-                  160%
-                </Box>
-                <span>damage</span>
-              </Text>
-            </HStack>
-          ))}
-        </Flex>
-      </Card>
-
-      <Card w="full" bgColor="others.gray.800">
-        <CardHeading>Resistant</CardHeading>
-
-        <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
-          {Array(6)
-            .fill(null)
-            .map((_, idx) => (
-              <HStack spacing={6} key={idx}>
-                <CardTag variant="success">Bug</CardTag>
-
-                <Text>
-                  <Box as="span" color="brand.green.500" mr={1}>
-                    65%
-                  </Box>
-                  <span>damage</span>
-                </Text>
-              </HStack>
-            ))}
-        </Flex>
-
-        <Flex mt={5} justify="right">
-          <Button
-            p={0}
-            m={0}
-            h="fit-content"
-            bgColor="transparent"
-            rightIcon={<Icon as={ChevronDownIcon} />}
-            fontWeight="normal"
-            fontSize="sm"
-            color="brand.primary"
-          >
-            See more
-          </Button>
-        </Flex>
-      </Card>
-    </VStack>
-  );
-};
-
-const About = () => {
-  return (
-    <VStack spacing={8} align="start">
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sollicitudin
-        mauris tempus consectetur arcu maecenas id mauris pretium. Integer
-        laoreet morbi cursus consectetur. Ipsum turpis id quisque morbi est in
-        id nibh sagittis. Ipsum ornare quam vitae praesent.
-      </Text>
-
-      <Card py={4} bgColor="others.gray.800">
-        <HStack
-          gap={6}
-          divider={
-            <Divider
-              h="75px"
-              orientation="vertical"
-              borderColor="brand.gray.700"
-            />
-          }
-        >
-          {[
-            ["Weight", "220.0 KG"],
-            ["Height", "220.0 KG"],
-          ].map(([label, value]) => (
-            <VStack key={label} spacing={2} align="start">
-              <CardHeading>{label}</CardHeading>
-
-              <Text color="brand.gray.50">{value}</Text>
-            </VStack>
-          ))}
-        </HStack>
-      </Card>
-
-      <Card bgColor="others.gray.800">
-        <CardHeading>Breed</CardHeading>
-
-        <Wrap mt={3} spacing={8}>
-          {[
-            ["Gender", "87.8% Male"],
-            ["Egg Group", "Monster"],
-            ["Egg Cycle", "Grass"],
-          ].map(([label, value]) => (
-            <WrapItem key={label}>
-              <Text color="brand.gray.400">{label}:</Text>
-              <Text color="brand.gray.50" ml={2}>
-                {value}
-              </Text>
-            </WrapItem>
-          ))}
-        </Wrap>
-      </Card>
-    </VStack>
   );
 };
 
