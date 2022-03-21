@@ -10,8 +10,14 @@ interface IProfile {
   image?: string;
 }
 
-const useProfile = () => {
-  const session = useSession();
+// typescript does not know how to handle this
+// type-checking should be bypassed
+type UserProfile =
+  | { loading: true; profile: undefined }
+  | { loading: false; profile: IProfile };
+
+const useProfile = (): UserProfile => {
+  const session = useSession({ required: true });
   const [profile, setProfile] = React.useState<IProfile>();
   const [fetchProfile, { loading }] = useLazyQuery<Profile>(PROFILE, {
     context: {
@@ -30,15 +36,25 @@ const useProfile = () => {
   }, [fetchProfile]);
 
   React.useEffect(() => {
-    if (session.status !== "authenticated") return;
+    if (session.status === "loading") return;
     if (session.data.user.__auth_method__ === "oauth")
       return setProfile(session.data.user);
     getServerProfile();
   }, [getServerProfile, session]);
 
+  // please see comment above
+  // @ts-expect-error
   return {
-    loading: loading || session.status === "loading",
     profile,
+    loading:
+      // getting session
+      session.status === "loading" ||
+      // fetching server profile
+      loading ||
+      // profile might be loaded later
+      // even after session is already loaded or fetching is done.
+      // this will inform them that it is not yet ready
+      !profile,
   };
 };
 
