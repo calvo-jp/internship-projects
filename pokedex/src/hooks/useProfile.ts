@@ -12,8 +12,12 @@ interface IProfile {
 
 const useProfile = () => {
   const session = useSession();
-  const [fetchProfile, { loading }] = useLazyQuery<Profile>(PROFILE);
   const [profile, setProfile] = React.useState<IProfile>();
+  const [fetchProfile, { loading }] = useLazyQuery<Profile>(PROFILE, {
+    context: {
+      targetAPI: "auth",
+    },
+  });
 
   const getServerProfile = React.useCallback(async () => {
     const result = await fetchProfile();

@@ -88,7 +88,13 @@ const schema = yup.object().shape({
 
 const authenticate = async (credentials: yup.InferType<typeof schema>) => {
   const result = await apolloClient.mutate<Authenticate, AuthenticateVariables>(
-    { mutation: AUTHENTICATE, variables: credentials }
+    {
+      mutation: AUTHENTICATE,
+      variables: credentials,
+      context: {
+        targetAPI: "auth",
+      },
+    }
   );
 
   return !result.errors && !!result.data
