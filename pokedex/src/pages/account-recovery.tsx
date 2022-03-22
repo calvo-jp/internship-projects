@@ -9,6 +9,7 @@ import { RESET_PASSWORD } from "graphql/auth-api/mutations";
 import useSearchParams from "hooks/useSearchParams";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -47,6 +48,7 @@ const schema = yup.object().shape({
 });
 
 const AccountRecoveryForm = () => {
+  const router = useRouter();
   const params = useSearchParams("email", "code");
   const code = params.get("code");
   const email = params.get("email");
@@ -69,7 +71,10 @@ const AccountRecoveryForm = () => {
     },
   });
 
-  if (!email || !code) return null;
+  if (!(email && code)) {
+    router.replace("/login");
+    return null;
+  }
 
   const onSubmit = handleSubmit(async ({ newPassword }) => {
     try {
