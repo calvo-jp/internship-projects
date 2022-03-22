@@ -30,7 +30,7 @@ const randomIdGenerator = () => {
       prefix += minValue;
     }
 
-    const id = `__${prefix}__${currentId}__${suffix}__`;
+    const id = [prefix, currentId, suffix].filter((v) => !!v).join("__");
     currentId += minValue;
     return id;
   };
