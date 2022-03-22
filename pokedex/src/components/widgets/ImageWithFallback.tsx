@@ -6,8 +6,19 @@ import * as React from "react";
 
 interface ImageProps {
   src: string;
+  /**
+   *
+   * Displayed while the image is still loading
+   *
+   */
   loader?: JSX.Element | string;
-  fallback?: JSX.Element | string;
+  /**
+   *
+   * The fallback image url.
+   * Image will result to error if fallback url does not exist
+   *
+   */
+  fallback?: string;
 }
 
 const previouslyLoadedImage: string[] = [];
@@ -17,7 +28,7 @@ const ImageWithFallback = ({
   loader,
   fallback,
   ...props
-}: ImageProps & ChakraImageProps) => {
+}: ImageProps & Omit<ChakraImageProps, "fallback">) => {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
@@ -45,9 +56,8 @@ const ImageWithFallback = ({
   return (
     <React.Fragment>
       {!!loading && loader}
-      {!loading && !!error && fallback}
-      {!loading && !error && (
-        <ChakraImage src={src} loading="lazy" {...props} />
+      {!loading && (
+        <ChakraImage src={!error ? src : fallback} loading="lazy" {...props} />
       )}
     </React.Fragment>
   );
