@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client";
 import {
   Box,
   Breadcrumb,
@@ -40,16 +41,25 @@ import GridTableHeading from "components/widgets/grid-table/GridTableHeading";
 import GridTableRow from "components/widgets/grid-table/GridTableRow";
 import IconButton from "components/widgets/IconButton";
 import ImageWithFallback from "components/widgets/ImageWithFallback";
+import Thumbnail from "components/widgets/thumbnail";
 import apolloClient from "config/apollo/client";
-import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
+import {
+  GET_POKEMON,
+  GET_POKEMONS,
+  GET_POKEMON_EVOLUTION,
+} from "graphql/pokeapi/queries";
+import useStore from "hooks/useStore";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import NextLink from "next/link";
+import { default as Link, default as NextLink } from "next/link";
 import * as React from "react";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import randomIdGenerator from "utils/randomIdGenerator";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
+import {
+  GetPokemonEvolution,
+  GetPokemonEvolutionVariables,
+} from "__generated__/GetPokemonEvolution";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
 interface Params {
@@ -99,6 +109,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 };
 
 const Pokemon = ({ pokemon }: Props) => {
+  const saveAsViewedPokemon = useStore((state) => state.saveAsViewedPokemon);
+
+  React.useEffect(() => {
+    saveAsViewedPokemon(pokemon.id);
+  }, [pokemon.id, saveAsViewedPokemon]);
+
   return (
     <React.Fragment>
       <Head>
@@ -163,36 +179,44 @@ const LeftPane = ({ data }: LeftPaneProps) => {
         />
       </Flex>
 
-      <HStack spacing={5}>
-        <IconButton icon={ChevronLeftIcon} />
-
-        <SimpleGrid columns={3} columnGap={2} rowGap={4}>
-          {Array(6)
-            .fill(1)
-            .map((v, i) => v + i)
-            .map((v) => (
-              <Box
-                key={v}
-                pos="relative"
-                w="57px"
-                h="57px"
-                rounded="sm"
-                overflow="hidden"
-              >
-                <Image
-                  src={`/assets/samples/${v}.png`}
-                  alt=""
-                  layout="fill"
-                  objectFit="cover"
-                  objectPosition="center"
-                />
-              </Box>
-            ))}
-        </SimpleGrid>
-
-        <IconButton icon={ChevronRightIcon} active />
-      </HStack>
+      <RecentlyOpened />
     </VStack>
+  );
+};
+
+const RecentlyOpened = () => {
+  const pokemonIds = useStore((state) => state.viewedPokemonIds);
+
+  return (
+    <HStack spacing={5}>
+      <IconButton icon={ChevronLeftIcon} />
+
+      <SimpleGrid columns={3} columnGap={2} rowGap={4}>
+        {pokemonIds.map((id) => (
+          <Link passHref href={"/pokemons/" + id} key={id}>
+            <Flex
+              as="a"
+              w="57px"
+              h="57px"
+              rounded="sm"
+              bgColor="brand.gray.800"
+              align="center"
+              justify="center"
+              p={2}
+            >
+              <ImageWithFallback
+                maxW="80%"
+                maxH="80%"
+                src={getPokemonImageUrl(id)}
+                alt=""
+              />
+            </Flex>
+          </Link>
+        ))}
+      </SimpleGrid>
+
+      <IconButton icon={ChevronRightIcon} active />
+    </HStack>
   );
 };
 
@@ -253,7 +277,7 @@ const RightPane = ({ data }: RightPaneProps) => {
             <Statistics />
           </TabPanel>
           <TabPanel p={0}>
-            <Evolution />
+            <Evolution data={data} />
           </TabPanel>
           <TabPanel p={0}>
             <Moves />
@@ -413,7 +437,22 @@ const Statistics = () => {
   );
 };
 
-const Evolution = () => {
+interface EvolutionProps {
+  data: NonNullable<GetPokemon["pokemon"]>;
+}
+
+const Evolution = (props: EvolutionProps) => {
+  const { loading, data, refetch } = useQuery<
+    GetPokemonEvolution,
+    GetPokemonEvolutionVariables
+  >(GET_POKEMON_EVOLUTION, {
+    variables: { id: props.data.id },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  if (loading) return null;
+  if (!data?.pokemon) return null;
+
   return (
     <Box>
       <Text maxW="403px" fontSize="sm">
@@ -426,42 +465,43 @@ const Evolution = () => {
 
       <Card mt={4} w="full">
         <VStack spacing={6}>
-          {Array(6)
-            .fill(null)
-            .map((_, idx) => (
-              <Center key={idx}>
-                <HStack spacing={{ base: 12, md: 24, lg: 44 }}>
-                  <VStack spacing={2}>
-                    <Box
-                      w="88px"
-                      h="88px"
-                      bgColor="others.gray.800"
-                      rounded="md"
-                    />
-                    <Text fontSize="sm">Eevee</Text>
-                  </VStack>
+          {data.pokemon.specy?.evolutionChain?.evolutions.map((item) => (
+            <Center key={item.id}>
+              <HStack spacing={{ base: 12, md: 24, lg: 44 }}>
+                <VStack spacing={2}>
+                  <Thumbnail
+                    w="88px"
+                    h="88px"
+                    src={getPokemonImageUrl(
+                      item.evolvesFromSpeciesId || props.data.id
+                    )}
+                  />
 
-                  <Box>
-                    <Icon
-                      as={ArrowNarrowRightIcon}
-                      stroke="brand.primary"
-                      fontSize="2xl"
-                    />
+                  <Text fontSize="sm">{item.name}</Text>
+                </VStack>
 
-                    <Text>25</Text>
-                  </Box>
-                  <VStack spacing={2}>
-                    <Box
-                      w="88px"
-                      h="88px"
-                      bgColor="others.gray.800"
-                      rounded="md"
-                    />
-                    <Text fontSize="sm">Flareon</Text>
-                  </VStack>
-                </HStack>
-              </Center>
-            ))}
+                <Box>
+                  <Icon
+                    as={ArrowNarrowRightIcon}
+                    stroke="brand.primary"
+                    fontSize="2xl"
+                  />
+
+                  <Text>25</Text>
+                </Box>
+
+                <VStack spacing={2}>
+                  <Thumbnail
+                    w="88px"
+                    h="88px"
+                    src={getPokemonImageUrl(item.id)}
+                  />
+
+                  <Text fontSize="sm">{item.name}</Text>
+                </VStack>
+              </HStack>
+            </Center>
+          ))}
         </VStack>
       </Card>
     </Box>
