@@ -7,27 +7,13 @@
 // GraphQL query operation: GetPokemonMoves
 // ====================================================
 
-export interface GetPokemonMoves_pokemon_main_move {
+export interface GetPokemonMoves_pokemon_quick_move {
   __typename: "pokemon_v2_ability";
   name: string;
 }
 
-export interface GetPokemonMoves_pokemon_main {
-  __typename: "pokemon_v2_pokemonability";
-  id: number;
-  /**
-   * An object relationship
-   */
-  move: GetPokemonMoves_pokemon_main_move | null;
-}
-
-export interface GetPokemonMoves_pokemon_quick_move {
-  __typename: "pokemon_v2_move";
-  name: string;
-}
-
 export interface GetPokemonMoves_pokemon_quick {
-  __typename: "pokemon_v2_pokemonmove";
+  __typename: "pokemon_v2_pokemonability";
   id: number;
   /**
    * An object relationship
@@ -35,16 +21,32 @@ export interface GetPokemonMoves_pokemon_quick {
   move: GetPokemonMoves_pokemon_quick_move | null;
 }
 
+export interface GetPokemonMoves_pokemon_main_move {
+  __typename: "pokemon_v2_move";
+  name: string;
+  power: number | null;
+  accuracy: number | null;
+}
+
+export interface GetPokemonMoves_pokemon_main {
+  __typename: "pokemon_v2_pokemonmove";
+  id: number;
+  /**
+   * An object relationship
+   */
+  move: GetPokemonMoves_pokemon_main_move | null;
+}
+
 export interface GetPokemonMoves_pokemon {
   __typename: "pokemon_v2_pokemon";
   /**
    * An array relationship
    */
-  main: GetPokemonMoves_pokemon_main[];
+  quick: GetPokemonMoves_pokemon_quick[];
   /**
    * An array relationship
    */
-  quick: GetPokemonMoves_pokemon_quick[];
+  main: GetPokemonMoves_pokemon_main[];
 }
 
 export interface GetPokemonMoves {
