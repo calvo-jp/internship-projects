@@ -27,9 +27,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <SessionProvider session={pageProps.session}>
         <ApolloProvider client={apolloClient}>
           <ChakraProvider theme={theme}>
-            <Box bgColor="brand.gray.900" minH="100vh" color="white">
-              <Component {...pageProps} />
-            </Box>
+            <Component {...pageProps} />
           </ChakraProvider>
         </ApolloProvider>
       </SessionProvider>
