@@ -1,10 +1,9 @@
 import { Box, Image } from "@chakra-ui/react";
-import valx from "utils/valx";
 
 interface Size {
-  /** width in pixels */
+  /** width in px */
   width: number;
-  /** height in pixels */
+  /** height in px */
   height: number;
 }
 
@@ -14,9 +13,9 @@ interface Placement {
 }
 
 interface Position {
-  /** horizontal position in degress */
+  /** horizontal position in deg */
   x: number;
-  /** vertical position in pixels */
+  /** vertical position in px */
   y: number;
 }
 
@@ -30,33 +29,23 @@ interface BackgroundImage {
 }
 
 const Background = () => {
+  const pass = undefined;
+
   return (
     <Box position="absolute" w="full" h="full" top={0} left={0}>
       {backgroundImgs.map(({ src, size, position, placement, rotation }) => (
         <Image
-          key={src}
-          src={src}
           alt=""
+          src={src}
+          key={src}
+          w={size ? size.width : pass}
+          h={size ? size.height : pass}
+          top={placement.y === "top" ? position.y + "px" : pass}
+          left={placement.x === "left" ? position.x + "px" : pass}
+          right={placement.x === "right" ? position.x + "px" : pass}
+          bottom={placement.y === "bottom" ? position.y + "px" : pass}
           position="absolute"
-          top={valx({
-            [`${position.y}px`]: placement.y === "top",
-          })}
-          bottom={valx({
-            [`${position.y}px`]: placement.y === "bottom",
-          })}
-          left={valx({
-            [`${position.x}%`]: placement.x === "left",
-          })}
-          right={valx({
-            [`${position.x}%`]: placement.x === "right",
-          })}
-          width={valx({
-            [`${size?.width}px`]: !!size,
-          })}
-          height={valx({
-            [`${size?.height}px`]: !!size,
-          })}
-          transform={`rotate(${rotation}deg)`}
+          transform={"rotate(" + rotation + "deg)"}
         />
       ))}
     </Box>
