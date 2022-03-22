@@ -3,7 +3,6 @@ import {
   LinkProps as ChakraLinkProps,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import * as React from "react";
 
 interface LinkProps extends ChakraLinkProps {
   href: string;
@@ -17,17 +16,14 @@ interface LinkProps extends ChakraLinkProps {
  * <Link href="/me" color="blue.400">Profile</Link>
  *
  */
-const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ href, children, ...props }, ref) => {
-    return (
-      <NextLink passHref href={href}>
-        <ChackraLink color="brand.primary" ref={ref} {...props}>
-          {children}
-        </ChackraLink>
-      </NextLink>
-    );
-  }
-);
+const Link = ({ href, children, ...props }: LinkProps) => {
+  return (
+    <NextLink passHref href={href}>
+      <ChackraLink color="brand.primary" {...props}>
+        {children}
+      </ChackraLink>
+    </NextLink>
+  );
+};
 
-Link.displayName = "Link";
 export default Link;

@@ -23,10 +23,12 @@ interface ImageProps {
 
 const previouslyLoadedImage: string[] = [];
 
-const ImageWithFallback = React.forwardRef<
-  HTMLImageElement,
-  ImageProps & Omit<ChakraImageProps, "fallback">
->(({ src, loader, fallback, ...props }, ref) => {
+const ImageWithFallback = ({
+  src,
+  loader,
+  fallback,
+  ...props
+}: ImageProps & Omit<ChakraImageProps, "fallback">) => {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
@@ -55,16 +57,10 @@ const ImageWithFallback = React.forwardRef<
     <React.Fragment>
       {!!loading && loader}
       {!loading && (
-        <ChakraImage
-          ref={ref}
-          src={!error ? src : fallback}
-          loading="lazy"
-          {...props}
-        />
+        <ChakraImage src={!error ? src : fallback} loading="lazy" {...props} />
       )}
     </React.Fragment>
   );
-});
+};
 
-ImageWithFallback.displayName = "ImageWithFallback";
 export default ImageWithFallback;
