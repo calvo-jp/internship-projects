@@ -1,3 +1,5 @@
+// sorry for the JS. this gets really messy if TS is used.
+// type added separately for convenience.
 const arrayChunk = (array, size) => {
   const chunks = [];
   const copy = [...array];
