@@ -1,4 +1,5 @@
 import { Flex, FlexProps } from "@chakra-ui/react";
+import * as React from "react";
 import ImageWithFallback from "./ImageWithFallback";
 
 interface ThumbnailProps {
@@ -27,14 +28,13 @@ interface ThumbnailProps {
  * />
  *
  */
-const Thumbnail = ({
-  src,
-  loader,
-  fallback,
-  ...props
-}: ThumbnailProps & FlexProps) => {
+const Thumbnail = React.forwardRef<
+  HTMLImageElement,
+  ThumbnailProps & FlexProps
+>(({ src, loader, fallback, ...props }, ref) => {
   return (
     <Flex
+      ref={ref}
       align="center"
       justify="center"
       bgColor="others.gray.800"
@@ -51,6 +51,7 @@ const Thumbnail = ({
       />
     </Flex>
   );
-};
+});
 
+Thumbnail.displayName = "Thumbnail";
 export default Thumbnail;

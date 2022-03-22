@@ -17,18 +17,17 @@ interface LinkProps extends ChakraLinkProps {
  * <Link href="/me" color="blue.400">Profile</Link>
  *
  */
-const Link = ({
-  href,
-  children,
-  ...props
-}: React.PropsWithChildren<LinkProps>) => {
-  return (
-    <NextLink passHref href={href}>
-      <ChackraLink color="brand.primary" {...props}>
-        {children}
-      </ChackraLink>
-    </NextLink>
-  );
-};
+const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
+  ({ href, children, ...props }, ref) => {
+    return (
+      <NextLink passHref href={href}>
+        <ChackraLink color="brand.primary" ref={ref} {...props}>
+          {children}
+        </ChackraLink>
+      </NextLink>
+    );
+  }
+);
 
+Link.displayName = "Link";
 export default Link;

@@ -3,7 +3,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  InputProps,
+  InputProps
 } from "@chakra-ui/react";
 import * as React from "react";
 
