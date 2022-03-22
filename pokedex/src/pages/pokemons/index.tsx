@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Checkbox,
   Flex,
@@ -7,7 +6,6 @@ import {
   HStack,
   Icon,
   IconButton,
-  LinkBox,
   Menu,
   MenuButton,
   MenuItem,
@@ -21,16 +19,14 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { FilterIcon, ViewGridIcon, ViewListIcon } from "@heroicons/react/solid";
 import HomepageLayout from "components/layouts/homepage";
-import Button from "components/widgets/Button";
 import GridTable from "components/widgets/grid-table";
 import GridTableCell from "components/widgets/grid-table/GridTableCell";
 import GridTableHeading from "components/widgets/grid-table/GridTableHeading";
 import GridTableRow from "components/widgets/grid-table/GridTableRow";
-import ImageWithFallback from "components/widgets/ImageWithFallback";
+import Thumbnail from "components/widgets/thumbnail";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMONS } from "graphql/pokeapi/queries";
-import usePagination from "hooks/usePagination";
-import usePaginationQuery from "hooks/usePaginationQuery";
+import usePagination from "hooks/usePagination/usePagination";
 import useStore from "hooks/useStore";
 import { GetStaticProps } from "next";
 import Head from "next/head";
@@ -61,12 +57,7 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Pokemons = ({ pokemons }: Props) => {
-  const query = usePaginationQuery("/pokemons");
-
-  const pagination = usePagination(pokemons, {
-    currentPage: query.page,
-    rowsPerPage: query.pageSize,
-  });
+  const pagination = usePagination(pokemons);
 
   return (
     <React.Fragment>
@@ -189,27 +180,13 @@ interface GridViewItemProps {
 
 const GridViewItem = ({ data }: GridViewItemProps) => {
   return (
-    <Link passHref href={"/pokemons/" + data.id}>
-      <LinkBox
+    <Link href={"/pokemons/" + data.id} passHref>
+      <Thumbnail
         as="a"
         h="260px"
-        bgColor="brand.gray.800"
-        rounded="sm"
-        shadow="md"
-        position="relative"
-        overflow="hidden"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <ImageWithFallback
-          maxW="80%"
-          maxH="80%"
-          src={getPokemonImageUrl(data.id)}
-          alt=""
-          loader={<Spinner size="xl" />}
-        />
-      </LinkBox>
+        src={getPokemonImageUrl(data.id)}
+        loader={<Spinner size="xl" />}
+      />
     </Link>
   );
 };
@@ -246,16 +223,17 @@ const ListView = ({ pokemons }: ListViewProps) => {
         >
           <GridTableCell>{id}</GridTableCell>
           <GridTableCell>
-            <Avatar
+            <Thumbnail
               w="32px"
               h="32px"
               src={getPokemonImageUrl(id)}
               bgColor="transparent"
+              shadow="none"
             />
           </GridTableCell>
           <GridTableCell>{name}</GridTableCell>
           <GridTableCell>
-            {types.map((type) => type.type?.name || "").join()}
+            {types.map((type) => type.type?.name || "").join(", ")}
           </GridTableCell>
           <GridTableCell>1</GridTableCell>
         </GridTableRow>
