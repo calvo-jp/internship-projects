@@ -28,33 +28,6 @@ export const GET_POKEMON = gql`
     pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
       weight
       height
-
-      species: pokemon_v2_pokemonspecy {
-        id
-        name
-        pokemon_v2_pokemonspeciesflavortexts {
-          id
-          flavor_text
-        }
-        eggGroups: pokemon_v2_pokemonegggroups {
-          id
-          eggGroup: pokemon_v2_egggroup {
-            name
-          }
-        }
-        color: pokemon_v2_pokemoncolor {
-          id
-          name
-        }
-        descriptions: pokemon_v2_pokemonspeciesdescriptions {
-          id
-          description
-        }
-        pokemon_v2_generation {
-          name
-        }
-      }
-
       ...CorePokemonDetails
     }
   }
@@ -79,17 +52,36 @@ export const GET_POKEMON_STATS = gql`
 export const GET_POKEMON_MOVES = gql`
   query GetPokemonMoves($id: Int!) {
     pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
-      main: pokemon_v2_pokemonabilities {
+      quick: pokemon_v2_pokemonabilities {
         id
         move: pokemon_v2_ability {
           name
         }
       }
 
-      quick: pokemon_v2_pokemonmoves(distinct_on: id, limit: 9) {
+      main: pokemon_v2_pokemonmoves(distinct_on: id) {
         id
+
         move: pokemon_v2_move {
           name
+          power
+          accuracy
+        }
+      }
+    }
+  }
+`;
+
+export const GET_POKEMON_EVOLUTION = gql`
+  query GetPokemonEvolution($id: Int!) {
+    pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
+      specy: pokemon_v2_pokemonspecy {
+        evolutionChain: pokemon_v2_evolutionchain {
+          evolutions: pokemon_v2_pokemonspecies {
+            id
+            name
+            evolvesFromSpeciesId: evolves_from_species_id
+          }
         }
       }
     }
