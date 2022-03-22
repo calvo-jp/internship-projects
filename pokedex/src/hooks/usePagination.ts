@@ -9,8 +9,9 @@ interface Config {
 
 /**
  *
- * @description
- * router based pagination
+ * pagination implementation that
+ * respects query string `page` and `pageSize` by default.
+ * Also, works without it.
  *
  * @example
  * const router = useRouter();
