@@ -30,6 +30,7 @@ import ImageWithFallback from "components/widgets/ImageWithFallback";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMONS } from "graphql/pokeapi/queries";
 import usePagination from "hooks/usePagination";
+import usePaginationQuery from "hooks/usePaginationQuery";
 import useStore from "hooks/useStore";
 import { GetStaticProps } from "next";
 import Head from "next/head";
@@ -60,7 +61,12 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Pokemons = ({ pokemons }: Props) => {
-  const pagination = usePagination(pokemons);
+  const query = usePaginationQuery("/pokemons");
+
+  const pagination = usePagination(pokemons, {
+    currentPage: query.page,
+    rowsPerPage: query.pageSize,
+  });
 
   return (
     <React.Fragment>
@@ -222,7 +228,7 @@ const ListView = ({ pokemons }: ListViewProps) => {
         borderColor="brand.gray.300"
         borderBottom="1px"
       >
-        {"#----Pokemon--Type--Level".split(/--/).map((heading) => (
+        {"#||Pokemon|Type|Level".split(/\|/).map((heading) => (
           <GridTableHeading key={heading}>{heading}</GridTableHeading>
         ))}
       </GridTableRow>
