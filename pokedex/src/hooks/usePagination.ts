@@ -123,6 +123,12 @@ const usePagination = <T extends Array<any>>(data: T, config: Config = {}) => {
   };
 };
 
+/**
+ *
+ * Tries to convert ParsedUrlQuery values to int.
+ * Otherwise, return will be undefined
+ *
+ */
 const queryToIntOrUndefined = (subject: string[] | string | undefined) => {
   const scalar = [subject].flat(1).at(0);
   if (scalar && isNumeric(scalar)) return parseInt(scalar);
