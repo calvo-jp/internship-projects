@@ -61,10 +61,21 @@ interface QuickMovesProps {
 const QuickMoves = ({ moves }: QuickMovesProps) => {
   return (
     <Card w="full">
-      <MovesTags
-        heading="Quick Moves"
-        items={moves.map(({ move }) => move?.name ?? "")}
-      />
+      <VStack spacing={6} align="start">
+        <CardHeading>Quick moves</CardHeading>
+
+        <Flex wrap="wrap" gap={4}>
+          {moves.map(({ move }) => {
+            if (!move) return null;
+
+            return (
+              <CardTag variant="info" key={move.name}>
+                {move.name}
+              </CardTag>
+            );
+          })}
+        </Flex>
+      </VStack>
     </Card>
   );
 };
@@ -101,15 +112,21 @@ const MainMoves = ({ moves }: MainMovesProps) => {
   return (
     <Card w="full">
       <SimpleGrid columns={2}>
-        <MovesTags
-          heading="Main Moves"
-          items={display
+        <VStack spacing={6} align="start">
+          <CardHeading>Main Moves</CardHeading>
+
+          {display
             .map(({ move }) => (move ? move.name : ""))
-            .filter((value) => value.length > 0)}
-        />
+            .filter((value) => value.length > 0)
+            .map((tag) => (
+              <CardTag variant="info" key={tag}>
+                {unkebab(tag)}
+              </CardTag>
+            ))}
+        </VStack>
 
         <GridTable columns="repeat(3, 1fr)">
-          <GridTableRow p={1.5} borderBottom="1px">
+          <GridTableRow p={2} borderBottom="1px">
             {"Damage|DPS|EPS".split(/\|/).map((heading) => (
               <GridTableHeading textAlign="center" key={heading}>
                 {heading}
@@ -143,24 +160,4 @@ const MainMoves = ({ moves }: MainMovesProps) => {
   );
 };
 
-interface MovesTagsProps {
-  heading: string;
-  items: string[];
-}
-
-const MovesTags = ({ heading, items }: MovesTagsProps) => {
-  return (
-    <VStack spacing={6} align="start">
-      <CardHeading>{heading}</CardHeading>
-
-      {items.map((tag) => (
-        <CardTag variant="info" key={generateId()}>
-          {unkebab(tag)}
-        </CardTag>
-      ))}
-    </VStack>
-  );
-};
-
-const generateId = randomIdGenerator();
 export default Moves;
