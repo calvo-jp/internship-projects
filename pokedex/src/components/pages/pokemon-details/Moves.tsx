@@ -1,10 +1,12 @@
 import { useQuery } from "@apollo/client";
 import {
   Box,
+  Center,
   Flex,
   HStack,
   Icon,
   SimpleGrid,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -40,8 +42,14 @@ const Moves = ({ id }: MovesProps) => {
     notifyOnNetworkStatusChange: true,
   });
 
-  // TODO: add loader
-  if (loading) return null;
+  // TODO: update to skeleton
+  if (loading) {
+    return (
+      <Center>
+        <Spinner size="lg" />
+      </Center>
+    );
+  }
 
   // TODO: return error and add option for refetch
   if (!data?.moves) return null;

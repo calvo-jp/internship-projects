@@ -1,7 +1,10 @@
 import { useQuery } from "@apollo/client";
 import {
+  Center,
   Flex,
+  HStack,
   Progress,
+  Spinner,
   Tag,
   TagLabel,
   TagLeftIcon,
@@ -48,8 +51,14 @@ const Stats = ({ id }: StatsProps) => {
     notifyOnNetworkStatusChange: true,
   });
 
-  // TODO: add loader
-  if (loading) return null;
+  // TODO: update to skeleton
+  if (loading) {
+    return (
+      <Center>
+        <Spinner size="lg" />
+      </Center>
+    );
+  }
 
   // TODO: add error and refetch option
   if (!data?.pokemon) return null;

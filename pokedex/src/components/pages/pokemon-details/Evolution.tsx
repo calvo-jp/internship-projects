@@ -1,5 +1,13 @@
 import { useQuery } from "@apollo/client";
-import { Box, Center, HStack, Icon, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  HStack,
+  Icon,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { ArrowNarrowRightIcon } from "@heroicons/react/outline";
 import Card from "components/widgets/card";
 import Thumbnail from "components/widgets/thumbnail";
@@ -28,8 +36,14 @@ const Evolution = ({ id }: EvolutionProps) => {
     notifyOnNetworkStatusChange: true,
   });
 
-  // TODO: add loader
-  if (loading) return null;
+  // TODO: update to skeleton
+  if (loading) {
+    return (
+      <Center>
+        <Spinner size="lg" />
+      </Center>
+    );
+  }
 
   // TODO: show error and option for refetch
   if (!data?.pokemon) return null;
