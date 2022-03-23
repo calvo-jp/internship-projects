@@ -4,6 +4,7 @@ import { ArrowNarrowRightIcon } from "@heroicons/react/outline";
 import Card from "components/widgets/card";
 import Thumbnail from "components/widgets/thumbnail";
 import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
+import Link from "next/link";
 import * as React from "react";
 import capitalize from "utils/capitalize";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
@@ -45,7 +46,7 @@ const Evolution = ({ id }: EvolutionProps) => {
       });
 
   // fallback to unknown
-  const fromSpecyName = fromSpecy?.name ?? "unknown";
+  const fromSpecyName = fromSpecy?.name ?? pokemon.name;
 
   return (
     <Box>
@@ -60,19 +61,22 @@ const Evolution = ({ id }: EvolutionProps) => {
 
       <Card mt={4} w="full">
         <VStack spacing={6}>
-          {data.pokemon.specy?.evolutionChain?.evolutions.map((item) => (
-            <Center key={item.id}>
+          {evolutions.map(({ id, evolvesFromSpeciesId, evolvesWhen, name }) => (
+            <Center key={id}>
               <HStack spacing={{ base: 12, md: 24, lg: 44 }}>
                 <VStack spacing={2}>
-                  <Thumbnail
-                    w="88px"
-                    h="88px"
-                    src={getPokemonImageUrl(
-                      item.evolvesFromSpeciesId ?? item.id
-                    )}
-                  />
-
-                  <PokemonName id={item.evolvesFromSpeciesId ?? item.id} />
+                  <Link
+                    passHref
+                    href={"/pokemons/" + (evolvesFromSpeciesId ?? id)}
+                  >
+                    <Thumbnail
+                      as="a"
+                      w="88px"
+                      h="88px"
+                      src={getPokemonImageUrl(evolvesFromSpeciesId ?? id)}
+                    />
+                  </Link>
+                  <PokemonName id={evolvesFromSpeciesId ?? id} />
                 </VStack>
 
                 <VStack>
@@ -81,20 +85,19 @@ const Evolution = ({ id }: EvolutionProps) => {
                     stroke="brand.primary"
                     fontSize="2xl"
                   />
-
-                  <Text fontSize="sm">
-                    {item.evolvesWhen.at(0)?.level ?? 0}
-                  </Text>
+                  <Text fontSize="sm">{evolvesWhen.at(0)?.level ?? 0}</Text>
                 </VStack>
 
                 <VStack spacing={2}>
-                  <Thumbnail
-                    w="88px"
-                    h="88px"
-                    src={getPokemonImageUrl(item.id)}
-                  />
-
-                  <Text fontSize="sm">{item.name}</Text>
+                  <Link passHref href={"/pokemons/" + id}>
+                    <Thumbnail
+                      as="a"
+                      w="88px"
+                      h="88px"
+                      src={getPokemonImageUrl(id)}
+                    />
+                  </Link>
+                  <Text fontSize="sm">{name}</Text>
                 </VStack>
               </HStack>
             </Center>
