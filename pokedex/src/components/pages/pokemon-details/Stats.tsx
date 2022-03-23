@@ -118,6 +118,8 @@ const Weakness = ({ types }: WeaknessProps) => {
 
       setWeaknesses(unique);
     });
+
+    return () => setWeaknesses([]);
   }, [types]);
 
   return (
