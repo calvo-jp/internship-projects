@@ -26,38 +26,82 @@ import GridTableRow from "components/widgets/gridTable/GridTableRow";
 import Thumbnail from "components/widgets/thumbnail";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMONS } from "graphql/pokeapi/queries";
-import usePagination from "hooks/usePagination";
 import useStore from "hooks/useStore";
-import { GetStaticProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
+import coalesce from "utils/coalesce";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
+import routerQueryValueToIntOrUndefined from "utils/routerQueryToIntOrUndefined";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
+type Pokemon = GetPokemons["pokemons"][number];
+
 interface Props {
-  pokemons: GetPokemons["pokemons"];
+  rows: Pokemon[];
+  page: number;
+  pageSize: number;
+  hasNext: boolean;
+  categories?: string[] | null;
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  query,
+}) => {
+  const page = coalesce(routerQueryValueToIntOrUndefined(query.page), 1);
+  const limit = coalesce(routerQueryValueToIntOrUndefined(query.pageSize), 20);
+  const offset = (page - 1) * limit;
+  const hasNext = true;
+  const categories = query.category ? [query.category].flat(1) : POKEMON_TYPES;
+
   const { data } = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
     query: GET_POKEMONS,
     variables: {
-      limit: 150,
+      limit,
+      offset,
     },
   });
 
+  if (data.pokemons.length <= 0) return { notFound: true };
+
   return {
-    revalidate: 60 * 60 * 24 * 3,
     props: {
-      pokemons: data.pokemons,
+      page,
+      pageSize: limit,
+      rows: data.pokemons,
+      hasNext,
+      categories,
     },
   };
 };
 
-const Pokemons = ({ pokemons }: Props) => {
-  const pagination = usePagination(pokemons);
+type View = "grid" | "list";
+
+const Pokemons = ({ rows, page, pageSize, hasNext, categories }: Props) => {
+  const listView = useStore((state) => state.listView);
+  const [view, setView] = React.useState<View>("grid");
+
+  const router = useRouter();
+
+  const redirect = (newPage: number) => {
+    router.push(
+      `${router.basePath}?page=${newPage}&pageSize=${pageSize}`,
+      undefined,
+      { shallow: false }
+    );
+  };
+
+  const next = () => {
+    if (hasNext) redirect(page + 1);
+  };
+
+  const prev = () => {
+    if (page > 1) redirect(page - 1);
+  };
+
+  React.useEffect(() => setView(listView ? "list" : "grid"), [listView]);
 
   return (
     <React.Fragment>
@@ -76,7 +120,7 @@ const Pokemons = ({ pokemons }: Props) => {
               Choose Pokemon
             </Heading>
 
-            <Toolbar />
+            <Toolbar filters={categories} onFilter={() => {}} />
           </HStack>
 
           <Flex
@@ -85,8 +129,10 @@ const Pokemons = ({ pokemons }: Props) => {
             gap={{ base: 4, lg: 8 }}
             direction="column"
           >
-            <PokemonList pokemons={pagination.rows} />
-            <Pagination {...pagination} />
+            {view === "list" && <ListView rows={rows} />}
+            {view === "grid" && <GridView rows={rows} />}
+
+            <PageControls onNext={next} onPrev={prev} />
           </Flex>
         </Box>
       </HomepageLayout>
@@ -94,14 +140,66 @@ const Pokemons = ({ pokemons }: Props) => {
   );
 };
 
-const Toolbar = () => {
+interface FilterToolProps {
+  value?: string[] | null;
+  onChange: (filters: string[]) => void;
+}
+
+const FilterTool = ({ value, onChange }: FilterToolProps) => {
+  const [selected, setSelected] = React.useState<string[]>(value || []);
+  const categories = React.useMemo(() => POKEMON_TYPES, []);
+
+  const handleChange = (newValue: string) => {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.checked) {
+        if (selected.includes(newValue)) return;
+        return setSelected((old) => [...old, newValue]);
+      }
+
+      if (!selected.includes(newValue)) return;
+      setSelected((old) => old.filter((item) => item !== newValue));
+    };
+  };
+
+  React.useEffect(() => {
+    onChange(selected);
+  }, [onChange, selected]);
+
+  return (
+    <Menu closeOnSelect={false}>
+      <MenuButton>
+        <ToolbarIcon icon={FilterIcon} />
+      </MenuButton>
+      <MenuList color="brand.gray.700" bgColor="white">
+        {categories.map((item) => (
+          <MenuItem key={item} display="flex" justifyContent="space-between">
+            <Text>{item}</Text>
+            <Checkbox
+              colorScheme="colorSchemeHacks.yellow"
+              borderColor="brand.gray.400"
+              iconColor="brand.primaryDark"
+              onChange={handleChange(item)}
+              checked={selected.includes(item)}
+            />
+          </MenuItem>
+        ))}
+      </MenuList>
+    </Menu>
+  );
+};
+interface ToolbarProps {
+  filters?: string[] | null;
+  onFilter: (values: string[]) => void;
+}
+
+const Toolbar = ({ filters, onFilter }: ToolbarProps) => {
   const toggleListView = useStore((state) => state.toggleListView);
   const handleToggle = (value?: boolean) => () => toggleListView(value);
 
   return (
     <Wrap spacing={8}>
       <WrapItem>
-        <FilterTool />
+        <FilterTool value={filters} onChange={onFilter} />
       </WrapItem>
       <WrapItem>
         <button onClick={handleToggle(true)}>
@@ -125,49 +223,14 @@ const ToolbarIcon = ({ icon }: ToolbarIconProps) => {
   return <Icon as={icon} fill="brand.gray.200" fontSize="xl" display="block" />;
 };
 
-const FilterTool = () => {
-  const items = "Normal|Fire|Water|Grass|Flying|Fighting".split(/\|/);
+interface GridViewProps {
+  rows: Pokemon[];
+}
 
-  return (
-    <Menu closeOnSelect={false}>
-      <MenuButton>
-        <ToolbarIcon icon={FilterIcon} />
-      </MenuButton>
-      <MenuList color="brand.gray.700" bgColor="white">
-        {items.map((item) => (
-          <MenuItem key={item} display="flex" justifyContent="space-between">
-            <Text>{item}</Text>
-            <Checkbox
-              colorScheme="colorSchemeHacks.yellow"
-              borderColor="brand.gray.400"
-              iconColor="brand.primaryDark"
-            />
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Menu>
-  );
-};
-
-const PokemonList = (props: Props) => {
-  // this causes hydration issue if used directly
-  const listView = useStore((state) => state.listView);
-  const [isListView, setListView] = React.useState<boolean>();
-
-  React.useEffect(() => {
-    setListView(listView);
-    return () => setListView(false);
-  }, [listView]);
-
-  return !!isListView ? <ListView {...props} /> : <GridView {...props} />;
-};
-
-type GridViewProps = Props;
-
-const GridView = ({ pokemons }: GridViewProps) => {
+const GridView = ({ rows }: GridViewProps) => {
   return (
     <SimpleGrid columns={{ md: 2, lg: 4 }} gap={{ base: 4, lg: 8 }}>
-      {pokemons.map((pokemon) => (
+      {rows.map((pokemon) => (
         <GridViewItem key={pokemon.id} data={pokemon} />
       ))}
     </SimpleGrid>
@@ -175,7 +238,7 @@ const GridView = ({ pokemons }: GridViewProps) => {
 };
 
 interface GridViewItemProps {
-  data: Props["pokemons"][number];
+  data: Pokemon;
 }
 
 const GridViewItem = ({ data }: GridViewItemProps) => {
@@ -191,9 +254,9 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
   );
 };
 
-type ListViewProps = Props;
+type ListViewProps = GridViewProps;
 
-const ListView = ({ pokemons }: ListViewProps) => {
+const ListView = ({ rows }: ListViewProps) => {
   const router = useRouter();
   const handleClick = (id: number) => () => router.push("/pokemons/" + id);
 
@@ -210,7 +273,7 @@ const ListView = ({ pokemons }: ListViewProps) => {
         ))}
       </GridTableRow>
 
-      {pokemons.map(({ id, name, types }) => (
+      {rows.map(({ id, name, types }) => (
         <GridTableRow
           key={id}
           py={3}
@@ -242,9 +305,12 @@ const ListView = ({ pokemons }: ListViewProps) => {
   );
 };
 
-type PaginationProps = ReturnType<typeof usePagination>;
+interface PaginationProps {
+  onNext: () => void;
+  onPrev: () => void;
+}
 
-const Pagination = ({ prev, next }: PaginationProps) => {
+const PageControls = ({ onNext, onPrev }: PaginationProps) => {
   return (
     <HStack spacing={8} justify="center">
       <HStack spacing={4}>
@@ -255,7 +321,7 @@ const Pagination = ({ prev, next }: PaginationProps) => {
           color="brand.gray.800"
           rounded="full"
           shadow="md"
-          onClick={prev}
+          onClick={onPrev}
         />
 
         <IconButton
@@ -265,11 +331,15 @@ const Pagination = ({ prev, next }: PaginationProps) => {
           color="brand.gray.800"
           rounded="full"
           shadow="md"
-          onClick={next}
+          onClick={onNext}
         />
       </HStack>
     </HStack>
   );
 };
+
+const POKEMON_TYPES = "Normal|Fire|Water|Grass|Flying|Fighting"
+  .split(/\|/)
+  .map((str) => str.toLowerCase());
 
 export default Pokemons;
