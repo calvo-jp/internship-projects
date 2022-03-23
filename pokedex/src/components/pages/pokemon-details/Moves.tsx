@@ -1,5 +1,14 @@
 import { useQuery } from "@apollo/client";
-import { SimpleGrid, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  SimpleGrid,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { ChevronDownIcon } from "@heroicons/react/outline";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
 import CardTag from "components/widgets/card/CardTag";
@@ -8,7 +17,10 @@ import GridTableCell from "components/widgets/gridTable/GridTableCell";
 import GridTableHeading from "components/widgets/gridTable/GridTableHeading";
 import GridTableRow from "components/widgets/gridTable/GridTableRow";
 import { GET_POKEMON_MOVES } from "graphql/pokeapi/queries";
+import * as React from "react";
+import arrayChunk from "utils/arrayChunk";
 import randomIdGenerator from "utils/randomIdGenerator";
+import unkebab from "utils/unkebab";
 import {
   GetPokemonMoves,
   GetPokemonMovesVariables,
@@ -36,58 +48,97 @@ const Moves = ({ id }: MovesProps) => {
 
   return (
     <VStack spacing={8}>
-      <QuickMoves moves={data.moves} />
-      <MainMoves moves={data.moves} />
+      <QuickMoves moves={data.moves.quick ?? []} />
+      <MainMoves moves={data.moves.main ?? []} />
     </VStack>
   );
 };
 
 interface QuickMovesProps {
-  moves: NonNullable<GetPokemonMoves["moves"]>;
+  moves: NonNullable<GetPokemonMoves["moves"]>["quick"];
 }
 
 const QuickMoves = ({ moves }: QuickMovesProps) => {
   return (
     <Card w="full">
-      <SimpleGrid columns={2}>
-        <MovesTags
-          heading="Quick Moves"
-          items={moves.quick.map(({ move }) => move?.name ?? "")}
-        />
-
-        <MovesTable
-          data={[
-            [10, 10, 10],
-            [14, 9.1, 6.4],
-          ]}
-        />
-      </SimpleGrid>
+      <MovesTags
+        heading="Quick Moves"
+        items={moves.map(({ move }) => move?.name ?? "")}
+      />
     </Card>
   );
 };
 
 interface MainMovesProps {
-  moves: NonNullable<GetPokemonMoves["moves"]>;
+  moves: NonNullable<GetPokemonMoves["moves"]>["main"];
 }
 
 const MainMoves = ({ moves }: MainMovesProps) => {
+  const [chunks, setChunks] = React.useState<typeof moves[]>([]);
+  const [display, setDisplay] = React.useState<typeof moves>([]);
+  const [current, setCurrent] = React.useState(0);
+  const hasMore = current < chunks.length;
+
+  React.useEffect(() => {
+    setChunks(arrayChunk(moves, 5));
+  }, [moves]);
+
+  React.useEffect(() => {
+    setDisplay((old) => [...old, ...(chunks.at(current) ?? [])]);
+  }, [chunks, current]);
+
+  const showMore = () => {
+    if (!hasMore) return;
+
+    setCurrent((old) => current + 1);
+
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <Card w="full">
       <SimpleGrid columns={2}>
         <MovesTags
           heading="Main Moves"
-          items={moves.main.map(({ move }) => move?.name ?? "")}
+          items={display
+            .map(({ move }) => (move ? move.name : ""))
+            .filter((value) => value.length > 0)}
         />
 
-        <MovesTable
-          data={[
-            [10, 10, 10],
-            [14, 9.1, 6.4],
-            [12, 6.5, 8],
-            [13, 3, 8],
-          ]}
-        />
+        <GridTable columns="repeat(3, 1fr)">
+          <GridTableRow p={1.5} borderBottom="1px">
+            {"Damage|DPS|EPS".split(/\|/).map((heading) => (
+              <GridTableHeading textAlign="center" key={heading}>
+                {heading}
+              </GridTableHeading>
+            ))}
+          </GridTableRow>
+
+          {display.map(({ id, move }) => {
+            if (!move) return null;
+
+            return (
+              <GridTableRow key={id} p={4} borderBottom="1px">
+                <GridTableCell textAlign="center">{move.power}</GridTableCell>
+                <GridTableCell textAlign="center">{move.pp}</GridTableCell>
+                <GridTableCell textAlign="center">{move.pp}</GridTableCell>
+              </GridTableRow>
+            );
+          })}
+        </GridTable>
       </SimpleGrid>
+
+      {hasMore && (
+        <Flex mt={6} justify="end" fontSize="sm" color="brand.primary">
+          <HStack as="button" onClick={showMore}>
+            <Text as="span">Show more</Text>
+            <Icon as={ChevronDownIcon} />
+          </HStack>
+        </Flex>
+      )}
     </Card>
   );
 };
@@ -104,44 +155,10 @@ const MovesTags = ({ heading, items }: MovesTagsProps) => {
 
       {items.map((tag) => (
         <CardTag variant="info" key={generateId()}>
-          {tag}
+          {unkebab(tag)}
         </CardTag>
       ))}
     </VStack>
-  );
-};
-
-interface MovesTableProps {
-  /**
-   *
-   * This should match the number of headings
-   * inorder not to mess out the layout
-   *
-   */
-  data: (string | number)[][];
-}
-
-const MovesTable = ({ data, ...props }: MovesTableProps) => {
-  return (
-    <GridTable columns="repeat(3, 1fr)" {...props}>
-      <GridTableRow p={2} borderBottom="1px">
-        {"Damage|DPS|EPS".split(/\|/).map((heading) => (
-          <GridTableHeading textAlign="center" key={heading}>
-            {heading}
-          </GridTableHeading>
-        ))}
-      </GridTableRow>
-
-      {data.map((cells) => (
-        <GridTableRow key={generateId()} p={4} borderBottom="1px">
-          {cells.map((cell) => (
-            <GridTableCell key={generateId()} textAlign="center">
-              {cell}
-            </GridTableCell>
-          ))}
-        </GridTableRow>
-      ))}
-    </GridTable>
   );
 };
 
