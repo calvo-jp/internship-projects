@@ -127,7 +127,7 @@ const Weakness = ({ types }: WeaknessProps) => {
       <Flex mt={6} gap={2} wrap="wrap">
         {weaknesses.map((weakness) => (
           <Tag key={weakness} py={2} px={4} rounded="full">
-            {weakness}
+            <TagLabel>{weakness}</TagLabel>
           </Tag>
         ))}
       </Flex>
@@ -159,7 +159,6 @@ const Resistance = ({ types }: ResistanceProps) => {
       <Flex mt={6} gap={2} wrap="wrap">
         {resistance.map((value) => (
           <Tag key={value} py={2} px={4} rounded="full">
-            <TagLeftIcon as={CheckIcon} />
             <TagLabel>{value}</TagLabel>
           </Tag>
         ))}
