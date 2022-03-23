@@ -89,6 +89,7 @@ const MainMoves = ({ moves }: MainMovesProps) => {
   const [display, setDisplay] = React.useState<typeof moves>([]);
   const [current, setCurrent] = React.useState(0);
   const hasMore = current < chunks.length;
+  const [scrollHeight, setScrollHeight] = React.useState(0);
 
   React.useEffect(() => {
     setChunks(arrayChunk(moves, 5));
@@ -100,14 +101,16 @@ const MainMoves = ({ moves }: MainMovesProps) => {
 
   const showMore = () => {
     if (!hasMore) return;
-
-    setCurrent((old) => current + 1);
-
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth",
-    });
+    setCurrent((old) => old + 1);
   };
+
+  React.useEffect(() => {
+    setScrollHeight(document.body.scrollHeight);
+  }, [current]);
+
+  React.useEffect(() => {
+    if (window.pageYOffset) window.scrollTo(0, scrollHeight);
+  }, [scrollHeight]);
 
   return (
     <Card w="full">
