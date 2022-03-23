@@ -1,19 +1,19 @@
 import { useQuery } from "@apollo/client";
 import {
-  Box,
-  Button,
   Flex,
-  HStack,
-  Icon,
   Progress,
+  Tag,
+  TagLabel,
+  TagLeftIcon,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@heroicons/react/outline";
+import { CheckIcon } from "@heroicons/react/outline";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
-import CardTag from "components/widgets/card/CardTag";
 import { GET_POKEMON_STATS } from "graphql/pokeapi/queries";
+import * as React from "react";
+import services from "services";
 import {
   GetPokemonStats,
   GetPokemonStatsVariables,
@@ -95,61 +95,76 @@ const Stats = ({ id }: StatsProps) => {
         })}
       </Card>
 
-      <Card w="full" bgColor="others.gray.800">
-        <CardHeading>Weaknesses</CardHeading>
-
-        <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
-          {["Rock", "Ground", "Water"].map((weakness) => (
-            <HStack spacing={6} key={weakness}>
-              <CardTag variant="error">{weakness}</CardTag>
-
-              <Text>
-                <Box as="span" color="brand.red.500" mr={1}>
-                  160%
-                </Box>
-                <span>damage</span>
-              </Text>
-            </HStack>
-          ))}
-        </Flex>
-      </Card>
-
-      <Card w="full" bgColor="others.gray.800">
-        <CardHeading>Resistant</CardHeading>
-
-        <Flex mt={6} wrap="wrap" rowGap={4} columnGap={8}>
-          {Array(6)
-            .fill(null)
-            .map((_, idx) => (
-              <HStack spacing={6} key={idx}>
-                <CardTag variant="success">Bug</CardTag>
-
-                <Text>
-                  <Box as="span" color="brand.green.500" mr={1}>
-                    65%
-                  </Box>
-                  <span>damage</span>
-                </Text>
-              </HStack>
-            ))}
-        </Flex>
-
-        <Flex mt={5} justify="right">
-          <Button
-            p={0}
-            m={0}
-            h="fit-content"
-            bgColor="transparent"
-            rightIcon={<Icon as={ChevronDownIcon} />}
-            fontWeight="normal"
-            fontSize="sm"
-            color="brand.primary"
-          >
-            See more
-          </Button>
-        </Flex>
-      </Card>
+      <Weakness types={data.pokemon.types} />
+      <Resistance types={data.pokemon.types} />
     </VStack>
+  );
+};
+
+type Types = NonNullable<GetPokemonStats["pokemon"]>["types"];
+
+interface WeaknessProps {
+  types: Types;
+}
+
+const Weakness = ({ types }: WeaknessProps) => {
+  const [weaknesses, setWeaknesses] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    services.pokemons.weaknesses(types).then((data) => {
+      const unique = data.reduce<string[]>((array, obj) => {
+        return array.includes(obj.name) ? array : [...array, obj.name];
+      }, []);
+
+      setWeaknesses(unique);
+    });
+  }, [types]);
+
+  return (
+    <Card w="full" bgColor="others.gray.800">
+      <CardHeading>Weaknesses</CardHeading>
+
+      <Flex mt={6} gap={2} wrap="wrap">
+        {weaknesses.map((weakness) => (
+          <Tag key={weakness} py={2} px={4} rounded="full">
+            {weakness}
+          </Tag>
+        ))}
+      </Flex>
+    </Card>
+  );
+};
+
+interface ResistanceProps {
+  types: Types;
+}
+
+const Resistance = ({ types }: ResistanceProps) => {
+  const [resistance, setResistance] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    services.pokemons.resistance(types).then((data) => {
+      const unique = data.reduce<string[]>((array, obj) => {
+        return array.includes(obj.name) ? array : [...array, obj.name];
+      }, []);
+
+      setResistance(unique);
+    });
+  }, [types]);
+
+  return (
+    <Card w="full" bgColor="others.gray.800">
+      <CardHeading>Resistant</CardHeading>
+
+      <Flex mt={6} gap={2} wrap="wrap">
+        {resistance.map((value) => (
+          <Tag key={value} py={2} px={4} rounded="full">
+            <TagLeftIcon as={CheckIcon} />
+            <TagLabel>{value}</TagLabel>
+          </Tag>
+        ))}
+      </Flex>
+    </Card>
   );
 };
 
