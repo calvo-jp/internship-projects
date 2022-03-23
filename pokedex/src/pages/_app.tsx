@@ -10,6 +10,7 @@ import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/inter/900.css";
 import "@fontsource/public-sans/400.css";
+import PageLoader from "components/PageLoader";
 import apolloClient from "config/apollo/client";
 import theme from "config/theme";
 import { SessionProvider } from "next-auth/react";
@@ -27,6 +28,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <SessionProvider session={pageProps.session}>
         <ApolloProvider client={apolloClient}>
           <ChakraProvider theme={theme}>
+            <PageLoader />
             <Component {...pageProps} />
           </ChakraProvider>
         </ApolloProvider>
