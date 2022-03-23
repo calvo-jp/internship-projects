@@ -188,7 +188,7 @@ const RightPane = ({ data }: RightPaneProps) => {
         </HStack>
       </VStack>
 
-      <Tabs mt={16} variant="unstyled">
+      <Tabs mt={16} variant="unstyled" isLazy>
         <TabList gap={4} flexWrap="wrap">
           {["About", "Statistics", "Evolution", "Moves"].map((tab) => (
             <Tab
