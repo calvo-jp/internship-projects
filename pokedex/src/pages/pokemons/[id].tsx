@@ -30,7 +30,9 @@ import useStore from "hooks/useStore";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
+import capitalize from "utils/capitalize";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
@@ -163,7 +165,20 @@ interface RightPaneProps {
   data: TPokemon;
 }
 
+const tabs = "about|statistics|evolution|moves".split(/\|/);
+
 const RightPane = ({ data }: RightPaneProps) => {
+  const router = useRouter();
+  const currentTab = [router.query.tab].flat(1).at(0) || tabs[0];
+  const currentTabIdx = tabs.findIndex((tab) => tab === currentTab);
+
+  const handleChange = (index: number) => {
+    router.push(`/pokemons/${data.id}?tab=${tabs[index]}`, undefined, {
+      scroll: false,
+      shallow: true,
+    });
+  };
+
   return (
     <Box w={{ xl: "799px", base: "auto" }}>
       <VStack spacing={6} align={{ base: "center", lg: "start" }}>
@@ -188,22 +203,33 @@ const RightPane = ({ data }: RightPaneProps) => {
         </HStack>
       </VStack>
 
-      <Tabs mt={16} variant="unstyled" isLazy>
-        <TabList gap={4} flexWrap="wrap">
-          {["About", "Statistics", "Evolution", "Moves"].map((tab) => (
+      <Tabs
+        mt={16}
+        isLazy
+        variant="unstyled"
+        onChange={handleChange}
+        index={currentTabIdx}
+        lazyBehavior="keepMounted"
+      >
+        <TabList
+          gap={4}
+          flexWrap="wrap"
+          justifyContent={{ base: "center", lg: "start" }}
+        >
+          {tabs.map((tab) => (
             <Tab
               key={tab}
               fontWeight="medium"
               bgColor="brand.gray.800"
               color="brand.gray.50"
               rounded="sm"
-              w="187px"
+              w={{ base: "full", lg: "187px" }}
               _selected={{
                 color: "brand.gray.800",
                 bgColor: "brand.primary",
               }}
             >
-              {tab}
+              {capitalize(tab)}
             </Tab>
           ))}
         </TabList>
