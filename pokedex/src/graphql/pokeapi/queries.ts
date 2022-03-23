@@ -59,6 +59,11 @@ export const GET_POKEMON_STATS = gql`
   query GetPokemonStats($id: Int!) {
     pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
       id
+      types: pokemon_v2_pokemontypes {
+        type: pokemon_v2_type {
+          id
+        }
+      }
       experience: base_experience
       stats: pokemon_v2_pokemonstats {
         id
@@ -91,6 +96,7 @@ export const GET_POKEMON_MOVES = gql`
         move: pokemon_v2_move {
           name
           power
+          pp
           effects: pokemon_v2_moveeffect {
             effect: pokemon_v2_moveeffecteffecttexts {
               effect
