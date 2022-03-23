@@ -14,6 +14,7 @@ const RecentlyViewed = () => {
   const sliderRef = React.useRef<HTMLDivElement>(null);
 
   const { slides, next, prev } = useSlideshow(items, {
+    autoPlay: true,
     itemsPerSlide: 6,
     onSlideChange(currentSlide) {
       if (!sliderRef.current) return;

@@ -4,6 +4,7 @@ import arrayChunk from "utils/arrayChunk";
 interface Config {
   /** ms to wait before going to next slide */
   delay?: number;
+  autoPlay?: boolean;
   itemsPerSlide?: number;
   onSlideChange?: (currentSlide: number) => void;
 }
@@ -34,6 +35,8 @@ const useSlideshow = <T extends Array<any>>(data: T, config: Config = {}) => {
   // watch for slide changes
   React.useEffect(() => {
     config.onSlideChange && config.onSlideChange(currentSlide);
+
+    if (!config.autoPlay) return;
 
     const msDelay = config.delay ?? 3000;
     const timeout = setTimeout(next, msDelay);
