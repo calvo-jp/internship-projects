@@ -38,6 +38,7 @@ export interface GetPokemonMoves_moves_main_move {
   __typename: "pokemon_v2_move";
   name: string;
   power: number | null;
+  pp: number | null;
   /**
    * An object relationship
    */
