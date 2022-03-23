@@ -1,7 +1,7 @@
 type ImageType = "SVG" | "PNG";
 
-const getPokemonImageUrl = (id: number | string, extension?: ImageType) => {
-  const ext = extension === "SVG" ? ".svg" : ".png";
+const getPokemonImageUrl = (id: number | string) => {
+  const ext = ".svg";
   const cdn =
     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/";
 
