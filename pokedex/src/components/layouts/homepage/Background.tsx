@@ -38,11 +38,11 @@ const Background = () => {
           alt=""
           src={src}
           key={src}
-          w={size ? size.width : pass}
-          h={size ? size.height : pass}
+          w={size ? size.width + "px" : pass}
+          h={size ? size.height + "px" : pass}
           top={placement.y === "top" ? position.y + "px" : pass}
-          left={placement.x === "left" ? position.x + "px" : pass}
-          right={placement.x === "right" ? position.x + "px" : pass}
+          left={placement.x === "left" ? position.x + "%" : pass}
+          right={placement.x === "right" ? position.x + "%" : pass}
           bottom={placement.y === "bottom" ? position.y + "px" : pass}
           position="absolute"
           transform={"rotate(" + rotation + "deg)"}
