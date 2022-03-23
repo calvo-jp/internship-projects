@@ -34,6 +34,7 @@ export interface GetPokemonEvolution_pokemon_specy_evolutionChain {
 export interface GetPokemonEvolution_pokemon_specy {
   __typename: "pokemon_v2_pokemonspecies";
   id: number;
+  name: string;
   /**
    * An object relationship
    */
@@ -43,6 +44,7 @@ export interface GetPokemonEvolution_pokemon_specy {
 export interface GetPokemonEvolution_pokemon {
   __typename: "pokemon_v2_pokemon";
   id: number;
+  name: string;
   /**
    * An object relationship
    */

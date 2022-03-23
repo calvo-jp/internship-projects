@@ -106,8 +106,10 @@ export const GET_POKEMON_EVOLUTION = gql`
   query GetPokemonEvolution($id: Int!) {
     pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
       id
+      name
       specy: pokemon_v2_pokemonspecy {
         id
+        name
         evolutionChain: pokemon_v2_evolutionchain {
           evolutions: pokemon_v2_pokemonspecies {
             id

@@ -3,8 +3,10 @@ import { Box, Center, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import { ArrowNarrowRightIcon } from "@heroicons/react/outline";
 import Card from "components/widgets/card";
 import Thumbnail from "components/widgets/thumbnail";
-import { GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
+import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
+import * as React from "react";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
+import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import {
   GetPokemonEvolution,
   GetPokemonEvolutionVariables,
@@ -30,11 +32,24 @@ const Evolution = ({ id }: EvolutionProps) => {
   // TODO: show error and option for refetch
   if (!data?.pokemon) return null;
 
+  const pokemon = data.pokemon;
+  const evolutions = pokemon.specy?.evolutionChain?.evolutions ?? [];
+  const totalEvolutions = evolutions.length ?? 0;
+  const currentSpecy = evolutions.find(({ name }) => pokemon.name === name);
+  const fromSpecy = !currentSpecy
+    ? null
+    : evolutions.find(({ evolvesFromSpeciesId }) => {
+        return evolvesFromSpeciesId === currentSpecy.id;
+      });
+  // fallback to unknown
+  const fromSpecyName = fromSpecy?.name ?? "unknown";
+
   return (
     <Box>
       <Text maxW="403px" fontSize="sm">
-        There are currently a total of 9 Pokémon in the Eevee family. Flareon
-        evolves from Eevee which costs{" "}
+        There are currently a total of {totalEvolutions} Pokémon in the{" "}
+        {pokemon.name} family. {pokemon.name} evolves from {fromSpecyName} which
+        costs{" "}
         <Text as="b" fontWeight="semibold">
           25 Candy.
         </Text>
@@ -54,18 +69,20 @@ const Evolution = ({ id }: EvolutionProps) => {
                     )}
                   />
 
-                  <Text fontSize="sm">{item.name}</Text>
+                  <PokemonName id={item.evolvesFromSpeciesId ?? item.id} />
                 </VStack>
 
-                <Box>
+                <VStack>
                   <Icon
                     as={ArrowNarrowRightIcon}
                     stroke="brand.primary"
                     fontSize="2xl"
                   />
 
-                  <Text>{item.evolvesWhen.at(0)?.level ?? 0}</Text>
-                </Box>
+                  <Text fontSize="sm">
+                    {item.evolvesWhen.at(0)?.level ?? 0}
+                  </Text>
+                </VStack>
 
                 <VStack spacing={2}>
                   <Thumbnail
@@ -82,6 +99,19 @@ const Evolution = ({ id }: EvolutionProps) => {
         </VStack>
       </Card>
     </Box>
+  );
+};
+
+const PokemonName = ({ id }: { id: number }) => {
+  const { loading, data } = useQuery<GetPokemon, GetPokemonVariables>(
+    GET_POKEMON,
+    { variables: { id } }
+  );
+
+  return (
+    <Text fontSize="sm">
+      {!loading && data?.pokemon ? data.pokemon.name : ""}
+    </Text>
   );
 };
 
