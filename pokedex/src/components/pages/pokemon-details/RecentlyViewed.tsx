@@ -1,4 +1,4 @@
-import { Flex, HStack, SimpleGrid } from "@chakra-ui/react";
+import { Flex, HStack, SimpleGrid, Spinner } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import IconButton from "components/widgets/IconButton";
 import ImageWithFallback from "components/widgets/ImageWithFallback";
@@ -74,6 +74,7 @@ const RecentlyOpenedItem = ({ id }: { id: number }) => {
           maxH="80%"
           src={getPokemonImageUrl(id)}
           alt=""
+          loader={<Spinner />}
         />
       </Flex>
     </Link>
