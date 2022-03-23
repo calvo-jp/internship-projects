@@ -5,6 +5,7 @@ import Card from "components/widgets/card";
 import Thumbnail from "components/widgets/thumbnail";
 import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
 import * as React from "react";
+import capitalize from "utils/capitalize";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import {
@@ -35,12 +36,14 @@ const Evolution = ({ id }: EvolutionProps) => {
   const pokemon = data.pokemon;
   const evolutions = pokemon.specy?.evolutionChain?.evolutions ?? [];
   const totalEvolutions = evolutions.length ?? 0;
+  // find out the specy before pokemon evolved to its current form
   const currentSpecy = evolutions.find(({ name }) => pokemon.name === name);
   const fromSpecy = !currentSpecy
     ? null
-    : evolutions.find(({ evolvesFromSpeciesId }) => {
-        return evolvesFromSpeciesId === currentSpecy.id;
+    : evolutions.find(({ id }) => {
+        return id === currentSpecy.evolvesFromSpeciesId;
       });
+
   // fallback to unknown
   const fromSpecyName = fromSpecy?.name ?? "unknown";
 
@@ -48,8 +51,8 @@ const Evolution = ({ id }: EvolutionProps) => {
     <Box>
       <Text maxW="403px" fontSize="sm">
         There are currently a total of {totalEvolutions} Pokémon in the{" "}
-        {pokemon.name} family. {pokemon.name} evolves from {fromSpecyName} which
-        costs{" "}
+        {capitalize(pokemon.name)} family. {capitalize(pokemon.name)} evolves
+        from {capitalize(fromSpecyName)} which costs{" "}
         <Text as="b" fontWeight="semibold">
           25 Candy.
         </Text>
