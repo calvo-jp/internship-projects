@@ -28,13 +28,19 @@ const Moves = ({ id }: MovesProps) => {
     notifyOnNetworkStatusChange: true,
   });
 
+  // TODO: add loader
+  if (loading) return null;
+
+  // TODO: return error and add option for refetch
+  if (!data?.moves) return null;
+
   return (
     <VStack spacing={8}>
       <Card w="full">
         <SimpleGrid columns={2}>
           <MovesTags
             heading="Quick Moves"
-            items={"Ember|Fire Spin".split(/\|/)}
+            items={data.moves.quick.map(({ move }) => move?.name ?? "")}
           />
 
           <MovesTable
@@ -51,7 +57,7 @@ const Moves = ({ id }: MovesProps) => {
         <SimpleGrid columns={2}>
           <MovesTags
             heading="Main Moves"
-            items={"Fireblast|Flame Thrower|Heat wave|Overheat".split(/\|/)}
+            items={data.moves.main.map(({ move }) => move?.name ?? "")}
           />
 
           <MovesTable

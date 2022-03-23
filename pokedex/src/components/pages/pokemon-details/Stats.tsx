@@ -19,12 +19,7 @@ import {
   GetPokemonStatsVariables,
 } from "__generated__/GetPokemonStats";
 
-type StatsLegendKey =
-  | "hp"
-  | "speed"
-  | "experience"
-  | "special-attack"
-  | "special-defense";
+type StatsLegendKey = "hp" | "speed" | "attack" | "defense" | "experience";
 
 interface StatsLegendValue {
   label: string;
@@ -34,9 +29,9 @@ interface StatsLegendValue {
 const statsLegend: Record<StatsLegendKey, StatsLegendValue> = {
   hp: { label: "HP", color: "colorSchemeHacks.rose" },
   speed: { label: "SPD", color: "colorSchemeHacks.purple" },
+  attack: { label: "ATK", color: "colorSchemeHacks.amber" },
+  defense: { label: "DEF", color: "colorSchemeHacks.teal" },
   experience: { label: "EXP", color: "colorSchemeHacks.gray" },
-  "special-attack": { label: "ATK", color: "colorSchemeHacks.amber" },
-  "special-defense": { label: "DEF", color: "colorSchemeHacks.teal" },
 };
 
 interface StatsProps {
@@ -71,7 +66,7 @@ const Stats = ({ id }: StatsProps) => {
     }),
     {
       id,
-      value: data.pokemon.experience || 0,
+      value: data.pokemon.experience ?? 0,
       ...statsLegend["experience"],
     },
   ];

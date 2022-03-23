@@ -9,29 +9,21 @@ import * as React from "react";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import randomIdGenerator from "utils/randomIdGenerator";
 
-interface RecentlyOpenedProps {
-  exclude?: number[];
-}
-
-const RecentlyViewed = ({ exclude }: RecentlyOpenedProps) => {
+const RecentlyViewed = () => {
   const items = useStore((state) => state.viewedPokemonIds);
   const sliderRef = React.useRef<HTMLDivElement>(null);
-  const { slides, currentSlide, next, prev } = useSlideshow(items);
 
-  const slide = React.useCallback(() => {
-    if (!sliderRef.current) return;
+  const { slides, next, prev } = useSlideshow(items, {
+    itemsPerSlide: 6,
+    onSlideChange(currentSlide) {
+      if (!sliderRef.current) return;
 
-    const slider = sliderRef.current;
-    const width = slider.offsetWidth;
+      const slider = sliderRef.current;
+      const width = slider.offsetWidth;
 
-    slider.scrollLeft = width * (currentSlide - 1);
-  }, [currentSlide]);
-
-  React.useEffect(() => {
-    slide();
-    const id = setTimeout(next, 5000);
-    return () => clearTimeout(id);
-  }, [next, slide]);
+      slider.scrollLeft = width * (currentSlide - 1);
+    },
+  });
 
   return (
     <HStack spacing={5}>

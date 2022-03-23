@@ -73,7 +73,7 @@ export const GET_POKEMON_STATS = gql`
 
 export const GET_POKEMON_MOVES = gql`
   query GetPokemonMoves($id: Int!) {
-    pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
+    moves: pokemon_v2_pokemon_by_pk(id: $id) {
       id
       quick: pokemon_v2_pokemonabilities {
         id

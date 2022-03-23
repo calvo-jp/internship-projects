@@ -72,7 +72,7 @@ const About = ({ data }: AboutProps) => {
           {[
             ["Gender", getGender()],
             ["Egg Group", getEggGroups()],
-            ["Egg Cycle", data.specy?.eggCycyle || 0],
+            ["Egg Cycle", data.specy?.eggCycyle ?? 0],
           ].map(([label, value]) => (
             <WrapItem key={label}>
               <Text color="brand.gray.400">{label}:</Text>

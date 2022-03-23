@@ -50,7 +50,7 @@ const Evolution = ({ id }: EvolutionProps) => {
                     w="88px"
                     h="88px"
                     src={getPokemonImageUrl(
-                      item.evolvesFromSpeciesId || item.id
+                      item.evolvesFromSpeciesId ?? item.id
                     )}
                   />
 
@@ -64,7 +64,7 @@ const Evolution = ({ id }: EvolutionProps) => {
                     fontSize="2xl"
                   />
 
-                  <Text>{item.evolvesWhen.at(0)?.level || 0}</Text>
+                  <Text>{item.evolvesWhen.at(0)?.level ?? 0}</Text>
                 </Box>
 
                 <VStack spacing={2}>
