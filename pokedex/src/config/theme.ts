@@ -15,6 +15,9 @@ const theme = extendTheme({
   styles: {
     global() {
       return {
+        html: {
+          scrollBehavior: "smooth",
+        },
         body: {
           minH: "100vh",
           color: "white",
