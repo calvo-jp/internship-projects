@@ -51,6 +51,7 @@ const usePagination = <T extends Array<any>>(data: T, config: Config = {}) => {
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(5);
   const [chunks, setChunks] = React.useState<T[]>([]);
+  const [rows, setRows] = React.useState(chunks.at(0) || []);
   const [hasNext, setHasNext] = React.useState(false);
   const [hasPrev, setHasPrev] = React.useState(false);
 
@@ -78,26 +79,40 @@ const usePagination = <T extends Array<any>>(data: T, config: Config = {}) => {
   };
 
   const next = () => {
-    if (!hasNext) return;
-    increment();
+    if (hasNext) increment();
   };
 
   const prev = () => {
-    if (!hasPrev) return;
-    decrement();
+    if (hasPrev) decrement();
   };
 
+  // update hasNext and hasPrev when page or chunks changes
   React.useEffect(() => {
     setHasNext(page < chunks.length);
     setHasPrev(page > 1);
-    setChunks(arrayChunk(data, pageSize));
+  }, [chunks, page]);
 
+  // watch for query changes
+  React.useEffect(() => {
     const p = queryToIntOrUndefined(router.query.page);
     const s = queryToIntOrUndefined(router.query.pageSize);
 
-    if (p && p !== page) setPage(p);
-    if (s && s !== pageSize) setPageSize(s);
-  }, [chunks.length, data, page, pageSize, router.query]);
+    p && setPage(p);
+    s && setPageSize(s);
+
+    p && config.onPageChange && config.onPageChange(p);
+    s && config.onPageSizeChange && config.onPageSizeChange(s);
+  }, [config, page, pageSize, router.query]);
+
+  // chunks updates when data changes
+  React.useEffect(() => {
+    setChunks(arrayChunk(data, pageSize));
+  }, [data, pageSize]);
+
+  // rows updates when chunks shuffle or page changes
+  React.useEffect(() => {
+    setRows(chunks.at(page - 1) || []);
+  }, [chunks, page]);
 
   return {
     /** current page index */
@@ -109,7 +124,7 @@ const usePagination = <T extends Array<any>>(data: T, config: Config = {}) => {
     /** total number of data */
     totalRows: data.length,
     /** portion of data which is based on current page and pageSize  */
-    rows: chunks.at(page - 1) || [],
+    rows,
     /** checks if a next page exists */
     hasNext,
     /** checks if a previous page exists */

@@ -21,11 +21,27 @@ export interface GetPokemonMoves_pokemon_quick {
   move: GetPokemonMoves_pokemon_quick_move | null;
 }
 
+export interface GetPokemonMoves_pokemon_main_move_effects_effect {
+  __typename: "pokemon_v2_moveeffecteffecttext";
+  effect: string;
+}
+
+export interface GetPokemonMoves_pokemon_main_move_effects {
+  __typename: "pokemon_v2_moveeffect";
+  /**
+   * An array relationship
+   */
+  effect: GetPokemonMoves_pokemon_main_move_effects_effect[];
+}
+
 export interface GetPokemonMoves_pokemon_main_move {
   __typename: "pokemon_v2_move";
   name: string;
   power: number | null;
-  accuracy: number | null;
+  /**
+   * An object relationship
+   */
+  effects: GetPokemonMoves_pokemon_main_move_effects | null;
 }
 
 export interface GetPokemonMoves_pokemon_main {
@@ -39,6 +55,7 @@ export interface GetPokemonMoves_pokemon_main {
 
 export interface GetPokemonMoves_pokemon {
   __typename: "pokemon_v2_pokemon";
+  id: number;
   /**
    * An array relationship
    */

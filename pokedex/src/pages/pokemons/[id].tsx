@@ -47,12 +47,16 @@ import {
   GET_POKEMON,
   GET_POKEMONS,
   GET_POKEMON_EVOLUTION,
+  GET_POKEMON_MOVES,
+  GET_POKEMON_STATS,
 } from "graphql/pokeapi/queries";
+import useSlideshow from "hooks/useSlideshow";
 import useStore from "hooks/useStore";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import { default as Link, default as NextLink } from "next/link";
 import * as React from "react";
+import arrayChunk from "utils/arrayChunk";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import randomIdGenerator from "utils/randomIdGenerator";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
@@ -60,7 +64,15 @@ import {
   GetPokemonEvolution,
   GetPokemonEvolutionVariables,
 } from "__generated__/GetPokemonEvolution";
+import {
+  GetPokemonMoves,
+  GetPokemonMovesVariables,
+} from "__generated__/GetPokemonMoves";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
+import {
+  GetPokemonStats,
+  GetPokemonStatsVariables,
+} from "__generated__/GetPokemonStats";
 
 interface Params {
   id: string;
@@ -84,8 +96,14 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   };
 };
 
+type TPokemon = NonNullable<GetPokemon["pokemon"]>;
+
+interface IWithPokemonId {
+  id: TPokemon["id"];
+}
+
 interface Props {
-  pokemon: NonNullable<GetPokemon["pokemon"]>;
+  pokemon: TPokemon;
 }
 
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
@@ -155,7 +173,7 @@ const Pokemon = ({ pokemon }: Props) => {
 };
 
 interface LeftPaneProps {
-  data: NonNullable<GetPokemon["pokemon"]>;
+  data: TPokemon;
 }
 
 const LeftPane = ({ data }: LeftPaneProps) => {
@@ -184,44 +202,86 @@ const LeftPane = ({ data }: LeftPaneProps) => {
   );
 };
 
-const RecentlyOpened = () => {
-  const pokemonIds = useStore((state) => state.viewedPokemonIds);
+interface RecentlyOpenedProps {
+  exclude?: number[];
+}
+
+const RecentlyOpened = ({ exclude }: RecentlyOpenedProps) => {
+  const items = useStore((state) => state.viewedPokemonIds);
+  const sliderRef = React.useRef<HTMLDivElement>(null);
+  const { slides, currentSlide, next, prev } = useSlideshow(items);
+
+  const slide = React.useCallback(() => {
+    if (!sliderRef.current) return;
+
+    const slider = sliderRef.current;
+    const width = slider.offsetWidth;
+
+    slider.scrollLeft = width * (currentSlide - 1);
+  }, [currentSlide]);
+
+  React.useEffect(() => {
+    slide();
+    const id = setTimeout(next, 5000);
+    return () => clearTimeout(id);
+  }, [next, slide]);
 
   return (
     <HStack spacing={5}>
-      <IconButton icon={ChevronLeftIcon} />
+      <IconButton icon={ChevronLeftIcon} onClick={prev} />
 
-      <SimpleGrid columns={3} columnGap={2} rowGap={4}>
-        {pokemonIds.map((id) => (
-          <Link passHref href={"/pokemons/" + id} key={id}>
-            <Flex
-              as="a"
-              w="57px"
-              h="57px"
-              rounded="sm"
-              bgColor="brand.gray.800"
-              align="center"
-              justify="center"
-              p={2}
-            >
-              <ImageWithFallback
-                maxW="80%"
-                maxH="80%"
-                src={getPokemonImageUrl(id)}
-                alt=""
-              />
-            </Flex>
-          </Link>
+      <Flex
+        ref={sliderRef}
+        overflowX="hidden"
+        scrollBehavior="smooth"
+        w="187px"
+      >
+        {slides.map((ids) => (
+          <SimpleGrid
+            key={generateId()}
+            rowGap={4}
+            columns={3}
+            columnGap={2}
+            flexShrink={0}
+          >
+            {ids.map((id) => (
+              <RecentlyOpenedItem key={id} id={id} />
+            ))}
+          </SimpleGrid>
         ))}
-      </SimpleGrid>
+      </Flex>
 
-      <IconButton icon={ChevronRightIcon} active />
+      <IconButton icon={ChevronRightIcon} onClick={next} />
     </HStack>
   );
 };
 
+const RecentlyOpenedItem = ({ id }: IWithPokemonId) => {
+  return (
+    <Link passHref href={"/pokemons/" + id}>
+      <Flex
+        as="a"
+        w="57px"
+        h="57px"
+        rounded="sm"
+        bgColor="brand.gray.800"
+        align="center"
+        justify="center"
+        p={2}
+      >
+        <ImageWithFallback
+          maxW="80%"
+          maxH="80%"
+          src={getPokemonImageUrl(id)}
+          alt=""
+        />
+      </Flex>
+    </Link>
+  );
+};
+
 interface RightPaneProps {
-  data: NonNullable<GetPokemon["pokemon"]>;
+  data: TPokemon;
 }
 
 const RightPane = ({ data }: RightPaneProps) => {
@@ -235,12 +295,12 @@ const RightPane = ({ data }: RightPaneProps) => {
 
             return (
               <Tag
+                py={2}
+                px={4}
                 key={id}
                 color="brand.gray.50"
                 bgColor="brand.red.500"
                 rounded="full"
-                py={2}
-                px={4}
               >
                 {type.name}
               </Tag>
@@ -274,13 +334,13 @@ const RightPane = ({ data }: RightPaneProps) => {
             <About data={data} />
           </TabPanel>
           <TabPanel p={0}>
-            <Statistics />
+            <Statistics id={data.id} />
           </TabPanel>
           <TabPanel p={0}>
-            <Evolution data={data} />
+            <Evolution id={data.id} />
           </TabPanel>
           <TabPanel p={0}>
-            <Moves />
+            <Moves id={data.id} />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -289,18 +349,13 @@ const RightPane = ({ data }: RightPaneProps) => {
 };
 
 interface AboutProps {
-  data: NonNullable<GetPokemon["pokemon"]>;
+  data: TPokemon;
 }
 
 const About = ({ data }: AboutProps) => {
   return (
     <VStack spacing={8} align="start">
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sollicitudin
-        mauris tempus consectetur arcu maecenas id mauris pretium. Integer
-        laoreet morbi cursus consectetur. Ipsum turpis id quisque morbi est in
-        id nibh sagittis. Ipsum ornare quam vitae praesent.
-      </Text>
+      <Text>{data.others?.descriptions.at(0)?.description}</Text>
 
       <Card py={4} bgColor="others.gray.800">
         <HStack
@@ -331,9 +386,9 @@ const About = ({ data }: AboutProps) => {
 
         <Wrap mt={3} spacing={8}>
           {[
-            ["Gender", "87.8% Male"],
-            ["Egg Group", "Monster"],
-            ["Egg Cycle", "Grass"],
+            ["Gender", getGender(data.specy?.genderRate)],
+            ["Egg Group", getEggGroups(data.specy?.eggGroups)],
+            ["Egg Cycle", data.specy?.eggCycyle || 0],
           ].map(([label, value]) => (
             <WrapItem key={label}>
               <Text color="brand.gray.400">{label}:</Text>
@@ -348,35 +403,99 @@ const About = ({ data }: AboutProps) => {
   );
 };
 
-const Statistics = () => {
+type EggGroup = NonNullable<TPokemon["specy"]>["eggGroups"] | null | undefined;
+
+const getEggGroups = (eggGroups: EggGroup) => {
+  return !eggGroups
+    ? "NA"
+    : eggGroups
+        .map(({ eggGroup }) => eggGroup?.name)
+        .filter((value) => !!value)
+        .join(", ");
+};
+
+const getGender = (genderRate: null | number | undefined) => {
+  return !genderRate || genderRate <= 0
+    ? "genderless"
+    : genderRate >= 8
+    ? genderRate * 10 + "% female"
+    : genderRate * 10 + "% male";
+};
+
+type StatsLegendKey =
+  | "hp"
+  | "speed"
+  | "experience"
+  | "special-attack"
+  | "special-defense";
+
+interface StatsLegendValue {
+  label: string;
+  color: string;
+}
+
+const statsLegend: Record<StatsLegendKey, StatsLegendValue> = {
+  hp: { label: "HP", color: "colorSchemeHacks.rose" },
+  speed: { label: "SPD", color: "colorSchemeHacks.purple" },
+  experience: { label: "EXP", color: "colorSchemeHacks.gray" },
+  "special-attack": { label: "ATK", color: "colorSchemeHacks.amber" },
+  "special-defense": { label: "DEF", color: "colorSchemeHacks.teal" },
+};
+
+const Statistics = ({ id }: IWithPokemonId) => {
+  const { loading, data, refetch } = useQuery<
+    GetPokemonStats,
+    GetPokemonStatsVariables
+  >(GET_POKEMON_STATS, {
+    variables: { id },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  // TODO: add loader
+  if (loading) return null;
+
+  // TODO: add error and refetch option
+  if (!data?.pokemon) return null;
+
   const stats = [
-    { label: "HP", value: 20, colorScheme: "colorSchemeHacks.rose" },
-    { label: "ATK", value: 30, colorScheme: "colorSchemeHacks.amber" },
-    { label: "DEF", value: 40, colorScheme: "colorSchemeHacks.teal" },
-    { label: "SPD", value: 12, colorScheme: "colorSchemeHacks.purple" },
-    { label: "EXP", value: 90, colorScheme: "colorSchemeHacks.gray" },
+    ...data.pokemon.stats.map(({ stat, id, value }) => {
+      if (stat && stat.name in statsLegend) {
+        return {
+          id,
+          value,
+          ...statsLegend[stat.name as StatsLegendKey],
+        };
+      }
+    }),
+    {
+      id,
+      value: data.pokemon.experience || 0,
+      ...statsLegend["experience"],
+    },
   ];
 
   return (
     <VStack spacing={16} align="start">
       <Card w="full">
-        {stats.map(({ label, value, colorScheme }) => (
-          <Flex align="center" fontWeight="medium" key={label}>
-            <Text w="45px">{label}</Text>
+        {stats.map((stat) => {
+          if (!stat) return null;
 
-            <Progress
-              ml={8}
-              mr={4}
-              size="xs"
-              colorScheme={colorScheme}
-              bgColor="brand.gray.200"
-              flexGrow="1"
-              value={value}
-            />
-
-            <Text w="35px">{value}%</Text>
-          </Flex>
-        ))}
+          return (
+            <Flex align="center" fontWeight="medium" key={stat.id}>
+              <Text w="45px">{stat.label}</Text>
+              <Progress
+                ml={8}
+                mr={4}
+                size="xs"
+                colorScheme={stat.color}
+                bgColor="brand.gray.200"
+                flexGrow="1"
+                value={stat.value}
+              />
+              <Text w="45px">{stat.value}%</Text>
+            </Flex>
+          );
+        })}
       </Card>
 
       <Card w="full" bgColor="others.gray.800">
@@ -437,20 +556,19 @@ const Statistics = () => {
   );
 };
 
-interface EvolutionProps {
-  data: NonNullable<GetPokemon["pokemon"]>;
-}
-
-const Evolution = (props: EvolutionProps) => {
+const Evolution = ({ id }: IWithPokemonId) => {
   const { loading, data, refetch } = useQuery<
     GetPokemonEvolution,
     GetPokemonEvolutionVariables
   >(GET_POKEMON_EVOLUTION, {
-    variables: { id: props.data.id },
+    variables: { id },
     notifyOnNetworkStatusChange: true,
   });
 
+  // TODO: add loader
   if (loading) return null;
+
+  // TODO: show error and option for refetch
   if (!data?.pokemon) return null;
 
   return (
@@ -473,7 +591,7 @@ const Evolution = (props: EvolutionProps) => {
                     w="88px"
                     h="88px"
                     src={getPokemonImageUrl(
-                      item.evolvesFromSpeciesId || props.data.id
+                      item.evolvesFromSpeciesId || item.id
                     )}
                   />
 
@@ -487,7 +605,7 @@ const Evolution = (props: EvolutionProps) => {
                     fontSize="2xl"
                   />
 
-                  <Text>25</Text>
+                  <Text>{item.evolvesWhen.at(0)?.level || 0}</Text>
                 </Box>
 
                 <VStack spacing={2}>
@@ -508,7 +626,15 @@ const Evolution = (props: EvolutionProps) => {
   );
 };
 
-const Moves = () => {
+const Moves = ({ id }: IWithPokemonId) => {
+  const { loading, data, refetch } = useQuery<
+    GetPokemonMoves,
+    GetPokemonMovesVariables
+  >(GET_POKEMON_MOVES, {
+    variables: { id },
+    notifyOnNetworkStatusChange: true,
+  });
+
   return (
     <VStack spacing={8}>
       <Card w="full">
@@ -602,5 +728,4 @@ const MovesTable = ({ headings, data, ...props }: MovesTableProps) => {
 };
 
 const generateId = randomIdGenerator();
-
 export default Pokemon;

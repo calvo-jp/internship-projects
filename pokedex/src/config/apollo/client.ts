@@ -1,9 +1,8 @@
-import { ApolloClient } from "@apollo/client";
-import apolloCache from "./cache";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import apolloLink from "./link";
 
 const apolloClient = new ApolloClient({
-  cache: apolloCache,
+  cache: new InMemoryCache(),
   link: apolloLink,
 });
 

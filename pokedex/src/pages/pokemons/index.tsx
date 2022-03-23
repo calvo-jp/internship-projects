@@ -77,19 +77,20 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   };
 };
 
-type View = "grid" | "list";
-
 const Pokemons = ({ rows, page, pageSize, hasNext, categories }: Props) => {
-  const listView = useStore((state) => state.listView);
-  const [view, setView] = React.useState<View>("grid");
-
   const router = useRouter();
+
+  const listView = useStore((state) => state.listView);
+  const [view, setView] = React.useState<"grid" | "list">("grid");
 
   const redirect = (newPage: number) => {
     router.push(
       `${router.basePath}?page=${newPage}&pageSize=${pageSize}`,
       undefined,
-      { shallow: false }
+      {
+        // run getServerSide always
+        shallow: false,
+      }
     );
   };
 

@@ -24,6 +24,8 @@ export interface GetPokemonStats_pokemon_stats {
 
 export interface GetPokemonStats_pokemon {
   __typename: "pokemon_v2_pokemon";
+  id: number;
+  experience: number | null;
   /**
    * An array relationship
    */

@@ -7,11 +7,20 @@
 // GraphQL query operation: GetPokemonEvolution
 // ====================================================
 
+export interface GetPokemonEvolution_pokemon_specy_evolutionChain_evolutions_evolvesWhen {
+  __typename: "pokemon_v2_pokemonevolution";
+  level: number | null;
+}
+
 export interface GetPokemonEvolution_pokemon_specy_evolutionChain_evolutions {
   __typename: "pokemon_v2_pokemonspecies";
   id: number;
   name: string;
   evolvesFromSpeciesId: number | null;
+  /**
+   * An array relationship
+   */
+  evolvesWhen: GetPokemonEvolution_pokemon_specy_evolutionChain_evolutions_evolvesWhen[];
 }
 
 export interface GetPokemonEvolution_pokemon_specy_evolutionChain {
@@ -24,6 +33,7 @@ export interface GetPokemonEvolution_pokemon_specy_evolutionChain {
 
 export interface GetPokemonEvolution_pokemon_specy {
   __typename: "pokemon_v2_pokemonspecies";
+  id: number;
   /**
    * An object relationship
    */
@@ -32,6 +42,7 @@ export interface GetPokemonEvolution_pokemon_specy {
 
 export interface GetPokemonEvolution_pokemon {
   __typename: "pokemon_v2_pokemon";
+  id: number;
   /**
    * An object relationship
    */
