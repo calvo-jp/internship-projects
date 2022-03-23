@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
+import { useCallback } from "react";
 import { GetPokemon } from "__generated__/GetPokemon";
 
 type TPokemon = NonNullable<GetPokemon["pokemon"]>;
@@ -17,16 +18,16 @@ interface AboutProps {
 }
 
 const About = ({ data }: AboutProps) => {
-  const getEggGroups = () => {
+  const getEggGroups = useCallback(() => {
     return !data.specy
       ? "NA"
       : data.specy.eggGroups
           .map(({ eggGroup }) => eggGroup?.name)
           .filter((value) => !!value)
           .join(", ");
-  };
+  }, [data.specy]);
 
-  const getGender = () => {
+  const getGender = useCallback(() => {
     const genderRate = data.specy?.genderRate;
 
     return !genderRate || genderRate <= 0
@@ -34,7 +35,7 @@ const About = ({ data }: AboutProps) => {
       : genderRate >= 8
       ? genderRate * 10 + "% female"
       : genderRate * 10 + "% male";
-  };
+  }, [data.specy?.genderRate]);
 
   return (
     <VStack spacing={8} align="start">
