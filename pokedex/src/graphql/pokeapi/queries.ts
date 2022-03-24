@@ -146,3 +146,11 @@ export const GET_POKEMON_EVOLUTION = gql`
     }
   }
 `;
+
+export const GET_POKEMON_TYPES = gql`
+  query GetPokemonTypes {
+    pokemon_v2_type {
+      name
+    }
+  }
+`;
