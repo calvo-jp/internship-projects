@@ -23,11 +23,11 @@ import GridTable from "components/widgets/gridTable";
 import GridTableCell from "components/widgets/gridTable/GridTableCell";
 import GridTableHeading from "components/widgets/gridTable/GridTableHeading";
 import GridTableRow from "components/widgets/gridTable/GridTableRow";
-import Thumbnail from "components/widgets/thumbnail";
+import Thumbnail from "components/widgets/Thumbnail";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMONS } from "graphql/pokeapi/queries";
 import useStore from "hooks/useStore";
-import { GetServerSideProps, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -283,7 +283,9 @@ const ListView = ({ rows }: ListViewProps) => {
           borderBottom="1px"
           cursor="pointer"
           _hover={{ bgColor: "brand.gray.600" }}
+          _focus={{ bgColor: "brand.gray.600", outline: "none" }}
           onClick={handleClick(id)}
+          tabIndex={1}
         >
           <GridTableCell>{id}</GridTableCell>
           <GridTableCell>
@@ -300,7 +302,7 @@ const ListView = ({ rows }: ListViewProps) => {
           <GridTableCell>
             {types.map((type) => type.type?.name || "").join(", ")}
           </GridTableCell>
-          <GridTableCell>1</GridTableCell>
+          <GridTableCell>Lvl 1</GridTableCell>
         </GridTableRow>
       ))}
     </GridTable>
@@ -316,27 +318,38 @@ const PageControls = ({ onNext, onPrev }: PaginationProps) => {
   return (
     <HStack spacing={8} justify="center">
       <HStack spacing={4}>
-        <IconButton
-          aria-label=""
-          icon={<Icon as={ChevronLeftIcon} />}
-          bgColor="brand.primary"
-          color="brand.gray.800"
-          rounded="full"
-          shadow="md"
-          onClick={onPrev}
-        />
-
-        <IconButton
-          aria-label=""
-          icon={<Icon as={ChevronRightIcon} />}
-          bgColor="brand.primary"
-          color="brand.gray.800"
-          rounded="full"
-          shadow="md"
-          onClick={onNext}
-        />
+        <Control control="previous" onClick={onPrev} />
+        <Control control="next" onClick={onNext} />
       </HStack>
     </HStack>
+  );
+};
+
+interface ControlProps extends React.ComponentProps<"button"> {
+  control: "next" | "previous";
+}
+
+const Control = ({ control, ...props }: ControlProps) => {
+  return (
+    <IconButton
+      aria-label={control}
+      icon={
+        <Icon as={control === "next" ? ChevronRightIcon : ChevronLeftIcon} />
+      }
+      bgColor="brand.primary"
+      color="brand.gray.800"
+      rounded="full"
+      shadow="md"
+      _hover={{
+        bgColor: "brand.primary",
+        color: "brand.gray.800",
+      }}
+      _active={{
+        bgColor: "brand.primary",
+        color: "brand.gray.800",
+      }}
+      {...props}
+    />
   );
 };
 

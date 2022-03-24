@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowNarrowRightIcon } from "@heroicons/react/outline";
 import Card from "components/widgets/card";
-import Thumbnail from "components/widgets/thumbnail";
+import Thumbnail from "components/widgets/Thumbnail";
 import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
 import Link from "next/link";
 import * as React from "react";
