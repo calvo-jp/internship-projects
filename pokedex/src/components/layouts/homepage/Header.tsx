@@ -11,7 +11,6 @@ import {
   Skeleton,
   Text,
 } from "@chakra-ui/react";
-import ChevronDownIcon from "@heroicons/react/outline/ChevronDownIcon";
 import ArrowDownIcon from "components/icons/ArrowDown";
 import Link from "components/widgets/Link";
 import useProfile from "hooks/useProfile";
@@ -78,15 +77,9 @@ const Dropdown = () => {
   return (
     <Menu>
       <MenuButton>
-        <Icon
-          as={ArrowDownIcon}
-          fontSize="xl"
-          fill="brand.gray.100"
-          w={3}
-          h={3}
-        />
+        <Icon as={ArrowDownIcon} fill="brand.gray.100" w="10px" h="10px" />
       </MenuButton>
-      <MenuList mt={3} bgColor="white">
+      <MenuList mt={3} bgColor="brand.gray.800" rounded="sm">
         <MenuItem color="brand.red.500" onClick={logout}>
           Logout
         </MenuItem>
