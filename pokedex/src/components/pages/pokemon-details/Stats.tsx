@@ -120,13 +120,7 @@ const Weakness = ({ types }: WeaknessProps) => {
   const [weaknesses, setWeaknesses] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    services.pokemons.weaknesses(types).then((data) => {
-      const unique = data.reduce<string[]>((array, obj) => {
-        return array.includes(obj.name) ? array : [...array, obj.name];
-      }, []);
-
-      setWeaknesses(unique);
-    });
+    services.pokemons.weaknesses(types).then(setWeaknesses);
 
     return () => setWeaknesses([]);
   }, [types]);
@@ -154,13 +148,9 @@ const Resistance = ({ types }: ResistanceProps) => {
   const [resistance, setResistance] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    services.pokemons.resistance(types).then((data) => {
-      const unique = data.reduce<string[]>((array, obj) => {
-        return array.includes(obj.name) ? array : [...array, obj.name];
-      }, []);
+    services.pokemons.resistance(types).then(setResistance);
 
-      setResistance(unique);
-    });
+    return () => setResistance([]);
   }, [types]);
 
   return (

@@ -23,7 +23,9 @@ const weaknesses = async (types: Types) => {
     }
   }
 
-  return array;
+  return array.reduce<string[]>((container, obj) => {
+    return container.includes(obj.name) ? container : [...container, obj.name];
+  }, []);
 };
 
 const resistance = async (types: Types) => {
@@ -47,7 +49,9 @@ const resistance = async (types: Types) => {
     }
   }
 
-  return array;
+  return array.reduce<string[]>((container, obj) => {
+    return container.includes(obj.name) ? container : [...container, obj.name];
+  }, []);
 };
 
 const pokemons = {
