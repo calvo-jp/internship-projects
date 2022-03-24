@@ -98,7 +98,7 @@ const Evolution = ({ id }: EvolutionProps) => {
                     stroke="brand.primary"
                     fontSize="2xl"
                   />
-                  <Text fontSize="sm">{evolvesWhen.at(0)?.level ?? 0}</Text>
+                  <Text fontSize="sm">{evolvesWhen.at(0)?.level ?? 1}</Text>
                 </VStack>
 
                 <VStack spacing={2}>
