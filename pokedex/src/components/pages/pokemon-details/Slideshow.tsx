@@ -37,6 +37,8 @@ const Slideshow = () => {
     },
   });
 
+  const shouldShowControls = slides.length > 1;
+
   return (
     <VStack spacing={5}>
       <Flex
@@ -54,13 +56,15 @@ const Slideshow = () => {
         ))}
       </Flex>
 
-      <Controls
-        onPlay={play}
-        onPause={pause}
-        onNext={next}
-        onPrev={prev}
-        playing={playing}
-      />
+      {shouldShowControls && (
+        <Controls
+          onPlay={play}
+          onPause={pause}
+          onNext={next}
+          onPrev={prev}
+          playing={playing}
+        />
+      )}
     </VStack>
   );
 };
