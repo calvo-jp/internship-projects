@@ -1,5 +1,3 @@
-type ImageType = "SVG" | "PNG";
-
 const getPokemonImageUrl = (id: number | string) => {
   const ext = ".svg";
   const cdn =
