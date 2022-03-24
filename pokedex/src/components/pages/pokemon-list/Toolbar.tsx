@@ -6,7 +6,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Text,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -15,7 +14,6 @@ import {
   ViewGridIcon,
   ViewListIcon,
 } from "@heroicons/react/outline";
-import { CheckIcon } from "@heroicons/react/solid";
 import usePokemonTypes from "hooks/usePokemonTypes";
 import useStore from "hooks/useStore";
 
@@ -83,24 +81,21 @@ const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
         h="auto"
         p={4}
       >
-        {categories.map((item) => {
-          console.log(value.includes(item));
-          return (
-            <MenuItem key={item} w="fit-content" p={0}>
-              <HStack bgColor="brand.gray.700" p={2} rounded="sm">
-                <Checkbox
-                  colorScheme="colorSchemeHacks.yellow"
-                  borderColor="brand.gray.400"
-                  iconColor="brand.primaryDark"
-                  onChange={handleChange(item)}
-                  isChecked={value.includes(item)}
-                />
-
-                <Text>{item}</Text>
-              </HStack>
-            </MenuItem>
-          );
-        })}
+        {categories.map((item) => (
+          <MenuItem key={item} w="fit-content" p={0}>
+            <HStack bgColor="brand.gray.700" p={2} rounded="sm">
+              <Checkbox
+                colorScheme="colorSchemeHacks.yellow"
+                borderColor="brand.gray.400"
+                iconColor="brand.primaryDark"
+                onChange={handleChange(item)}
+                isChecked={value.includes(item)}
+              >
+                {item}
+              </Checkbox>
+            </HStack>
+          </MenuItem>
+        ))}
       </MenuList>
     </Menu>
   );
