@@ -59,7 +59,7 @@ const Evolution = ({ id }: EvolutionProps) => {
         return id === currentSpecy.evolvesFromSpeciesId;
       });
 
-  // fallback to unknown
+  // fallback to current pokemons name
   const fromSpecyName = fromSpecy?.name ?? pokemon.name;
 
   return (
