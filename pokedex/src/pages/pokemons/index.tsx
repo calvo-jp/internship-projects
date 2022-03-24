@@ -293,6 +293,7 @@ const ListView = ({ rows }: ListViewProps) => {
               src={getPokemonImageUrl(id)}
               bgColor="transparent"
               shadow="none"
+              loader={<Spinner size="md" />}
             />
           </GridTableCell>
           <GridTableCell>{name}</GridTableCell>
