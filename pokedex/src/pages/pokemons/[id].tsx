@@ -27,6 +27,7 @@ import Stats from "components/pages/pokemon-details/Stats";
 import Thumbnail from "components/widgets/Thumbnail";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
+import useNavigate from "hooks/useNavigate";
 import useStore from "hooks/useStore";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
@@ -173,12 +174,10 @@ const RightPane = ({ data }: RightPaneProps) => {
   const router = useRouter();
   const currentTab = [router.query.tab].flat(1).at(0) || tabs[0];
   const currentTabIdx = tabs.findIndex((tab) => tab === currentTab);
+  const navigate = useNavigate({ scroll: false, shallow: true });
 
   const handleChange = (index: number) => {
-    router.push(`/pokemons/${data.id}?tab=${tabs[index]}`, undefined, {
-      scroll: false,
-      shallow: true,
-    });
+    navigate("/pokemons/" + data.id, { tab: tabs[index] });
   };
 
   return (
