@@ -2,16 +2,13 @@ import { useQuery } from "@apollo/client";
 import {
   Center,
   Flex,
-  HStack,
-  Progress,
   Spinner,
   Tag,
   TagLabel,
-  TagLeftIcon,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { CheckIcon } from "@heroicons/react/outline";
+import AnimatedProgress from "components/widgets/AnimatedProgress";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
 import { GET_POKEMON_STATS } from "graphql/pokeapi/queries";
@@ -89,10 +86,11 @@ const Stats = ({ id }: StatsProps) => {
           return (
             <Flex align="center" fontWeight="medium" key={stat.id}>
               <Text w="45px">{stat.label}</Text>
-              <Progress
+              <AnimatedProgress
                 ml={8}
                 mr={4}
                 size="xs"
+                rounded="full"
                 colorScheme={stat.color}
                 bgColor="brand.gray.200"
                 flexGrow="1"
@@ -117,12 +115,19 @@ interface WeaknessProps {
 }
 
 const Weakness = ({ types }: WeaknessProps) => {
+  const [loading, setLoading] = React.useState(true);
   const [weaknesses, setWeaknesses] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    services.pokemons.weaknesses(types).then(setWeaknesses);
+    services.pokemons
+      .weaknesses(types)
+      .then(setWeaknesses)
+      .finally(() => setLoading(false));
 
-    return () => setWeaknesses([]);
+    return () => {
+      setLoading(true);
+      setWeaknesses([]);
+    };
   }, [types]);
 
   return (
@@ -130,6 +135,7 @@ const Weakness = ({ types }: WeaknessProps) => {
       <CardHeading>Weaknesses</CardHeading>
 
       <Flex mt={6} gap={2} wrap="wrap">
+        {loading && <Spinner />}
         {weaknesses.map((weakness) => (
           <Tag key={weakness} py={2} px={4} rounded="full">
             <TagLabel>{weakness}</TagLabel>
@@ -145,12 +151,19 @@ interface ResistanceProps {
 }
 
 const Resistance = ({ types }: ResistanceProps) => {
+  const [loading, setLoading] = React.useState(true);
   const [resistance, setResistance] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    services.pokemons.resistance(types).then(setResistance);
+    services.pokemons
+      .resistance(types)
+      .then(setResistance)
+      .finally(() => setLoading(false));
 
-    return () => setResistance([]);
+    return () => {
+      setLoading(true);
+      setResistance([]);
+    };
   }, [types]);
 
   return (
@@ -158,6 +171,7 @@ const Resistance = ({ types }: ResistanceProps) => {
       <CardHeading>Resistant</CardHeading>
 
       <Flex mt={6} gap={2} wrap="wrap">
+        {loading && <Spinner />}
         {resistance.map((value) => (
           <Tag key={value} py={2} px={4} rounded="full">
             <TagLabel>{value}</TagLabel>
