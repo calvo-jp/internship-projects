@@ -26,6 +26,7 @@ import GridTableRow from "components/widgets/gridTable/GridTableRow";
 import Thumbnail from "components/widgets/Thumbnail";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMONS, GET_POKEMONS_BY_TYPES } from "graphql/pokeapi/queries";
+import usePokemonTypes from "hooks/usePokemonTypes";
 import useStore from "hooks/useStore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
@@ -49,7 +50,7 @@ interface Props {
   pageSize: number;
   hasNext: boolean;
   search?: {
-    types?: string[] | null;
+    types?: string[];
   };
 }
 
@@ -61,9 +62,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const limit = coalesce(routerQueryValueToIntOrUndefined(query.pageSize), 20);
   const offset = (page - 1) * limit;
   const hasNext = true;
-  const types = query.type ? [query.type].flat(1) : [];
 
-  if (types.length > 0) {
+  const types = [query.types]
+    .flat()
+    .at(0)
+    ?.split(/\,/g)
+    .map((value) => value.trim().toLowerCase())
+    .filter((value) => value.length > 0);
+
+  if (types && types.length > 0) {
     const { data } = await apolloClient.query<
       GetPokemonsByTypes,
       GetPokemonsByTypesVariables
@@ -112,7 +119,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 };
 
 const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
-  console.log(search);
   const router = useRouter();
 
   const listView = useStore((state) => state.listView);
@@ -128,15 +134,31 @@ const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
   };
 
   const next = () => {
-    if (hasNext) redirect({ page: page + 1, pageSize, type: search?.types });
+    if (!hasNext) return;
+
+    redirect({
+      page: page + 1,
+      pageSize,
+      type: search?.types,
+    });
   };
 
   const prev = () => {
-    if (page > 1) redirect({ page: page + 1, pageSize, type: search?.types });
+    if (page <= 1) return;
+
+    redirect({
+      page: page - 1,
+      pageSize,
+      type: search?.types,
+    });
   };
 
-  const filter = (values: string[]) => {
-    redirect({ page, pageSize, type: values });
+  const filter = (types: string[]) => {
+    redirect({
+      page,
+      pageSize,
+      types,
+    });
   };
 
   React.useEffect(() => setView(listView ? "list" : "grid"), [listView]);
@@ -178,55 +200,10 @@ const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
   );
 };
 
-interface FilterToolProps {
-  value?: string[] | null;
-  onChange: (filters: string[]) => void;
-}
-
-const FilterTool = ({ value, onChange }: FilterToolProps) => {
-  const [selected, setSelected] = React.useState<string[]>(value || []);
-  const categories = React.useMemo(() => POKEMON_TYPES, []);
-
-  const handleChange = (newValue: string) => {
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.checked) {
-        if (selected.includes(newValue)) return;
-        return setSelected((old) => [...old, newValue]);
-      }
-
-      if (!selected.includes(newValue)) return;
-      setSelected((old) => old.filter((item) => item !== newValue));
-    };
-  };
-
-  // React.useEffect(() => {
-  //   onChange(selected);
-  // }, [onChange, selected]);
-
-  return (
-    <Menu closeOnSelect={false}>
-      <MenuButton>
-        <ToolbarIcon icon={FilterIcon} />
-      </MenuButton>
-      <MenuList color="brand.gray.700" bgColor="white">
-        {categories.map((item) => (
-          <MenuItem key={item} display="flex" justifyContent="space-between">
-            <Text>{item}</Text>
-            <Checkbox
-              colorScheme="colorSchemeHacks.yellow"
-              borderColor="brand.gray.400"
-              iconColor="brand.primaryDark"
-              onChange={handleChange(item)}
-              checked={selected.includes(item)}
-            />
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Menu>
-  );
-};
 interface ToolbarProps {
-  filters?: string[] | null;
+  /** aka. pokemon types */
+  filters?: string[];
+  /** aka. onChange */
   onFilter: (values: string[]) => void;
 }
 
@@ -250,6 +227,57 @@ const Toolbar = ({ filters, onFilter }: ToolbarProps) => {
         </button>
       </WrapItem>
     </Wrap>
+  );
+};
+
+interface FilterToolProps {
+  value?: string[];
+  onChange: (filters: string[]) => void;
+}
+
+/** Controlled component */
+const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
+  const categories = usePokemonTypes();
+
+  const handleChange = (newValue: string) => {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      // ticked
+      if (e.target.checked && !value.includes(newValue))
+        onChange([...value, newValue]);
+      // unticked
+      if (!e.target.checked && value.includes(newValue))
+        onChange(value.filter((item) => item !== newValue));
+    };
+  };
+
+  return (
+    <Menu closeOnSelect={false}>
+      <MenuButton>
+        <ToolbarIcon icon={FilterIcon} />
+      </MenuButton>
+      <MenuList
+        color="brand.gray.700"
+        bgColor="white"
+        maxH="60vh"
+        overflowY="auto"
+      >
+        {categories.map((item) => {
+          console.log(value.includes(item));
+          return (
+            <MenuItem key={item} display="flex" justifyContent="space-between">
+              <Text>{item}</Text>
+              <Checkbox
+                colorScheme="colorSchemeHacks.yellow"
+                borderColor="brand.gray.400"
+                iconColor="brand.primaryDark"
+                onChange={handleChange(item)}
+                isChecked={value.includes(item)}
+              />
+            </MenuItem>
+          );
+        })}
+      </MenuList>
+    </Menu>
   );
 };
 
@@ -389,9 +417,5 @@ const Control = ({ control, ...props }: ControlProps) => {
     />
   );
 };
-
-const POKEMON_TYPES = "Normal|Fire|Water|Grass|Flying|Fighting"
-  .split(/\|/)
-  .map((str) => str.toLowerCase());
 
 export default Pokemons;
