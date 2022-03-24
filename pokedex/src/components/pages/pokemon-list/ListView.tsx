@@ -6,6 +6,7 @@ import GridTableRow from "components/widgets/gridTable/GridTableRow";
 import Thumbnail from "components/widgets/Thumbnail";
 import { useRouter } from "next/router";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
+import unkebab from "utils/unkebab";
 import { GetPokemons } from "__generated__/GetPokemons";
 
 interface ListViewProps {
@@ -53,7 +54,7 @@ const ListView = ({ data }: ListViewProps) => {
               loader={<Spinner size="md" />}
             />
           </GridTableCell>
-          <GridTableCell>{name}</GridTableCell>
+          <GridTableCell>{unkebab(name)}</GridTableCell>
           <GridTableCell>
             {types.map((type) => type.type?.name || "").join(", ")}
           </GridTableCell>
