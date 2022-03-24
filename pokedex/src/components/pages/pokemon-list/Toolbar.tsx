@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import {
   FilterIcon,
-  SearchIcon,
   ViewGridIcon,
   ViewListIcon,
 } from "@heroicons/react/outline";

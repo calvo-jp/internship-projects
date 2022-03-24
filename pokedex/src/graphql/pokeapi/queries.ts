@@ -23,6 +23,16 @@ export const GET_POKEMONS = gql`
   ${CORE_POKEMON_DETAILS}
 `;
 
+export const GET_POKEMONS_TOTAL = gql`
+  query GetPokemonsTotal {
+    summary: pokemon_v2_pokemon_aggregate {
+      aggregate {
+        count(columns: id, distinct: true)
+      }
+    }
+  }
+`;
+
 export const GET_POKEMONS_BY_TYPES = gql`
   query GetPokemonsByTypes($limit: Int, $offset: Int, $types: [String!]) {
     pokemons: pokemon_v2_pokemon(
@@ -37,6 +47,20 @@ export const GET_POKEMONS_BY_TYPES = gql`
   }
 
   ${CORE_POKEMON_DETAILS}
+`;
+
+export const GET_POKEMONS_TOTAL_BY_TYPES = gql`
+  query GetPokemonsTotalByTypes($types: [String!]) {
+    summary: pokemon_v2_pokemon_aggregate(
+      where: {
+        pokemon_v2_pokemontypes: { pokemon_v2_type: { name: { _in: $types } } }
+      }
+    ) {
+      aggregate {
+        count(columns: id, distinct: true)
+      }
+    }
+  }
 `;
 
 export const GET_POKEMON = gql`

@@ -5,7 +5,12 @@ import ListView from "components/pages/pokemon-list/ListView";
 import Pagination from "components/pages/pokemon-list/Pagination";
 import Toolbar from "components/pages/pokemon-list/Toolbar";
 import apolloClient from "config/apollo/client";
-import { GET_POKEMONS, GET_POKEMONS_BY_TYPES } from "graphql/pokeapi/queries";
+import {
+  GET_POKEMONS,
+  GET_POKEMONS_BY_TYPES,
+  GET_POKEMONS_TOTAL,
+  GET_POKEMONS_TOTAL_BY_TYPES,
+} from "graphql/pokeapi/queries";
 import useStore from "hooks/useStore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
@@ -18,14 +23,17 @@ import {
   GetPokemonsByTypes,
   GetPokemonsByTypesVariables,
 } from "__generated__/GetPokemonsByTypes";
+import { GetPokemonsTotal } from "__generated__/GetPokemonsTotal";
+import { GetPokemonsTotalByTypesVariables } from "__generated__/GetPokemonsTotalByTypes";
 
-type Pokemon = GetPokemons["pokemons"][number];
+type TPokemon = GetPokemons["pokemons"][number];
 
 interface Props {
-  rows: Pokemon[];
+  rows: TPokemon[];
   page: number;
   pageSize: number;
   hasNext: boolean;
+  count: number;
   search?: {
     types?: string[];
   };
@@ -38,8 +46,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const page = coalesce(routerQueryValueToIntOrUndefined(query.page), 1);
   const limit = coalesce(routerQueryValueToIntOrUndefined(query.pageSize), 20);
   const offset = (page - 1) * limit;
-  const hasNext = true;
 
+  // getting types filter encoded via native URLSearchParams.toString()
+  // arrays are joined using commas
   const types = [query.types]
     .flat()
     .at(0)
@@ -47,27 +56,56 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     .map((value) => value.trim().toLowerCase())
     .filter((value) => value.length > 0);
 
-  if (types && types.length > 0) {
-    const { data } = await apolloClient.query<
-      GetPokemonsByTypes,
-      GetPokemonsByTypesVariables
-    >({
-      query: GET_POKEMONS_BY_TYPES,
-      variables: {
-        limit,
-        offset,
-        types,
-      },
-    });
+  //
+  // =================
+  // FILTERED BY TYPES
+  // =================
+  //
 
-    if (data.pokemons.length <= 0) return { notFound: true };
+  if (types && types.length > 0) {
+    const requests = [
+      apolloClient.query<GetPokemonsTotal, GetPokemonsTotalByTypesVariables>({
+        query: GET_POKEMONS_TOTAL_BY_TYPES,
+        variables: {
+          types,
+        },
+      }),
+
+      apolloClient.query<GetPokemonsByTypes, GetPokemonsByTypesVariables>({
+        query: GET_POKEMONS_BY_TYPES,
+        variables: {
+          limit,
+          offset,
+          types,
+        },
+      }),
+    ];
+
+    const results = await Promise.allSettled(requests);
+
+    let rows: TPokemon[] = [];
+    let count = 0;
+
+    for (const result of results) {
+      if (result.status === "fulfilled" && result.value) {
+        const data = result.value.data;
+
+        // pokemons
+        if ("pokemons" in data) rows = data.pokemons;
+
+        // summary
+        if ("summary" in data && data.summary.aggregate)
+          count = data.summary.aggregate.count;
+      }
+    }
 
     return {
       props: {
         page,
         pageSize: limit,
-        rows: data.pokemons,
-        hasNext,
+        rows,
+        hasNext: count > page * limit,
+        count,
         search: {
           types,
         },
@@ -75,39 +113,74 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     };
   }
 
-  const { data } = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
-    query: GET_POKEMONS,
-    variables: {
-      limit,
-      offset,
-    },
-  });
+  //
+  // ==============
+  // WITHOUT FILTER
+  // ==============
+  //
 
-  if (data.pokemons.length <= 0) return { notFound: true };
+  const requests = [
+    apolloClient.query<GetPokemons, GetPokemonsVariables>({
+      query: GET_POKEMONS,
+      variables: {
+        limit,
+        offset,
+      },
+    }),
+
+    apolloClient.query<GetPokemonsTotal>({
+      query: GET_POKEMONS_TOTAL,
+    }),
+  ];
+
+  let rows: TPokemon[] = [];
+  let count = 0;
+
+  const results = await Promise.allSettled(requests);
+
+  for (const result of results) {
+    if (result.status === "fulfilled" && result.value) {
+      const data = result.value.data;
+
+      // pokemons
+      if ("pokemons" in data) rows = data.pokemons;
+
+      // summary
+      if ("summary" in data && data.summary.aggregate)
+        count = data.summary.aggregate.count;
+    }
+  }
 
   return {
     props: {
       page,
       pageSize: limit,
-      rows: data.pokemons,
-      hasNext,
+      rows,
+      count,
+      hasNext: count > page * limit,
     },
   };
 };
 
-const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
+// TODO
+// - Add component for zero or no records found
+const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
   const router = useRouter();
 
   const listView = useStore((state) => state.listView);
   const [view, setView] = React.useState<"grid" | "list">("grid");
 
   const redirect = (queries: Record<string, any>) => {
-    const searchParams = new URLSearchParams(queries);
+    const search = new URLSearchParams(queries);
 
-    router.push(`${router.basePath}?${searchParams.toString()}`, undefined, {
-      // run getServerSide always
-      shallow: false,
-    });
+    router.push(
+      [router.basePath, search.toString()].join("?"),
+      // using query or search inside here
+      // does not work if queries are added here
+      // directly passed to url
+      undefined,
+      { shallow: false /* run getServerSide always */ }
+    );
   };
 
   const next = () => {
@@ -116,7 +189,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
     redirect({
       page: page + 1,
       pageSize,
-      type: search?.types,
+      types: search?.types,
     });
   };
 
@@ -126,7 +199,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
     redirect({
       page: page - 1,
       pageSize,
-      type: search?.types,
+      types: search?.types,
     });
   };
 
