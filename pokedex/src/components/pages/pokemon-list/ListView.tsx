@@ -1,10 +1,11 @@
-import { Spinner } from "@chakra-ui/react";
+import { HStack, Spinner, Tag } from "@chakra-ui/react";
 import GridTable from "components/widgets/gridTable";
 import GridTableCell from "components/widgets/gridTable/GridTableCell";
 import GridTableHeading from "components/widgets/gridTable/GridTableHeading";
 import GridTableRow from "components/widgets/gridTable/GridTableRow";
 import Thumbnail from "components/widgets/Thumbnail";
 import { useRouter } from "next/router";
+import getPokemonColorByType from "utils/getPokemonColorByType";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import unkebab from "utils/unkebab";
 import { GetPokemons } from "__generated__/GetPokemons";
@@ -18,13 +19,15 @@ const ListView = ({ data }: ListViewProps) => {
   const handleClick = (id: number) => () => router.push("/pokemons/" + id);
 
   return (
-    <GridTable columns="49px 75px 1fr 1fr 1fr" bgColor="brand.gray.700">
-      <GridTableRow
-        px={4}
-        py={3}
-        borderColor="brand.gray.300"
-        borderBottom="1px"
-      >
+    <GridTable
+      columns="49px 75px 1fr 1fr 1fr"
+      columnsProps={{
+        borderBottom: "1px",
+        borderColor: "brand.gray.600",
+        bgColor: "brand.gray.700",
+      }}
+    >
+      <GridTableRow px={4} py={3}>
         {"#||Pokemon|Type|Level".split(/\|/).map((heading) => (
           <GridTableHeading key={heading}>{heading}</GridTableHeading>
         ))}
@@ -33,11 +36,8 @@ const ListView = ({ data }: ListViewProps) => {
       {data.map(({ id, name, types }) => (
         <GridTableRow
           key={id}
-          py={3}
+          py={2}
           px={4}
-          borderColor="brand.gray.300"
-          borderBottom="1px"
-          cursor="pointer"
           _hover={{ bgColor: "brand.gray.600" }}
           _focus={{ bgColor: "brand.gray.600", outline: "none" }}
           onClick={handleClick(id)}
@@ -56,7 +56,15 @@ const ListView = ({ data }: ListViewProps) => {
           </GridTableCell>
           <GridTableCell>{unkebab(name)}</GridTableCell>
           <GridTableCell>
-            {types.map((type) => type.type?.name || "").join(", ")}
+            <HStack spacing={1}>
+              {types
+                .map((type) => type.type?.name || "")
+                .map((type) => (
+                  <Tag key={type} bgColor="brand.gray.600" rounded="lg">
+                    {type}
+                  </Tag>
+                ))}
+            </HStack>
           </GridTableCell>
           <GridTableCell>Lvl 1</GridTableCell>
         </GridTableRow>
