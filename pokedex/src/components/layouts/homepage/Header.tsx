@@ -12,6 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import ChevronDownIcon from "@heroicons/react/outline/ChevronDownIcon";
+import ArrowDownIcon from "components/icons/ArrowDown";
 import Link from "components/widgets/Link";
 import useProfile from "hooks/useProfile";
 import { signOut } from "next-auth/react";
@@ -57,8 +58,6 @@ const Header = () => {
             }
             w={{ base: "40px", lg: "57px" }}
             h={{ base: "40px", lg: "57px" }}
-            showBorder
-            borderColor="brand.primary"
           />
         </Skeleton>
 
@@ -79,7 +78,13 @@ const Dropdown = () => {
   return (
     <Menu>
       <MenuButton>
-        <Icon as={ChevronDownIcon} fontSize="xl" stroke="brand.gray.100" />
+        <Icon
+          as={ArrowDownIcon}
+          fontSize="xl"
+          fill="brand.gray.100"
+          w={3}
+          h={3}
+        />
       </MenuButton>
       <MenuList mt={3} bgColor="white">
         <MenuItem color="brand.red.500" onClick={logout}>

@@ -22,7 +22,7 @@ import HomepageLayout from "components/layouts/homepage";
 import About from "components/pages/pokemon-details/About";
 import Evolution from "components/pages/pokemon-details/Evolution";
 import Moves from "components/pages/pokemon-details/Moves";
-import RecentlyViewed from "components/pages/pokemon-details/RecentlyViewed";
+import Slideshow from "components/pages/pokemon-details/Slideshow";
 import Stats from "components/pages/pokemon-details/Stats";
 import Thumbnail from "components/widgets/Thumbnail";
 import apolloClient from "config/apollo/client";
@@ -158,7 +158,7 @@ const LeftPane = ({ data }: LeftPaneProps) => {
         loader={<Spinner size="xl" />}
       />
 
-      <RecentlyViewed />
+      <Slideshow />
     </VStack>
   );
 };

@@ -38,7 +38,7 @@ const Thumbnail = React.forwardRef<
       align="center"
       justify="center"
       bgColor="others.gray.800"
-      rounded="md"
+      rounded="sm"
       shadow="md"
       {...props}
     >

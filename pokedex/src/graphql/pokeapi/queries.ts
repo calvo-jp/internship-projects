@@ -23,6 +23,22 @@ export const GET_POKEMONS = gql`
   ${CORE_POKEMON_DETAILS}
 `;
 
+export const GET_POKEMONS_BY_TYPES = gql`
+  query GetPokemonsByTypes($limit: Int, $offset: Int, $types: [String!]) {
+    pokemons: pokemon_v2_pokemon(
+      limit: $limit
+      offset: $offset
+      where: {
+        pokemon_v2_pokemontypes: { pokemon_v2_type: { name: { _in: $types } } }
+      }
+    ) {
+      ...CorePokemonDetails
+    }
+  }
+
+  ${CORE_POKEMON_DETAILS}
+`;
+
 export const GET_POKEMON = gql`
   query GetPokemon($id: Int!) {
     pokemon: pokemon_v2_pokemon_by_pk(id: $id) {

@@ -42,7 +42,10 @@ const ImageWithFallback = ({
       setLoading(false);
     };
 
-    image.onerror = () => setError(true);
+    image.onerror = () => {
+      setError(true);
+      setLoading(false);
+    };
 
     return () => {
       setLoading(true);

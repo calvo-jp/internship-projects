@@ -36,7 +36,6 @@ const Evolution = ({ id }: EvolutionProps) => {
     notifyOnNetworkStatusChange: true,
   });
 
-  // TODO: update to skeleton
   if (loading) {
     return (
       <Center>
@@ -130,7 +129,8 @@ const PokemonName = ({ id }: { id: number }) => {
 
   return (
     <Text fontSize="sm">
-      {!loading && data?.pokemon ? data.pokemon.name : ""}
+      {loading && "loading..."}
+      {!loading && data?.pokemon ? data.pokemon.name : "unknown"}
     </Text>
   );
 };

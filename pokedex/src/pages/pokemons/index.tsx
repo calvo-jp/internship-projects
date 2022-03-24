@@ -25,7 +25,7 @@ import GridTableHeading from "components/widgets/gridTable/GridTableHeading";
 import GridTableRow from "components/widgets/gridTable/GridTableRow";
 import Thumbnail from "components/widgets/Thumbnail";
 import apolloClient from "config/apollo/client";
-import { GET_POKEMONS } from "graphql/pokeapi/queries";
+import { GET_POKEMONS, GET_POKEMONS_BY_TYPES } from "graphql/pokeapi/queries";
 import useStore from "hooks/useStore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
@@ -36,6 +36,10 @@ import coalesce from "utils/coalesce";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import routerQueryValueToIntOrUndefined from "utils/routerQueryToIntOrUndefined";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
+import {
+  GetPokemonsByTypes,
+  GetPokemonsByTypesVariables,
+} from "__generated__/GetPokemonsByTypes";
 
 type Pokemon = GetPokemons["pokemons"][number];
 
@@ -44,9 +48,12 @@ interface Props {
   page: number;
   pageSize: number;
   hasNext: boolean;
-  categories?: string[] | null;
+  search?: {
+    types?: string[] | null;
+  };
 }
 
+// NEEDS REFACTORING!!
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   query,
 }) => {
@@ -54,7 +61,35 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const limit = coalesce(routerQueryValueToIntOrUndefined(query.pageSize), 20);
   const offset = (page - 1) * limit;
   const hasNext = true;
-  const categories = query.category ? [query.category].flat(1) : POKEMON_TYPES;
+  const types = query.type ? [query.type].flat(1) : [];
+
+  if (types.length > 0) {
+    const { data } = await apolloClient.query<
+      GetPokemonsByTypes,
+      GetPokemonsByTypesVariables
+    >({
+      query: GET_POKEMONS_BY_TYPES,
+      variables: {
+        limit,
+        offset,
+        types,
+      },
+    });
+
+    if (data.pokemons.length <= 0) return { notFound: true };
+
+    return {
+      props: {
+        page,
+        pageSize: limit,
+        rows: data.pokemons,
+        hasNext,
+        search: {
+          types,
+        },
+      },
+    };
+  }
 
   const { data } = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
     query: GET_POKEMONS,
@@ -72,34 +107,36 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       pageSize: limit,
       rows: data.pokemons,
       hasNext,
-      categories,
     },
   };
 };
 
-const Pokemons = ({ rows, page, pageSize, hasNext, categories }: Props) => {
+const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
+  console.log(search);
   const router = useRouter();
 
   const listView = useStore((state) => state.listView);
   const [view, setView] = React.useState<"grid" | "list">("grid");
 
-  const redirect = (newPage: number) => {
-    router.push(
-      `${router.basePath}?page=${newPage}&pageSize=${pageSize}`,
-      undefined,
-      {
-        // run getServerSide always
-        shallow: false,
-      }
-    );
+  const redirect = (queries: Record<string, any>) => {
+    const searchParams = new URLSearchParams(queries);
+
+    router.push(`${router.basePath}?${searchParams.toString()}`, undefined, {
+      // run getServerSide always
+      shallow: false,
+    });
   };
 
   const next = () => {
-    if (hasNext) redirect(page + 1);
+    if (hasNext) redirect({ page: page + 1, pageSize, type: search?.types });
   };
 
   const prev = () => {
-    if (page > 1) redirect(page - 1);
+    if (page > 1) redirect({ page: page + 1, pageSize, type: search?.types });
+  };
+
+  const filter = (values: string[]) => {
+    redirect({ page, pageSize, type: values });
   };
 
   React.useEffect(() => setView(listView ? "list" : "grid"), [listView]);
@@ -121,7 +158,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, categories }: Props) => {
               Choose Pokemon
             </Heading>
 
-            <Toolbar filters={categories} onFilter={() => {}} />
+            <Toolbar filters={search?.types} onFilter={filter} />
           </HStack>
 
           <Flex
@@ -162,9 +199,9 @@ const FilterTool = ({ value, onChange }: FilterToolProps) => {
     };
   };
 
-  React.useEffect(() => {
-    onChange(selected);
-  }, [onChange, selected]);
+  // React.useEffect(() => {
+  //   onChange(selected);
+  // }, [onChange, selected]);
 
   return (
     <Menu closeOnSelect={false}>
