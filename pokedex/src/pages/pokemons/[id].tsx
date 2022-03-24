@@ -24,7 +24,7 @@ import Evolution from "components/pages/pokemon-details/Evolution";
 import Moves from "components/pages/pokemon-details/Moves";
 import RecentlyViewed from "components/pages/pokemon-details/RecentlyViewed";
 import Stats from "components/pages/pokemon-details/Stats";
-import ImageWithFallback from "components/widgets/ImageWithFallback";
+import Thumbnail from "components/widgets/Thumbnail";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
 import useStore from "hooks/useStore";
@@ -150,23 +150,13 @@ interface LeftPaneProps {
 const LeftPane = ({ data }: LeftPaneProps) => {
   return (
     <VStack spacing={12}>
-      <Flex
+      <Thumbnail
         h="390px"
         w="325px"
-        rounded="md"
         bgColor="brand.gray.800"
-        align="center"
-        justify="center"
-        shadow="md"
-      >
-        <ImageWithFallback
-          maxW="80%"
-          maxH="80%"
-          alt=""
-          src={getPokemonImageUrl(data.id)}
-          loader={<Spinner size="xl" />}
-        />
-      </Flex>
+        src={getPokemonImageUrl(data.id)}
+        loader={<Spinner size="xl" />}
+      />
 
       <RecentlyViewed />
     </VStack>
