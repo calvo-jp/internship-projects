@@ -8,6 +8,7 @@ import {
   HStack,
   Icon,
   Skeleton,
+  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -87,10 +88,13 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
 const Pokemon = ({ pokemon }: Props) => {
   const saveAsViewedPokemon = useStore((state) => state.saveAsViewedPokemon);
+  const router = useRouter();
 
   React.useEffect(() => {
-    saveAsViewedPokemon(pokemon.id);
-  }, [pokemon.id, saveAsViewedPokemon]);
+    if (pokemon) saveAsViewedPokemon(pokemon.id);
+  }, [pokemon, saveAsViewedPokemon]);
+
+  if (router.isFallback) return <Loader />;
 
   return (
     <React.Fragment>
@@ -131,6 +135,14 @@ const Pokemon = ({ pokemon }: Props) => {
   );
 };
 
+const Loader = () => {
+  return (
+    <Flex minH="100vh" align="center" justify="center">
+      <Spinner w="75px" h="75px" thickness="4px" />
+    </Flex>
+  );
+};
+
 interface LeftPaneProps {
   data: TPokemon;
 }
@@ -152,7 +164,7 @@ const LeftPane = ({ data }: LeftPaneProps) => {
           maxH="80%"
           alt=""
           src={getPokemonImageUrl(data.id)}
-          loader={<Skeleton h="full" w="full" />}
+          loader={<Spinner size="xl" />}
         />
       </Flex>
 
