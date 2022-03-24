@@ -11,6 +11,7 @@ import {
   GET_POKEMONS_TOTAL,
   GET_POKEMONS_TOTAL_BY_TYPES,
 } from "graphql/pokeapi/queries";
+import useNavigate from "hooks/useNavigate";
 import useStore from "hooks/useStore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
@@ -166,27 +167,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 // - Add component for zero or no records found
 const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
   const router = useRouter();
+  const navigate = useNavigate();
 
   const listView = useStore((state) => state.listView);
   const [view, setView] = React.useState<"grid" | "list">("grid");
 
-  const redirect = (queries: Record<string, any>) => {
-    const search = new URLSearchParams(queries);
-
-    router.push(
-      [router.basePath, search.toString()].join("?"),
-      // using query or search inside here
-      // does not work if queries are added here
-      // directly passed to url
-      undefined,
-      { shallow: false /* run getServerSide always */ }
-    );
-  };
-
   const next = () => {
     if (!hasNext) return;
 
-    redirect({
+    navigate(router.basePath, {
       page: page + 1,
       pageSize,
       types: search?.types,
@@ -196,7 +185,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
   const prev = () => {
     if (page <= 1) return;
 
-    redirect({
+    navigate(router.basePath, {
       page: page - 1,
       pageSize,
       types: search?.types,
@@ -204,7 +193,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
   };
 
   const filter = (types: string[]) => {
-    redirect({
+    navigate(router.basePath, {
       page,
       pageSize,
       types,
