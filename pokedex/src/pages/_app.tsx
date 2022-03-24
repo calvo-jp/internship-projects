@@ -23,6 +23,24 @@ const App = ({ Component, pageProps }: AppProps) => {
     <Fragment>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          key="app:description"
+          name="description"
+          content="Internship project using NextJs, Next Auth, GraphQL Apollo client and Chakra UI. Powered by pokeapi"
+        />
+        <meta
+          name="keywords"
+          content={[
+            "nextjs",
+            "graphql",
+            "apollo",
+            "chakra",
+            "pokemon",
+            "next-auth",
+            "react",
+            "pokedex",
+          ].join()}
+        />
       </Head>
 
       <SessionProvider session={pageProps.session}>
