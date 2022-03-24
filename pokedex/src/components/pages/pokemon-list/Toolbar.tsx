@@ -1,21 +1,25 @@
 import {
-  Checkbox,
-  HStack,
+  Center,
+  Flex,
   Icon,
   Menu,
   MenuButton,
-  MenuItem,
   MenuList,
+  Spinner,
+  Tag,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import {
   FilterIcon,
+  SearchIcon,
   ViewGridIcon,
   ViewListIcon,
 } from "@heroicons/react/outline";
 import usePokemonTypes from "hooks/usePokemonTypes";
 import useStore from "hooks/useStore";
+import * as React from "react";
+import valx from "utils/valx";
 
 interface ToolbarProps {
   /** aka. pokemon types */
@@ -54,50 +58,64 @@ interface FilterToolProps {
 
 /** Controlled component */
 const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
-  const categories = usePokemonTypes();
+  const { data, error, loading } = usePokemonTypes();
 
-  const handleChange = (newValue: string) => {
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.checked && !value.includes(newValue))
-        onChange([...value, newValue]);
-      if (!e.target.checked && value.includes(newValue))
-        onChange(value.filter((item) => item !== newValue));
+  const toggle = (subject: string) => {
+    return () => {
+      if (!value.includes(subject)) return onChange([subject, ...value]);
+      const newValue = value.filter((item) => item !== subject);
+      return onChange(newValue);
     };
   };
+
+  // TODO: handle error
 
   return (
     <Menu closeOnSelect={false}>
       <MenuButton>
         <ToolbarIcon icon={FilterIcon} />
       </MenuButton>
+
       <MenuList
-        color="brand.gray.100"
-        bgColor="brand.gray.800"
-        rounded="sm"
-        display="flex"
-        gap={1}
-        flexWrap="wrap"
-        maxW="400px"
-        h="auto"
         p={4}
+        w="400px"
+        maxW="full"
+        rounded="sm"
+        bgColor="brand.gray.800"
       >
-        {categories.map((item) => (
-          <MenuItem key={item} w="fit-content" p={0}>
-            <HStack bgColor="brand.gray.700" p={2} rounded="sm">
-              <Checkbox
-                colorScheme="colorSchemeHacks.yellow"
-                borderColor="brand.gray.400"
-                iconColor="brand.primaryDark"
-                onChange={handleChange(item)}
-                isChecked={value.includes(item)}
-              >
-                {item}
-              </Checkbox>
-            </HStack>
-          </MenuItem>
-        ))}
+        <Flex display="flex" gap={1.5} flexWrap="wrap" h="auto">
+          {loading && <Loader />}
+
+          {data?.map((item) => (
+            <Tag
+              key={item}
+              as="button"
+              p={2}
+              rounded="md"
+              color={valx({
+                "brand.gray.800": value.includes(item),
+                "brand.gray.100": !value.includes(item),
+              })}
+              bgColor={valx({
+                "brand.primary": value.includes(item),
+                "brand.gray.600": !value.includes(item),
+              })}
+              onClick={toggle(item)}
+            >
+              {item}
+            </Tag>
+          ))}
+        </Flex>
       </MenuList>
     </Menu>
+  );
+};
+
+const Loader = () => {
+  return (
+    <Center w="full">
+      <Spinner />
+    </Center>
   );
 };
 
