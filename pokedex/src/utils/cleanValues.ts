@@ -8,10 +8,8 @@ const isDictionary = (subject: any): subject is Dictionary =>
 const isDirty = (subject: any): subject is Dirty => {
   // undefined
   if (typeof subject === "undefined") return true;
-
   // null values
   if (subject === null) return true;
-
   // empty string or string that contains nothing but spaces
   if (typeof subject === "string" && subject.trim() === "") return true;
 
