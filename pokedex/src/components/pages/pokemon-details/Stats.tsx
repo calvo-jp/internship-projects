@@ -15,6 +15,7 @@ import { GET_POKEMON_STATS } from "graphql/pokeapi/queries";
 import * as React from "react";
 import services from "services";
 import getColorByType from "utils/pokemons/getColorByType";
+import randomIdGenerator from "utils/randomIdGenerator";
 import {
   GetPokemonStats,
   GetPokemonStatsVariables,
@@ -86,7 +87,7 @@ const Stats = ({ id }: StatsProps) => {
           if (!stat) return null;
 
           return (
-            <Flex align="center" fontWeight="medium" key={stat.id}>
+            <Flex align="center" fontWeight="medium" key={generateId()}>
               <Text w="45px">{stat.label}</Text>
               <AnimatedProgress
                 ml={8}
@@ -173,7 +174,7 @@ const Chips = ({ title, items, loading }: ChipsProps) => {
         {loading && <Spinner />}
         {items.map((item) => (
           <Tag
-            key={item}
+            key={generateId()}
             py={2}
             px={4}
             rounded="full"
@@ -187,4 +188,5 @@ const Chips = ({ title, items, loading }: ChipsProps) => {
   );
 };
 
+const generateId = randomIdGenerator();
 export default Stats;
