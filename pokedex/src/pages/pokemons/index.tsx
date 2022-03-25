@@ -72,24 +72,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
         types: filters,
       },
     }),
-  ];
+  ] as const;
 
-  const results = await Promise.allSettled(requests);
+  const [getPokemonsResult, getPokemonsTotalResult] = await Promise.allSettled(
+    requests
+  );
 
-  let rows: TPokemon[] = [];
-  let totalRows = 0;
+  const rows =
+    getPokemonsResult.status === "fulfilled" && getPokemonsResult.value
+      ? getPokemonsResult.value.data.pokemons
+      : [];
 
-  for (const result of results) {
-    if (result.status === "fulfilled" && result.value) {
-      const data = result.value.data;
-
-      // pokemons
-      if ("pokemons" in data) rows = data.pokemons;
-      // summary
-      if ("summary" in data && data.summary.aggregate)
-        totalRows = data.summary.aggregate.count;
-    }
-  }
+  const totalRows =
+    getPokemonsTotalResult.status === "fulfilled" &&
+    getPokemonsTotalResult.value
+      ? getPokemonsTotalResult.value.data.summary.aggregate?.count ?? 0
+      : 0;
 
   return {
     props: {
@@ -108,7 +106,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 // TODO
 // - Add component for zero or no records found
 const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
-  console.log(search);
   const { basePath } = useRouter();
 
   const navigate = useNavigate();
