@@ -64,6 +64,8 @@ const useSlideshow = <T extends Array<any>>(
     pause,
     slides,
     playing,
+    currentSlide,
+    totalSlides: slides.length,
   };
 };
 
