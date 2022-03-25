@@ -20,7 +20,7 @@ const ListView = ({ data }: ListViewProps) => {
 
   return (
     <GridTable
-      columns="55px 85px 1fr 1fr 1fr"
+      columns={{ base: "55px 85px 1fr 1fr", lg: "55px 85px 1fr 1fr 1fr" }}
       columnsProps={{
         borderBottom: "1px",
         borderColor: "brand.gray.500",
@@ -28,9 +28,13 @@ const ListView = ({ data }: ListViewProps) => {
       }}
     >
       <GridTableRow px={4} py={3}>
-        {"#||Pokemon|Type|Level".split(/\|/).map((heading) => (
-          <GridTableHeading key={heading}>{heading}</GridTableHeading>
-        ))}
+        <GridTableHeading>#</GridTableHeading>
+        <GridTableHeading></GridTableHeading>
+        <GridTableHeading>Pokemon</GridTableHeading>
+        <GridTableHeading>Type</GridTableHeading>
+        <GridTableHeading display={{ base: "none", lg: "block" }}>
+          Level
+        </GridTableHeading>
       </GridTableRow>
 
       {data.map(({ id, name, types }) => (
@@ -71,7 +75,9 @@ const ListView = ({ data }: ListViewProps) => {
                 ))}
             </HStack>
           </GridTableCell>
-          <GridTableCell>Lvl 1</GridTableCell>
+          <GridTableCell display={{ base: "none", lg: "block" }}>
+            Lvl 1
+          </GridTableCell>
         </GridTableRow>
       ))}
     </GridTable>
