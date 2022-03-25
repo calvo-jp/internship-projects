@@ -21,9 +21,15 @@ import loadGravatar from "utils/loadGravatar";
 
 const Header = () => {
   const { loading, profile } = useProfile();
+  const headerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (headerRef.current) revealOnScrollUp(headerRef.current);
+  }, []);
 
   return (
     <Flex
+      ref={headerRef}
       as="header"
       py={{ base: 2, md: 4, lg: 6 }}
       px={{ base: 4, md: 8, lg: 16 }}
@@ -34,6 +40,8 @@ const Header = () => {
       zIndex={100}
       pos="sticky"
       top={0}
+      transitionProperty="position"
+      transitionDuration="slow"
     >
       <Link href="/pokemons" _hover={{ textDecor: "none" }}>
         <Heading as="h1" fontSize="4xl" color="brand.amber.400">
@@ -86,6 +94,16 @@ const Dropdown = () => {
       </MenuList>
     </Menu>
   );
+};
+
+const revealOnScrollUp = (elem: HTMLElement) => {
+  let prevScrollpos = window.pageYOffset;
+
+  window.addEventListener("scroll", () => {
+    const currentScrollPos = window.pageYOffset;
+    elem.style.top = prevScrollpos > currentScrollPos ? "0" : "-100%";
+    prevScrollpos = currentScrollPos;
+  });
 };
 
 export default Header;
