@@ -32,7 +32,14 @@ const Background = () => {
   const pass = undefined;
 
   return (
-    <Box position="absolute" w="full" h="full" top={0} left={0}>
+    <Box
+      position="absolute"
+      w="full"
+      h="full"
+      top={0}
+      left={0}
+      display={{ base: "none", md: "block" }}
+    >
       {backgroundImgs.map(({ src, size, position, placement, rotation }) => (
         <Image
           alt=""
