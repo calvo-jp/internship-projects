@@ -21,7 +21,6 @@ import GridTableRow from "components/widgets/gridTable/GridTableRow";
 import { GET_POKEMON_MOVES } from "graphql/pokeapi/queries";
 import * as React from "react";
 import arrayChunk from "utils/arrayChunk";
-import randomIdGenerator from "utils/randomIdGenerator";
 import unkebab from "utils/unkebab";
 import {
   GetPokemonMoves,
@@ -78,7 +77,7 @@ const QuickMoves = ({ moves }: QuickMovesProps) => {
 
             return (
               <CardTag variant="info" key={move.name}>
-                {move.name}
+                {unkebab(move.name)}
               </CardTag>
             );
           })}
@@ -137,7 +136,7 @@ const MainMoves = ({ moves }: MainMovesProps) => {
         </VStack>
 
         <GridTable columns="repeat(3, 1fr)">
-          <GridTableRow p={2} borderBottom="1px">
+          <GridTableRow p={1} borderBottom="1px">
             {"Damage|DPS|EPS".split(/\|/).map((heading) => (
               <GridTableHeading textAlign="center" key={heading}>
                 {heading}
