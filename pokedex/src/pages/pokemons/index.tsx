@@ -18,7 +18,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import * as React from "react";
 import coalesce from "utils/coalesce";
-import routerQueryValueToIntOrUndefined from "utils/routerQueryToIntOrUndefined";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 import {
   GetPokemonsByTypes,
@@ -44,12 +43,12 @@ interface Props {
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   query,
 }) => {
-  const page = coalesce(routerQueryValueToIntOrUndefined(query.page), 1);
-  const limit = coalesce(routerQueryValueToIntOrUndefined(query.pageSize), 20);
+  const page = coalesce(queryToInt(query.page), 1);
+  const limit = coalesce(queryToInt(query.pageSize), 20);
   const offset = (page - 1) * limit;
 
   // getting types filter encoded via native URLSearchParams.toString()
-  // arrays are joined using commas
+  // where arrays are joined using commas
   const types = [query.types]
     .flat()
     .at(0)
@@ -238,5 +237,19 @@ const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
     </React.Fragment>
   );
 };
+
+type ParsedQueryValue = string | string[] | undefined;
+
+/**
+ *
+ * Attempts to parse query to int
+ *
+ */
+const queryToInt = (subject: ParsedQueryValue) => {
+  const scalar = [subject].flat(1).at(0);
+  if (scalar && isNumeric(scalar)) return parseInt(scalar);
+};
+
+const isNumeric = (value: string) => /\d+/.test(value);
 
 export default Pokemons;
