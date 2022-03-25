@@ -1,4 +1,4 @@
-const getPokemonColorByType = (type: string, defaultColor?: string) => {
+const getColorByType = (type: string, defaultColor?: string) => {
   switch (type.toLowerCase().trim()) {
     case "normal":
       return "#a1a07875";
@@ -41,4 +41,4 @@ const getPokemonColorByType = (type: string, defaultColor?: string) => {
   }
 };
 
-export default getPokemonColorByType;
+export default getColorByType;

@@ -1,6 +1,6 @@
 type Type = "PNG" | "SVG";
 
-const getPokemonImageUrl = (id: number | string, type?: Type) => {
+const getImageUrlById = (id: number | string, type?: Type) => {
   const ext = type === "PNG" ? ".png" : ".svg";
   const cdn =
     type === "PNG"
@@ -10,4 +10,4 @@ const getPokemonImageUrl = (id: number | string, type?: Type) => {
   return cdn + id + ext;
 };
 
-export default getPokemonImageUrl;
+export default getImageUrlById;
