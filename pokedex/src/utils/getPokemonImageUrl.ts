@@ -1,7 +1,11 @@
-const getPokemonImageUrl = (id: number | string) => {
-  const ext = ".svg";
+type Type = "PNG" | "SVG";
+
+const getPokemonImageUrl = (id: number | string, type?: Type) => {
+  const ext = type === "PNG" ? ".png" : ".svg";
   const cdn =
-    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/";
+    type === "PNG"
+      ? "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/"
+      : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/";
 
   return cdn + id + ext;
 };
