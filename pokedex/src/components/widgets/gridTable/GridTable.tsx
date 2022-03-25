@@ -3,7 +3,7 @@ import * as React from "react";
 
 interface GridTableProps {
   columns: GridProps["templateColumns"];
-  columnsProps: GridProps;
+  columnsProps?: GridProps;
 }
 
 const GridTable = ({
