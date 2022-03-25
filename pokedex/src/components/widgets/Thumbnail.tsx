@@ -44,8 +44,8 @@ const Thumbnail = React.forwardRef<
     >
       <ImageWithFallback
         src={src}
-        maxW="88%"
-        maxH="88%"
+        maxW="80%"
+        maxH="80%"
         loader={loader}
         fallback={fallback}
       />
