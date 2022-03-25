@@ -35,6 +35,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
 import capitalize from "utils/capitalize";
+import getPokemonColorByType from "utils/getPokemonColorByType";
 import getPokemonImageUrl from "utils/getPokemonImageUrl";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
@@ -194,7 +195,7 @@ const RightPane = ({ data }: RightPaneProps) => {
                 px={4}
                 key={id}
                 color="brand.gray.50"
-                bgColor="brand.red.500"
+                bgColor={getPokemonColorByType(type.name, "brand.gray.800")}
                 rounded="full"
               >
                 {type.name}
