@@ -1,4 +1,7 @@
+import apolloClient from "config/apollo/client";
+import { GET_POKEMON_TYPES } from "graphql/pokeapi/queries";
 import { GetPokemonStats } from "__generated__/GetPokemonStats";
+import { GetPokemonTypes } from "__generated__/GetPokemonTypes";
 
 type Types = NonNullable<GetPokemonStats["pokemon"]>["types"];
 
@@ -54,9 +57,22 @@ const resistance = async (types: Types) => {
   }, []);
 };
 
+const types = {
+  read: {
+    async all() {
+      const { data } = await apolloClient.query<GetPokemonTypes>({
+        query: GET_POKEMON_TYPES,
+      });
+
+      return data.types.map(({ name }) => name);
+    },
+  },
+};
+
 const pokemons = {
   weaknesses,
   resistance,
+  types,
 };
 
 export default pokemons;
