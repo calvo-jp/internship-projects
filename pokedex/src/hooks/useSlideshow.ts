@@ -9,10 +9,9 @@ interface Config {
   onSlideChange?: (currentSlide: number) => void;
 }
 
-const useSlideshow = <T extends Array<any>>(
-  data: T,
-  { autoPlay, itemsPerSlide, onSlideChange, delay }: Config = {}
-) => {
+const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
+  const { autoPlay, itemsPerSlide, onSlideChange, delay } = config ?? {};
+
   const [slides, setSlides] = React.useState<T[]>([]);
   const [playing, setPlaying] = React.useState(true);
   const [currentSlide, setCurrentSlide] = React.useState(1);
@@ -57,6 +56,8 @@ const useSlideshow = <T extends Array<any>>(
     return () => clearTimeout(timeout);
   }, [autoPlay, currentSlide, delay, next, onSlideChange, playing]);
 
+  const totalSlides = slides.length;
+
   return {
     next,
     prev,
@@ -64,8 +65,8 @@ const useSlideshow = <T extends Array<any>>(
     pause,
     slides,
     playing,
+    totalSlides,
     currentSlide,
-    totalSlides: slides.length,
   };
 };
 
