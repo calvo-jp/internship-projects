@@ -1,43 +1,43 @@
-const getPokemonColorByType = (type: string) => {
+const getPokemonColorByType = (type: string, defaultColor?: string) => {
   switch (type.toLowerCase().trim()) {
     case "normal":
-      return "brand.gray.600";
+      return "#a1a07875";
     case "fire":
-      return "#F08030";
+      return "#db4c0094";
     case "water":
-      return "#537EC5";
+      return "#497ce7d6";
     case "grass":
-      return "#3e8b17";
+      return "#5bb32f94";
     case "electric":
-      return "#FFD700";
+      return "#bd9a0ac2";
     case "ice":
-      return "#128989";
+      return "#5dada994";
     case "fighting":
-      return "#C03028";
+      return "#d3484394";
     case "poison":
-      return "#A040A0";
+      return "#681a6794";
     case "ground":
-      return "#E0C068";
+      return "#997e3994";
     case "flying":
-      return "#8968ef";
+      return "#6c50bd94";
     case "psychic":
-      return "#a9256e";
+      return "#d9457294";
     case "bug":
-      return "#A8B820";
+      return "#8a9b1194";
     case "rock":
-      return "#B8A038";
+      return "#917d1b94";
     case "ghost":
-      return "#705898";
+      return "#b276ff94";
     case "dark":
-      return "#705848";
+      return "#85604894";
     case "dragon":
-      return "#442d7c";
+      return "#7e49ff94";
     case "steel":
-      return "#767373";
+      return "#b2b2d166";
     case "fairy":
-      return "#F0B6BC";
+      return "#e374ab94";
     default:
-      return "";
+      return defaultColor;
   }
 };
 
