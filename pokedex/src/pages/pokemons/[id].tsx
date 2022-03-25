@@ -183,7 +183,7 @@ const RightPane = ({ data }: RightPaneProps) => {
   };
 
   return (
-    <Box w={{ xl: "799px", base: "auto" }}>
+    <Box w={{ base: "full", xl: "799px" }}>
       <VStack spacing={6} align={{ base: "center", lg: "start" }}>
         <Heading>{data.name}</Heading>
         <HStack>
