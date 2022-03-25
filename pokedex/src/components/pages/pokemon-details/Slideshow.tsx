@@ -133,14 +133,14 @@ const SlideItem = ({ id }: { id: number }) => {
     <Link passHref href={"/pokemons/" + id}>
       <Flex
         as="a"
-        w="57px"
-        h="57px"
+        width="57px"
+        height="57px"
+        padding={2}
         rounded="sm"
         bgColor="brand.gray.800"
         align="center"
         justify="center"
         tabIndex={-1}
-        p={2}
       >
         <ImageWithFallback
           maxW="80%"
