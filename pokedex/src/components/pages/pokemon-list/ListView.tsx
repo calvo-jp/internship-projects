@@ -20,10 +20,10 @@ const ListView = ({ data }: ListViewProps) => {
 
   return (
     <GridTable
-      columns="49px 75px 1fr 1fr 1fr"
+      columns="55px 85px 1fr 1fr 1fr"
       columnsProps={{
         borderBottom: "1px",
-        borderColor: "brand.gray.600",
+        borderColor: "brand.gray.500",
         bgColor: "brand.gray.700",
       }}
     >
@@ -38,8 +38,9 @@ const ListView = ({ data }: ListViewProps) => {
           key={id}
           py={2}
           px={4}
-          _hover={{ bgColor: "brand.gray.600" }}
-          _focus={{ bgColor: "brand.gray.600", outline: "none" }}
+          cursor="pointer"
+          _hover={{ bgColor: "#323c4a" }}
+          _focus={{ bgColor: "#323c4a", outline: "none" }}
           onClick={handleClick(id)}
           tabIndex={1}
         >
@@ -60,7 +61,11 @@ const ListView = ({ data }: ListViewProps) => {
               {types
                 .map((type) => type.type?.name || "")
                 .map((type) => (
-                  <Tag key={type} bgColor="brand.gray.600" rounded="lg">
+                  <Tag
+                    key={type}
+                    bgColor={getPokemonColorByType(type) ?? "brand.gray.600"}
+                    rounded="lg"
+                  >
                     {type}
                   </Tag>
                 ))}
