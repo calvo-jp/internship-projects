@@ -18,6 +18,7 @@ export const GET_POKEMONS = gql`
     pokemons: pokemon_v2_pokemon(
       limit: $limit
       offset: $offset
+      order_by: { id: asc }
       where: {
         pokemon_v2_pokemontypes: { pokemon_v2_type: { name: { _in: $types } } }
       }
