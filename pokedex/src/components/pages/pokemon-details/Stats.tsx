@@ -71,6 +71,7 @@ const Stats = ({ id }: StatsProps) => {
         };
       }
     }),
+    // include experience
     {
       id,
       value: data.pokemon.experience ?? 0,
@@ -131,26 +132,7 @@ const Weakness = ({ types }: WeaknessProps) => {
     };
   }, [types]);
 
-  return (
-    <Card w="full" bgColor="others.gray.800">
-      <CardHeading>Weaknesses</CardHeading>
-
-      <Flex mt={6} gap={2} wrap="wrap">
-        {loading && <Spinner />}
-        {weaknesses.map((weakness) => (
-          <Tag
-            key={weakness}
-            py={2}
-            px={4}
-            rounded="full"
-            bgColor={getColorByType(weakness, "brand.gray.800")}
-          >
-            <TagLabel>{weakness}</TagLabel>
-          </Tag>
-        ))}
-      </Flex>
-    </Card>
-  );
+  return <Chips title="Weaknesses" items={weaknesses} loading={loading} />;
 };
 
 interface ResistanceProps {
@@ -173,21 +155,31 @@ const Resistance = ({ types }: ResistanceProps) => {
     };
   }, [types]);
 
+  return <Chips title="Resistant" items={resistance} loading={loading} />;
+};
+
+interface ChipsProps {
+  title: string;
+  items: string[];
+  loading?: boolean;
+}
+
+const Chips = ({ title, items, loading }: ChipsProps) => {
   return (
     <Card w="full" bgColor="others.gray.800">
-      <CardHeading>Resistant</CardHeading>
+      <CardHeading>{title}</CardHeading>
 
       <Flex mt={6} gap={2} wrap="wrap">
         {loading && <Spinner />}
-        {resistance.map((value) => (
+        {items.map((item) => (
           <Tag
-            key={value}
+            key={item}
             py={2}
             px={4}
             rounded="full"
-            bgColor={getColorByType(value, "brand.gray.800")}
+            bgColor={getColorByType(item, "brand.gray.800")}
           >
-            <TagLabel>{value}</TagLabel>
+            <TagLabel>{item}</TagLabel>
           </Tag>
         ))}
       </Flex>
