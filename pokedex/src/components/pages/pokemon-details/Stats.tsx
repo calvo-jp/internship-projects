@@ -14,7 +14,7 @@ import CardHeading from "components/widgets/card/CardHeading";
 import { GET_POKEMON_STATS } from "graphql/pokeapi/queries";
 import * as React from "react";
 import services from "services";
-import getPokemonColorByType from "utils/getPokemonColorByType";
+import getColorByType from "utils/pokemons/getColorByType";
 import {
   GetPokemonStats,
   GetPokemonStatsVariables,
@@ -143,7 +143,7 @@ const Weakness = ({ types }: WeaknessProps) => {
             py={2}
             px={4}
             rounded="full"
-            bgColor={getPokemonColorByType(weakness, "brand.gray.800")}
+            bgColor={getColorByType(weakness, "brand.gray.800")}
           >
             <TagLabel>{weakness}</TagLabel>
           </Tag>
@@ -185,7 +185,7 @@ const Resistance = ({ types }: ResistanceProps) => {
             py={2}
             px={4}
             rounded="full"
-            bgColor={getPokemonColorByType(value, "brand.gray.800")}
+            bgColor={getColorByType(value, "brand.gray.800")}
           >
             <TagLabel>{value}</TagLabel>
           </Tag>

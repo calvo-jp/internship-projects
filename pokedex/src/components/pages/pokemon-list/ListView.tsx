@@ -5,8 +5,8 @@ import GridTableHeading from "components/widgets/gridTable/GridTableHeading";
 import GridTableRow from "components/widgets/gridTable/GridTableRow";
 import Thumbnail from "components/widgets/Thumbnail";
 import { useRouter } from "next/router";
-import getPokemonColorByType from "utils/getPokemonColorByType";
-import getPokemonImageUrl from "utils/getPokemonImageUrl";
+import getColorByType from "utils/pokemons/getColorByType";
+import getImageUrlById from "utils/pokemons/getImageUrlById";
 import unkebab from "utils/unkebab";
 import { GetPokemons } from "__generated__/GetPokemons";
 
@@ -49,7 +49,7 @@ const ListView = ({ data }: ListViewProps) => {
             <Thumbnail
               w="32px"
               h="32px"
-              src={getPokemonImageUrl(id)}
+              src={getImageUrlById(id)}
               bgColor="transparent"
               shadow="none"
               loader={<Spinner size="md" />}
@@ -63,7 +63,7 @@ const ListView = ({ data }: ListViewProps) => {
                 .map((type) => (
                   <Tag
                     key={type}
-                    bgColor={getPokemonColorByType(type) ?? "brand.gray.600"}
+                    bgColor={getColorByType(type) ?? "brand.gray.600"}
                     rounded="lg"
                   >
                     {type}

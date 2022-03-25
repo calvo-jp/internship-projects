@@ -16,7 +16,7 @@ import useSlideshow from "hooks/useSlideshow";
 import useStore from "hooks/useStore";
 import Link from "next/link";
 import * as React from "react";
-import getPokemonImageUrl from "utils/getPokemonImageUrl";
+import getImageUrlById from "utils/pokemons/getImageUrlById";
 import randomIdGenerator from "utils/randomIdGenerator";
 
 const Slideshow = () => {
@@ -145,7 +145,7 @@ const SlideItem = ({ id }: { id: number }) => {
         <ImageWithFallback
           maxW="80%"
           maxH="80%"
-          src={getPokemonImageUrl(id)}
+          src={getImageUrlById(id)}
           alt=""
           loader={<Spinner />}
         />

@@ -7,7 +7,6 @@ import {
   Heading,
   HStack,
   Icon,
-  Skeleton,
   Spinner,
   Tab,
   TabList,
@@ -35,8 +34,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
 import capitalize from "utils/capitalize";
-import getPokemonColorByType from "utils/getPokemonColorByType";
-import getPokemonImageUrl from "utils/getPokemonImageUrl";
+import getColorByType from "utils/pokemons/getColorByType";
+import getImageUrlById from "utils/pokemons/getImageUrlById";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
@@ -156,7 +155,7 @@ const LeftPane = ({ data }: LeftPaneProps) => {
         h="390px"
         w="325px"
         bgColor="brand.gray.800"
-        src={getPokemonImageUrl(data.id)}
+        src={getImageUrlById(data.id)}
         loader={<Spinner size="xl" />}
       />
 
@@ -195,7 +194,7 @@ const RightPane = ({ data }: RightPaneProps) => {
                 px={4}
                 key={id}
                 color="brand.gray.50"
-                bgColor={getPokemonColorByType(type.name, "brand.gray.800")}
+                bgColor={getColorByType(type.name, "brand.gray.800")}
                 rounded="full"
               >
                 {type.name}

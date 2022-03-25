@@ -15,7 +15,7 @@ import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
 import Link from "next/link";
 import * as React from "react";
 import capitalize from "utils/capitalize";
-import getPokemonImageUrl from "utils/getPokemonImageUrl";
+import getImageUrlById from "utils/pokemons/getImageUrlById";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import {
   GetPokemonEvolution,
@@ -86,7 +86,7 @@ const Evolution = ({ id }: EvolutionProps) => {
                       as="a"
                       w="88px"
                       h="88px"
-                      src={getPokemonImageUrl(evolvesFromSpeciesId ?? id)}
+                      src={getImageUrlById(evolvesFromSpeciesId ?? id)}
                     />
                   </Link>
                   <PokemonName id={evolvesFromSpeciesId ?? id} />
@@ -107,7 +107,7 @@ const Evolution = ({ id }: EvolutionProps) => {
                       as="a"
                       w="88px"
                       h="88px"
-                      src={getPokemonImageUrl(id)}
+                      src={getImageUrlById(id)}
                     />
                   </Link>
                   <Text fontSize="sm">{name}</Text>

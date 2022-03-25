@@ -1,7 +1,7 @@
 import { SimpleGrid, Spinner } from "@chakra-ui/react";
 import Thumbnail from "components/widgets/Thumbnail";
 import Link from "next/link";
-import getPokemonImageUrl from "utils/getPokemonImageUrl";
+import getImageUrlById from "utils/pokemons/getImageUrlById";
 import { GetPokemons } from "__generated__/GetPokemons";
 
 type Pokemon = GetPokemons["pokemons"][number];
@@ -30,7 +30,7 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
       <Thumbnail
         as="a"
         h="260px"
-        src={getPokemonImageUrl(data.id)}
+        src={getImageUrlById(data.id)}
         loader={<Spinner size="xl" />}
       />
     </Link>
