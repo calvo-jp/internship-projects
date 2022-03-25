@@ -23,3 +23,7 @@ export interface GetPokemonsTotal {
    */
   summary: GetPokemonsTotal_summary;
 }
+
+export interface GetPokemonsTotalVariables {
+  types: string[];
+}

@@ -7,7 +7,7 @@
 // GraphQL query operation: GetPokemonTypes
 // ====================================================
 
-export interface GetPokemonTypes_pokemon_v2_type {
+export interface GetPokemonTypes_types {
   __typename: "pokemon_v2_type";
   name: string;
 }
@@ -16,5 +16,5 @@ export interface GetPokemonTypes {
   /**
    * fetch data from the table: "pokemon_v2_type"
    */
-  pokemon_v2_type: GetPokemonTypes_pokemon_v2_type[];
+  types: GetPokemonTypes_types[];
 }

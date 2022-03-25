@@ -33,6 +33,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
+import services from "services";
 import capitalize from "utils/capitalize";
 import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
@@ -48,8 +49,9 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const result = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
     query: GET_POKEMONS,
     variables: {
-      limit: 100,
+      limit: 50,
       offset: 0,
+      types: await services.pokemons.types.read.all(),
     },
   });
 

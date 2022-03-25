@@ -41,4 +41,5 @@ export interface GetPokemons {
 export interface GetPokemonsVariables {
   limit?: number | null;
   offset?: number | null;
+  types: string[];
 }

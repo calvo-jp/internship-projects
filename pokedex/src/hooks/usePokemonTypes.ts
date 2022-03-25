@@ -8,7 +8,7 @@ const usePokemonTypes = () => {
   return {
     loading,
     error,
-    data: data?.pokemon_v2_type
+    data: data?.types
       .map(({ name }) => name)
       .filter((value) => value !== "unknown"),
   };

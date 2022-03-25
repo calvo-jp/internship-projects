@@ -14,27 +14,7 @@ export const CORE_POKEMON_DETAILS = gql`
 `;
 
 export const GET_POKEMONS = gql`
-  query GetPokemons($limit: Int, $offset: Int) {
-    pokemons: pokemon_v2_pokemon(limit: $limit, offset: $offset) {
-      ...CorePokemonDetails
-    }
-  }
-
-  ${CORE_POKEMON_DETAILS}
-`;
-
-export const GET_POKEMONS_TOTAL = gql`
-  query GetPokemonsTotal {
-    summary: pokemon_v2_pokemon_aggregate {
-      aggregate {
-        count(columns: id, distinct: true)
-      }
-    }
-  }
-`;
-
-export const GET_POKEMONS_BY_TYPES = gql`
-  query GetPokemonsByTypes($limit: Int, $offset: Int, $types: [String!]) {
+  query GetPokemons($limit: Int, $offset: Int, $types: [String!]!) {
     pokemons: pokemon_v2_pokemon(
       limit: $limit
       offset: $offset
@@ -49,8 +29,8 @@ export const GET_POKEMONS_BY_TYPES = gql`
   ${CORE_POKEMON_DETAILS}
 `;
 
-export const GET_POKEMONS_TOTAL_BY_TYPES = gql`
-  query GetPokemonsTotalByTypes($types: [String!]) {
+export const GET_POKEMONS_TOTAL = gql`
+  query GetPokemonsTotal($types: [String!]!) {
     summary: pokemon_v2_pokemon_aggregate(
       where: {
         pokemon_v2_pokemontypes: { pokemon_v2_type: { name: { _in: $types } } }
@@ -171,9 +151,14 @@ export const GET_POKEMON_EVOLUTION = gql`
   }
 `;
 
+/**
+ *
+ * Gets all pokemon types eg. fire, dragon, etc.
+ *
+ */
 export const GET_POKEMON_TYPES = gql`
   query GetPokemonTypes {
-    pokemon_v2_type {
+    types: pokemon_v2_type {
       name
     }
   }

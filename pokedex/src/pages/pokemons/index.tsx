@@ -5,26 +5,20 @@ import ListView from "components/pages/pokemon-list/ListView";
 import Pagination from "components/pages/pokemon-list/Pagination";
 import Toolbar from "components/pages/pokemon-list/Toolbar";
 import apolloClient from "config/apollo/client";
-import {
-  GET_POKEMONS,
-  GET_POKEMONS_BY_TYPES,
-  GET_POKEMONS_TOTAL,
-  GET_POKEMONS_TOTAL_BY_TYPES,
-} from "graphql/pokeapi/queries";
+import { GET_POKEMONS, GET_POKEMONS_TOTAL } from "graphql/pokeapi/queries";
 import useNavigate from "hooks/useNavigate";
 import useStore from "hooks/useStore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import * as React from "react";
+import services from "services";
 import coalesce from "utils/coalesce";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 import {
-  GetPokemonsByTypes,
-  GetPokemonsByTypesVariables,
-} from "__generated__/GetPokemonsByTypes";
-import { GetPokemonsTotal } from "__generated__/GetPokemonsTotal";
-import { GetPokemonsTotalByTypesVariables } from "__generated__/GetPokemonsTotalByTypes";
+  GetPokemonsTotal,
+  GetPokemonsTotalVariables,
+} from "__generated__/GetPokemonsTotal";
 
 type TPokemon = GetPokemons["pokemons"][number];
 
@@ -33,7 +27,7 @@ interface Props {
   page: number;
   pageSize: number;
   hasNext: boolean;
-  count: number;
+  totalRows: number;
   search?: {
     types?: string[];
   };
@@ -47,77 +41,20 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const limit = coalesce(queryToInt(query.pageSize), 20);
   const offset = (page - 1) * limit;
 
-  // getting types filter encoded via native URLSearchParams.toString()
+  // Getting types filter encoded via native URLSearchParams.toString()
   // where arrays are joined using commas
-  const types = [query.types]
-    .flat()
-    .at(0)
-    ?.split(/\,/g)
-    .map((value) => value.trim().toLowerCase())
-    .filter((value) => value.length > 0);
+  const types =
+    [query.types]
+      .flat()
+      .at(0)
+      ?.split(/\,/g)
+      .map((value) => value.trim().toLowerCase())
+      .filter((value) => value.length > 0) ?? [];
 
-  //
-  // =================
-  // FILTERED BY TYPES
-  // =================
-  //
-
-  if (types && types.length > 0) {
-    const requests = [
-      apolloClient.query<GetPokemonsTotal, GetPokemonsTotalByTypesVariables>({
-        query: GET_POKEMONS_TOTAL_BY_TYPES,
-        variables: {
-          types,
-        },
-      }),
-
-      apolloClient.query<GetPokemonsByTypes, GetPokemonsByTypesVariables>({
-        query: GET_POKEMONS_BY_TYPES,
-        variables: {
-          limit,
-          offset,
-          types,
-        },
-      }),
-    ];
-
-    const results = await Promise.allSettled(requests);
-
-    let rows: TPokemon[] = [];
-    let count = 0;
-
-    for (const result of results) {
-      if (result.status === "fulfilled" && result.value) {
-        const data = result.value.data;
-
-        // pokemons
-        if ("pokemons" in data) rows = data.pokemons;
-
-        // summary
-        if ("summary" in data && data.summary.aggregate)
-          count = data.summary.aggregate.count;
-      }
-    }
-
-    return {
-      props: {
-        page,
-        pageSize: limit,
-        rows,
-        hasNext: count > page * limit,
-        count,
-        search: {
-          types,
-        },
-      },
-    };
-  }
-
-  //
-  // ==============
-  // WITHOUT FILTER
-  // ==============
-  //
+  // There is an issue when not passing filter to apollo query
+  // even if it is already optional.
+  const filters =
+    types.length > 0 ? types : await services.pokemons.types.read.all();
 
   const requests = [
     apolloClient.query<GetPokemons, GetPokemonsVariables>({
@@ -125,18 +62,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       variables: {
         limit,
         offset,
+        types: filters,
       },
     }),
 
-    apolloClient.query<GetPokemonsTotal>({
+    apolloClient.query<GetPokemonsTotal, GetPokemonsTotalVariables>({
       query: GET_POKEMONS_TOTAL,
+      variables: {
+        types: filters,
+      },
     }),
   ];
 
-  let rows: TPokemon[] = [];
-  let count = 0;
-
   const results = await Promise.allSettled(requests);
+
+  let rows: TPokemon[] = [];
+  let totalRows = 0;
 
   for (const result of results) {
     if (result.status === "fulfilled" && result.value) {
@@ -144,10 +85,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
       // pokemons
       if ("pokemons" in data) rows = data.pokemons;
-
       // summary
       if ("summary" in data && data.summary.aggregate)
-        count = data.summary.aggregate.count;
+        totalRows = data.summary.aggregate.count;
     }
   }
 
@@ -156,16 +96,21 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       page,
       pageSize: limit,
       rows,
-      count,
-      hasNext: count > page * limit,
+      totalRows,
+      hasNext: totalRows > page * limit,
+      search: {
+        types,
+      },
     },
   };
 };
 
 // TODO
 // - Add component for zero or no records found
-const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
-  const router = useRouter();
+const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
+  console.log(search);
+  const { basePath } = useRouter();
+
   const navigate = useNavigate();
 
   const listView = useStore((state) => state.listView);
@@ -174,7 +119,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
   const next = () => {
     if (!hasNext) return;
 
-    navigate(router.basePath, {
+    navigate(basePath, {
       page: page + 1,
       pageSize,
       types: search?.types,
@@ -184,7 +129,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
   const prev = () => {
     if (page <= 1) return;
 
-    navigate(router.basePath, {
+    navigate(basePath, {
       page: page - 1,
       pageSize,
       types: search?.types,
@@ -192,7 +137,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, count, search }: Props) => {
   };
 
   const filter = (types: string[]) => {
-    navigate(router.basePath, {
+    navigate(basePath, {
       page,
       pageSize,
       types,
@@ -242,7 +187,7 @@ type ParsedQueryValue = string | string[] | undefined;
 
 /**
  *
- * Attempts to parse query to int
+ * Parses query to int or returns undefined
  *
  */
 const queryToInt = (subject: ParsedQueryValue) => {
