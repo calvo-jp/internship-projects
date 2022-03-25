@@ -130,7 +130,7 @@ const PokemonName = ({ id }: { id: number }) => {
   return (
     <Text fontSize="sm">
       {loading && "loading..."}
-      {!loading && data?.pokemon ? data.pokemon.name : "unknown"}
+      {!loading && (data?.pokemon?.name ?? "unknown")}
     </Text>
   );
 };
