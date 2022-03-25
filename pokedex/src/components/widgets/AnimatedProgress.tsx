@@ -13,6 +13,8 @@ const AnimatedProgress = ({
     if (maxValue && value < maxValue) setValue((old) => old + 1);
   }, [maxValue, value]);
 
+  React.useEffect(() => () => setValue(0), []);
+
   return <Progress value={value} {...props} />;
 };
 
