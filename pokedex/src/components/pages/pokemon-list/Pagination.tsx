@@ -19,33 +19,30 @@ const Pagination = ({
   const itemsPerSlide = 5;
   const startSlideIndex = Math.ceil(page / itemsPerSlide);
   const totalPages = Math.ceil(totalRows / pageSize);
+  const slideItems = new Array<number>(totalPages).fill(1).map((v, i) => v + i);
 
-  const { slides, currentSlide, next, prev } = useSlideshow<number[]>(
-    new Array(totalPages).fill(1).map((value, index) => value + index),
-    {
-      itemsPerSlide,
-      currentSlide: startSlideIndex,
-    }
-  );
+  const { slides, currentSlide, next, prev } = useSlideshow(slideItems, {
+    itemsPerSlide,
+    currentSlide: startSlideIndex,
+  });
 
   const hasNext = page * pageSize < totalRows;
   const hasPrev = page > 1;
 
   const handleNext = () => {
     if (!hasNext) return;
-    onPageChange(page + 1);
     if (page % itemsPerSlide === 0) next();
+    onPageChange(page + 1);
   };
 
   const handlePrevious = () => {
     if (!hasPrev) return;
-    onPageChange(page - 1);
     if (page % itemsPerSlide === 1) prev();
+    onPageChange(page - 1);
   };
 
-  const handleClick = (page: number) => {
-    return () => onPageChange(page);
-  };
+  const handleClick = (page: number) => () => onPageChange(page);
+  const selectedSlideIndex = currentSlide - 1;
 
   return (
     <Center>
@@ -54,7 +51,7 @@ const Pagination = ({
           <Icon as={ChevronLeftIcon} />
         </PageButton>
 
-        {slides.at(currentSlide - 1)?.map((number) => (
+        {slides.at(selectedSlideIndex)?.map((number) => (
           <PageButton
             key={number}
             active={page === number}
