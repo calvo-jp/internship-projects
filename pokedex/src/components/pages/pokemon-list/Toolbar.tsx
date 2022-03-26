@@ -24,10 +24,10 @@ interface ToolbarProps {
   /** aka. pokemon types */
   filters?: string[];
   /** aka. onChange */
-  onFilter: (values: string[]) => void;
+  onFilterChange: (value: string[]) => void;
 }
 
-const Toolbar = ({ filters, onFilter }: ToolbarProps) => {
+const Toolbar = ({ filters, onFilterChange }: ToolbarProps) => {
   const toggleListView = useStore((state) => state.toggleListView);
 
   const handleToggle = (value?: boolean) => () => toggleListView(value);
@@ -35,7 +35,7 @@ const Toolbar = ({ filters, onFilter }: ToolbarProps) => {
   return (
     <Wrap spacing={8}>
       <WrapItem>
-        <FilterTool value={filters} onChange={onFilter} />
+        <FilterTool value={filters} onChange={onFilterChange} />
       </WrapItem>
       <WrapItem>
         <button onClick={handleToggle(true)}>

@@ -1,24 +1,35 @@
 import { Box, Center, HStack, Icon } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import * as React from "react";
+import IPaginated from "types/paginated";
 import valx from "utils/valx";
 
-interface PaginationProps {
-  onNext: () => void;
-  onPrev: () => void;
+interface PaginationProps extends Omit<IPaginated, "rows"> {
+  onPageChange: (page: number) => void;
 }
 
-const Pagination = ({ onNext, onPrev }: PaginationProps) => {
+const Pagination = ({
+  onPageChange,
+  page,
+  hasNext,
+  totalRows,
+  pageSize,
+}: PaginationProps) => {
+  const previous = () => {
+    if (page > 1) onPageChange(page - 1);
+  };
+
+  const next = () => {
+    if (hasNext) onPageChange(page + 1);
+  };
+
   return (
     <Center>
       <HStack spacing={2}>
-        <PageButton onClick={onPrev}>
+        <PageButton onClick={previous}>
           <Icon as={ChevronLeftIcon} />
         </PageButton>
-        <PageButton>1</PageButton>
-        <PageButton active>2</PageButton>
-        <PageButton>3</PageButton>
-        <PageButton onClick={onNext}>
+        <PageButton onClick={next}>
           <Icon as={ChevronRightIcon} />
         </PageButton>
       </HStack>

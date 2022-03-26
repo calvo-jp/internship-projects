@@ -13,6 +13,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import * as React from "react";
 import services from "services";
+import IPaginated from "types/paginated";
 import coalesce from "utils/coalesce";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 import {
@@ -22,12 +23,7 @@ import {
 
 type TPokemon = GetPokemons["pokemons"][number];
 
-interface Props {
-  rows: TPokemon[];
-  page: number;
-  pageSize: number;
-  hasNext: boolean;
-  totalRows: number;
+interface Props extends IPaginated<TPokemon> {
   search?: {
     types?: string[];
   };
@@ -106,7 +102,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
 // TODO
 // - Add component for zero or no records found
-const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
+const Pokemons = ({
+  rows,
+  page,
+  pageSize,
+  totalRows,
+  hasNext,
+  search,
+}: Props) => {
   const { basePath } = useRouter();
 
   const navigate = useNavigate();
@@ -114,27 +117,15 @@ const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
   const listView = useStore((state) => state.listView);
   const [view, setView] = React.useState<"grid" | "list">("grid");
 
-  const next = () => {
-    if (!hasNext) return;
-
+  const handlePageChange = (newPage: number) => {
     navigate(basePath, {
-      page: page + 1,
+      page: newPage,
       pageSize,
       types: search?.types,
     });
   };
 
-  const prev = () => {
-    if (page <= 1) return;
-
-    navigate(basePath, {
-      page: page - 1,
-      pageSize,
-      types: search?.types,
-    });
-  };
-
-  const filter = (types: string[]) => {
+  const handleFilter = (types: string[]) => {
     navigate(basePath, {
       page,
       pageSize,
@@ -163,7 +154,7 @@ const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
               Choose Pokemon
             </Heading>
 
-            <Toolbar filters={search?.types} onFilter={filter} />
+            <Toolbar filters={search?.types} onFilterChange={handleFilter} />
           </HStack>
 
           <Flex
@@ -175,7 +166,13 @@ const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
             {view === "list" && <ListView data={rows} />}
             {view === "grid" && <GridView data={rows} />}
 
-            <Pagination onNext={next} onPrev={prev} />
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              totalRows={totalRows}
+              hasNext={hasNext}
+              onPageChange={handlePageChange}
+            />
           </Flex>
         </Box>
       </HomepageLayout>
