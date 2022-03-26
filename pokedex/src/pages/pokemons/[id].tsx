@@ -106,7 +106,7 @@ const Pokemon = ({ pokemon }: Props) => {
       </Head>
 
       <HomepageLayout>
-        <Box w="fit-content" mx="auto" p={6} pb={20}>
+        <Box p={6} pb={20} maxW="container.xl" mx="auto">
           <Breadcrumb
             as="section"
             fontSize="sm"
@@ -125,8 +125,8 @@ const Pokemon = ({ pokemon }: Props) => {
 
           <Flex
             as="section"
-            gap={16}
             mt={14}
+            gap={16}
             direction={{ base: "column", lg: "row" }}
           >
             <LeftPane data={pokemon} />
@@ -184,7 +184,7 @@ const RightPane = ({ data }: RightPaneProps) => {
 
   return (
     <Box w={{ base: "full", xl: "799px" }}>
-      <VStack spacing={6} align={{ base: "center", lg: "start" }}>
+      <VStack spacing={6} align={{ base: "center", lg: "start" }} w="full">
         <Heading>{data.name}</Heading>
         <HStack>
           {data.types.map(({ type, id }) => {
@@ -213,12 +213,9 @@ const RightPane = ({ data }: RightPaneProps) => {
         onChange={handleChange}
         index={currentTabIdx}
         lazyBehavior="keepMounted"
+        w="full"
       >
-        <TabList
-          gap={4}
-          flexWrap="wrap"
-          justifyContent={{ base: "center", lg: "start" }}
-        >
+        <TabList gap={4} flexWrap="wrap" justifyContent={{ lg: "start" }}>
           {tabs.map((tab) => (
             <Tab
               key={tab}
@@ -237,7 +234,7 @@ const RightPane = ({ data }: RightPaneProps) => {
           ))}
         </TabList>
 
-        <TabPanels mt={14}>
+        <TabPanels mt={14} w="full">
           <TabPanel p={0}>
             <About data={data} />
           </TabPanel>
