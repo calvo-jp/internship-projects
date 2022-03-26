@@ -73,7 +73,7 @@ interface Props {
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const id = parseInt(params!.id);
+  const id = params ? parseInt(params.id) : NaN;
 
   if (Number.isNaN(id)) return { notFound: true };
 
