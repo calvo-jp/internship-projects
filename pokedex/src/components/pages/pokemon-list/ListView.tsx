@@ -67,7 +67,7 @@ const ListView = ({ data }: ListViewProps) => {
                 .map((type) => (
                   <Tag
                     key={type}
-                    bgColor={getColorByType(type) ?? "brand.gray.600"}
+                    bgColor={getColorByType(type, { mode: "dark" })}
                     rounded="lg"
                   >
                     {type}
