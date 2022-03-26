@@ -54,7 +54,11 @@ const getColorByType = (type: string, config: Config = {}) => {
     case "fairy":
       return dark ? "#e374ab94" : "#e374ab";
     default:
-      return config.fallback;
+      return config.fallback
+        ? config.fallback
+        : dark
+        ? "brand.gray.600"
+        : "brand.gray.500";
   }
 };
 
