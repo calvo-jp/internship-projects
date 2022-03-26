@@ -5,31 +5,46 @@ interface Config {
   /** ms to wait before going to next slide */
   delay?: number;
   autoPlay?: boolean;
+  /** start to a specific slide number */
+  currentSlide?: number;
   itemsPerSlide?: number;
   onSlideChange?: (currentSlide: number) => void;
 }
 
-const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
-  const { autoPlay, itemsPerSlide, onSlideChange, delay } = config ?? {};
+const useSlideshow = <T extends Array<any>>(data: T, config: Config = {}) => {
+  const slides = arrayChunk(data, config.itemsPerSlide ?? 1);
+  const totalSlides = slides.length;
 
-  const [slides, setSlides] = React.useState<T[]>([]);
-  const [playing, setPlaying] = React.useState(true);
-  const [currentSlide, setCurrentSlide] = React.useState(1);
+  const [playing, setPlaying] = React.useState(config.autoPlay ?? true);
+  const [currentSlide, setCurrentSlide] = React.useState(
+    config.currentSlide ?? 1
+  );
 
-  const increment = () => setCurrentSlide((current) => current + 1);
-  const decrement = () => setCurrentSlide((current) => current - 1);
+  const increment = React.useCallback(() => {
+    setCurrentSlide((old) => {
+      const current = old + 1;
+      config.onSlideChange?.(current);
+      return current;
+    });
+  }, [config]);
+
+  const decrement = React.useCallback(() => {
+    setCurrentSlide((old) => {
+      const current = old - 1;
+      config.onSlideChange?.(current);
+      return current;
+    });
+  }, [config]);
 
   const prev = React.useCallback(() => {
     if (currentSlide > 1) return decrement();
-    // go to last slide
     setCurrentSlide(slides.length);
-  }, [currentSlide, slides.length]);
+  }, [currentSlide, decrement, slides.length]);
 
   const next = React.useCallback(() => {
     if (currentSlide < slides.length) return increment();
-    // go to first slide
     setCurrentSlide(1);
-  }, [currentSlide, slides.length]);
+  }, [currentSlide, increment, slides.length]);
 
   const pause = React.useCallback(() => {
     setPlaying(false);
@@ -40,23 +55,13 @@ const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
   }, []);
 
   React.useEffect(() => {
-    setSlides(arrayChunk(data, itemsPerSlide ?? 1));
-  }, [itemsPerSlide, data]);
-
-  // watch for slide changes
-  React.useEffect(() => {
-    onSlideChange && onSlideChange(currentSlide);
-
     if (!playing) return;
-    if (!autoPlay) return;
+    if (!config.autoPlay) return;
 
-    const msDelay = delay ?? 3000;
-    const timeout = setTimeout(next, msDelay);
+    const timeout = setTimeout(next, config.delay ?? 3000);
 
     return () => clearTimeout(timeout);
-  }, [autoPlay, currentSlide, delay, next, onSlideChange, playing]);
-
-  const totalSlides = slides.length;
+  }, [config.autoPlay, config.delay, next, playing]);
 
   return {
     next,
