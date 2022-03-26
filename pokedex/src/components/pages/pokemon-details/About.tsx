@@ -1,6 +1,7 @@
 import {
   Divider,
   HStack,
+  Tag,
   Text,
   VStack,
   Wrap,
@@ -20,12 +21,12 @@ interface AboutProps {
 
 const About = ({ data }: AboutProps) => {
   const getEggGroups = useCallback(() => {
-    return !data.specy
-      ? "NA"
-      : data.specy.eggGroups
-          .map(({ eggGroup }) => eggGroup?.name)
-          .filter((value) => !!value)
-          .join(", ");
+    return data.specy
+      ? data.specy.eggGroups
+          .map(({ eggGroup }) => eggGroup?.name ?? "")
+          .filter((value) => value.length > 0)
+          .map(unkebab)
+      : [];
   }, [data.specy]);
 
   const getGender = useCallback(() => {
@@ -69,19 +70,23 @@ const About = ({ data }: AboutProps) => {
       <Card bgColor="others.gray.800">
         <CardHeading>Breed</CardHeading>
 
-        <Wrap mt={3} spacing={8}>
-          {[
-            ["Gender", getGender()],
-            ["Egg Group", unkebab(getEggGroups())],
-            ["Egg Cycle", data.specy?.eggCycyle ?? 0],
-          ].map(([label, value]) => (
-            <WrapItem key={label}>
-              <Text color="brand.gray.400">{label}:</Text>
-              <Text color="brand.gray.50" ml={2}>
-                {value}
-              </Text>
-            </WrapItem>
-          ))}
+        <Wrap mt={3} spacing={8} color="brand.gray.50">
+          <WrapItem>
+            <Text color="brand.gray.400">Gender:</Text>
+            <Text ml={2}>{getGender()}</Text>
+          </WrapItem>
+          <WrapItem>
+            <Text color="brand.gray.400">Egg Group:</Text>
+            <HStack ml={2} spacing={1}>
+              {getEggGroups().map((eggGroup) => (
+                <Tag key={eggGroup}>{eggGroup}</Tag>
+              ))}
+            </HStack>
+          </WrapItem>
+          <WrapItem>
+            <Text color="brand.gray.400">Egg Cycle:</Text>
+            <Text ml={2}>{data.specy?.eggCycyle ?? 0}</Text>
+          </WrapItem>
         </Wrap>
       </Card>
     </VStack>
