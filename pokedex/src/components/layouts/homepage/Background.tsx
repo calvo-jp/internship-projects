@@ -1,4 +1,5 @@
-import { Box, Image } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import Photo from "components/widgets/Photo";
 
 interface Size {
   /** width in px */
@@ -41,7 +42,7 @@ const Background = () => {
       display={{ base: "none", lg: "block" }}
     >
       {backgroundImgs.map(({ src, size, position, placement, rotation }) => (
-        <Image
+        <Photo
           alt=""
           src={src}
           key={src}
