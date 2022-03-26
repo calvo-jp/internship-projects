@@ -7,10 +7,14 @@ import {
   MenuList,
   Spinner,
   Tag,
+  TagLabel,
+  TagLeftIcon,
+  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import {
+  CheckIcon,
   FilterIcon,
   ViewGridIcon,
   ViewListIcon,
@@ -18,7 +22,7 @@ import {
 import usePokemonTypes from "hooks/usePokemonTypes";
 import useStore from "hooks/useStore";
 import * as React from "react";
-import valx from "utils/valx";
+import getColorByType from "utils/pokemons/getColorByType";
 
 interface ToolbarProps {
   /** aka. pokemon types */
@@ -80,31 +84,31 @@ const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
         w="400px"
         maxW="full"
         rounded="sm"
-        bgColor="brand.gray.800"
+        bgColor="brand.gray.700"
       >
-        <Flex display="flex" gap={1.5} flexWrap="wrap" h="auto">
-          {loading && <Loader />}
+        <VStack>
+          <Flex display="flex" gap={1.5} flexWrap="wrap" h="auto">
+            {loading && <Loader />}
 
-          {data?.map((item) => (
-            <Tag
-              key={item}
-              as="button"
-              p={2}
-              rounded="md"
-              color={valx({
-                "brand.gray.800": value.includes(item),
-                "brand.gray.100": !value.includes(item),
-              })}
-              bgColor={valx({
-                "brand.primary": value.includes(item),
-                "brand.gray.600": !value.includes(item),
-              })}
-              onClick={toggle(item)}
-            >
-              {item}
-            </Tag>
-          ))}
-        </Flex>
+            {data?.map((item) => (
+              <Tag
+                key={item}
+                as="button"
+                p={2}
+                rounded="md"
+                color="brand.gray.200"
+                bgColor={getColorByType(item, "brand.gray.600")}
+                onClick={toggle(item)}
+              >
+                <TagLeftIcon>
+                  <Icon as={CheckIcon} />
+                </TagLeftIcon>
+
+                <TagLabel>{item}</TagLabel>
+              </Tag>
+            ))}
+          </Flex>
+        </VStack>
       </MenuList>
     </Menu>
   );
