@@ -1,15 +1,22 @@
 import * as React from "react";
 
-const useFetch = <T = any>(input: RequestInfo, init?: RequestInit) => {
+/**
+ *
+ * Fetch as hook
+ *
+ * _only supports json_
+ *
+ */
+const useFetch = <T = any, E = any>(input: RequestInfo, init?: RequestInit) => {
   const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(false);
+  const [error, setError] = React.useState<E>();
   const [data, setData] = React.useState<T | null>(null);
 
   React.useEffect(() => {
     fetch(input, init)
       .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch(() => setError(true))
+      .then(setData)
+      .catch(setError)
       .finally(() => setLoading(false));
   }, [init, input]);
 
