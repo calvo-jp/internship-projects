@@ -73,11 +73,13 @@ interface Props {
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
-  const id = params!.id;
+  const id = parseInt(params!.id);
+
+  if (Number.isNaN(id)) return { notFound: true };
 
   const result = await apolloClient.query<GetPokemon, GetPokemonVariables>({
     query: GET_POKEMON,
-    variables: { id: parseInt(id) },
+    variables: { id },
   });
 
   if (!result.data.pokemon) return { notFound: true };
@@ -107,7 +109,7 @@ const Pokemon = ({ pokemon }: Props) => {
       </Head>
 
       <HomepageLayout>
-        <Box p={6} pb={20} maxW="container.xl" mx="auto">
+        <Box p={6} pb={16} maxW="container.xl" mx="auto">
           <Breadcrumb
             as="section"
             fontSize="sm"
@@ -154,12 +156,19 @@ interface LeftPaneProps {
 const LeftPane = ({ data }: LeftPaneProps) => {
   return (
     <VStack spacing={12}>
-      <Box bgColor="brand.gray.800" w="full" rounded="sm">
+      <Box
+        w="full"
+        rounded="sm"
+        bgColor={getColorByType(data.types.at(0)?.type?.name || "", {
+          mode: "dark",
+        })}
+      >
         <Thumbnail
           h="390px"
           w="325px"
           mx="auto"
           bgColor="transparent"
+          shadow="none"
           src={getImageUrlById(data.id)}
           loader={<Spinner size="xl" />}
         />
@@ -182,14 +191,15 @@ const RightPane = ({ data }: RightPaneProps) => {
   const currentTabIdx = tabs.findIndex((tab) => tab === currentTab);
   const navigate = useNavigate({ scroll: false, shallow: true });
 
-  const handleChange = (index: number) => {
-    navigate("/pokemons/" + data.id, { tab: tabs[index] });
-  };
+  const handleChange = (index: number) =>
+    navigate("/pokemons/" + data.id, {
+      tab: tabs[index],
+    });
 
   return (
     <Box w={{ xl: "799px" }}>
       <VStack spacing={6} align={{ base: "center", lg: "start" }}>
-        <Heading>{unkebab(data.name)}</Heading>
+        <Heading>{capitalize(unkebab(data.name), { delimiter: " " })}</Heading>
         <HStack>
           {data.types.map(({ type, id }) => {
             if (!type) return null;
@@ -203,7 +213,7 @@ const RightPane = ({ data }: RightPaneProps) => {
                 bgColor={getColorByType(type.name, { mode: "dark" })}
                 rounded="full"
               >
-                {type.name}
+                {capitalize(type.name)}
               </Tag>
             );
           })}
@@ -217,7 +227,6 @@ const RightPane = ({ data }: RightPaneProps) => {
         onChange={handleChange}
         index={currentTabIdx}
         lazyBehavior="keepMounted"
-        w="full"
       >
         <TabList gap={4} flexWrap="wrap" justifyContent={{ lg: "start" }}>
           {tabs.map((tab) => (
@@ -238,7 +247,7 @@ const RightPane = ({ data }: RightPaneProps) => {
           ))}
         </TabList>
 
-        <TabPanels mt={14} w="full">
+        <TabPanels mt={14}>
           <TabPanel p={0}>
             <About data={data} />
           </TabPanel>
