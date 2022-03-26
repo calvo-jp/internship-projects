@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from "@chakra-ui/react";
 import * as React from "react";
-import ImageWithFallback from "./ImageWithFallback";
+import Photo from "./Photo";
 
 interface ThumbnailProps {
   src: string;
@@ -42,13 +42,7 @@ const Thumbnail = React.forwardRef<
       shadow="md"
       {...props}
     >
-      <ImageWithFallback
-        src={src}
-        maxW="80%"
-        maxH="80%"
-        loader={loader}
-        fallback={fallback}
-      />
+      <Photo src={src} maxW="80%" maxH="80%" loader={loader} />
     </Flex>
   );
 });
