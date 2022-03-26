@@ -5,12 +5,8 @@ import {
   IconButton,
   SimpleGrid,
   Spinner,
-  VStack,
 } from "@chakra-ui/react";
-import NextIcon from "components/icons/Next";
-import PlayIcon from "components/icons/Play";
-import PreviousIcon from "components/icons/Previous";
-import StopIcon from "components/icons/Stop";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import ImageWithFallback from "components/widgets/ImageWithFallback";
 import useSlideshow from "hooks/useSlideshow";
 import useStore from "hooks/useStore";
@@ -37,10 +33,10 @@ const Slideshow = () => {
     },
   });
 
-  const shouldShowControls = slides.length > 1;
-
   return (
-    <VStack spacing={5}>
+    <HStack spacing={5}>
+      <Control type="previous" onClick={prev} />
+
       <Flex
         ref={sliderRef}
         overflowX="hidden"
@@ -56,73 +52,29 @@ const Slideshow = () => {
         ))}
       </Flex>
 
-      {shouldShowControls && (
-        <Controls
-          onPlay={play}
-          onPause={pause}
-          onNext={next}
-          onPrev={prev}
-          playing={playing}
-        />
-      )}
-    </VStack>
-  );
-};
-
-interface ControlsProps {
-  playing?: boolean;
-  onNext: () => void;
-  onPrev: () => void;
-  onPlay: () => void;
-  onPause: () => void;
-}
-
-const Controls = ({
-  onNext,
-  onPause,
-  onPlay,
-  onPrev,
-  playing,
-}: ControlsProps) => {
-  return (
-    <HStack>
-      <Control control="prev" onClick={onPrev} />
-      {playing && <Control control="pause" onClick={onPause} />}
-      {!playing && <Control control="play" onClick={onPlay} />}
-      <Control control="next" onClick={onNext} />
+      <Control type="next" onClick={next} />
     </HStack>
   );
 };
 
 interface ControlProps {
-  control: "play" | "pause" | "next" | "prev";
+  type: "next" | "previous";
 }
 
 const Control = ({
-  control,
+  type,
   ...props
-}: ControlProps & React.ComponentProps<"button">) => {
-  const getIcon = () => {
-    switch (control) {
-      case "play":
-        return PlayIcon;
-      case "pause":
-        return StopIcon;
-      case "next":
-        return NextIcon;
-      default:
-        return PreviousIcon;
-    }
-  };
+}: ControlProps & Omit<React.ComponentProps<"button">, "type">) => {
+  const icon = type === "next" ? ChevronRightIcon : ChevronLeftIcon;
 
   return (
     <IconButton
       size="sm"
       aria-label=""
-      icon={<Icon as={getIcon()} fill="white" />}
-      bgColor="brand.gray.800"
+      icon={<Icon as={icon} stroke="white" />}
       rounded="full"
       shadow="md"
+      bgColor="brand.gray.800"
       {...props}
     />
   );
