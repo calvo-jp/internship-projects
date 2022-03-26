@@ -91,19 +91,15 @@ interface MainMovesProps {
 }
 
 const MainMoves = ({ moves }: MainMovesProps) => {
-  const [chunks, setChunks] = React.useState<typeof moves[]>([]);
-  const [display, setDisplay] = React.useState<typeof moves>([]);
+  const chunks = arrayChunk(moves, 5);
   const [current, setCurrent] = React.useState(0);
+
+  const display = chunks.reduce((array, chunk, idx) => {
+    return idx <= current ? [...array, ...chunk] : array;
+  }, []);
+
   const hasMore = current < chunks.length;
   const [scrollHeight, setScrollHeight] = React.useState(0);
-
-  React.useEffect(() => {
-    setChunks(arrayChunk(moves, 5));
-  }, [moves]);
-
-  React.useEffect(() => {
-    setDisplay((old) => [...old, ...(chunks.at(current) ?? [])]);
-  }, [chunks, current]);
 
   const showMore = () => {
     if (!hasMore) return;
