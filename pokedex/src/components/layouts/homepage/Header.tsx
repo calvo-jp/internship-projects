@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Flex,
   Heading,
   HStack,
@@ -31,8 +32,8 @@ const Header = () => {
     <Flex
       ref={headerRef}
       as="header"
-      py={{ base: 2, md: 4, lg: 6 }}
-      px={{ base: 4, md: 8, lg: 16 }}
+      py={{ base: 4, md: 5, lg: 6 }}
+      px={{ base: 6, md: 8, lg: 16 }}
       align="center"
       justify="space-between"
       bgColor="brand.gray.800"
@@ -50,9 +51,11 @@ const Header = () => {
       </Link>
 
       <HStack spacing={5}>
-        <Skeleton isLoaded={!loading} rounded="xl">
-          <Text>Welcome, {loading ? "loading..." : profile.name}</Text>
-        </Skeleton>
+        <Box display={{ base: "none", lg: "block" }}>
+          <Skeleton isLoaded={!loading} rounded="xl">
+            <Text>Welcome, {loading ? "loading..." : profile.name}</Text>
+          </Skeleton>
+        </Box>
 
         <Skeleton isLoaded={!loading} rounded="full">
           <Avatar
@@ -63,8 +66,8 @@ const Header = () => {
                 ? profile.image
                 : loadGravatar(profile.email)
             }
-            w={{ base: "40px", lg: "57px" }}
-            h={{ base: "40px", lg: "57px" }}
+            w={{ base: "44px", lg: "57px" }}
+            h={{ base: "44px", lg: "57px" }}
           />
         </Skeleton>
 
