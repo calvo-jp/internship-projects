@@ -23,7 +23,7 @@ const ListView = ({ data }: ListViewProps) => {
       columns={{ base: "55px 85px 1fr 1fr", lg: "55px 85px 1fr 1fr 1fr" }}
       columnsProps={{
         borderBottom: "1px",
-        borderColor: "brand.gray.500",
+        borderColor: "brand.gray.50",
         bgColor: "brand.gray.700",
       }}
     >
@@ -43,8 +43,8 @@ const ListView = ({ data }: ListViewProps) => {
           py={2}
           px={4}
           cursor="pointer"
-          _hover={{ bgColor: "#323c4a" }}
-          _focus={{ bgColor: "#323c4a", outline: "none" }}
+          _hover={{ bgColor: "brand.gray.600" }}
+          _focus={{ bgColor: "brand.gray.600", outline: "none" }}
           onClick={handleClick(id)}
           tabIndex={1}
         >
