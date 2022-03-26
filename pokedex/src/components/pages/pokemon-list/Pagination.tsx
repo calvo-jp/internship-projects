@@ -4,23 +4,26 @@ import * as React from "react";
 import IPaginated from "types/paginated";
 import valx from "utils/valx";
 
-interface PaginationProps extends Omit<IPaginated, "rows"> {
-  onPageChange: (page: number) => void;
+interface PaginationProps extends Omit<IPaginated, "rows" | "hasNext"> {
+  onPageChange?: (page: number) => void;
+  onPageSizeChange?: (pageSize: number) => void;
 }
 
 const Pagination = ({
-  onPageChange,
   page,
-  hasNext,
-  totalRows,
   pageSize,
+  totalRows,
+  onPageChange,
 }: PaginationProps) => {
-  const previous = () => {
-    if (page > 1) onPageChange(page - 1);
-  };
+  const hasNext = page * pageSize > totalRows;
+  const hasPrev = page > 1;
 
   const next = () => {
-    if (hasNext) onPageChange(page + 1);
+    if (onPageChange && hasNext) onPageChange(page + 1);
+  };
+
+  const previous = () => {
+    if (onPageChange && hasPrev) onPageChange(page - 1);
   };
 
   return (

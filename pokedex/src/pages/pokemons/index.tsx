@@ -170,7 +170,6 @@ const Pokemons = ({
               page={page}
               pageSize={pageSize}
               totalRows={totalRows}
-              hasNext={hasNext}
               onPageChange={handlePageChange}
             />
           </Flex>
