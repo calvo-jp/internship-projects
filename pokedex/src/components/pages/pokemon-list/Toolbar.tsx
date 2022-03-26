@@ -7,9 +7,6 @@ import {
   MenuList,
   Spinner,
   Tag,
-  TagLabel,
-  TagLeftIcon,
-  VStack,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -22,8 +19,6 @@ import {
 import usePokemonTypes from "hooks/usePokemonTypes";
 import useStore from "hooks/useStore";
 import * as React from "react";
-import getColorByType from "utils/pokemons/getColorByType";
-import valx from "utils/valx";
 
 interface ToolbarProps {
   /** aka. pokemon types */
@@ -34,6 +29,7 @@ interface ToolbarProps {
 
 const Toolbar = ({ filters, onFilter }: ToolbarProps) => {
   const toggleListView = useStore((state) => state.toggleListView);
+
   const handleToggle = (value?: boolean) => () => toggleListView(value);
 
   return (
@@ -64,15 +60,16 @@ interface FilterToolProps {
 const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
   const { data, error, loading } = usePokemonTypes();
 
-  const toggle = (subject: string) => {
-    return () => {
-      if (!value.includes(subject)) return onChange([subject, ...value]);
-      const newValue = value.filter((item) => item !== subject);
-      return onChange(newValue);
-    };
-  };
-
-  // TODO: handle error
+  const toggle = React.useCallback(
+    (subject: string) => {
+      return () => {
+        if (!value.includes(subject)) return onChange([subject, ...value]);
+        const newValue = value.filter((item) => item !== subject);
+        return onChange(newValue);
+      };
+    },
+    [onChange, value]
+  );
 
   return (
     <Menu closeOnSelect={false}>
@@ -87,31 +84,29 @@ const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
         rounded="sm"
         bgColor="brand.gray.800"
       >
-        <VStack>
-          <Flex display="flex" gap={2} flexWrap="wrap" h="auto">
-            {loading && <Loader />}
+        {loading && <Loader />}
 
+        {!loading && (
+          <Flex display="flex" gap={2} flexWrap="wrap" h="auto">
             {data?.map((item) => (
               <Tag
                 key={item}
                 as="button"
                 p={2}
                 rounded="lg"
-                color={valx({
-                  "brand.gray.700": value.includes(item),
-                  "brand.gray.100": !value.includes(item),
-                })}
-                bgColor={valx({
-                  "brand.primary": value.includes(item),
-                  "brand.gray.700": !value.includes(item),
-                })}
+                color={
+                  value.includes(item) ? "brand.gray.700" : "brand.gray.100"
+                }
+                bgColor={
+                  value.includes(item) ? "brand.primary" : "brand.gray.700"
+                }
                 onClick={toggle(item)}
               >
-                <TagLabel>{item}</TagLabel>
+                {item}
               </Tag>
             ))}
           </Flex>
-        </VStack>
+        )}
       </MenuList>
     </Menu>
   );
