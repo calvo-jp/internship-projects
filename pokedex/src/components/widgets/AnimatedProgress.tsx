@@ -3,19 +3,20 @@ import * as React from "react";
 
 type AnimatedProgressProps = ProgressProps;
 
-const AnimatedProgress = ({
-  value: maxValue,
-  ...props
-}: AnimatedProgressProps) => {
-  const [value, setValue] = React.useState(0);
+const AnimatedProgress = ({ value, ...props }: AnimatedProgressProps) => {
+  const [target, setTarget] = React.useState(0);
+
+  const increment = React.useCallback(() => {
+    if (value && target < value) setTarget((old) => old + 1);
+  }, [target, value]);
 
   React.useEffect(() => {
-    if (maxValue && value < maxValue) setValue((old) => old + 1);
-  }, [maxValue, value]);
+    increment();
+  }, [increment]);
 
-  React.useEffect(() => () => setValue(0), []);
+  React.useEffect(() => () => setTarget(0), []);
 
-  return <Progress value={value} {...props} />;
+  return <Progress value={target} {...props} />;
 };
 
 export default AnimatedProgress;
