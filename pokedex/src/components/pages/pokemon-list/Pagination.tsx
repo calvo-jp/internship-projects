@@ -1,5 +1,6 @@
 import { Box, Center, HStack, Icon } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
+import useSlideshow from "hooks/useSlideshow";
 import * as React from "react";
 import IPaginated from "types/paginated";
 import valx from "utils/valx";
@@ -13,26 +14,57 @@ const Pagination = ({
   page,
   pageSize,
   totalRows,
-  onPageChange,
+  onPageChange = noop,
 }: PaginationProps) => {
-  const hasNext = page * pageSize > totalRows;
+  const itemsPerSlide = 5;
+  const startSlideIndex = Math.ceil(page / itemsPerSlide);
+  const totalPages = Math.ceil(totalRows / pageSize);
+
+  const { slides, currentSlide, next, prev } = useSlideshow<number[]>(
+    new Array(totalPages).fill(1).map((value, index) => value + index),
+    {
+      itemsPerSlide,
+      currentSlide: startSlideIndex,
+    }
+  );
+
+  const hasNext = page * pageSize < totalRows;
   const hasPrev = page > 1;
 
-  const next = () => {
-    if (onPageChange && hasNext) onPageChange(page + 1);
+  const handleNext = () => {
+    if (!hasNext) return;
+    onPageChange(page + 1);
+    if (page % itemsPerSlide === 0) next();
   };
 
-  const previous = () => {
-    if (onPageChange && hasPrev) onPageChange(page - 1);
+  const handlePrevious = () => {
+    if (!hasPrev) return;
+    onPageChange(page - 1);
+    if (page % itemsPerSlide === 1) prev();
+  };
+
+  const handleClick = (page: number) => {
+    return () => onPageChange(page);
   };
 
   return (
     <Center>
       <HStack spacing={2}>
-        <PageButton onClick={previous}>
+        <PageButton onClick={handlePrevious}>
           <Icon as={ChevronLeftIcon} />
         </PageButton>
-        <PageButton onClick={next}>
+
+        {slides.at(currentSlide - 1)?.map((number) => (
+          <PageButton
+            key={number}
+            active={page === number}
+            onClick={handleClick(number)}
+          >
+            {number}
+          </PageButton>
+        ))}
+
+        <PageButton onClick={handleNext}>
           <Icon as={ChevronRightIcon} />
         </PageButton>
       </HStack>
@@ -76,5 +108,7 @@ const PageButton = ({
     </Box>
   );
 };
+
+const noop = function () {};
 
 export default Pagination;
