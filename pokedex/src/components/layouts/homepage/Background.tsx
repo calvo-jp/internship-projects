@@ -38,7 +38,7 @@ const Background = () => {
       h="full"
       top={0}
       left={0}
-      display={{ base: "none", md: "block" }}
+      display={{ base: "none", lg: "block" }}
     >
       {backgroundImgs.map(({ src, size, position, placement, rotation }) => (
         <Image
