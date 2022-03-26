@@ -15,7 +15,7 @@ const useSlideshow = <T extends Array<any>>(data: T, config: Config = {}) => {
   const slides = arrayChunk(data, config.itemsPerSlide ?? 1);
   const totalSlides = slides.length;
 
-  const [playing, setPlaying] = React.useState(config.autoPlay ?? true);
+  const [playing, setPlaying] = React.useState(config.autoPlay);
   const [currentSlide, setCurrentSlide] = React.useState(
     config.currentSlide ?? 1
   );
@@ -46,17 +46,11 @@ const useSlideshow = <T extends Array<any>>(data: T, config: Config = {}) => {
     setCurrentSlide(1);
   }, [currentSlide, increment, slides.length]);
 
-  const pause = React.useCallback(() => {
-    setPlaying(false);
-  }, []);
-
-  const play = React.useCallback(() => {
-    setPlaying(true);
-  }, []);
+  const play = () => setPlaying(true);
+  const pause = () => setPlaying(false);
 
   React.useEffect(() => {
     if (!playing) return;
-    if (!config.autoPlay) return;
 
     const timeout = setTimeout(next, config.delay ?? 3000);
 
