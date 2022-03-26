@@ -8,26 +8,6 @@ interface ThumbnailProps {
   fallback?: string;
 }
 
-/**
- *
- * `ImageWithFallback` wrapped in a countainer with
- * the following props set to default:
- *
- * - border-radius
- * - background-color
- * - box-shadow
- *
- * @example
- * <Thumbnail
- *    w="24px"
- *    h="24px"
- *    mt={1}
- *    src="image.svg"
- *    loader={<Skeleton ... />}
- *    fallback="fallback.svg"
- * />
- *
- */
 const Thumbnail = React.forwardRef<
   HTMLImageElement,
   ThumbnailProps & FlexProps

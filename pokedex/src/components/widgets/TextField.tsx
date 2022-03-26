@@ -3,7 +3,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  InputProps
+  InputProps,
 } from "@chakra-ui/react";
 import * as React from "react";
 
@@ -12,28 +12,6 @@ interface TextFieldProps {
   label?: string;
 }
 
-/**
- *
- * An input component wrapped in `FormControl`
- * with an input size of `lg` and a fontSize of `md`,
- * but is overridable by passing `InputProps`.
- *
- * __WARNING__: other props other than label and error
- * are being passed down to input component.
- * Please be careful when using margins
- *
- * @example
- * <TextField
- *    name="field"
- *    label="Field"
- *    error="Invalid field value"
- *    ...
- * />
- *
- * @see
- * https://chakra-ui.com/docs/components/form/form-control
- *
- */
 const TextField = React.forwardRef<
   HTMLInputElement,
   TextFieldProps & InputProps
