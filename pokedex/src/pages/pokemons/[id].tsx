@@ -153,13 +153,16 @@ interface LeftPaneProps {
 const LeftPane = ({ data }: LeftPaneProps) => {
   return (
     <VStack spacing={12}>
-      <Thumbnail
-        h="390px"
-        w="325px"
-        bgColor="brand.gray.800"
-        src={getImageUrlById(data.id)}
-        loader={<Spinner size="xl" />}
-      />
+      <Box bgColor="brand.gray.800" w="full" rounded="sm">
+        <Thumbnail
+          h="390px"
+          w="325px"
+          mx="auto"
+          bgColor="transparent"
+          src={getImageUrlById(data.id)}
+          loader={<Spinner size="xl" />}
+        />
+      </Box>
 
       <Slideshow />
     </VStack>
@@ -183,8 +186,8 @@ const RightPane = ({ data }: RightPaneProps) => {
   };
 
   return (
-    <Box w={{ base: "full", xl: "799px" }}>
-      <VStack spacing={6} align={{ base: "center", lg: "start" }} w="full">
+    <Box w={{ xl: "799px" }}>
+      <VStack spacing={6} align={{ base: "center", lg: "start" }}>
         <Heading>{data.name}</Heading>
         <HStack>
           {data.types.map(({ type, id }) => {
