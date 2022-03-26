@@ -37,6 +37,7 @@ import services from "services";
 import capitalize from "utils/capitalize";
 import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
+import unkebab from "utils/unkebab";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
@@ -188,7 +189,7 @@ const RightPane = ({ data }: RightPaneProps) => {
   return (
     <Box w={{ xl: "799px" }}>
       <VStack spacing={6} align={{ base: "center", lg: "start" }}>
-        <Heading>{data.name}</Heading>
+        <Heading>{unkebab(data.name)}</Heading>
         <HStack>
           {data.types.map(({ type, id }) => {
             if (!type) return null;
