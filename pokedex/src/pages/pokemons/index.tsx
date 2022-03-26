@@ -52,7 +52,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       .filter((value) => value.length > 0) ?? [];
 
   // There is an issue when not passing filter to apollo query
-  // even if it is already optional.
+  // even if it is already optional. As a workarround,
+  // we are passing in all the types in case query is not provided
   const filters =
     types.length > 0 ? types : await services.pokemons.types.read.all();
 
@@ -141,7 +142,9 @@ const Pokemons = ({ rows, page, pageSize, hasNext, search }: Props) => {
     });
   };
 
-  React.useEffect(() => setView(listView ? "list" : "grid"), [listView]);
+  React.useEffect(() => {
+    setView(listView ? "list" : "grid");
+  }, [listView]);
 
   return (
     <React.Fragment>
