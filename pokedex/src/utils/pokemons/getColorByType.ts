@@ -1,43 +1,60 @@
-const getColorByType = (type: string, defaultColor?: string) => {
+interface Config {
+  /**
+   *
+   * whether it should be on dark surface or light
+   *
+   */
+  mode?: "dark" | "light";
+  /**
+   *
+   * color to use if nothing matches with given type
+   *
+   */
+  fallback?: string;
+}
+
+const getColorByType = (type: string, config: Config = {}) => {
+  const dark = config.mode === "dark";
+
   switch (type.toLowerCase().trim()) {
     case "normal":
-      return "#a1a07875";
+      return dark ? "#a1a07875" : "#535336b8";
     case "fire":
-      return "#db4c0094";
+      return dark ? "#db4c0094" : "#db4c00e6";
     case "water":
-      return "#497ce7d6";
+      return dark ? "#497ce7d6" : "#497ce7f2";
     case "grass":
-      return "#5bb32f94";
+      return dark ? "#5bb32f94" : "#56ae29";
     case "electric":
-      return "#bd9a0ac2";
+      return dark ? "#bd9a0ac2" : "#c8a208";
     case "ice":
-      return "#5dada994";
+      return dark ? "#5dada994" : "#5dada9";
     case "fighting":
-      return "#d3484394";
+      return dark ? "#d3484394" : "#f42c25b8";
     case "poison":
-      return "#681a6794";
+      return dark ? "#681a6794" : "#800e7ec9";
     case "ground":
-      return "#997e3994";
+      return dark ? "#997e3994" : "#9f7b20cc";
     case "flying":
-      return "#6c50bd94";
+      return dark ? "#6c50bd94" : "#4f25c8b5";
     case "psychic":
-      return "#d9457294";
+      return dark ? "#d9457294" : "#d94572e0";
     case "bug":
-      return "#8a9b1194";
+      return dark ? "#8a9b1194" : "#a4bb00";
     case "rock":
-      return "#917d1b94";
+      return dark ? "#917d1b94" : "#6f5e0bb3";
     case "ghost":
-      return "#b276ff94";
+      return dark ? "#b276ff94" : "#b276ff";
     case "dark":
-      return "#85604894";
+      return dark ? "#85604894" : "#856048c7";
     case "dragon":
-      return "#7e49ff94";
+      return dark ? "#7e49ff94" : "#7e49ff";
     case "steel":
-      return "#b2b2d166";
+      return dark ? "#b2b2d166" : "#8888ae";
     case "fairy":
-      return "#e374ab94";
+      return dark ? "#e374ab94" : "#e374ab";
     default:
-      return defaultColor;
+      return config.fallback;
   }
 };
 
