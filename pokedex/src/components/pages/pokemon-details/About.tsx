@@ -9,6 +9,7 @@ import {
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
 import { useCallback } from "react";
+import unkebab from "utils/unkebab";
 import { GetPokemon } from "__generated__/GetPokemon";
 
 type TPokemon = NonNullable<GetPokemon["pokemon"]>;
@@ -71,7 +72,7 @@ const About = ({ data }: AboutProps) => {
         <Wrap mt={3} spacing={8}>
           {[
             ["Gender", getGender()],
-            ["Egg Group", getEggGroups()],
+            ["Egg Group", unkebab(getEggGroups())],
             ["Egg Cycle", data.specy?.eggCycyle ?? 0],
           ].map(([label, value]) => (
             <WrapItem key={label}>
