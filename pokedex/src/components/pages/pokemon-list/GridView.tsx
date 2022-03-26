@@ -1,6 +1,5 @@
-import { Box, Flex, SimpleGrid, Spinner } from "@chakra-ui/react";
-import ImageWithFallback from "components/widgets/ImageWithFallback";
-import Thumbnail from "components/widgets/Thumbnail";
+import { Flex, SimpleGrid, Spinner } from "@chakra-ui/react";
+import Photo from "components/widgets/Photo";
 import Link from "next/link";
 import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
@@ -50,7 +49,7 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
           align="center"
           justify="center"
         >
-          <ImageWithFallback
+          <Photo
             maxW="90%"
             maxH="90%"
             src={getImageUrlById(data.id)}

@@ -1,7 +1,7 @@
 import { Flex, HStack, SimpleGrid, Spinner } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import IconButton from "components/widgets/IconButton";
-import ImageWithFallback from "components/widgets/ImageWithFallback";
+import Photo from "components/widgets/Photo";
 import useSlideshow from "hooks/useSlideshow";
 import useStore from "hooks/useStore";
 import Link from "next/link";
@@ -70,7 +70,7 @@ const RecentlyOpenedItem = ({ id }: { id: number }) => {
         justify="center"
         p={2}
       >
-        <ImageWithFallback
+        <Photo
           maxW="80%"
           maxH="80%"
           src={getImageUrlById(id)}

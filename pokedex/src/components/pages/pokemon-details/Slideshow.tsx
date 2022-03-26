@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client";
 import {
   Flex,
   HStack,
@@ -5,15 +6,22 @@ import {
   IconButton,
   SimpleGrid,
   Spinner,
+  VStack,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
-import ImageWithFallback from "components/widgets/ImageWithFallback";
+import Photo from "components/widgets/Photo";
+import { GET_POKEMON_TYPE } from "graphql/pokeapi/queries";
 import useSlideshow from "hooks/useSlideshow";
 import useStore from "hooks/useStore";
 import Link from "next/link";
 import * as React from "react";
+import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
 import randomIdGenerator from "utils/randomIdGenerator";
+import {
+  GetPokemonType,
+  GetPokemonTypeVariables,
+} from "__generated__/GetPokemonType";
 
 const Slideshow = () => {
   const items = useStore((state) => state.viewedPokemonIds);
@@ -33,26 +41,30 @@ const Slideshow = () => {
   });
 
   return (
-    <HStack spacing={5}>
-      <Control type="previous" onClick={prev} />
+    <VStack>
+      <HStack spacing={5}>
+        <Control type="previous" onClick={prev} />
 
-      <Flex
-        ref={sliderRef}
-        overflowX="hidden"
-        scrollBehavior="smooth"
-        w="187px"
-      >
-        {slides.map((ids) => (
-          <SimpleGrid key={generateId()} gap={2} columns={3} flexShrink={0}>
-            {ids.map((id) => (
-              <SlideItem key={id} id={id} />
-            ))}
-          </SimpleGrid>
-        ))}
-      </Flex>
+        <Flex
+          ref={sliderRef}
+          overflowX="hidden"
+          scrollBehavior="smooth"
+          w="187px"
+        >
+          {slides.map((ids) => (
+            <SimpleGrid key={generateId()} gap={2} columns={3} flexShrink={0}>
+              {ids.map((id) => (
+                <SlideItem key={id} id={id} />
+              ))}
+            </SimpleGrid>
+          ))}
+        </Flex>
 
-      <Control type="next" onClick={next} />
-    </HStack>
+        <Control type="next" onClick={next} />
+      </HStack>
+
+      <Flex></Flex>
+    </VStack>
   );
 };
 
@@ -80,6 +92,11 @@ const Control = ({
 };
 
 const SlideItem = ({ id }: { id: number }) => {
+  const { data, loading } = useQuery<GetPokemonType, GetPokemonTypeVariables>(
+    GET_POKEMON_TYPE,
+    { variables: { id } }
+  );
+
   return (
     <Link passHref href={"/pokemons/" + id}>
       <Flex
@@ -88,12 +105,15 @@ const SlideItem = ({ id }: { id: number }) => {
         height="57px"
         padding={2}
         rounded="sm"
-        bgColor="brand.gray.800"
+        shadow="md"
         align="center"
         justify="center"
         tabIndex={-1}
+        bgColor={getColorByType(data?.pokemon?.types.at(0)?.type?.name ?? "", {
+          mode: "dark",
+        })}
       >
-        <ImageWithFallback
+        <Photo
           maxW="80%"
           maxH="80%"
           src={getImageUrlById(id)}
