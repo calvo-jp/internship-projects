@@ -33,26 +33,31 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
 
   return (
     <Link href={"/pokemons/" + data.id} passHref>
-      <Box as="a" h="260px" bgColor={bgColor}>
-        <Flex flexGrow="1" align="center" justify="center" w="full">
-          <Flex
-            bgColor="#dddddd24"
-            rounded="full"
-            p={4}
-            w="150px"
-            h="150px"
-            align="center"
-            justify="center"
-          >
-            <ImageWithFallback
-              maxW="90%"
-              maxH="90%"
-              src={getImageUrlById(data.id)}
-              loader={<Spinner size="xl" />}
-            />
-          </Flex>
+      <Flex
+        as="a"
+        flexGrow="1"
+        align="center"
+        justify="center"
+        h="260px"
+        bgColor={bgColor}
+      >
+        <Flex
+          bgColor="#dddddd24"
+          rounded="full"
+          p={4}
+          w="150px"
+          h="150px"
+          align="center"
+          justify="center"
+        >
+          <ImageWithFallback
+            maxW="90%"
+            maxH="90%"
+            src={getImageUrlById(data.id)}
+            loader={<Spinner size="xl" />}
+          />
         </Flex>
-      </Box>
+      </Flex>
     </Link>
   );
 };
