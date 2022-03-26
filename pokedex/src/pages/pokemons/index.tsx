@@ -24,8 +24,8 @@ import {
 type TPokemon = GetPokemons["pokemons"][number];
 
 interface Props extends IPaginated<TPokemon> {
-  search?: {
-    types?: string[];
+  search: {
+    types: string[];
   };
 }
 
@@ -102,14 +102,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
 // TODO
 // - Add component for zero or no records found
-const Pokemons = ({
-  rows,
-  page,
-  pageSize,
-  totalRows,
-  hasNext,
-  search,
-}: Props) => {
+const Pokemons = ({ rows, page, pageSize, totalRows, search }: Props) => {
   const { basePath } = useRouter();
 
   const navigate = useNavigate();
@@ -121,7 +114,7 @@ const Pokemons = ({
     navigate(basePath, {
       page: newPage,
       pageSize,
-      types: search?.types,
+      types: search.types,
     });
   };
 
