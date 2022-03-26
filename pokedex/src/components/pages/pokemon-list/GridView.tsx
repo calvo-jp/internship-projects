@@ -38,15 +38,15 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
         flexGrow="1"
         align="center"
         justify="center"
-        h="260px"
+        h={{ base: "300px", lg: "260px" }}
         bgColor={bgColor}
       >
         <Flex
           bgColor="#dddddd24"
           rounded="full"
           p={4}
-          w="150px"
-          h="150px"
+          w={{ base: "200px", lg: "150px" }}
+          h={{ base: "200px", lg: "150px" }}
           align="center"
           justify="center"
         >
