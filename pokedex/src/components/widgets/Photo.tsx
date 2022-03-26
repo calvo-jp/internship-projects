@@ -5,31 +5,15 @@ import {
 import * as React from "react";
 
 interface ImageProps {
+  /** override optional value */
   src: string;
-  /**
-   *
-   * Displayed while the image is still loading
-   *
-   */
+  /** Displayed while the image is still loading */
   loader?: JSX.Element | string;
-  /**
-   *
-   * The fallback image url.
-   * Image will result to error if fallback url does not exist
-   *
-   */
-  fallback?: string;
 }
 
 const previouslyLoadedImage: string[] = [];
 
-const ImageWithFallback = ({
-  src,
-  loader,
-  fallback,
-  ...props
-}: ImageProps & Omit<ChakraImageProps, "fallback">) => {
-  const [error, setError] = React.useState(false);
+const Photo = ({ src, loader, ...props }: ImageProps & ChakraImageProps) => {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -42,28 +26,18 @@ const ImageWithFallback = ({
       setLoading(false);
     };
 
-    image.onerror = () => {
-      setError(true);
-      setLoading(false);
-    };
-
     return () => {
       setLoading(true);
-      setError(false);
-
       image.onload = null;
-      image.onerror = null;
     };
   }, [src]);
 
   return (
     <React.Fragment>
       {!!loading && loader}
-      {!loading && (
-        <ChakraImage src={!error ? src : fallback} loading="lazy" {...props} />
-      )}
+      {!loading && <ChakraImage src={src} loading="lazy" {...props} />}
     </React.Fragment>
   );
 };
 
-export default ImageWithFallback;
+export default Photo;
