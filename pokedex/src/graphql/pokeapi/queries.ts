@@ -154,13 +154,32 @@ export const GET_POKEMON_EVOLUTION = gql`
 
 /**
  *
- * Gets all pokemon types eg. fire, dragon, etc.
+ * fetches all pokemon types eg. fire, dragon, etc.
  *
  */
 export const GET_POKEMON_TYPES = gql`
   query GetPokemonTypes {
     types: pokemon_v2_type {
       name
+    }
+  }
+`;
+
+/**
+ *
+ * fetches the types of a pokemon using its id
+ *
+ */
+export const GET_POKEMON_TYPE = gql`
+  query GetPokemonType($id: Int!) {
+    pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
+      id
+      types: pokemon_v2_pokemontypes {
+        type: pokemon_v2_type {
+          id
+          name
+        }
+      }
     }
   }
 `;
