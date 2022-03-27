@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid, Spinner } from "@chakra-ui/react";
+import { Flex, SimpleGrid, Spinner, Tooltip } from "@chakra-ui/react";
 import Photo from "components/widgets/Photo";
 import Link from "next/link";
 import getColorByType from "utils/pokemons/getColorByType";
@@ -37,23 +37,25 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
         rounded="sm"
         flexGrow="1"
       >
-        <Flex
-          p={4}
-          w={{ base: "200px", lg: "150px" }}
-          h={{ base: "200px", lg: "150px" }}
-          align="center"
-          justify="center"
-          rounded="full"
-          bgColor="#dddddd24"
-        >
-          <Photo
-            maxW="90%"
-            maxH="90%"
-            src={getImageUrlById(data.id)}
-            loader={<Spinner size="xl" />}
-            fallback="/assets/pokeball.png"
-          />
-        </Flex>
+        <Tooltip label={data.name} hasArrow>
+          <Flex
+            p={4}
+            w={{ base: "200px", lg: "150px" }}
+            h={{ base: "200px", lg: "150px" }}
+            align="center"
+            justify="center"
+            rounded="full"
+            bgColor="#dddddd24"
+          >
+            <Photo
+              maxW="90%"
+              maxH="90%"
+              src={getImageUrlById(data.id)}
+              loader={<Spinner size="xl" />}
+              fallback={getImageUrlById(data.id, "PNG")}
+            />
+          </Flex>
+        </Tooltip>
       </Flex>
     </Link>
   );
