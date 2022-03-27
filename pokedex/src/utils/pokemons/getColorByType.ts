@@ -7,7 +7,7 @@ interface Config {
   fallback?: string;
 }
 
-const getColorByType = (type: string, config: Config = {}) => {
+const getColorByType = (type: string, config?: Config) => {
   switch (type.toLowerCase().trim()) {
     case "normal":
       return "#a1a07875";
@@ -46,7 +46,7 @@ const getColorByType = (type: string, config: Config = {}) => {
     case "fairy":
       return "#e374ab94";
     default:
-      return config.fallback ?? "brand.gray.600";
+      return config?.fallback ?? "brand.gray.600";
   }
 };
 
