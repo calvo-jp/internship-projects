@@ -56,7 +56,7 @@ const ListView = ({ data }: ListViewProps) => {
                 maxH="full"
                 src={getImageUrlById(id)}
                 loader={<Spinner size="md" />}
-                fallback="/assets/pokeball.png"
+                fallback={getImageUrlById(id, "PNG")}
               />
             </Flex>
           </GridTableCell>
@@ -64,7 +64,7 @@ const ListView = ({ data }: ListViewProps) => {
           <GridTableCell>
             <HStack spacing={1}>
               {types
-                .map((type) => type.type?.name || "")
+                .map(({ type }) => type?.name || "")
                 .map((type) => (
                   <Tag key={type} bgColor={getColorByType(type)} rounded="lg">
                     {type}
