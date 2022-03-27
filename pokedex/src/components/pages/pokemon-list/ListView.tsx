@@ -3,7 +3,7 @@ import GridTable from "components/widgets/gridTable";
 import GridTableCell from "components/widgets/gridTable/GridTableCell";
 import GridTableHeading from "components/widgets/gridTable/GridTableHeading";
 import GridTableRow from "components/widgets/gridTable/GridTableRow";
-import Thumbnail from "components/widgets/Thumbnail";
+import Photo from "components/widgets/Photo";
 import { useRouter } from "next/router";
 import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
@@ -50,13 +50,12 @@ const ListView = ({ data }: ListViewProps) => {
         >
           <GridTableCell>{id}</GridTableCell>
           <GridTableCell>
-            <Thumbnail
+            <Photo
               w="32px"
               h="32px"
               src={getImageUrlById(id)}
-              bgColor="transparent"
-              shadow="none"
               loader={<Spinner size="md" />}
+              fallback="/assets/pokeball.png"
             />
           </GridTableCell>
           <GridTableCell>{unkebab(name)}</GridTableCell>
