@@ -1,9 +1,14 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import * as React from "react";
 
 const NotFound = () => {
+  const { status } = useSession();
+
+  if (status === "loading") return null;
+
   return (
     <React.Fragment>
       <Head>
@@ -24,7 +29,10 @@ const NotFound = () => {
             The page you are trying to access does not exist
           </Text>
 
-          <Link href="/" passHref>
+          <Link
+            href={status === "authenticated" ? "/pokemons" : "/login"}
+            passHref
+          >
             <Button as="a" mt={6}>
               Go home
             </Button>
