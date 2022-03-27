@@ -54,6 +54,7 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
             maxH="90%"
             src={getImageUrlById(data.id)}
             loader={<Spinner size="xl" />}
+            fallback="/assets/pokeball.png"
           />
         </Flex>
       </Flex>
