@@ -12,6 +12,15 @@ interface Config {
 
   /**
    *
+   * if true,
+   * will go to first slide when pressing next on last slide and
+   * will go to last slide when pressing prev on first slide
+   *
+   */
+  loop?: boolean;
+
+  /**
+   *
    * start playing on mount
    *
    */
@@ -31,6 +40,7 @@ interface Config {
 
 const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
   const {
+    loop = false,
     delay = 3,
     autoPlay = false,
     itemsPerSlide = 1,
@@ -38,41 +48,58 @@ const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
     currentSlide: slideStartIndex = 1,
   } = config ?? {};
 
-  const slides = arrayChunk(data, itemsPerSlide);
-  const totalSlides = slides.length;
+  const slides = React.useMemo(() => {
+    return arrayChunk(data, itemsPerSlide);
+  }, [data, itemsPerSlide]);
+
+  const totalSlides = React.useMemo(() => {
+    return slides.length;
+  }, [slides.length]);
 
   const [playing, setPlaying] = React.useState(autoPlay);
   const [currentSlide, setCurrentSlide] = React.useState(slideStartIndex);
 
-  const increment = React.useCallback(() => {
-    setCurrentSlide((old) => {
-      const current = old + 1;
-      onSlideChange(current);
-      return current;
-    });
-  }, [onSlideChange]);
+  const increment = React.useCallback(
+    (amount?: number) => {
+      setCurrentSlide((old) => {
+        const current = old + (amount ?? 1);
+        onSlideChange(current);
+        return current;
+      });
+    },
+    [onSlideChange]
+  );
 
-  const decrement = React.useCallback(() => {
-    setCurrentSlide((old) => {
-      const current = old - 1;
-      onSlideChange(current);
-      return current;
-    });
-  }, [onSlideChange]);
+  const decrement = React.useCallback(
+    (amount?: number) => {
+      setCurrentSlide((old) => {
+        const current = old - (amount ?? 1);
+        onSlideChange(current);
+        return current;
+      });
+    },
+    [onSlideChange]
+  );
 
   const prev = React.useCallback(() => {
     if (currentSlide > 1) return decrement();
-    setCurrentSlide(totalSlides);
-  }, [currentSlide, decrement, totalSlides]);
+    if (loop) increment(totalSlides - currentSlide);
+  }, [currentSlide, decrement, increment, loop, totalSlides]);
 
   const next = React.useCallback(() => {
     if (currentSlide < totalSlides) return increment();
-    setCurrentSlide(1);
-  }, [currentSlide, increment, totalSlides]);
+    if (loop) decrement(totalSlides - 1);
+  }, [currentSlide, decrement, increment, loop, totalSlides]);
 
   const play = () => setPlaying(true);
   const pause = () => setPlaying(false);
 
+  // we need to listen to slide index changes outside
+  React.useEffect(() => {
+    setCurrentSlide(slideStartIndex);
+  }, [slideStartIndex]);
+
+  // autoplay slideshow
   React.useEffect(() => {
     if (!playing) return;
 
