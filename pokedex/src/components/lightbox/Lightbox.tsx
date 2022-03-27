@@ -1,4 +1,4 @@
-import { Box, Fade, Flex, Image } from "@chakra-ui/react";
+import { Box, Flex, Image } from "@chakra-ui/react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -7,7 +7,7 @@ import {
 import * as React from "react";
 import Container from "./Container";
 import Control from "./Control";
-import { getZoomableImage, hideScrollbar, showScrollbar } from "./utils";
+import { getLightboxItems, hideScrollbar, showScrollbar } from "./utils";
 
 const Lightbox = () => {
   const sliderRef = React.useRef<HTMLDivElement>(null);
@@ -17,7 +17,10 @@ const Lightbox = () => {
   const [currentImage, setCurrentImage] = React.useState<HTMLImageElement>();
 
   const handleImageClick = React.useCallback((image: HTMLImageElement) => {
-    return () => {
+    return (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
       setOpen(true);
       setCurrentImage(image);
       setImages((old) => [
@@ -33,9 +36,9 @@ const Lightbox = () => {
       // inorder to recognize them on re-renders
       // and to not add duplicate event handlers
       // which affects performance as tested
-      if (image.hasAttribute("__lightbox_stamp__")) return;
+      if (image.hasAttribute("data-lightbox-stamp")) return;
 
-      image.setAttribute("__lightbox_stamp__", "");
+      image.setAttribute("data-lightbox-stamp", "");
       image.addEventListener("click", handleImageClick(image));
     });
   }, [handleImageClick, images]);
@@ -52,12 +55,25 @@ const Lightbox = () => {
     setCurrentImage(image);
   }, []);
 
-  React.useEffect(() => init(), [init]);
-  React.useEffect(() => setImages(getZoomableImage()), []);
+  const loadImages = React.useCallback(() => {
+    const lbItems = getLightboxItems();
+    if (!lbItems) return;
+    setImages(lbItems);
+  }, []);
+
+  React.useEffect(() => {
+    const timeout = setInterval(loadImages, 3000);
+    return () => clearInterval(timeout);
+  }, [loadImages]);
+
+  React.useEffect(() => init(), [images, init]);
+
   React.useEffect(() => {
     open && hideScrollbar();
     !open && showScrollbar();
   }, [open]);
+
+  // separated clean-up to prevent infinite re-rendering
   React.useEffect(() => {
     return () => {
       setOpen(false);
@@ -68,66 +84,68 @@ const Lightbox = () => {
   }, []);
 
   return (
-    <Fade in={open} unmountOnExit>
-      <Container>
-        <Control
-          pos="absolute"
-          top={3}
-          right={4}
-          icon={XIcon}
-          onClick={() => setOpen(false)}
-        />
+    <React.Fragment>
+      {open && (
+        <Container>
+          <Control
+            pos="absolute"
+            top={3}
+            right={4}
+            icon={XIcon}
+            onClick={() => setOpen(false)}
+          />
 
-        <Flex
-          align="center"
-          h="full"
-          w="96%"
-          direction="column"
-          gap={2}
-          mx="auto"
-        >
-          <Box flexGrow="1" w="full" h="80%">
-            {currentImage && <Highlight image={currentImage} />}
-          </Box>
-
-          <Box
-            h="20%"
-            w="90%"
-            p={2}
-            rounded="lg"
-            position="relative"
-            bgColor="brand.gray.800"
+          <Flex
+            align="center"
+            h="full"
+            w="96%"
+            direction="column"
+            gap={2}
+            mx="auto"
           >
-            <Control
-              pos="absolute"
-              left={0}
-              top="50%"
-              ml={-8}
-              transform="translateY(-50%)"
-              icon={ChevronLeftIcon}
-              onClick={slideLeft}
-            />
+            <Box flexGrow="1" w="full" h="80%">
+              {currentImage && <Highlight image={currentImage} />}
+            </Box>
 
-            <Slider
-              ref={sliderRef}
-              active={currentImage}
-              images={images}
-              onSelect={handleThumbnailClick}
-            />
+            <Box
+              h="20%"
+              w="90%"
+              p={2}
+              rounded="lg"
+              position="relative"
+              bgColor="brand.gray.800"
+            >
+              <Control
+                pos="absolute"
+                left={0}
+                top="50%"
+                ml={-8}
+                transform="translateY(-50%)"
+                icon={ChevronLeftIcon}
+                onClick={slideLeft}
+              />
 
-            <Control
-              position="absolute"
-              right={0}
-              mr={-8}
-              top="50%"
-              transform="translateY(-50%)"
-              icon={ChevronRightIcon}
-              onClick={slideRight}
-            />
-          </Box>
-        </Flex>
-      </Container>
-    </Fade>
+              <Slider
+                ref={sliderRef}
+                active={currentImage}
+                images={images}
+                onSelect={handleThumbnailClick}
+              />
+
+              <Control
+                position="absolute"
+                right={0}
+                mr={-8}
+                top="50%"
+                transform="translateY(-50%)"
+                icon={ChevronRightIcon}
+                onClick={slideRight}
+              />
+            </Box>
+          </Flex>
+        </Container>
+      )}
+    </React.Fragment>
   );
 };
 
@@ -141,12 +159,11 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
   ({ images, active, onSelect }, ref) => {
     return (
       <Box overflow="hidden" h="full">
-        <Box
+        <Flex
           ref={ref}
           scrollSnapType="x mandatory"
           scrollBehavior="smooth"
           overflow="hidden"
-          display="flex"
           gap={2}
           h="full"
         >
@@ -166,7 +183,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
               />
             );
           })}
-        </Box>
+        </Flex>
       </Box>
     );
   }
