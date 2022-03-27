@@ -1,8 +1,8 @@
 import { Flex, HStack, Spinner, Tag } from "@chakra-ui/react";
-import GridTable from "components/widgets/gridTable";
-import GridTableCell from "components/widgets/gridTable/GridTableCell";
-import GridTableHeading from "components/widgets/gridTable/GridTableHeading";
-import GridTableRow from "components/widgets/gridTable/GridTableRow";
+import GridTable from "components/widgets/grid-table";
+import GridTableCell from "components/widgets/grid-table/GridTableCell";
+import GridTableHeading from "components/widgets/grid-table/GridTableHeading";
+import GridTableRow from "components/widgets/grid-table/GridTableRow";
 import Photo from "components/widgets/Photo";
 import { useRouter } from "next/router";
 import getColorByType from "utils/pokemons/getColorByType";
