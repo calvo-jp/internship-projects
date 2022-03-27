@@ -19,7 +19,10 @@ const Pagination = ({
   const itemsPerSlide = 5;
   const startSlideIndex = Math.ceil(page / itemsPerSlide);
   const totalPages = Math.ceil(totalRows / pageSize);
-  const slideItems = new Array<number>(totalPages).fill(1).map((v, i) => v + i);
+
+  const slideItems = React.useMemo(() => {
+    return new Array<number>(totalPages).fill(1).map((v, i) => v + i);
+  }, [totalPages]);
 
   const { slides, currentSlide, next, prev } = useSlideshow(slideItems, {
     itemsPerSlide,
