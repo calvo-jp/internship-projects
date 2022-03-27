@@ -27,7 +27,7 @@ const LeftPane = ({ data }: LeftPaneProps) => {
           maxH="80%"
           src={getImageUrlById(data.id)}
           loader={<Spinner size="xl" />}
-          fallback="/assets/pokeball.png"
+          fallback={getImageUrlById(data.id, "PNG")}
         />
       </Flex>
 

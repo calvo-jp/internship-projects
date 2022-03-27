@@ -123,8 +123,8 @@ const SlideItem = ({ id }: { id: number }) => {
           maxW="80%"
           maxH="80%"
           src={getImageUrlById(id)}
-          alt=""
-          loader={<Spinner />}
+          loader={<Spinner size="sm" />}
+          fallback={getImageUrlById(id, "PNG")}
         />
       </Flex>
     </Link>
