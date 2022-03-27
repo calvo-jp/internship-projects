@@ -28,6 +28,7 @@ const LeftPane = ({ data }: LeftPaneProps) => {
           src={getImageUrlById(data.id)}
           loader={<Spinner size="xl" />}
           fallback={getImageUrlById(data.id, "PNG")}
+          data-lightbox-item=""
         />
       </Flex>
 

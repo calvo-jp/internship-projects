@@ -10,7 +10,8 @@ const Container = ({ children, ...props }: React.PropsWithChildren<{}>) => {
       position="fixed"
       top={0}
       left={0}
-      bgColor="brand.gray.900"
+      bgColor="#111827fa"
+      zIndex="overlay"
       {...props}
     >
       {children}

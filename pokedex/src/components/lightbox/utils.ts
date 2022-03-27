@@ -4,16 +4,17 @@ let previousScrollTop: number;
 
 export const hideScrollbar = () => {
   previousPos = document.body.style.position;
-  previousOverflow = document.body.style.overflow;
+  previousOverflow = document.body.style.overflowY;
   previousScrollTop = document.documentElement.scrollTop;
 
+  document.body.style.overflowY = "scroll";
   document.body.style.position = "fixed";
-  document.body.style.overflow = "hidden";
 };
 
 export const showScrollbar = () => {
   document.body.style.position = previousPos;
-  document.body.style.overflow = previousOverflow;
+  document.body.style.overflowY = previousOverflow;
+
   document.documentElement.scrollTo({
     top: previousScrollTop,
   });

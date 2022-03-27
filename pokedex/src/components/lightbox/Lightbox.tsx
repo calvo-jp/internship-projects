@@ -165,22 +165,28 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           scrollBehavior="smooth"
           overflow="hidden"
           gap={2}
+          p={2}
           h="full"
         >
           {images.map((image) => {
             const selected = active && active.src === image.src;
 
             return (
-              <Image
-                alt=""
-                maxH="full"
-                src={image.src}
+              <Box
                 key={image.src}
+                h="full"
+                p={4}
+                border="1px"
+                borderColor={selected ? "#205520" : "transparent"}
+                ring={selected ? 2 : 0}
+                ringColor="#2c802c1c"
+                rounded="sm"
+                cursor="pointer"
                 scrollSnapAlign="start"
                 onClick={() => onSelect && onSelect(image)}
-                border="1px"
-                borderColor={selected ? "green.400" : "transparent"}
-              />
+              >
+                <Image alt="" h="full" src={image.src} />
+              </Box>
             );
           })}
         </Flex>
