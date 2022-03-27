@@ -5,16 +5,28 @@ import {
 import * as React from "react";
 
 interface ImageProps {
-  /** override optional value */
   src: string;
-  /** Displayed while the image is still loading */
+  /**
+   *
+   * Displayed while the image is still loading
+   *
+   */
   loader?: JSX.Element | string;
-  /** fallback src */
+  /**
+   *
+   * fallback src
+   *
+   */
   fallback?: string;
 }
 
 const previouslyLoadedImage: string[] = [];
 
+/**
+ *
+ * aka. Image
+ *
+ */
 const Photo = ({
   src,
   loader,
