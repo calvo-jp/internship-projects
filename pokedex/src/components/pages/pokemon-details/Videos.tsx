@@ -43,7 +43,7 @@ interface ItemProps {
 
 const Item = ({ data }: ItemProps) => {
   return (
-    <AspectRatio border="1px" borderColor="">
+    <AspectRatio>
       <iframe
         src="https://www.youtube.com/embed/r0yq_yXFQhg"
         title="YouTube video player"
