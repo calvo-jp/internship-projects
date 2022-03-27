@@ -4,6 +4,7 @@ import GridView from "components/pages/pokemon-list/GridView";
 import ListView from "components/pages/pokemon-list/ListView";
 import Pagination from "components/pages/pokemon-list/Pagination";
 import Toolbar from "components/pages/pokemon-list/Toolbar";
+import Alert from "components/widgets/Alert";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMONS, GET_POKEMONS_TOTAL } from "graphql/pokeapi/queries";
 import useNavigate from "hooks/useNavigate";
@@ -15,6 +16,7 @@ import * as React from "react";
 import services from "services";
 import IPaginated from "types/paginated";
 import coalesce from "utils/coalesce";
+import isNumeric from "utils/validators/isNumeric";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 import {
   GetPokemonsTotal,
@@ -29,7 +31,6 @@ interface Props extends IPaginated<TPokemon> {
   };
 }
 
-// NEEDS REFACTORING!!
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   query,
 }) => {
@@ -100,8 +101,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   };
 };
 
-// TODO
-// - Add component for zero or no records found
 const Pokemons = ({ rows, page, pageSize, totalRows, search }: Props) => {
   const { basePath } = useRouter();
 
@@ -150,11 +149,19 @@ const Pokemons = ({ rows, page, pageSize, totalRows, search }: Props) => {
             <Toolbar filters={search?.types} onFilterChange={handleFilter} />
           </HStack>
 
+          <Alert
+            mt={{ base: 6, lg: 12 }}
+            open={rows.length <= 0}
+            message="No records to show"
+            onClose={() => navigate("/pokemons")}
+          />
+
           <Flex
             as="section"
             mt={{ base: 6, lg: 12 }}
             gap={{ base: 4, lg: 8 }}
             direction="column"
+            hidden={rows.length <= 0}
           >
             {view === "list" && <ListView data={rows} />}
             {view === "grid" && <GridView data={rows} />}
@@ -183,7 +190,5 @@ const queryToInt = (subject: ParsedQueryValue) => {
   const scalar = [subject].flat(1).at(0);
   if (scalar && isNumeric(scalar)) return parseInt(scalar);
 };
-
-const isNumeric = (value: string) => /\d+/.test(value);
 
 export default Pokemons;
