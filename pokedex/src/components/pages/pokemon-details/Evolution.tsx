@@ -83,7 +83,7 @@ const Evolution = ({ id }: EvolutionProps) => {
                     passHref
                     href={"/pokemons/" + (evolvesFromSpeciesId ?? id)}
                   >
-                    <Thumbnail id={id} />
+                    <Thumbnail id={evolvesFromSpeciesId ?? id} />
                   </Link>
                   <PokemonName id={evolvesFromSpeciesId ?? id} />
                 </VStack>
@@ -133,6 +133,7 @@ const Thumbnail = ({ id }: ThumbnailProps) => {
         src={getImageUrlById(id)}
         loader={<Spinner size="sm" />}
         fallback={getImageUrlById(id, "PNG")}
+        data-lightbox-item=""
       />
     </Flex>
   );
