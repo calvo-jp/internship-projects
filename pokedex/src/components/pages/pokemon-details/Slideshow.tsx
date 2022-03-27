@@ -117,9 +117,7 @@ const SlideItem = ({ id }: { id: number }) => {
         align="center"
         justify="center"
         tabIndex={-1}
-        bgColor={getColorByType(data?.pokemon?.types.at(0)?.type?.name ?? "", {
-          mode: "dark",
-        })}
+        bgColor={getColorByType(data?.pokemon?.types.at(0)?.type?.name ?? "")}
       >
         <Photo
           maxW="80%"

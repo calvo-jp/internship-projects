@@ -55,7 +55,7 @@ const RightPane = ({ data }: RightPaneProps) => {
                 px={4}
                 key={id}
                 color="brand.gray.50"
-                bgColor={getColorByType(type.name, { mode: "dark" })}
+                bgColor={getColorByType(type.name)}
                 rounded="full"
               >
                 {capitalize(type.name)}

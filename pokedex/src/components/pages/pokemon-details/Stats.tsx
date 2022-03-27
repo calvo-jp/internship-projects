@@ -178,7 +178,7 @@ const Chips = ({ title, items, loading }: ChipsProps) => {
             py={2}
             px={4}
             rounded="full"
-            bgColor={getColorByType(item, { mode: "dark" })}
+            bgColor={getColorByType(item)}
           >
             <TagLabel>{item}</TagLabel>
           </Tag>

@@ -26,19 +26,16 @@ interface GridViewItemProps {
 }
 
 const GridViewItem = ({ data }: GridViewItemProps) => {
-  const bgColor = getColorByType(data.types.at(0)?.type?.name || "", {
-    mode: "dark",
-  });
-
   return (
     <Link href={"/pokemons/" + data.id} passHref>
       <Flex
         as="a"
-        flexGrow="1"
         align="center"
+        height={{ base: "300px", lg: "260px" }}
         justify="center"
-        h={{ base: "300px", lg: "260px" }}
-        bgColor={bgColor}
+        bgColor={getColorByType(data.types.at(0)?.type?.name || "")}
+        rounded="sm"
+        flexGrow="1"
       >
         <Flex
           p={4}
