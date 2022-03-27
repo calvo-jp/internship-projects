@@ -29,6 +29,7 @@ const Slideshow = () => {
 
   const { slides, next, prev } = useSlideshow(items, {
     delay: 5,
+    loop: true,
     itemsPerSlide: 6,
     onSlideChange(currentSlide) {
       if (!sliderRef.current) return;
