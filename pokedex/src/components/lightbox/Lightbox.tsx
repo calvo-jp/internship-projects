@@ -227,7 +227,7 @@ const Highlight = ({ image }: HighlightProps) => {
       justifyContent="center"
       bgColor="brand.gray.800"
     >
-      <Image maxH="full" maxW="80%" src={image.src} alt="" />
+      <Image maxH="full" maxW="90%" src={image.src} alt="" />
     </Box>
   );
 };
