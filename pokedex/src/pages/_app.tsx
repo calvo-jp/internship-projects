@@ -1,5 +1,5 @@
 import { ApolloProvider } from "@apollo/client";
-import { Box, ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import "@fontsource/inter/100.css";
 import "@fontsource/inter/200.css";
 import "@fontsource/inter/300.css";
@@ -10,6 +10,7 @@ import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/inter/900.css";
 import "@fontsource/public-sans/400.css";
+import Lightbox from "components/lightbox";
 import PageLoader from "components/PageLoader";
 import apolloClient from "config/apollo/client";
 import theme from "config/theme";
@@ -48,6 +49,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           <ChakraProvider theme={theme}>
             <PageLoader />
             <Component {...pageProps} />
+            <Lightbox />
           </ChakraProvider>
         </ApolloProvider>
       </SessionProvider>
