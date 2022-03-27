@@ -20,6 +20,7 @@ import About from "./About";
 import Evolution from "./Evolution";
 import Moves from "./Moves";
 import Stats from "./Stats";
+import Videos from "./Videos";
 
 type TPokemon = NonNullable<GetPokemon["pokemon"]>;
 
@@ -27,7 +28,7 @@ interface RightPaneProps {
   data: TPokemon;
 }
 
-const tabs = "about|statistics|evolution|moves".split(/\|/);
+const tabs = "about|statistics|evolution|moves|videos".split(/\|/);
 
 const RightPane = ({ data }: RightPaneProps) => {
   const router = useRouter();
@@ -73,15 +74,22 @@ const RightPane = ({ data }: RightPaneProps) => {
         index={currentTabIdx}
         lazyBehavior="keepMounted"
       >
-        <TabList gap={4} flexWrap="wrap" justifyContent={{ lg: "start" }}>
+        <TabList
+          gap={4}
+          display="grid"
+          gridTemplateColumns={{
+            base: "1fr",
+            md: "repeat(2, 1fr)",
+            lg: "repeat(5, 1fr)",
+          }}
+        >
           {tabs.map((tab) => (
             <Tab
               key={tab}
-              fontWeight="medium"
-              bgColor="brand.gray.800"
               color="brand.gray.50"
+              bgColor="brand.gray.800"
+              fontWeight="medium"
               rounded="sm"
-              w={{ base: "full", lg: "187px" }}
               _selected={{
                 color: "brand.gray.800",
                 bgColor: "brand.primary",
@@ -104,6 +112,9 @@ const RightPane = ({ data }: RightPaneProps) => {
           </TabPanel>
           <TabPanel p={0}>
             <Moves id={data.id} />
+          </TabPanel>
+          <TabPanel p={0}>
+            <Videos search={data.name} />
           </TabPanel>
         </TabPanels>
       </Tabs>
