@@ -18,6 +18,10 @@ const Lightbox = () => {
 
   const handleImageClick = React.useCallback((image: HTMLImageElement) => {
     return (e: MouseEvent) => {
+      // do not add onclick event
+      // but include in slideshow
+      if (image.hasAttribute("data-lightbox-noclick")) return;
+
       e.preventDefault();
       e.stopPropagation();
 
@@ -62,7 +66,7 @@ const Lightbox = () => {
   }, []);
 
   React.useEffect(() => {
-    const timeout = setInterval(loadImages, 3000);
+    const timeout = setInterval(loadImages, 1000);
     return () => clearInterval(timeout);
   }, [loadImages]);
 
@@ -157,6 +161,13 @@ interface SliderProps {
 
 const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
   ({ images, active, onSelect }, ref) => {
+    // temporary fix
+    // have to find a more efficient way to handle duplicate images
+    const srcs = images.reduce<HTMLImageElement[]>((array, image) => {
+      if (array.some(({ src }) => image.src === src)) return array;
+      return [...array, image];
+    }, []);
+
     return (
       <Box overflow="hidden" h="full">
         <Flex
@@ -165,16 +176,15 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           scrollBehavior="smooth"
           overflow="hidden"
           gap={2}
-          p={2}
+          align="center"
           h="full"
         >
-          {images.map((image) => {
+          {srcs.map((image) => {
             const selected = active && active.src === image.src;
 
             return (
               <Box
                 key={image.src}
-                h="full"
                 p={4}
                 border="1px"
                 borderColor={selected ? "#205520" : "transparent"}
@@ -184,6 +194,10 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
                 cursor="pointer"
                 scrollSnapAlign="start"
                 onClick={() => onSelect && onSelect(image)}
+                bgColor="#181f2b"
+                flexShrink={0}
+                h="100px"
+                w="100px"
               >
                 <Image alt="" h="full" src={image.src} />
               </Box>

@@ -126,6 +126,8 @@ const SlideItem = ({ id }: { id: number }) => {
           src={getImageUrlById(id)}
           loader={<Spinner size="sm" />}
           fallback={getImageUrlById(id, "PNG")}
+          data-lightbox-item=""
+          data-lightbox-noclick=""
         />
       </GridItem>
     </Link>
