@@ -119,7 +119,7 @@ const Pokemons = ({ rows, page, pageSize, totalRows, search }: Props) => {
 
   const handleFilter = (types: string[]) => {
     navigate(basePath, {
-      page,
+      page: 1,
       pageSize,
       types,
     });
