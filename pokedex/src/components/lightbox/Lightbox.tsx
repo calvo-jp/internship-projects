@@ -5,7 +5,6 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import * as React from "react";
-import valx from "utils/valx";
 import Container from "./Container";
 import Control from "./Control";
 import { getZoomableImage, hideScrollbar, showScrollbar } from "./utils";
@@ -17,18 +16,29 @@ const Lightbox = () => {
   const [images, setImages] = React.useState<HTMLImageElement[]>([]);
   const [currentImage, setCurrentImage] = React.useState<HTMLImageElement>();
 
+  const handleImageClick = React.useCallback((image: HTMLImageElement) => {
+    return () => {
+      setOpen(true);
+      setCurrentImage(image);
+      setImages((old) => [
+        image,
+        ...old.filter(({ src }) => src !== image.src),
+      ]);
+    };
+  }, []);
+
   const init = React.useCallback(() => {
     images.map((image) => {
-      image.addEventListener("click", () => {
-        setOpen(true);
-        setCurrentImage(image);
-        setImages((old) => [
-          image,
-          ...old.filter(({ src }) => src !== image.src),
-        ]);
-      });
+      // adding attribute to images
+      // inorder to recognize them on re-renders
+      // and to not add duplicate event handlers
+      // which affects performance as tested
+      if (image.hasAttribute("__lightbox_stamp__")) return;
+
+      image.setAttribute("__lightbox_stamp__", "");
+      image.addEventListener("click", handleImageClick(image));
     });
-  }, [images]);
+  }, [handleImageClick, images]);
 
   const slideLeft = React.useCallback(() => {
     if (sliderRef.current) sliderRef.current.scrollLeft -= 400;
@@ -39,21 +49,15 @@ const Lightbox = () => {
   }, []);
 
   const handleThumbnailClick = React.useCallback((image: HTMLImageElement) => {
-    return () => setCurrentImage(image);
+    setCurrentImage(image);
   }, []);
 
-  React.useEffect(
-    () => init(),
-    [images /* weird, but this improves performance */, init]
-  );
-
+  React.useEffect(() => init(), [init]);
   React.useEffect(() => setImages(getZoomableImage()), []);
-
   React.useEffect(() => {
     open && hideScrollbar();
     !open && showScrollbar();
   }, [open]);
-
   React.useEffect(() => {
     return () => {
       setOpen(false);
@@ -104,38 +108,12 @@ const Lightbox = () => {
               onClick={slideLeft}
             />
 
-            <Box overflow="hidden" h="full">
-              <Box
-                ref={sliderRef}
-                scrollSnapType="x mandatory"
-                scrollBehavior="smooth"
-                overflow="hidden"
-                display="flex"
-                gap={2}
-                h="full"
-              >
-                {images.map((image) => {
-                  const selected =
-                    currentImage && currentImage.src === image.src;
-
-                  return (
-                    <Image
-                      alt=""
-                      maxH="full"
-                      src={image.src}
-                      key={image.src}
-                      scrollSnapAlign="start"
-                      onClick={handleThumbnailClick(image)}
-                      border="1px"
-                      borderColor={valx({
-                        green: selected,
-                        transparent: !selected,
-                      })}
-                    />
-                  );
-                })}
-              </Box>
-            </Box>
+            <Slider
+              ref={sliderRef}
+              active={currentImage}
+              images={images}
+              onSelect={handleThumbnailClick}
+            />
 
             <Control
               position="absolute"
@@ -152,6 +130,49 @@ const Lightbox = () => {
     </Fade>
   );
 };
+
+interface SliderProps {
+  images: HTMLImageElement[];
+  active?: HTMLImageElement;
+  onSelect?: (image: HTMLImageElement) => void;
+}
+
+const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
+  ({ images, active, onSelect }, ref) => {
+    return (
+      <Box overflow="hidden" h="full">
+        <Box
+          ref={ref}
+          scrollSnapType="x mandatory"
+          scrollBehavior="smooth"
+          overflow="hidden"
+          display="flex"
+          gap={2}
+          h="full"
+        >
+          {images.map((image) => {
+            const selected = active && active.src === image.src;
+
+            return (
+              <Image
+                alt=""
+                maxH="full"
+                src={image.src}
+                key={image.src}
+                scrollSnapAlign="start"
+                onClick={() => onSelect && onSelect(image)}
+                border="1px"
+                borderColor={selected ? "green.400" : "transparent"}
+              />
+            );
+          })}
+        </Box>
+      </Box>
+    );
+  }
+);
+
+Slider.displayName = "Slider";
 
 interface HighlightProps {
   image: HTMLImageElement;
