@@ -4,26 +4,13 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Flex,
-  Heading,
-  HStack,
   Icon,
   Spinner,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Tag,
-  VStack,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import HomepageLayout from "components/layouts/homepage";
-import About from "components/pages/pokemon-details/About";
-import Evolution from "components/pages/pokemon-details/Evolution";
-import Moves from "components/pages/pokemon-details/Moves";
-import Slideshow from "components/pages/pokemon-details/Slideshow";
-import Stats from "components/pages/pokemon-details/Stats";
-import Thumbnail from "components/widgets/Thumbnail";
+import LeftPane from "components/pages/pokemon-details/LeftPane";
+import RightPane from "components/pages/pokemon-details/RightPane";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
 import useNavigate from "hooks/useNavigate";
@@ -34,10 +21,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
 import services from "services";
-import capitalize from "utils/capitalize";
-import getColorByType from "utils/pokemons/getColorByType";
-import getImageUrlById from "utils/pokemons/getImageUrlById";
-import unkebab from "utils/unkebab";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
@@ -132,8 +115,13 @@ const Pokemon = ({ pokemon }: Props) => {
             gap={16}
             direction={{ base: "column", lg: "row" }}
           >
-            <LeftPane data={pokemon} />
-            <RightPane data={pokemon} />
+            <Box flexGrow={{ xl: 1 }}>
+              <LeftPane data={pokemon} />
+            </Box>
+
+            <Box w={{ xl: "799px" }}>
+              <RightPane data={pokemon} />
+            </Box>
           </Flex>
         </Box>
       </HomepageLayout>
@@ -146,123 +134,6 @@ const Loader = () => {
     <Flex minH="100vh" align="center" justify="center">
       <Spinner w="75px" h="75px" thickness="4px" />
     </Flex>
-  );
-};
-
-interface LeftPaneProps {
-  data: TPokemon;
-}
-
-const LeftPane = ({ data }: LeftPaneProps) => {
-  return (
-    <VStack spacing={12}>
-      <Box
-        w="full"
-        rounded="sm"
-        bgColor={getColorByType(data.types.at(0)?.type?.name || "", {
-          mode: "dark",
-        })}
-      >
-        <Thumbnail
-          h="390px"
-          w="325px"
-          mx="auto"
-          bgColor="transparent"
-          shadow="none"
-          src={getImageUrlById(data.id)}
-          loader={<Spinner size="xl" />}
-        />
-      </Box>
-
-      <Slideshow />
-    </VStack>
-  );
-};
-
-interface RightPaneProps {
-  data: TPokemon;
-}
-
-const tabs = "about|statistics|evolution|moves".split(/\|/);
-
-const RightPane = ({ data }: RightPaneProps) => {
-  const router = useRouter();
-  const currentTab = [router.query.tab].flat(1).at(0) || tabs[0];
-  const currentTabIdx = tabs.findIndex((tab) => tab === currentTab);
-  const navigate = useNavigate({ scroll: false, shallow: true });
-
-  const handleChange = (index: number) =>
-    navigate("/pokemons/" + data.id, {
-      tab: tabs[index],
-    });
-
-  return (
-    <Box w={{ xl: "799px" }}>
-      <VStack spacing={6} align={{ base: "center", lg: "start" }}>
-        <Heading>{capitalize(unkebab(data.name), { delimiter: " " })}</Heading>
-        <HStack>
-          {data.types.map(({ type, id }) => {
-            if (!type) return null;
-
-            return (
-              <Tag
-                py={2}
-                px={4}
-                key={id}
-                color="brand.gray.50"
-                bgColor={getColorByType(type.name, { mode: "dark" })}
-                rounded="full"
-              >
-                {capitalize(type.name)}
-              </Tag>
-            );
-          })}
-        </HStack>
-      </VStack>
-
-      <Tabs
-        mt={16}
-        isLazy
-        variant="unstyled"
-        onChange={handleChange}
-        index={currentTabIdx}
-        lazyBehavior="keepMounted"
-      >
-        <TabList gap={4} flexWrap="wrap" justifyContent={{ lg: "start" }}>
-          {tabs.map((tab) => (
-            <Tab
-              key={tab}
-              fontWeight="medium"
-              bgColor="brand.gray.800"
-              color="brand.gray.50"
-              rounded="sm"
-              w={{ base: "full", lg: "187px" }}
-              _selected={{
-                color: "brand.gray.800",
-                bgColor: "brand.primary",
-              }}
-            >
-              {capitalize(tab)}
-            </Tab>
-          ))}
-        </TabList>
-
-        <TabPanels mt={14}>
-          <TabPanel p={0}>
-            <About data={data} />
-          </TabPanel>
-          <TabPanel p={0}>
-            <Stats id={data.id} />
-          </TabPanel>
-          <TabPanel p={0}>
-            <Evolution id={data.id} />
-          </TabPanel>
-          <TabPanel p={0}>
-            <Moves id={data.id} />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Box>
   );
 };
 
