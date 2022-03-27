@@ -2,10 +2,10 @@ import { useQuery } from "@apollo/client";
 import {
   Flex,
   Grid,
+  GridItem,
   HStack,
   Icon,
   IconButton,
-  SimpleGrid,
   Spinner,
   VStack,
 } from "@chakra-ui/react";
@@ -109,13 +109,14 @@ const SlideItem = ({ id }: { id: number }) => {
 
   return (
     <Link passHref href={"/pokemons/" + id}>
-      <Flex
+      <GridItem
         as="a"
         shadow="md"
         rounded="sm"
         padding={2}
-        align="center"
-        justify="center"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
         tabIndex={-1}
         bgColor={getColorByType(data?.pokemon?.types.at(0)?.type?.name ?? "")}
       >
@@ -126,7 +127,7 @@ const SlideItem = ({ id }: { id: number }) => {
           loader={<Spinner size="sm" />}
           fallback={getImageUrlById(id, "PNG")}
         />
-      </Flex>
+      </GridItem>
     </Link>
   );
 };
