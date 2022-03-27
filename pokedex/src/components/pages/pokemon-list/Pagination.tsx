@@ -45,7 +45,6 @@ const Pagination = ({
   };
 
   const handleClick = (page: number) => () => onPageChange(page);
-  const selectedSlideIndex = currentSlide - 1;
 
   return (
     <Center>
@@ -54,7 +53,7 @@ const Pagination = ({
           <Icon as={ChevronLeftIcon} />
         </PageButton>
 
-        {slides.at(selectedSlideIndex)?.map((number) => (
+        {slides.at(currentSlide - 1)?.map((number) => (
           <PageButton
             key={number}
             active={page === number}
