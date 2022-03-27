@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import {
   Box,
   Center,
+  Flex,
   HStack,
   Icon,
   Spinner,
@@ -10,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { ArrowNarrowRightIcon } from "@heroicons/react/outline";
 import Card from "components/widgets/card";
-import Thumbnail from "components/widgets/Thumbnail";
+import Photo from "components/widgets/Photo";
 import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
 import Link from "next/link";
 import * as React from "react";
@@ -83,9 +84,6 @@ const Evolution = ({ id }: EvolutionProps) => {
                     href={"/pokemons/" + (evolvesFromSpeciesId ?? id)}
                   >
                     <Thumbnail
-                      as="a"
-                      w="88px"
-                      h="88px"
                       src={getImageUrlById(evolvesFromSpeciesId ?? id)}
                     />
                   </Link>
@@ -103,12 +101,7 @@ const Evolution = ({ id }: EvolutionProps) => {
 
                 <VStack spacing={2}>
                   <Link passHref href={"/pokemons/" + id}>
-                    <Thumbnail
-                      as="a"
-                      w="88px"
-                      h="88px"
-                      src={getImageUrlById(id)}
-                    />
+                    <Thumbnail src={getImageUrlById(id)} />
                   </Link>
                   <Text fontSize="sm">{name}</Text>
                 </VStack>
@@ -118,6 +111,26 @@ const Evolution = ({ id }: EvolutionProps) => {
         </VStack>
       </Card>
     </Box>
+  );
+};
+
+interface ThumbnailProps {
+  src: string;
+}
+
+const Thumbnail = ({ src }: ThumbnailProps) => {
+  return (
+    <Flex
+      as="a"
+      w="88px"
+      h="88px"
+      align="center"
+      shadow="sm"
+      justify="center"
+      bgColor="others.gray.800"
+    >
+      <Photo maxW="60%" maxH="60%" src={src} />
+    </Flex>
   );
 };
 
