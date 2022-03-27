@@ -15,6 +15,7 @@ import {
 import ArrowDownIcon from "components/icons/ArrowDown";
 import Link from "components/widgets/Link";
 import useProfile from "hooks/useProfile";
+import useStore from "hooks/useStore";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import * as React from "react";
@@ -79,8 +80,10 @@ const Header = () => {
 
 const Dropdown = () => {
   const { push } = useRouter();
+  const resetStore = useStore((state) => state.clear);
 
   const logout = async () => {
+    resetStore();
     await signOut({ redirect: false });
     await push("/");
   };
