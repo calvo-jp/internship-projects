@@ -41,13 +41,13 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
         bgColor={bgColor}
       >
         <Flex
-          bgColor="#dddddd24"
-          rounded="full"
           p={4}
           w={{ base: "200px", lg: "150px" }}
           h={{ base: "200px", lg: "150px" }}
           align="center"
           justify="center"
+          rounded="full"
+          bgColor="#dddddd24"
         >
           <Photo
             maxW="90%"
