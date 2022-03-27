@@ -7,6 +7,7 @@ import {
   MenuList,
   Spinner,
   Tag,
+  Tooltip,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -38,14 +39,18 @@ const Toolbar = ({ filters, onFilterChange }: ToolbarProps) => {
         <FilterTool value={filters} onChange={onFilterChange} />
       </WrapItem>
       <WrapItem>
-        <button onClick={handleToggle(true)}>
-          <ToolbarIcon icon={ViewListIcon} />
-        </button>
+        <Tooltip label="toggle list view" hasArrow>
+          <button onClick={handleToggle(true)}>
+            <ToolbarIcon icon={ViewListIcon} />
+          </button>
+        </Tooltip>
       </WrapItem>
       <WrapItem>
-        <button onClick={handleToggle(false)}>
-          <ToolbarIcon icon={ViewGridIcon} />
-        </button>
+        <Tooltip label="toggle grid view" hasArrow>
+          <button onClick={handleToggle(false)}>
+            <ToolbarIcon icon={ViewGridIcon} />
+          </button>
+        </Tooltip>
       </WrapItem>
     </Wrap>
   );
@@ -58,7 +63,7 @@ interface FilterToolProps {
 
 /** Controlled component */
 const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
-  const { data, error, loading } = usePokemonTypes();
+  const { data, loading } = usePokemonTypes();
 
   const toggle = React.useCallback(
     (subject: string) => {
