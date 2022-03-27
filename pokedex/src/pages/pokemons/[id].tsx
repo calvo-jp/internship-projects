@@ -13,7 +13,6 @@ import LeftPane from "components/pages/pokemon-details/LeftPane";
 import RightPane from "components/pages/pokemon-details/RightPane";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
-import useNavigate from "hooks/useNavigate";
 import useStore from "hooks/useStore";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";

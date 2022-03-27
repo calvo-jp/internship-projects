@@ -16,7 +16,7 @@ import { SignUp, SignUpVariables } from "__generated__/SignUp";
 
 const CreateAccount = () => {
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>Pokedex | Create Account</title>
       </Head>
@@ -31,7 +31,7 @@ const CreateAccount = () => {
           </HStack>
         </Center>
       </AccountLayout>
-    </>
+    </React.Fragment>
   );
 };
 

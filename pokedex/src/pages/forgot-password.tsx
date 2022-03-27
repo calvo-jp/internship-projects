@@ -18,7 +18,7 @@ import {
 
 const ForgotPassword = () => {
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>Pokedex | Recover Account</title>
       </Head>
@@ -36,7 +36,7 @@ const ForgotPassword = () => {
           </HStack>
         </Center>
       </AccountLayout>
-    </>
+    </React.Fragment>
   );
 };
 

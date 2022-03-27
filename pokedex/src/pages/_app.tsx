@@ -17,11 +17,11 @@ import theme from "config/theme";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { Fragment } from "react";
+import * as React from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <Fragment>
+    <React.Fragment>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
@@ -53,7 +53,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           </ChakraProvider>
         </ApolloProvider>
       </SessionProvider>
-    </Fragment>
+    </React.Fragment>
   );
 };
 

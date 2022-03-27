@@ -10,6 +10,7 @@ import useSearchParams from "hooks/useSearchParams";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -19,7 +20,7 @@ import {
 
 const AccountRecovery = () => {
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>Pokedex | Recover Account</title>
       </Head>
@@ -30,7 +31,7 @@ const AccountRecovery = () => {
       >
         <AccountRecoveryForm />
       </AccountLayout>
-    </>
+    </React.Fragment>
   );
 };
 
