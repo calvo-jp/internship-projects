@@ -98,7 +98,7 @@ const MainMoves = ({ moves }: MainMovesProps) => {
     return idx <= current ? [...array, ...chunk] : array;
   }, []);
 
-  const hasMore = current < chunks.length;
+  const hasMore = current < chunks.length - 1;
   const [scrollHeight, setScrollHeight] = React.useState(0);
 
   const showMore = () => {
