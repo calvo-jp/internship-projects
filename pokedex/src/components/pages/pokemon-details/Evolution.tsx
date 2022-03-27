@@ -83,9 +83,7 @@ const Evolution = ({ id }: EvolutionProps) => {
                     passHref
                     href={"/pokemons/" + (evolvesFromSpeciesId ?? id)}
                   >
-                    <Thumbnail
-                      src={getImageUrlById(evolvesFromSpeciesId ?? id)}
-                    />
+                    <Thumbnail id={id} />
                   </Link>
                   <PokemonName id={evolvesFromSpeciesId ?? id} />
                 </VStack>
@@ -101,7 +99,7 @@ const Evolution = ({ id }: EvolutionProps) => {
 
                 <VStack spacing={2}>
                   <Link passHref href={"/pokemons/" + id}>
-                    <Thumbnail src={getImageUrlById(id)} />
+                    <Thumbnail id={id} />
                   </Link>
                   <Text fontSize="sm">{name}</Text>
                 </VStack>
@@ -115,10 +113,10 @@ const Evolution = ({ id }: EvolutionProps) => {
 };
 
 interface ThumbnailProps {
-  src: string;
+  id: number;
 }
 
-const Thumbnail = ({ src }: ThumbnailProps) => {
+const Thumbnail = ({ id }: ThumbnailProps) => {
   return (
     <Flex
       as="a"
@@ -129,7 +127,13 @@ const Thumbnail = ({ src }: ThumbnailProps) => {
       justify="center"
       bgColor="others.gray.800"
     >
-      <Photo maxW="60%" maxH="60%" src={src} />
+      <Photo
+        maxW="60%"
+        maxH="60%"
+        src={getImageUrlById(id)}
+        loader={<Spinner size="sm" />}
+        fallback={getImageUrlById(id, "PNG")}
+      />
     </Flex>
   );
 };
