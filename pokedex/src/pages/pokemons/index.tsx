@@ -4,7 +4,6 @@ import GridView from "components/pages/pokemon-list/GridView";
 import ListView from "components/pages/pokemon-list/ListView";
 import Pagination from "components/pages/pokemon-list/Pagination";
 import Toolbar from "components/pages/pokemon-list/Toolbar";
-import Alert from "components/widgets/Alert";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMONS, GET_POKEMONS_TOTAL } from "graphql/pokeapi/queries";
 import useNavigate from "hooks/useNavigate";
@@ -87,6 +86,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       ? getPokemonsTotalResult.value.data.summary.aggregate?.count ?? 0
       : 0;
 
+  if (rows.length === 0) return { notFound: true };
+
   return {
     props: {
       page,
@@ -149,19 +150,11 @@ const Pokemons = ({ rows, page, pageSize, totalRows, search }: Props) => {
             <Toolbar filters={search?.types} onFilterChange={handleFilter} />
           </HStack>
 
-          <Alert
-            mt={{ base: 6, lg: 12 }}
-            open={rows.length <= 0}
-            message="No records to show"
-            onClose={() => navigate("/pokemons")}
-          />
-
           <Flex
             as="section"
             mt={{ base: 6, lg: 12 }}
             gap={{ base: 4, lg: 8 }}
             direction="column"
-            hidden={rows.length <= 0}
           >
             {view === "list" && <ListView data={rows} />}
             {view === "grid" && <GridView data={rows} />}
