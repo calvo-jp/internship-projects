@@ -57,6 +57,7 @@ const ListView = ({ data }: ListViewProps) => {
                 src={getImageUrlById(id)}
                 loader={<Spinner size="md" />}
                 fallback={getImageUrlById(id, "PNG")}
+                data-lightbox-item=""
               />
             </Flex>
           </GridTableCell>
