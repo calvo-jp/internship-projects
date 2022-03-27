@@ -27,8 +27,8 @@ const Slideshow = () => {
   const items = useStore((state) => state.viewedPokemonIds);
   const sliderRef = React.useRef<HTMLDivElement>(null);
 
-  const { slides, next, prev, play, pause, playing } = useSlideshow(items, {
-    delay: 5000,
+  const { slides, next, prev } = useSlideshow(items, {
+    delay: 5,
     itemsPerSlide: 6,
     onSlideChange(currentSlide) {
       if (!sliderRef.current) return;
