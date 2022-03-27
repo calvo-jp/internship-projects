@@ -1,5 +1,4 @@
-import { Box, Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
-import SadEmojiIcon from "components/icons/SadEmoji";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import * as React from "react";
@@ -17,12 +16,7 @@ const NotFound = () => {
         justify="center"
         flexDirection="column"
         minH="100vh"
-        gap={4}
       >
-        <Box>
-          <Icon as={SadEmojiIcon} w={32} h={32} fill="brand.gray.700" />
-        </Box>
-
         <Box textAlign="center">
           <Heading fontSize="6xl">Ooops!</Heading>
 
