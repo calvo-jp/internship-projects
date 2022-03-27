@@ -6,6 +6,7 @@ interface Store {
   toggleListView: (value?: boolean) => void;
   viewedPokemonIds: number[];
   saveAsViewedPokemon: (id: number) => void;
+  clear: () => void;
 }
 
 const useStore = createStore<Store>(
@@ -31,6 +32,7 @@ const useStore = createStore<Store>(
           };
         });
       },
+      clear: () => set({}, true),
     })),
     { name: "POKEDEX" }
   )
