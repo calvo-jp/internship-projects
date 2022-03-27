@@ -48,13 +48,8 @@ const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
     currentSlide: slideStartIndex = 1,
   } = config ?? {};
 
-  const slides = React.useMemo(() => {
-    return arrayChunk(data, itemsPerSlide);
-  }, [data, itemsPerSlide]);
-
-  const totalSlides = React.useMemo(() => {
-    return slides.length;
-  }, [slides.length]);
+  const slides = arrayChunk(data, itemsPerSlide);
+  const totalSlides = slides.length;
 
   const [playing, setPlaying] = React.useState(autoPlay);
   const [currentSlide, setCurrentSlide] = React.useState(slideStartIndex);
@@ -83,18 +78,20 @@ const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
 
   const prev = React.useCallback(() => {
     if (currentSlide > 1) return decrement();
+
     if (loop) increment(totalSlides - currentSlide);
   }, [currentSlide, decrement, increment, loop, totalSlides]);
 
   const next = React.useCallback(() => {
     if (currentSlide < totalSlides) return increment();
+
     if (loop) decrement(totalSlides - 1);
   }, [currentSlide, decrement, increment, loop, totalSlides]);
 
   const play = () => setPlaying(true);
   const pause = () => setPlaying(false);
 
-  // we need to listen to slide index changes outside
+  // listen to slide index changes outside
   React.useEffect(() => {
     setCurrentSlide(slideStartIndex);
   }, [slideStartIndex]);
