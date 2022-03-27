@@ -1,5 +1,5 @@
-import { Box, Spinner, VStack } from "@chakra-ui/react";
-import Thumbnail from "components/widgets/Thumbnail";
+import { Box, Flex, Spinner, VStack } from "@chakra-ui/react";
+import Photo from "components/widgets/Photo";
 import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
 import { GetPokemon } from "__generated__/GetPokemon";
@@ -13,26 +13,29 @@ interface LeftPaneProps {
 
 const LeftPane = ({ data }: LeftPaneProps) => {
   return (
-    <VStack spacing={12}>
-      <Box
+    <VStack spacing={12} align="start">
+      <Flex
         w="full"
+        h="390px"
+        align="center"
+        justify="center"
         rounded="sm"
         bgColor={getColorByType(data.types.at(0)?.type?.name || "", {
           mode: "dark",
         })}
       >
-        <Thumbnail
-          h="390px"
-          w="325px"
-          mx="auto"
-          bgColor="transparent"
-          shadow="none"
+        <Photo
+          maxW="80%"
+          maxH="80%"
           src={getImageUrlById(data.id)}
           loader={<Spinner size="xl" />}
+          fallback="/assets/pokeball.png"
         />
-      </Box>
+      </Flex>
 
-      <Slideshow />
+      <Box alignSelf="center">
+        <Slideshow />
+      </Box>
     </VStack>
   );
 };

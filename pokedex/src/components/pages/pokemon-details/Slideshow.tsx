@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import {
   Flex,
+  Grid,
   HStack,
   Icon,
   IconButton,
@@ -53,11 +54,17 @@ const Slideshow = () => {
           w="187px"
         >
           {slides.map((ids) => (
-            <SimpleGrid key={generateId()} gap={2} columns={3} flexShrink={0}>
+            <Grid
+              key={generateId()}
+              gap={2}
+              templateColumns="repeat(3, 57px)"
+              gridAutoRows="57px"
+              flexShrink={0}
+            >
               {ids.map((id) => (
                 <SlideItem key={id} id={id} />
               ))}
-            </SimpleGrid>
+            </Grid>
           ))}
         </Flex>
 
@@ -84,16 +91,18 @@ const Control = ({
       size="sm"
       aria-label=""
       icon={<Icon as={icon} stroke="white" />}
-      rounded="full"
       shadow="md"
+      rounded="full"
       bgColor="brand.gray.800"
+      _hover={{ bgColor: "brand.gray.800" }}
+      _active={{ bgColor: "brand.gray.800" }}
       {...props}
     />
   );
 };
 
 const SlideItem = ({ id }: { id: number }) => {
-  const { data, loading } = useQuery<GetPokemonType, GetPokemonTypeVariables>(
+  const { data } = useQuery<GetPokemonType, GetPokemonTypeVariables>(
     GET_POKEMON_TYPE,
     { variables: { id } }
   );
@@ -102,11 +111,9 @@ const SlideItem = ({ id }: { id: number }) => {
     <Link passHref href={"/pokemons/" + id}>
       <Flex
         as="a"
-        width="57px"
-        height="57px"
-        padding={2}
-        rounded="sm"
         shadow="md"
+        rounded="sm"
+        padding={2}
         align="center"
         justify="center"
         tabIndex={-1}
