@@ -1,4 +1,4 @@
-import { HStack, Spinner, Tag } from "@chakra-ui/react";
+import { Flex, HStack, Spinner, Tag } from "@chakra-ui/react";
 import GridTable from "components/widgets/gridTable";
 import GridTableCell from "components/widgets/gridTable/GridTableCell";
 import GridTableHeading from "components/widgets/gridTable/GridTableHeading";
@@ -50,13 +50,15 @@ const ListView = ({ data }: ListViewProps) => {
         >
           <GridTableCell>{id}</GridTableCell>
           <GridTableCell>
-            <Photo
-              w="32px"
-              h="32px"
-              src={getImageUrlById(id)}
-              loader={<Spinner size="md" />}
-              fallback="/assets/pokeball.png"
-            />
+            <Flex w="32px" h="32px" justify="center" align="center">
+              <Photo
+                maxW="full"
+                maxH="full"
+                src={getImageUrlById(id)}
+                loader={<Spinner size="md" />}
+                fallback="/assets/pokeball.png"
+              />
+            </Flex>
           </GridTableCell>
           <GridTableCell>{unkebab(name)}</GridTableCell>
           <GridTableCell>
