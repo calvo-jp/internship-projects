@@ -9,16 +9,17 @@ import {
   LinkedinShareButton,
   TwitterShareButton,
 } from "next-share";
-import Head from "next/head";
 import * as React from "react";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 
-interface SocialsProps {
+interface SocialsShareProps {
   /** pokemon id */
   id: number;
 }
 
-const SocialShare = ({ id }: SocialsProps) => {
+const baseUrl = "https://internship-project-pokedex.vercel.app/og/pokemons/";
+
+const SocialShare = ({ id }: SocialsShareProps) => {
   const { loading, data, error } = useQuery<GetPokemon, GetPokemonVariables>(
     GET_POKEMON,
     { variables: { id } }
@@ -27,51 +28,46 @@ const SocialShare = ({ id }: SocialsProps) => {
   if (loading) return null;
   if (!data?.pokemon) return null;
 
-  const url =
-    "https://internship-project-pokedex.vercel.app/og/pokemons/" +
-    data.pokemon.id;
+  const url = baseUrl + data.pokemon.id;
 
   return (
-    <React.Fragment>
-      <HStack>
-        <FacebookShareButton
-          url={url}
-          hashtag={data.pokemon.name}
-          windowWidth={400}
-          windowHeight={400}
-        >
-          <IconButton
-            aria-label=""
-            icon={<Icon w={3} h={3} as={FacebookIcon} fill="white" />}
-            rounded="full"
-            size="sm"
-          />
-        </FacebookShareButton>
+    <HStack>
+      <FacebookShareButton
+        url={url}
+        hashtag={data.pokemon.name}
+        windowWidth={400}
+        windowHeight={400}
+      >
+        <ShareButton icon={FacebookIcon} />
+      </FacebookShareButton>
+      <TwitterShareButton
+        url={url}
+        hashtags={[data.pokemon.name]}
+        windowWidth={400}
+        windowHeight={400}
+      >
+        <ShareButton icon={TwitterIcon} />
+      </TwitterShareButton>
+      <LinkedinShareButton url={url} windowWidth={400} windowHeight={400}>
+        <ShareButton icon={LinkedInIcon} />
+      </LinkedinShareButton>
+    </HStack>
+  );
+};
 
-        <TwitterShareButton
-          url={url}
-          hashtags={[data.pokemon.name]}
-          windowWidth={400}
-          windowHeight={400}
-        >
-          <IconButton
-            aria-label=""
-            icon={<Icon w={3} h={3} as={TwitterIcon} fill="white" />}
-            rounded="full"
-            size="sm"
-          />
-        </TwitterShareButton>
+interface ShareButtonProps {
+  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
+}
 
-        <LinkedinShareButton url={url} windowWidth={400} windowHeight={400}>
-          <IconButton
-            aria-label=""
-            icon={<Icon w={3} h={3} as={LinkedInIcon} fill="white" />}
-            rounded="full"
-            size="sm"
-          />
-        </LinkedinShareButton>
-      </HStack>
-    </React.Fragment>
+const ShareButton = ({ icon }: ShareButtonProps) => {
+  return (
+    <IconButton
+      bgColor="brand.gray.800"
+      aria-label=""
+      icon={<Icon w={3} h={3} as={icon} fill="white" />}
+      rounded="full"
+      size="sm"
+    />
   );
 };
 
