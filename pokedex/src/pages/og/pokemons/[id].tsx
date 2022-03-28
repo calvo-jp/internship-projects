@@ -1,7 +1,9 @@
+import { Box, Text } from "@chakra-ui/react";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import * as React from "react";
 import services from "services";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
@@ -60,29 +62,52 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 };
 
 const OpenGraph = ({ pokemon }: Props) => {
-  return (
-    <Head>
-      <title>Pokedex | {pokemon.name}</title>
+  const ref = React.useRef<HTMLAnchorElement>(null);
 
-      <meta
-        property="og:url"
-        content="https://internship-project-pokedex.vercel.app"
-      />
-      <meta property="og:site_name" content="Pokedex" />
-      <meta property="fb:app_id" content="1522507158149034" />
-      <meta
-        property="og:title"
-        content={["Pokedex" + pokemon.name].join("|")}
-      />
-      <meta
-        property="og:description"
-        content={pokemon.others?.descriptions.at(0)?.description}
-      />
-      <meta property="og:image" content={getImageUrlById(pokemon.id, "PNG")} />
-      <meta name="twitter:card" content="summary" />
-      <meta name="twitter:site" content="@calvo__jp" />
-      <meta name="twitter:creator" content="@calvo__jp" />
-    </Head>
+  React.useEffect(() => {
+    const id = window.setTimeout(() => {
+      if (ref.current) ref.current.click();
+    }, 3000);
+
+    return () => clearTimeout(id);
+  }, []);
+
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Pokedex | {pokemon.name}</title>
+
+        <meta
+          property="og:url"
+          content="https://internship-project-pokedex.vercel.app"
+        />
+        <meta property="og:site_name" content="Pokedex" />
+        <meta property="fb:app_id" content="1522507158149034" />
+        <meta
+          property="og:title"
+          content={["Pokedex" + pokemon.name].join("|")}
+        />
+        <meta
+          property="og:description"
+          content={pokemon.others?.descriptions.at(0)?.description}
+        />
+        <meta
+          property="og:image"
+          content={getImageUrlById(pokemon.id, "PNG")}
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@calvo__jp" />
+        <meta name="twitter:creator" content="@calvo__jp" />
+      </Head>
+
+      <Box p={4}>
+        <Text fontSize="sm">Redirecting...</Text>
+
+        <Link href={"/pokemons/" + pokemon.id} passHref>
+          <a ref={ref} />
+        </Link>
+      </Box>
+    </React.Fragment>
   );
 };
 
