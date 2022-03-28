@@ -72,10 +72,11 @@ const AccountRecoveryForm = () => {
     },
   });
 
-  if (!(email && code)) {
-    router.replace("/login");
-    return null;
-  }
+  React.useEffect(() => {
+    if (!(email && code)) router.replace("/login");
+  }, [code, email, router]);
+
+  if (!(email && code)) return null;
 
   const onSubmit = handleSubmit(async ({ newPassword }) => {
     try {
