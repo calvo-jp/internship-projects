@@ -4,6 +4,7 @@ import FacebookIcon from "components/icons/Facebook";
 import LinkedInIcon from "components/icons/LinkedIn";
 import TwitterIcon from "components/icons/Twitter";
 import { GET_POKEMON } from "graphql/pokeapi/queries";
+import Head from "next/head";
 import * as React from "react";
 import {
   FacebookShareButton,
@@ -20,15 +21,14 @@ interface SocialsProps {
 const SocialShare = ({ id }: SocialsProps) => {
   const { loading, data, error } = useQuery<GetPokemon, GetPokemonVariables>(
     GET_POKEMON,
-    {
-      variables: { id },
-    }
+    { variables: { id } }
   );
 
   if (loading) return null;
   if (!data?.pokemon) return null;
 
-  const url = "https://hov-pokedex.vercel.app/pokemons/" + data.pokemon.id;
+  const url =
+    "https://internship-project-pokedex.vercel.app/pokemons/" + data.pokemon.id;
 
   return (
     <React.Fragment>
