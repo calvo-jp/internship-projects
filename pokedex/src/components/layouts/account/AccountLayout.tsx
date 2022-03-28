@@ -29,9 +29,10 @@ const AccountLayout = ({
     prefetch(callbackUrl);
   }, [callbackUrl, prefetch]);
 
-  // TODO: show status
-  // something like "Signing in..."
-  if (status === "authenticated") replace(callbackUrl);
+  if (status === "authenticated") {
+    replace(callbackUrl);
+    return null;
+  }
 
   return (
     <Flex minH="100vh">
