@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   if (!result.data.pokemon) return { notFound: true };
 
   return {
-    revalidate: 60 * 60 * 24 * 3,
+    revalidate: 60 * 60 * 24 * 7,
     props: {
       pokemon: result.data.pokemon,
     },
