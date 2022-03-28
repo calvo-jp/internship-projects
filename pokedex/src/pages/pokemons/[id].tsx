@@ -14,6 +14,7 @@ import RightPane from "components/pages/pokemon-details/RightPane";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
 import useStore from "hooks/useStore";
+import useTabQuery from "hooks/useTabQuery";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -79,10 +80,7 @@ const tabs = "about|statistics|evolution|moves|videos".split(/\|/);
 
 const Pokemon = ({ pokemon }: Props) => {
   const router = useRouter();
-  const tabQuery = ([router.query.tab].flat(1).at(0) ?? tabs[0])
-    .toLowerCase()
-    .trim();
-  const currentTab = tabs.includes(tabQuery) ? tabQuery : tabs[0];
+  const currentTab = useTabQuery();
   const saveAsViewedPokemon = useStore((state) => state.saveAsViewedPokemon);
 
   React.useEffect(() => {
