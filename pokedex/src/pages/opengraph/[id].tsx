@@ -66,12 +66,10 @@ const OpenGraph = ({ pokemon }: Props) => {
 
       <meta
         property="og:url"
-        content={
-          "https://internship-project-pokedex.vercel.app/pokemons/" + pokemon.id
-        }
+        content="https://internship-project-pokedex.vercel.app"
       />
       <meta property="og:site_name" content="Pokedex" />
-      <meta property="og:type" content="website" />
+      <meta property="fb:app_id" content="1522507158149034" />
       <meta
         property="og:title"
         content={["Pokedex" + pokemon.name].join("|")}
