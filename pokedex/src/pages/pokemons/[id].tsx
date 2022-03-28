@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import * as React from "react";
 import services from "services";
 import capitalize from "utils/capitalize";
+import getImageUrlById from "utils/pokemons/getImageUrlById";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
@@ -90,6 +91,19 @@ const Pokemon = ({ pokemon }: Props) => {
     <React.Fragment>
       <Head>
         <title>Pokedex | {pokemon.name}</title>
+
+        <meta
+          property="og:url"
+          content="https://internship-project-pokedex.vercel.app"
+        />
+        <meta property="og:site_name" content="Pokedex" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={"Pokedex | " + pokemon.name} />
+        <meta
+          property="og:description"
+          content={pokemon.others?.descriptions.at(0)?.description}
+        />
+        <meta property="og:image" content={getImageUrlById(pokemon.id)} />
       </Head>
 
       <HomepageLayout>
