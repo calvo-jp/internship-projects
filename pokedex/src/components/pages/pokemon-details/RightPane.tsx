@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import useNavigate from "hooks/useNavigate";
-import { useRouter } from "next/router";
+import useTabQuery from "hooks/useTabQuery";
 import capitalize from "utils/capitalize";
 import getColorByType from "utils/pokemons/getColorByType";
 import unkebab from "utils/unkebab";
@@ -31,8 +31,7 @@ interface RightPaneProps {
 const tabs = "about|statistics|evolution|moves|videos".split(/\|/);
 
 const RightPane = ({ data }: RightPaneProps) => {
-  const router = useRouter();
-  const currentTab = [router.query.tab].flat(1).at(0) || tabs[0];
+  const currentTab = useTabQuery();
   const currentTabIdx = tabs.findIndex((tab) => tab === currentTab);
   const navigate = useNavigate({ scroll: false, shallow: true });
 
