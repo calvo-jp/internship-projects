@@ -2,7 +2,6 @@ import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import * as React from "react";
 import services from "services";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
@@ -18,7 +17,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const result = await apolloClient.query<GetPokemons, GetPokemonsVariables>({
     query: GET_POKEMONS,
     variables: {
-      limit: 50,
+      limit: 100,
       offset: 0,
       types: await services.pokemons.types.read.all(),
     },
@@ -62,33 +61,30 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
 const OpenGraph = ({ pokemon }: Props) => {
   return (
-    <React.Fragment>
-      <Head>
-        <title>Pokedex | {pokemon.name}</title>
+    <Head>
+      <title>Pokedex | {pokemon.name}</title>
 
-        <meta
-          property="og:url"
-          content={
-            "https://internship-project-pokedex.vercel.app/pokemons/" +
-            pokemon.id
-          }
-        />
-        <meta property="og:site_name" content="Pokedex" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={"Pokedex | " + pokemon.name} />
-        <meta
-          property="og:description"
-          content={pokemon.others?.descriptions.at(0)?.description}
-        />
-        <meta
-          property="og:image"
-          content={getImageUrlById(pokemon.id, "PNG")}
-        />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@calvo__jp" />
-        <meta name="twitter:creator" content="@calvo__jp" />
-      </Head>
-    </React.Fragment>
+      <meta
+        property="og:url"
+        content={
+          "https://internship-project-pokedex.vercel.app/pokemons/" + pokemon.id
+        }
+      />
+      <meta property="og:site_name" content="Pokedex" />
+      <meta property="og:type" content="website" />
+      <meta
+        property="og:title"
+        content={["Pokedex" + pokemon.name].join("|")}
+      />
+      <meta
+        property="og:description"
+        content={pokemon.others?.descriptions.at(0)?.description}
+      />
+      <meta property="og:image" content={getImageUrlById(pokemon.id, "PNG")} />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:site" content="@calvo__jp" />
+      <meta name="twitter:creator" content="@calvo__jp" />
+    </Head>
   );
 };
 
