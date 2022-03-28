@@ -38,7 +38,7 @@ const Videos = ({ search }: VideosProps) => {
     <Box>
       <Alert
         mb={4}
-        open={error}
+        open={false}
         variant="error"
         message="Something went wrong"
         onClose={handleClose}
@@ -48,25 +48,35 @@ const Videos = ({ search }: VideosProps) => {
         {data?.items.map((item) => (
           <Item key={item.id.videoId} data={item} />
         ))}
+
+        {[
+          "Cw3_PdcL-wY",
+          "qqQeR7sVtlE",
+          "_h6zCYuBdyI",
+          "j9axz6mcalo",
+          "dYagFAay2eU",
+        ].map((item) => (
+          <Item id={item} key={item} />
+        ))}
       </SimpleGrid>
     </Box>
   );
 };
 
-interface ItemProps {
-  data: YoutubeResult["items"][number];
-}
+type ItemProps = { data: YoutubeResult["items"][number] } | { id: string };
 
-const Item = ({ data }: ItemProps) => {
+const Item = (props: ItemProps) => {
+  const videoId = "id" in props ? props.id : props.data.id.videoId;
+
   return (
-    <AspectRatio>
+    <AspectRatio border="1px" borderColor="brand.gray.800" shadow="md">
       <iframe
-        src={"https://www.youtube.com/embed/" + data.id.videoId}
+        src={"https://www.youtube.com/embed/" + videoId}
         title="YouTube video player"
         frameBorder={0}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
-      ></iframe>
+      />
     </AspectRatio>
   );
 };

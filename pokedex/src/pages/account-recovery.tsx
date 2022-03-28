@@ -50,9 +50,11 @@ const schema = yup.object().shape({
 
 const AccountRecoveryForm = () => {
   const router = useRouter();
-  const params = useSearchParams("email", "code");
-  const code = params.get("code");
-  const email = params.get("email");
+  // const params = useSearchParams("email", "code");
+  // const code = params.get("code");
+  // const email = params.get("email");
+  const code = [router.query.code].flat().at(0);
+  const email = [router.query.email].flat().at(0);
 
   const { register, formState, handleSubmit } = useForm({
     mode: "onChange",
@@ -72,10 +74,11 @@ const AccountRecoveryForm = () => {
     },
   });
 
-  if (!(email && code)) {
-    router.replace("/login");
-    return null;
-  }
+  React.useEffect(() => {
+    if (!(email && code)) router.replace("/login");
+  }, [code, email, router]);
+
+  if (!(email && code)) return null;
 
   const onSubmit = handleSubmit(async ({ newPassword }) => {
     try {

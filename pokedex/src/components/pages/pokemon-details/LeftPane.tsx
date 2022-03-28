@@ -4,6 +4,7 @@ import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
 import { GetPokemon } from "__generated__/GetPokemon";
 import Slideshow from "./Slideshow";
+import SocialShare from "./SocialShare";
 
 type TPokemon = NonNullable<GetPokemon["pokemon"]>;
 
@@ -34,6 +35,10 @@ const LeftPane = ({ data }: LeftPaneProps) => {
 
       <Box alignSelf="center">
         <Slideshow />
+      </Box>
+
+      <Box alignSelf="center">
+        <SocialShare id={data.id} />
       </Box>
     </VStack>
   );

@@ -117,7 +117,6 @@ const Pokemon = ({ pokemon }: Props) => {
             <Box flexGrow={{ xl: 1 }}>
               <LeftPane data={pokemon} />
             </Box>
-
             <Box w={{ xl: "799px" }} flexShrink={{ xl: 0 }}>
               <RightPane data={pokemon} />
             </Box>
