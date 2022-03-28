@@ -839,16 +839,6 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fontsource/inter@^4.5.5":
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.7.tgz#f0657c52105ed51e04ac636a25d6016896c5ee9d"
-  integrity sha512-25k3thupaOEBexuU+jAkGqieKPbuhSuA+sinDwp1iBNhqQPiJ9QHDvsXgoCgCbZ4sGlE8aCwZmSlDJrPdJHNkw==
-
-"@fontsource/public-sans@^4.5.3":
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/@fontsource/public-sans/-/public-sans-4.5.5.tgz#ce8e5d214f336e96daf8dcb7af40d1f293e7d3fd"
-  integrity sha512-g0Rbn8OLkimMtSiTI5bW2iVe8Is+Vul466YNw0HLA+hvQ16oS8JEgt+ZEiIOUwk53hPXs7+sb7P/mhLLKqlTFQ==
-
 "@graphql-typed-document-node/core@^3.0.0":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"

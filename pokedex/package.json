@@ -16,8 +16,6 @@
     "@chakra-ui/react": "^1.8.6",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@fontsource/inter": "^4.5.5",
-    "@fontsource/public-sans": "^4.5.3",
     "@heroicons/react": "^1.0.6",
     "@hookform/resolvers": "^2.8.8",
     "framer-motion": "^6",
