@@ -1,5 +1,5 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import useCallbackUrl from "hooks/useCallbackUrl";
+import useCallbackUrlQuery from "hooks/useCallbackUrlQuery";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -23,7 +23,7 @@ const AccountLayout = ({
 }: React.PropsWithChildren<AccountLayoutProps>) => {
   const { status } = useSession();
   const { replace, prefetch } = useRouter();
-  const callbackUrl = useCallbackUrl();
+  const callbackUrl = useCallbackUrlQuery();
 
   React.useEffect(() => {
     prefetch(callbackUrl);

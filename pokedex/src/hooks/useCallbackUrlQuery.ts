@@ -6,9 +6,10 @@ import { useRouter } from "next/router";
  * Otherwise, defaults to `/pokemons`
  *
  */
-const useCallbackUrl = () => {
+const useCallbackUrlQuery = () => {
   const router = useRouter();
-  return [router.query.callbackUrl].flat(1).at(0) || "/pokemons";
+
+  return [router.query.callbackUrl].flat(1).at(0) ?? "/pokemons";
 };
 
-export default useCallbackUrl;
+export default useCallbackUrlQuery;

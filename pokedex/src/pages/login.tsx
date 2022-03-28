@@ -8,7 +8,7 @@ import Alert from "components/widgets/Alert";
 import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
-import useCallbackUrl from "hooks/useCallbackUrl";
+import useCallbackUrlQuery from "hooks/useCallbackUrlQuery";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import * as React from "react";
@@ -140,7 +140,7 @@ const providers = ["facebook", "twitter", "linkedin"] as const;
 const providerIcons = [FacebookIcon, TwitterIcon, LinkedInIcon];
 
 const Socials = () => {
-  const callbackUrl = useCallbackUrl();
+  const callbackUrl = useCallbackUrlQuery();
 
   const handleLogin = (provider: typeof providers[number]) => {
     return async () => {
