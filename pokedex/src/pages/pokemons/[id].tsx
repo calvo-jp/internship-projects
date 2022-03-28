@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as React from "react";
 import services from "services";
+import capitalize from "utils/capitalize";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
@@ -74,9 +75,15 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   };
 };
 
+const tabs = "about|statistics|evolution|moves|videos".split(/\|/);
+
 const Pokemon = ({ pokemon }: Props) => {
-  const saveAsViewedPokemon = useStore((state) => state.saveAsViewedPokemon);
   const router = useRouter();
+  const tabQuery = ([router.query.tab].flat(1).at(0) ?? tabs[0])
+    .toLowerCase()
+    .trim();
+  const currentTab = tabs.includes(tabQuery) ? tabQuery : tabs[0];
+  const saveAsViewedPokemon = useStore((state) => state.saveAsViewedPokemon);
 
   React.useEffect(() => {
     if (pokemon) saveAsViewedPokemon(pokemon.id);
@@ -103,8 +110,11 @@ const Pokemon = ({ pokemon }: Props) => {
                 <BreadcrumbLink>Home</BreadcrumbLink>
               </Link>
             </BreadcrumbItem>
-            <BreadcrumbItem color="brand.gray.50" isCurrentPage>
+            <BreadcrumbItem color="brand.gray.500">
               <BreadcrumbLink>Pokemon details</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem color="brand.gray.50" isCurrentPage>
+              <BreadcrumbLink>{capitalize(currentTab)}</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
 

@@ -150,9 +150,6 @@ const Socials = () => {
     };
   };
 
-  // loading
-  if (!callbackUrl) return null;
-
   return (
     <HStack spacing={4} justify="center">
       {providers.map((provider, index) => (
