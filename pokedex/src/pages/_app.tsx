@@ -17,6 +17,7 @@ import theme from "config/theme";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import "polyfill";
 import * as React from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
