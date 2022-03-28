@@ -2,12 +2,19 @@ import { Box, Flex, Image } from "@chakra-ui/react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
+  CloudDownloadIcon,
+  DownloadIcon,
   XIcon,
 } from "@heroicons/react/outline";
 import * as React from "react";
 import Container from "./Container";
 import Control from "./Control";
-import { getLightboxItems, hideScrollbar, showScrollbar } from "./utils";
+import {
+  download,
+  getLightboxItems,
+  hideScrollbar,
+  showScrollbar,
+} from "./utils";
 
 const Lightbox = () => {
   const sliderRef = React.useRef<HTMLDivElement>(null);
@@ -34,6 +41,9 @@ const Lightbox = () => {
     };
   }, []);
 
+  // TODO
+  // - add unique ids to image and base those checks on those ids
+  // instead of relying on the attribute data-lightbox-stamp
   const init = React.useCallback(() => {
     images.map((image) => {
       // adding attribute to images
@@ -64,6 +74,11 @@ const Lightbox = () => {
     if (!lbItems) return;
     setImages(lbItems);
   }, []);
+
+  const handleDownload = () => {
+    if (!currentImage) return;
+    download(currentImage.src);
+  };
 
   React.useEffect(() => {
     const timeout = setInterval(loadImages, 1000);
@@ -96,7 +111,17 @@ const Lightbox = () => {
             top={3}
             right={4}
             icon={XIcon}
+            zIndex="1"
             onClick={() => setOpen(false)}
+          />
+
+          <Control
+            pos="absolute"
+            top={20}
+            right={4}
+            icon={CloudDownloadIcon}
+            zIndex="1"
+            onClick={handleDownload}
           />
 
           <Flex
@@ -165,7 +190,7 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
     // have to find a more efficient way to handle duplicate images
     const srcs = images.reduce<HTMLImageElement[]>((array, image) => {
       if (array.some(({ src }) => image.src === src)) return array;
-      return [...array, image];
+      return [image, ...array];
     }, []);
 
     return (
@@ -226,6 +251,7 @@ const Highlight = ({ image }: HighlightProps) => {
       alignItems="center"
       justifyContent="center"
       bgColor="brand.gray.800"
+      position="relative"
     >
       <Image maxH="full" maxW="90%" src={image.src} alt="" />
     </Box>

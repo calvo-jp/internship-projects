@@ -41,3 +41,14 @@ export const getLightboxItems = () => {
   PROCESSING_LIGHTBOX_ITEMS = false;
   return lbItems;
 };
+
+export const download = (url: string) => {
+  const filename = url.split("/").at(-1) ?? "";
+  const anchor = document.createElement("a");
+
+  anchor.href = "url";
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+};
