@@ -28,7 +28,8 @@ const SocialShare = ({ id }: SocialsProps) => {
   if (!data?.pokemon) return null;
 
   const url =
-    "https://internship-project-pokedex.vercel.app/pokemons/" + data.pokemon.id;
+    "https://internship-project-pokedex.vercel.app/opengraph/" +
+    data.pokemon.id;
 
   return (
     <React.Fragment>
