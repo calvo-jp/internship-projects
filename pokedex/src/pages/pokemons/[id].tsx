@@ -76,11 +76,8 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   };
 };
 
-const tabs = "about|statistics|evolution|moves|videos".split(/\|/);
-
 const Pokemon = ({ pokemon }: Props) => {
   const router = useRouter();
-  const currentTab = useTabQuery();
   const saveAsViewedPokemon = useStore((state) => state.saveAsViewedPokemon);
 
   React.useEffect(() => {
@@ -97,24 +94,7 @@ const Pokemon = ({ pokemon }: Props) => {
 
       <HomepageLayout>
         <Box p={6} pb={16} maxW="container.xl" mx="auto">
-          <Breadcrumb
-            as="section"
-            fontSize="sm"
-            spacing={3}
-            separator={<Icon stroke="brand.gray.400" as={ChevronRightIcon} />}
-          >
-            <BreadcrumbItem color="brand.gray.500">
-              <Link href="/pokemons" passHref>
-                <BreadcrumbLink>Home</BreadcrumbLink>
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem color="brand.gray.500">
-              <BreadcrumbLink>Pokemon details</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem color="brand.gray.50" isCurrentPage>
-              <BreadcrumbLink>{capitalize(currentTab)}</BreadcrumbLink>
-            </BreadcrumbItem>
-          </Breadcrumb>
+          <Menu />
 
           <Flex
             as="section"
@@ -132,6 +112,32 @@ const Pokemon = ({ pokemon }: Props) => {
         </Box>
       </HomepageLayout>
     </React.Fragment>
+  );
+};
+
+const Menu = () => {
+  const currentTab = useTabQuery();
+
+  return (
+    <Breadcrumb
+      as="section"
+      fontSize="sm"
+      spacing={3}
+      separator={<Icon stroke="brand.gray.400" as={ChevronRightIcon} />}
+      color="brand.gray.500"
+    >
+      <BreadcrumbItem>
+        <Link href="/pokemons" passHref>
+          <BreadcrumbLink>Home</BreadcrumbLink>
+        </Link>
+      </BreadcrumbItem>
+      <BreadcrumbItem>
+        <BreadcrumbLink>Pokemon details</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbItem color="brand.gray.50" isCurrentPage>
+        <BreadcrumbLink>{capitalize(currentTab)}</BreadcrumbLink>
+      </BreadcrumbItem>
+    </Breadcrumb>
   );
 };
 
