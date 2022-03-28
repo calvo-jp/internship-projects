@@ -31,10 +31,10 @@ const AccountLayout = ({
 
   // TODO: show status
   // something like "Signing in..."
-  if (status === "authenticated") {
-    replace(callbackUrl);
-    return null;
-  }
+  if (status === "authenticated") replace(callbackUrl);
+
+  // bypass prerender
+  if (!callbackUrl) return null;
 
   return (
     <Flex minH="100vh">
