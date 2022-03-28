@@ -38,15 +38,24 @@ interface Config {
   onSlideChange?: (currentSlide: number) => void;
 }
 
+const defaultConfig: Required<Config> = {
+  loop: false,
+  delay: 3,
+  autoPlay: false,
+  currentSlide: 1,
+  itemsPerSlide: 1,
+  onSlideChange: noop,
+};
+
 const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
   const {
-    loop = false,
-    delay = 3,
-    autoPlay = false,
-    itemsPerSlide = 1,
-    onSlideChange = noop,
-    currentSlide: slideStartIndex = 1,
-  } = config ?? {};
+    loop,
+    delay,
+    autoPlay,
+    currentSlide: slideStartIndex,
+    itemsPerSlide,
+    onSlideChange,
+  } = { ...defaultConfig, ...config };
 
   const slides = arrayChunk(data, itemsPerSlide);
   const totalSlides = slides.length;
