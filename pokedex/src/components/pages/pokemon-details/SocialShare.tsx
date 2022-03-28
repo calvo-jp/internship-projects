@@ -4,13 +4,13 @@ import FacebookIcon from "components/icons/Facebook";
 import LinkedInIcon from "components/icons/LinkedIn";
 import TwitterIcon from "components/icons/Twitter";
 import { GET_POKEMON } from "graphql/pokeapi/queries";
-import Head from "next/head";
-import * as React from "react";
 import {
   FacebookShareButton,
   LinkedinShareButton,
   TwitterShareButton,
-} from "react-share";
+} from "next-share";
+import Head from "next/head";
+import * as React from "react";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 
 interface SocialsProps {
@@ -28,13 +28,18 @@ const SocialShare = ({ id }: SocialsProps) => {
   if (!data?.pokemon) return null;
 
   const url =
-    "https://internship-project-pokedex.vercel.app/opengraph/" +
+    "https://internship-project-pokedex.vercel.app/og/pokemons/" +
     data.pokemon.id;
 
   return (
     <React.Fragment>
       <HStack>
-        <FacebookShareButton url={url} hashtag={data.pokemon.name}>
+        <FacebookShareButton
+          url={url}
+          hashtag={data.pokemon.name}
+          windowWidth={400}
+          windowHeight={400}
+        >
           <IconButton
             aria-label=""
             icon={<Icon w={3} h={3} as={FacebookIcon} fill="white" />}
@@ -43,7 +48,12 @@ const SocialShare = ({ id }: SocialsProps) => {
           />
         </FacebookShareButton>
 
-        <TwitterShareButton url={url} hashtags={[data.pokemon.name]}>
+        <TwitterShareButton
+          url={url}
+          hashtags={[data.pokemon.name]}
+          windowWidth={400}
+          windowHeight={400}
+        >
           <IconButton
             aria-label=""
             icon={<Icon w={3} h={3} as={TwitterIcon} fill="white" />}
@@ -52,7 +62,7 @@ const SocialShare = ({ id }: SocialsProps) => {
           />
         </TwitterShareButton>
 
-        <LinkedinShareButton url={url}>
+        <LinkedinShareButton url={url} windowWidth={400} windowHeight={400}>
           <IconButton
             aria-label=""
             icon={<Icon w={3} h={3} as={LinkedInIcon} fill="white" />}
