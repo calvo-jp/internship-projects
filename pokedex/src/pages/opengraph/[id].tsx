@@ -69,7 +69,7 @@ const OpenGraph = ({ pokemon }: Props) => {
         <meta
           property="og:url"
           content={
-            "https://internship-project-pokedex.vercel.app/opengraph/" +
+            "https://internship-project-pokedex.vercel.app/pokemons/" +
             pokemon.id
           }
         />
@@ -80,7 +80,10 @@ const OpenGraph = ({ pokemon }: Props) => {
           property="og:description"
           content={pokemon.others?.descriptions.at(0)?.description}
         />
-        <meta property="og:image" content={getImageUrlById(pokemon.id)} />
+        <meta
+          property="og:image"
+          content={getImageUrlById(pokemon.id, "PNG")}
+        />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@calvo__jp" />
         <meta name="twitter:creator" content="@calvo__jp" />
