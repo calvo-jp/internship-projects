@@ -13,11 +13,11 @@ import "@fontsource/public-sans/400.css";
 import Lightbox from "components/lightbox";
 import PageLoader from "components/PageLoader";
 import apolloClient from "config/apollo/client";
+import "config/polyfill";
 import theme from "config/theme";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import "polyfill";
 import * as React from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
