@@ -33,9 +33,6 @@ const AccountLayout = ({
   // something like "Signing in..."
   if (status === "authenticated") replace(callbackUrl);
 
-  // bypass prerender
-  if (!callbackUrl) return null;
-
   return (
     <Flex minH="100vh">
       <Box
