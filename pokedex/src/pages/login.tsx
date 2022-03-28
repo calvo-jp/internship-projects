@@ -82,7 +82,7 @@ const LoginForm = () => {
   }, []);
 
   return (
-    <Box as="form" onSubmit={login}>
+    <Box as="form" onSubmit={login} noValidate>
       <VStack spacing={4} align="stretch">
         <Alert
           open={loginError}
