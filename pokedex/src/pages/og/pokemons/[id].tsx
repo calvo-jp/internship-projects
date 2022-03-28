@@ -1,4 +1,15 @@
-import { Box, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FlexProps,
+  Heading,
+  HStack,
+  Stack,
+  Tag,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import Photo from "components/widgets/Photo";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -6,7 +17,10 @@ import Head from "next/head";
 import Link from "next/link";
 import * as React from "react";
 import services from "services";
+import capitalize from "utils/capitalize";
+import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
+import unkebab from "utils/unkebab";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import { GetPokemons, GetPokemonsVariables } from "__generated__/GetPokemons";
 
@@ -62,16 +76,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 };
 
 const OpenGraph = ({ pokemon }: Props) => {
-  const ref = React.useRef<HTMLAnchorElement>(null);
-
-  React.useEffect(() => {
-    const id = window.setTimeout(() => {
-      if (ref.current) ref.current.click();
-    }, 3000);
-
-    return () => clearTimeout(id);
-  }, []);
-
   return (
     <React.Fragment>
       <Head>
@@ -100,14 +104,106 @@ const OpenGraph = ({ pokemon }: Props) => {
         <meta name="twitter:creator" content="@calvo__jp" />
       </Head>
 
-      <Box p={4}>
-        <Text fontSize="sm">Redirecting...</Text>
+      <Flex minH="100vh" flexDirection="column">
+        <Header />
 
-        <Link href={"/pokemons/" + pokemon.id} passHref>
-          <a ref={ref} />
-        </Link>
-      </Box>
+        <Flex
+          flexGrow="1"
+          align="center"
+          justify="center"
+          p={4}
+          py={8}
+          direction="column"
+          as="main"
+        >
+          <Stack
+            align="center"
+            spacing={{ base: 4, lg: 16 }}
+            direction={{ base: "column", lg: "row" }}
+          >
+            <Thumbnail
+              src={getImageUrlById(pokemon.id)}
+              fallback={getImageUrlById(pokemon.id, "SVG")}
+              bgColor={getColorByType(pokemon.types.at(0)?.type?.name ?? "")}
+            />
+
+            <VStack spacing={4} align={{ base: "center", lg: "start" }}>
+              <Heading fontSize={{ base: "4xl", lg: "5xl" }}>
+                {capitalize(unkebab(pokemon.name))}
+              </Heading>
+
+              <Chips
+                items={pokemon.types
+                  .filter(({ type }) => !!type)
+                  // @ts-expect-error
+                  .map(({ type }) => type.name)}
+              />
+
+              <Text maxW="400px" color="brand.gray.50">
+                {pokemon.others?.descriptions.at(0)?.description}
+              </Text>
+            </VStack>
+          </Stack>
+        </Flex>
+      </Flex>
     </React.Fragment>
+  );
+};
+
+interface ChipsProps {
+  items: string[];
+}
+
+const Chips = ({ items }: ChipsProps) => {
+  return (
+    <HStack>
+      {items.map((item) => (
+        <Tag key={item} py={2} px={4} rounded="full" bgColor="brand.gray.800">
+          {item}
+        </Tag>
+      ))}
+    </HStack>
+  );
+};
+
+interface ThumbnailProps {
+  src: string;
+  fallback?: string;
+}
+
+const Thumbnail = ({ src, fallback, ...props }: ThumbnailProps & FlexProps) => {
+  return (
+    <Flex
+      w={{ base: "200px", md: "250px", lg: "300px" }}
+      h={{ base: "200px", md: "250px", lg: "300px" }}
+      align="center"
+      justify="center"
+      flexShrink={0}
+      rounded="full"
+      shadow="md"
+      {...props}
+    >
+      <Photo src={src} fallback={fallback} maxH="80%" maxW="80%" />
+    </Flex>
+  );
+};
+
+const Header = () => {
+  return (
+    <Flex
+      as="header"
+      p={4}
+      bg="brand.gray.800"
+      align="center"
+      shadow="md"
+      justify="space-between"
+    >
+      <Heading color="brand.primary">Pokedex</Heading>
+
+      <Link href="/login" passHref>
+        <Button as="a">Log in</Button>
+      </Link>
+    </Flex>
   );
 };
 
