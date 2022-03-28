@@ -104,6 +104,9 @@ const Pokemon = ({ pokemon }: Props) => {
           content={pokemon.others?.descriptions.at(0)?.description}
         />
         <meta property="og:image" content={getImageUrlById(pokemon.id)} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@calvo__jp" />
+        <meta name="twitter:creator" content="@calvo__jp" />
       </Head>
 
       <HomepageLayout>
