@@ -94,7 +94,10 @@ const Pokemon = ({ pokemon }: Props) => {
 
         <meta
           property="og:url"
-          content="https://internship-project-pokedex.vercel.app"
+          content={
+            "https://internship-project-pokedex.vercel.app/pokemons/" +
+            pokemon.id
+          }
         />
         <meta property="og:site_name" content="Pokedex" />
         <meta property="og:type" content="website" />
