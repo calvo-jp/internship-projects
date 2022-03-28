@@ -7,6 +7,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import * as React from "react";
+import randomIdGenerator from "utils/randomIdGenerator";
 import Container from "./Container";
 import Control from "./Control";
 import {
@@ -15,6 +16,13 @@ import {
   hideScrollbar,
   showScrollbar,
 } from "./utils";
+
+/**
+ *
+ * ids of lightbox items with click event handlers attached
+ *
+ */
+const lbItemsId: string[] = [];
 
 const Lightbox = () => {
   const sliderRef = React.useRef<HTMLDivElement>(null);
@@ -46,13 +54,18 @@ const Lightbox = () => {
   // instead of relying on the attribute data-lightbox-stamp
   const init = React.useCallback(() => {
     images.map((image) => {
-      // adding attribute to images
+      // adding ids to images
       // inorder to recognize them on re-renders
       // and to not add duplicate event handlers
-      // which affects performance as tested
-      if (image.hasAttribute("data-lightbox-stamp")) return;
+      // which affects performance
+      const currentLbItemId = image.getAttribute("data-lightbox-item-id");
+      // check if item already has an event handler attached
+      if (currentLbItemId && lbItemsId.includes(currentLbItemId)) return;
 
-      image.setAttribute("data-lightbox-stamp", "");
+      const lbItemId = generateId();
+      // attach id to new item
+      image.setAttribute("data-lightbox-item-id", lbItemId);
+      lbItemsId.push(lbItemId);
       image.addEventListener("click", handleImageClick(image));
     });
   }, [handleImageClick, images]);
@@ -186,8 +199,7 @@ interface SliderProps {
 
 const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
   ({ images, active, onSelect }, ref) => {
-    // temporary fix
-    // have to find a more efficient way to handle duplicate images
+    // remove duplicates
     const srcs = images.reduce<HTMLImageElement[]>((array, image) => {
       if (array.some(({ src }) => image.src === src)) return array;
       return [image, ...array];
@@ -258,4 +270,5 @@ const Highlight = ({ image }: HighlightProps) => {
   );
 };
 
+const generateId = randomIdGenerator();
 export default Lightbox;
