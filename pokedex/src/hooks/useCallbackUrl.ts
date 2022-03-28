@@ -8,7 +8,11 @@ import { useRouter } from "next/router";
  */
 const useCallbackUrl = () => {
   const router = useRouter();
-  return [router.query.callbackUrl].flat(1).at(0) || "/pokemons";
+  const callbackUrl = router.query.callbackUrl;
+
+  if (Array.isArray(callbackUrl)) return callbackUrl[0];
+  if (!callbackUrl) return "/pokemons";
+  return callbackUrl;
 };
 
 export default useCallbackUrl;
