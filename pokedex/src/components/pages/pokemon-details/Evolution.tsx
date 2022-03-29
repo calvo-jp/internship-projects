@@ -72,7 +72,7 @@ const Evolution = ({ id }: EvolutionProps) => {
         <VStack spacing={6}>
           {evolutions.map(({ id, evolvesFromSpeciesId, evolvesWhen, name }) => (
             <Center key={id}>
-              <HStack spacing={{ base: 12, md: 24, lg: 44 }}>
+              <HStack spacing={{ base: 4, sm: 12, md: 24, lg: 44 }}>
                 <VStack spacing={2}>
                   <Link
                     passHref
