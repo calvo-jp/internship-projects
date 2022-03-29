@@ -75,9 +75,10 @@ const AccountRecoveryForm = () => {
   // this fixes vercel issue about
   // not being able to use router when pre-rendering
   React.useEffect(() => {
-    if (!(email && code)) router.replace("/login");
+    !(email && code) && router.replace("/login");
   }, [code, email, router]);
 
+  // refer to above comment
   if (!(email && code)) return null;
 
   const onSubmit = handleSubmit(async ({ newPassword }) => {
