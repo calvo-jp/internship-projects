@@ -2,7 +2,7 @@ import * as React from "react";
 
 // typescript does not know how to handle this
 // type checking should be bypassed in return stmt
-type FetchStatus =
+type FetchStatus<D, E> =
   | {
       loading: true;
       error: undefined;
@@ -11,11 +11,11 @@ type FetchStatus =
   | {
       loading: false;
       error: undefined;
-      data: true;
+      data: D;
     }
   | {
       loading: false;
-      error: true;
+      error: E;
       data: undefined;
     };
 
@@ -26,13 +26,13 @@ type FetchStatus =
  * _only supports json_
  *
  */
-const useFetch = <T = any, E = any>(
+const useFetch = <D = any, E = any>(
   input: RequestInfo,
   init?: RequestInit
-): FetchStatus => {
+): FetchStatus<D, E> => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<E>();
-  const [data, setData] = React.useState<T | null>(null);
+  const [data, setData] = React.useState<D>();
 
   React.useEffect(() => {
     fetch(input, init)
