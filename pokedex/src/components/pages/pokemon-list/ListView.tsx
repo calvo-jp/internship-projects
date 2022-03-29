@@ -31,7 +31,7 @@ const ListView = ({ data }: ListViewProps) => {
         <GridTableHeading>#</GridTableHeading>
         <GridTableHeading></GridTableHeading>
         <GridTableHeading>Pokemon</GridTableHeading>
-        <GridTableHeading display={{ base: "none", md: "block" }}>
+        <GridTableHeading display={{ base: "none", sm: "block" }}>
           Type
         </GridTableHeading>
         <GridTableHeading display={{ base: "none", lg: "block" }}>
@@ -64,7 +64,7 @@ const ListView = ({ data }: ListViewProps) => {
             </Flex>
           </GridTableCell>
           <GridTableCell>{unkebab(name)}</GridTableCell>
-          <GridTableCell display={{ base: "none", md: "block" }}>
+          <GridTableCell display={{ base: "none", sm: "block" }}>
             <HStack spacing={1}>
               {types
                 .map(({ type }) => type?.name ?? "")
