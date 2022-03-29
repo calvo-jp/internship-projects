@@ -40,7 +40,7 @@ const About = ({ data }: AboutProps) => {
   }, [data.specy?.genderRate]);
 
   return (
-    <VStack spacing={8} align="start">
+    <VStack spacing={8} align={{ base: "stretch", sm: "start" }}>
       <Text>{data.others?.descriptions.at(0)?.description}</Text>
 
       <Card py={4} bgColor="others.gray.800">
@@ -58,7 +58,11 @@ const About = ({ data }: AboutProps) => {
             ["Weight", data.weight + "KG"],
             ["Height", data.height + "M"],
           ].map(([label, value]) => (
-            <VStack key={label} spacing={2} align="start">
+            <VStack
+              key={label}
+              spacing={2}
+              align={{ base: "center", lg: "start" }}
+            >
               <CardHeading>{label}</CardHeading>
 
               <Text color="brand.gray.50">{value}</Text>
@@ -70,7 +74,12 @@ const About = ({ data }: AboutProps) => {
       <Card bgColor="others.gray.800">
         <CardHeading>Breed</CardHeading>
 
-        <Wrap mt={3} spacing={8} color="brand.gray.50">
+        <Wrap
+          mt={3}
+          spacing={{ base: 2, sm: 4, md: 8 }}
+          direction={{ base: "column", sm: "row" }}
+          color="brand.gray.50"
+        >
           <WrapItem>
             <Text color="brand.gray.400">Gender:</Text>
             <Text ml={2}>{getGender()}</Text>
