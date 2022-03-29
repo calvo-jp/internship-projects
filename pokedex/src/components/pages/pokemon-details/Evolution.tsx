@@ -16,6 +16,7 @@ import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
 import Link from "next/link";
 import capitalize from "utils/capitalize";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
+import unkebab from "utils/unkebab";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 import {
   GetPokemonEvolution,
@@ -92,7 +93,7 @@ const Evolution = ({ id }: EvolutionProps) => {
                   <Link passHref href={"/pokemons/" + id}>
                     <Thumbnail id={id} />
                   </Link>
-                  <Text fontSize="sm">{name}</Text>
+                  <Text fontSize="sm">{unkebab(name)}</Text>
                 </VStack>
               </HStack>
             </Center>
@@ -147,7 +148,8 @@ const PokemonName = ({ id }: { id: number }) => {
   return (
     <Text fontSize="sm">
       {loading && "loading..."}
-      {!loading && (data?.pokemon?.name ?? "unknown")}
+      {!loading && data?.pokemon && unkebab(data.pokemon.name)}
+      {!loading && !data?.pokemon && "unknown"}
     </Text>
   );
 };
