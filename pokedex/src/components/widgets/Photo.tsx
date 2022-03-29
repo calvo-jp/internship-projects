@@ -20,7 +20,7 @@ interface ImageProps {
   fallback?: string;
 }
 
-const previouslyLoadedImage: string[] = [];
+const previouslyLoadedImages: string[] = [];
 
 /**
  *
@@ -37,12 +37,12 @@ const Photo = ({
   const [error, setError] = React.useState(false);
 
   React.useEffect(() => {
-    if (previouslyLoadedImage.includes(src)) return setLoading(false);
+    if (previouslyLoadedImages.includes(src)) return setLoading(false);
 
     const image = new Image();
     image.src = src;
     image.onload = () => {
-      previouslyLoadedImage.push(src);
+      previouslyLoadedImages.push(src);
       setLoading(false);
     };
 
