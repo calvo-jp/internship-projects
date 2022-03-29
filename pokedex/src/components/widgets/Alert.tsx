@@ -46,7 +46,8 @@ const Alert = ({
         <AlertDescription flexGrow="1" ml={2}>
           {message}
         </AlertDescription>
-        <CloseButton onClick={onClose} />
+
+        {onClose && <CloseButton onClick={onClose} />}
       </ChakraAlert>
     </Collapse>
   );
