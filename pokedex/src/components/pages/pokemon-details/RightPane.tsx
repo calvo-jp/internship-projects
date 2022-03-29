@@ -71,7 +71,6 @@ const RightPane = ({ data }: RightPaneProps) => {
         variant="unstyled"
         onChange={handleChange}
         index={currentTabIdx}
-        lazyBehavior="keepMounted"
       >
         <TabList
           gap={4}
