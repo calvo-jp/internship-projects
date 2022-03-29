@@ -27,9 +27,7 @@ export const getLightboxItems = () => {
   PROCESSING_LIGHTBOX_ITEMS = true;
 
   const lbItems: HTMLImageElement[] = [];
-  const images: NodeListOf<HTMLImageElement> = document.querySelectorAll(
-    "img[data-lightbox-items]"
-  );
+  const images = document.getElementsByTagName("img");
 
   let i = 0;
   let j = images.length;
