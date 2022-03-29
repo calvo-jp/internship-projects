@@ -14,6 +14,7 @@ import Card from "components/widgets/card";
 import Photo from "components/widgets/Photo";
 import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
 import Link from "next/link";
+import { forwardRef } from "react";
 import capitalize from "utils/capitalize";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
 import unkebab from "utils/unkebab";
@@ -116,9 +117,10 @@ interface ThumbnailProps {
   id: number;
 }
 
-const Thumbnail = ({ id }: ThumbnailProps) => {
+const Thumbnail = forwardRef<any, ThumbnailProps>(({ id }, ref) => {
   return (
     <Flex
+      ref={ref}
       as="a"
       w="88px"
       h="88px"
@@ -137,7 +139,9 @@ const Thumbnail = ({ id }: ThumbnailProps) => {
       />
     </Flex>
   );
-};
+});
+
+Thumbnail.displayName = "Thumbnail";
 
 const PokemonName = ({ id }: { id: number }) => {
   const { loading, data } = useQuery<GetPokemon, GetPokemonVariables>(
