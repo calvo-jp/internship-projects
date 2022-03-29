@@ -19,7 +19,7 @@ import {
 
 /**
  *
- * ids of lightbox items with click event handlers attached
+ * ids of lightbox items with click event handlers already attached
  *
  */
 const lbItemsId: string[] = [];
@@ -49,9 +49,6 @@ const Lightbox = () => {
     };
   }, []);
 
-  // TODO
-  // - add unique ids to image and base those checks on those ids
-  // instead of relying on the attribute data-lightbox-stamp
   const init = React.useCallback(() => {
     images.map((image) => {
       // adding ids to images
@@ -199,10 +196,14 @@ interface SliderProps {
 
 const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
   ({ images, active, onSelect }, ref) => {
-    // remove duplicates
     const srcs = images.reduce<HTMLImageElement[]>((array, image) => {
+      // remove duplicates
       if (array.some(({ src }) => image.src === src)) return array;
-      return [image, ...array];
+      // ensure active image is on the first list
+      if (active && active.src === image.src) return [image, ...array];
+      // place everything at the end inorder not to replace
+      // the current image's place at index 0
+      return [...array, image];
     }, []);
 
     return (
