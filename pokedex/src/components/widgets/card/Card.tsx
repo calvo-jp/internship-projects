@@ -1,22 +1,6 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 import * as React from "react";
 
-/**
- *
- * an overridable Card component that
- * comes with the following props set
- * - `padding`
- * - `borderColor`
- * - `bgColor`
- * - `borderRadius`
- * - `fontSize`
- *
- * @example
- * <Card mt={4}>
- * ...
- * </Card>
- *
- */
 const Card = ({ children, ...props }: React.PropsWithChildren<BoxProps>) => {
   return (
     <Box
