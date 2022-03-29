@@ -68,14 +68,14 @@ const Videos = ({ search }: VideosProps) => {
         <SimpleGrid columns={{ lg: 2 }} gap={4} mb={4}>
           {data.items.map((item) => (
             <Item
+              data={item}
               key={
                 item.id.videoId +
                 // some items are duplicates
-                // they are the exactly the same video with same id
+                // they are exactly the same video with same id
                 // need to generate uniqid due to console errors
                 generateId()
               }
-              data={item}
             />
           ))}
         </SimpleGrid>
