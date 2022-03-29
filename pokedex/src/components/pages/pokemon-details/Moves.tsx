@@ -113,7 +113,7 @@ const MainMoves = ({ moves }: MainMovesProps) => {
 
   return (
     <Card w="full">
-      <SimpleGrid columns={2}>
+      <SimpleGrid columns={2} gap={2}>
         <CardHeading>Main Moves</CardHeading>
 
         <GridTable columns="repeat(3, 1fr)">
@@ -131,7 +131,7 @@ const MainMoves = ({ moves }: MainMovesProps) => {
         if (!move) return null;
 
         return (
-          <SimpleGrid key={move.name} columns={2} alignItems="center">
+          <SimpleGrid key={move.name} columns={2} alignItems="center" gap={2}>
             <Box>
               <MoveItem label={move.name} />
             </Box>
@@ -163,7 +163,7 @@ const MoveItem = ({ label }: { label: string }) => {
   return (
     <Tag
       py={2}
-      px={8}
+      px={{ base: 4, lg: 8 }}
       fontFamily="'Public Sans', sans-serif"
       border="1px"
       color="brand.blue.700"
