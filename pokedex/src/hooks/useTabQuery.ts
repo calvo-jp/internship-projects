@@ -7,9 +7,8 @@ const useTabQuery = () => {
 
   const currentTab = [router.query.tab].flat(1).at(0)?.toLowerCase().trim();
 
-  // can't use Array.prototype.includes here
-  // idk why but NodeJS types seems wrong
-  // related issue here: https://github.com/microsoft/TypeScript/issues/14520
+  // can't use Array#includes here
+  // see: https://github.com/microsoft/TypeScript/issues/26255
   return tabs.find((tab) => tab === currentTab) ?? tabs[0];
 };
 
