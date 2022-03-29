@@ -20,6 +20,7 @@ import {
 import usePokemonTypes from "hooks/usePokemonTypes";
 import useStore from "hooks/useStore";
 import * as React from "react";
+import valx from "utils/valx";
 
 interface ToolbarProps {
   /** aka. pokemon types */
@@ -90,21 +91,22 @@ const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
         bgColor="brand.gray.800"
       >
         {loading && <Loader />}
-
         {!loading && (
           <Flex display="flex" gap={2} flexWrap="wrap" h="auto">
             {data?.map((item) => (
               <Tag
                 key={item}
                 as="button"
-                p={2}
+                padding={2}
                 rounded="lg"
-                color={
-                  value.includes(item) ? "brand.gray.700" : "brand.gray.100"
-                }
-                bgColor={
-                  value.includes(item) ? "brand.primary" : "brand.gray.700"
-                }
+                color={valx({
+                  "brand.gray.700": value.includes(item),
+                  "brand.gray.100": !value.includes(item),
+                })}
+                bgColor={valx({
+                  "brand.primary": value.includes(item),
+                  "brand.gray.700": !value.includes(item),
+                })}
                 onClick={toggle(item)}
               >
                 {item}
