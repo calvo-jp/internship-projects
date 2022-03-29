@@ -12,7 +12,7 @@ import AnimatedProgress from "components/widgets/AnimatedProgress";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
 import { GET_POKEMON_STATS } from "graphql/pokeapi/queries";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import services from "services";
 import getColorByType from "utils/pokemons/getColorByType";
 import randomIdGenerator from "utils/randomIdGenerator";
@@ -103,58 +103,45 @@ const Stats = ({ id }: StatsProps) => {
         })}
       </Card>
 
-      <Weakness types={data.pokemon.types} />
-      <Resistance types={data.pokemon.types} />
+      <OtherStats types={data.pokemon.types} />
     </VStack>
   );
 };
 
-type Types = NonNullable<GetPokemonStats["pokemon"]>["types"];
-
-interface WeaknessProps {
-  types: Types;
+interface OtherStatsProps {
+  types: NonNullable<GetPokemonStats["pokemon"]>["types"];
 }
 
-const Weakness = ({ types }: WeaknessProps) => {
-  const [loading, setLoading] = React.useState(true);
-  const [weaknesses, setWeaknesses] = React.useState<string[]>([]);
+type TOtherStats = Awaited<ReturnType<typeof services.pokemons.stats["read"]>>;
 
-  React.useEffect(() => {
-    services.pokemons
-      .weaknesses(types)
-      .then(setWeaknesses)
+const OtherStats = ({ types }: OtherStatsProps) => {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<TOtherStats>({
+    resistance: [],
+    weaknesses: [],
+  });
+
+  useEffect(() => {
+    services.pokemons.stats
+      .read(types)
+      .then(setData)
       .finally(() => setLoading(false));
 
     return () => {
       setLoading(true);
-      setWeaknesses([]);
+      setData({
+        resistance: [],
+        weaknesses: [],
+      });
     };
   }, [types]);
 
-  return <Chips title="Weaknesses" items={weaknesses} loading={loading} />;
-};
-
-interface ResistanceProps {
-  types: Types;
-}
-
-const Resistance = ({ types }: ResistanceProps) => {
-  const [loading, setLoading] = React.useState(true);
-  const [resistance, setResistance] = React.useState<string[]>([]);
-
-  React.useEffect(() => {
-    services.pokemons
-      .resistance(types)
-      .then(setResistance)
-      .finally(() => setLoading(false));
-
-    return () => {
-      setLoading(true);
-      setResistance([]);
-    };
-  }, [types]);
-
-  return <Chips title="Resistant" items={resistance} loading={loading} />;
+  return (
+    <>
+      <Chips title="Weaknesses" items={data.resistance} loading={loading} />
+      <Chips title="Resistant" items={data.weaknesses} loading={loading} />
+    </>
+  );
 };
 
 interface ChipsProps {

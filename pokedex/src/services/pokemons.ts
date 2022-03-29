@@ -3,58 +3,54 @@ import { GET_POKEMON_TYPES } from "graphql/pokeapi/queries";
 import { GetPokemonStats } from "__generated__/GetPokemonStats";
 import { GetPokemonTypes } from "__generated__/GetPokemonTypes";
 
-type Types = NonNullable<GetPokemonStats["pokemon"]>["types"];
+type PokemonTypes = NonNullable<GetPokemonStats["pokemon"]>["types"];
 
-const weaknesses = async (types: Types) => {
-  const requests = types.map(({ type }) => {
-    if (type) return fetch("https://pokeapi.co/api/v2/type/" + type.id);
-  });
+const stats = {
+  async read(types: PokemonTypes) {
+    const endpoint = "https://pokeapi.co/api/v2/type/";
 
-  const responses = await Promise.allSettled(requests);
+    const requests = types.reduce<Promise<Response>[]>((arr, { type }) => {
+      if (!type) return arr;
 
-  const array: Record<string, any>[] = [];
+      const response = fetch(endpoint + type.id);
 
-  for (const response of responses) {
-    if (response.status === "fulfilled" && response.value) {
-      const data = await response.value.json();
+      return [...arr, response];
+    }, []);
 
-      array.push(
-        ...data.damage_relations.double_damage_from,
-        ...data.damage_relations.half_damage_to,
-        ...data.damage_relations.no_damage_to
-      );
+    const responses = await Promise.allSettled(requests);
+    const weaknesses: Record<string, any>[] = [];
+    const resistance: Record<string, any>[] = [];
+
+    for (const response of responses) {
+      if (response.status === "fulfilled" && response.value) {
+        const data = await response.value.json();
+
+        resistance.push(
+          ...data.damage_relations.double_damage_to,
+          ...data.damage_relations.half_damage_from,
+          ...data.damage_relations.no_damage_from
+        );
+
+        weaknesses.push(
+          ...data.damage_relations.double_damage_from,
+          ...data.damage_relations.half_damage_to,
+          ...data.damage_relations.no_damage_to
+        );
+      }
     }
-  }
 
-  return array.reduce<string[]>((container, obj) => {
-    return container.includes(obj.name) ? container : [...container, obj.name];
-  }, []);
-};
-
-const resistance = async (types: Types) => {
-  const requests = types.map(({ type }) => {
-    if (type) return fetch("https://pokeapi.co/api/v2/type/" + type.id);
-  });
-
-  const responses = await Promise.allSettled(requests);
-
-  const array: Record<string, any>[] = [];
-
-  for (const response of responses) {
-    if (response.status === "fulfilled" && response.value) {
-      const data = await response.value.json();
-
-      array.push(
-        ...data.damage_relations.double_damage_to,
-        ...data.damage_relations.half_damage_from,
-        ...data.damage_relations.no_damage_from
-      );
-    }
-  }
-
-  return array.reduce<string[]>((container, obj) => {
-    return container.includes(obj.name) ? container : [...container, obj.name];
-  }, []);
+    // filter unique
+    return {
+      weaknesses: weaknesses.reduce<string[]>(
+        (arr, obj) => (arr.includes(obj.name) ? arr : [...arr, obj.name]),
+        []
+      ),
+      resistance: resistance.reduce<string[]>(
+        (arr, obj) => (arr.includes(obj.name) ? arr : [...arr, obj.name]),
+        []
+      ),
+    };
+  },
 };
 
 const types = {
@@ -70,8 +66,7 @@ const types = {
 };
 
 const pokemons = {
-  weaknesses,
-  resistance,
+  stats,
   types,
 };
 
