@@ -37,14 +37,13 @@ const App = ({ Component, pageProps }: AppProps) => {
 
       <Script
         strategy="lazyOnload"
-        src="https://www.googletagmanager.com/gtag/js?id=G-K2FBBFFHFS"
+        src={"https://www.googletagmanager.com/gtag/js?id=" + googleAnalyticsId}
       />
-
       <Script id="" strategy="lazyOnload">
         {`window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-K2FBBFFHFS');`}
+          gtag('config', ${googleAnalyticsId});`}
       </Script>
 
       <SessionProvider session={pageProps.session}>
@@ -59,5 +58,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     </React.Fragment>
   );
 };
+
+const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export default App;
