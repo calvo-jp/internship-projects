@@ -1,22 +1,23 @@
-import * as React from "react";
+import { useCallback, useEffect } from "react";
 
 interface InfiniteScrollProps {
-  callback?: () => void;
   paused?: boolean;
+  callback: () => void;
 }
 
 const InfiniteScroll = ({ callback, paused }: InfiniteScrollProps) => {
-  const handleScroll = React.useCallback(() => {
-    if (!paused && isScrolledToBottom() && callback) callback();
+  const handleScroll = useCallback(() => {
+    if (paused) return;
+    if (isScrolledToBottom()) callback();
   }, [callback, paused]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  return <React.Fragment />;
+  return null;
 };
 
 const isScrolledToBottom = () => {
