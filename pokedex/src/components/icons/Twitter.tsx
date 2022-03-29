@@ -1,6 +1,6 @@
-import * as React from "react";
+import { ComponentProps } from "react";
 
-const TwitterIcon = (props: React.ComponentProps<"svg">) => {
+const TwitterIcon = (props: ComponentProps<"svg">) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
