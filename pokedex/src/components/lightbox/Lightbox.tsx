@@ -11,11 +11,7 @@ import Control from "./Control";
 import Slider from "./Slider";
 import { getLightboxItems, hideScrollbar, showScrollbar } from "./utils";
 
-/**
- *
- * ids of lightbox items with click event handlers already attached
- *
- */
+/** ids of lightbox items with click event handlers already attached */
 const lbItemsId: string[] = [];
 
 const Lightbox = () => {
