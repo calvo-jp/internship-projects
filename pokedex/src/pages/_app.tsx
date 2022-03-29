@@ -39,6 +39,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         strategy="lazyOnload"
         src={"https://www.googletagmanager.com/gtag/js?id=" + googleAnalyticsId}
       />
+
       <Script id="" strategy="lazyOnload">
         {`window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
