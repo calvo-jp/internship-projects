@@ -1,6 +1,4 @@
-type Type = "PNG" | "SVG";
-
-const getImageUrlById = (id: number | string, type?: Type) => {
+const getImageUrlById = (id: number | string, type?: "PNG" | "SVG") => {
   const ext = type === "PNG" ? ".png" : ".svg";
   const cdn =
     type === "PNG"
