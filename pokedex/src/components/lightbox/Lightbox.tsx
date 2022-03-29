@@ -196,13 +196,10 @@ interface SliderProps {
 
 const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
   ({ images, active, onSelect }, ref) => {
+    // remove duplicates
     const srcs = images.reduce<HTMLImageElement[]>((array, image) => {
-      // remove duplicates
       if (array.some(({ src }) => image.src === src)) return array;
-      // ensure active image is on the first list
-      if (active && active.src === image.src) return [image, ...array];
-      // place everything at the end inorder not to replace
-      // the current image's place at index 0
+
       return [...array, image];
     }, []);
 
