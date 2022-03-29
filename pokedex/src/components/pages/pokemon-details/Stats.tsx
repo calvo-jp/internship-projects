@@ -42,15 +42,14 @@ interface StatsProps {
 }
 
 const Stats = ({ id }: StatsProps) => {
-  const { loading, data, refetch } = useQuery<
-    GetPokemonStats,
-    GetPokemonStatsVariables
-  >(GET_POKEMON_STATS, {
-    variables: { id },
-    notifyOnNetworkStatusChange: true,
-  });
+  const { loading, data } = useQuery<GetPokemonStats, GetPokemonStatsVariables>(
+    GET_POKEMON_STATS,
+    {
+      variables: { id },
+      notifyOnNetworkStatusChange: true,
+    }
+  );
 
-  // TODO: update to skeleton
   if (loading) {
     return (
       <Center>
@@ -59,7 +58,6 @@ const Stats = ({ id }: StatsProps) => {
     );
   }
 
-  // TODO: add error and refetch option
   if (!data?.pokemon) return null;
 
   const stats = [
