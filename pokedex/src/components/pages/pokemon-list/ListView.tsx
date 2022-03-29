@@ -65,7 +65,7 @@ const ListView = ({ data }: ListViewProps) => {
           <GridTableCell>
             <HStack spacing={1}>
               {types
-                .map(({ type }) => type?.name || "")
+                .map(({ type }) => type?.name ?? "")
                 .map((type) => (
                   <Tag key={type} bgColor={getColorByType(type)} rounded="lg">
                     {type}

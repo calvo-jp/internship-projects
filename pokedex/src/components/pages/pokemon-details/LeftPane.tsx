@@ -21,7 +21,7 @@ const LeftPane = ({ data }: LeftPaneProps) => {
         align="center"
         justify="center"
         rounded="sm"
-        bgColor={getColorByType(data.types.at(0)?.type?.name || "")}
+        bgColor={getColorByType(data.types.at(0)?.type?.name ?? "")}
       >
         <Photo
           maxW="80%"

@@ -33,7 +33,7 @@ const GridViewItem = ({ data }: GridViewItemProps) => {
         align="center"
         height={{ base: "300px", lg: "260px" }}
         justify="center"
-        bgColor={getColorByType(data.types.at(0)?.type?.name || "")}
+        bgColor={getColorByType(data.types.at(0)?.type?.name ?? "")}
         rounded="sm"
         flexGrow="1"
       >

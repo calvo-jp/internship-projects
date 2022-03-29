@@ -16,6 +16,9 @@ interface VideosProps {
 
 type YoutubeResult = Awaited<ReturnType<typeof services.youtube.search>>;
 
+// TODO:
+// - add error 503 SERVICE NOT AVAILABLE once qouta hit
+// - load data on first mount when scroll is not yet scrolled to bottom
 const Videos = ({ search }: VideosProps) => {
   const [data, setData] = useState<YoutubeResult>();
   const [error, setError] = useState(false);
