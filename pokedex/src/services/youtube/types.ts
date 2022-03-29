@@ -2,9 +2,10 @@ interface YoutubeSearchResult {
   etag: string;
   kind: string;
   items: Item[];
-  nextPageToken: string;
   pageInfo: PageInfo;
   regionCode: string;
+  nextPageToken: string;
+  previousPageToken: string;
 }
 
 interface PageInfo {
