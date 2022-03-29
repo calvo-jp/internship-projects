@@ -11,11 +11,11 @@ const Control = ({ icon, ...props }: ControlProps & BaseProps) => {
   return (
     <IconButton
       aria-label=""
-      width="60px"
-      height="60px"
+      width="48px"
+      height="48px"
       bgColor="brand.gray.800"
       rounded="full"
-      borderWidth={6}
+      flexShrink={0}
       borderColor="brand.gray.900"
       icon={<Icon as={icon} fontSize="2xl" stroke="brand.gray.400" />}
       _hover={{ bgColor: "brand.gray.800" }}

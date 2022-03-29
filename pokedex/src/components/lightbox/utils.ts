@@ -46,7 +46,7 @@ export const download = (url: string) => {
   const filename = url.split("/").at(-1) ?? "";
   const anchor = document.createElement("a");
 
-  anchor.href = "url";
+  anchor.href = url;
   anchor.download = filename;
   document.body.appendChild(anchor);
   anchor.click();

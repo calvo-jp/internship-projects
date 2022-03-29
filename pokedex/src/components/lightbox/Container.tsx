@@ -1,18 +1,16 @@
 import { Box } from "@chakra-ui/react";
-import * as React from "react";
 
-const Container = ({ children, ...props }: React.PropsWithChildren<{}>) => {
+const Container = ({ children }: React.PropsWithChildren<{}>) => {
   return (
     <Box
       w="full"
       h="full"
-      p={4}
-      position="fixed"
+      p={{ base: 4, lg: 6 }}
+      pos="fixed"
       top={0}
       left={0}
-      bgColor="#111827fa"
       zIndex="overlay"
-      {...props}
+      bgColor="#0a0f1aeb"
     >
       {children}
     </Box>
