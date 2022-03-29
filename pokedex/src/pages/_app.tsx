@@ -3,7 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Lightbox from "components/lightbox";
 import PageLoader from "components/PageLoader";
 import apolloClient from "config/apollo/client";
-import "config/polyfill";
+import "config/polyfill"; /* polyfill to string|array.at() method for vercel */
 import theme from "config/theme";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
