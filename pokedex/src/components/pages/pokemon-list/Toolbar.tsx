@@ -34,7 +34,7 @@ const Toolbar = ({ filters, onFilterChange }: ToolbarProps) => {
   const handleToggle = (value?: boolean) => () => toggleListView(value);
 
   return (
-    <Wrap spacing={8}>
+    <Wrap spacing={{ base: 2, md: 4, lg: 8 }}>
       <WrapItem>
         <FilterTool value={filters} onChange={onFilterChange} />
       </WrapItem>
