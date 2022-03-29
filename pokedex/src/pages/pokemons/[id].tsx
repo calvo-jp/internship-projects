@@ -19,7 +19,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import * as React from "react";
+import { useEffect } from "react";
 import services from "services";
 import capitalize from "utils/capitalize";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
@@ -81,14 +81,14 @@ const Pokemon = ({ pokemon }: Props) => {
   const router = useRouter();
   const saveAsViewedPokemon = useStore((state) => state.saveAsViewedPokemon);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (pokemon) saveAsViewedPokemon(pokemon.id);
   }, [pokemon, saveAsViewedPokemon]);
 
   if (router.isFallback) return <Loader />;
 
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>Pokedex | {pokemon.name}</title>
 
@@ -131,7 +131,7 @@ const Pokemon = ({ pokemon }: Props) => {
           </Flex>
         </Box>
       </HomepageLayout>
-    </React.Fragment>
+    </>
   );
 };
 

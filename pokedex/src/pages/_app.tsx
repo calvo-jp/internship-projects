@@ -9,11 +9,10 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
-import * as React from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <React.Fragment>
+    <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
@@ -56,7 +55,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           </ChakraProvider>
         </ApolloProvider>
       </SessionProvider>
-    </React.Fragment>
+    </>
   );
 };
 

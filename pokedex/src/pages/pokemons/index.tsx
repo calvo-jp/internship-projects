@@ -11,7 +11,7 @@ import useStore from "hooks/useStore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import services from "services";
 import IPaginated from "types/paginated";
 import coalesce from "utils/coalesce";
@@ -108,7 +108,7 @@ const Pokemons = ({ rows, page, pageSize, totalRows, search }: Props) => {
   const navigate = useNavigate();
 
   const listView = useStore((state) => state.listView);
-  const [view, setView] = React.useState<"grid" | "list">("grid");
+  const [view, setView] = useState<"grid" | "list">("grid");
 
   const handlePageChange = (newPage: number) => {
     navigate(basePath, {
@@ -126,12 +126,12 @@ const Pokemons = ({ rows, page, pageSize, totalRows, search }: Props) => {
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setView(listView ? "list" : "grid");
   }, [listView]);
 
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>Pokedex</title>
       </Head>
@@ -168,7 +168,7 @@ const Pokemons = ({ rows, page, pageSize, totalRows, search }: Props) => {
           </Flex>
         </Box>
       </HomepageLayout>
-    </React.Fragment>
+    </>
   );
 };
 

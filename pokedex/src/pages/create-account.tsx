@@ -9,14 +9,13 @@ import TextField from "components/widgets/TextField";
 import { SIGN_UP } from "graphql/auth-api/mutations";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { SignUp, SignUpVariables } from "__generated__/SignUp";
 
 const CreateAccount = () => {
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>Pokedex | Create Account</title>
       </Head>
@@ -31,7 +30,7 @@ const CreateAccount = () => {
           </HStack>
         </Center>
       </AccountLayout>
-    </React.Fragment>
+    </>
   );
 };
 

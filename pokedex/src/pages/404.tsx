@@ -2,7 +2,6 @@ import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import * as React from "react";
 
 const NotFound = () => {
   const { status } = useSession();
@@ -10,7 +9,7 @@ const NotFound = () => {
   if (status === "loading") return null;
 
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>Error 404</title>
       </Head>
@@ -39,7 +38,7 @@ const NotFound = () => {
           </Link>
         </Box>
       </Flex>
-    </React.Fragment>
+    </>
   );
 };
 

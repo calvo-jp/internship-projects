@@ -11,13 +11,13 @@ import TextField from "components/widgets/TextField";
 import useCallbackUrlQuery from "hooks/useCallbackUrlQuery";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const Login = () => {
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>Pokedex | Log in</title>
       </Head>
@@ -31,7 +31,7 @@ const Login = () => {
           <Links />
         </Box>
       </AccountLayout>
-    </React.Fragment>
+    </>
   );
 };
 
@@ -59,8 +59,8 @@ const LoginForm = () => {
     },
   });
 
-  const [loading, setLoading] = React.useState(false);
-  const [loginError, setLoginError] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState(false);
 
   const login = handleSubmit(async (data) => {
     setLoading(true);
@@ -74,7 +74,7 @@ const LoginForm = () => {
     setLoginError(true);
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       setLoading(false);
       setLoginError(false);

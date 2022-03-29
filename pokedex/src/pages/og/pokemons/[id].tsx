@@ -17,7 +17,7 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import * as React from "react";
+import { useEffect } from "react";
 import services from "services";
 import capitalize from "utils/capitalize";
 import getColorByType from "utils/pokemons/getColorByType";
@@ -81,12 +81,12 @@ const OpenGraph = ({ pokemon }: Props) => {
   const { push } = useRouter();
   const { status } = useSession();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === "authenticated") push("/pokemons/" + pokemon.id);
   }, [pokemon.id, push, status]);
 
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>Pokedex | {pokemon.name}</title>
 
@@ -155,7 +155,7 @@ const OpenGraph = ({ pokemon }: Props) => {
           </Stack>
         </Flex>
       </Flex>
-    </React.Fragment>
+    </>
   );
 };
 

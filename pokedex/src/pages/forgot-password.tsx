@@ -8,7 +8,6 @@ import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
 import { TRIGGER_PASSWORD_RESET } from "graphql/auth-api/mutations";
 import Head from "next/head";
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -18,7 +17,7 @@ import {
 
 const ForgotPassword = () => {
   return (
-    <React.Fragment>
+    <>
       <Head>
         <title>Pokedex | Recover Account</title>
       </Head>
@@ -36,7 +35,7 @@ const ForgotPassword = () => {
           </HStack>
         </Center>
       </AccountLayout>
-    </React.Fragment>
+    </>
   );
 };
 
