@@ -43,7 +43,6 @@ const Evolution = ({ id }: EvolutionProps) => {
 
   const pokemon = data.pokemon;
   const evolutions = pokemon.specy?.evolutionChain?.evolutions ?? [];
-  const totalEvolutions = evolutions.length ?? 0;
   // find out the specy before pokemon evolved to its current form
   const currentSpecy = evolutions.find(({ name }) => pokemon.name === name);
   const fromSpecy = !currentSpecy
@@ -54,13 +53,16 @@ const Evolution = ({ id }: EvolutionProps) => {
 
   // fallback to current pokemons name
   const fromSpecyName = fromSpecy?.name ?? pokemon.name;
+  const partialDescription = `
+  There are currently a total of ${evolutions.length} Pokémon in the
+  ${capitalize(unkebab(pokemon.name))} family.
+  ${capitalize(unkebab(pokemon.name))} evolves
+  from ${capitalize(unkebab(fromSpecyName))} which costs `;
 
   return (
     <Box>
       <Text maxW="403px" fontSize="sm">
-        There are currently a total of {totalEvolutions} Pokémon in the{" "}
-        {capitalize(pokemon.name)} family. {capitalize(pokemon.name)} evolves
-        from {capitalize(fromSpecyName)} which costs{" "}
+        {partialDescription}
         <Text as="b" fontWeight="semibold">
           25 Candy.
         </Text>
