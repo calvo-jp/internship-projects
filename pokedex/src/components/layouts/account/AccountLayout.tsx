@@ -3,7 +3,7 @@ import useCallbackUrlQuery from "hooks/useCallbackUrlQuery";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import * as React from "react";
+import { PropsWithChildren, useEffect } from "react";
 
 interface AccountLayoutProps {
   heading: string;
@@ -20,12 +20,12 @@ const AccountLayout = ({
   heading,
   backgroundUrl,
   children,
-}: React.PropsWithChildren<AccountLayoutProps>) => {
+}: PropsWithChildren<AccountLayoutProps>) => {
   const { status } = useSession();
   const { replace, prefetch } = useRouter();
   const callbackUrl = useCallbackUrlQuery();
 
-  React.useEffect(() => {
+  useEffect(() => {
     prefetch(callbackUrl);
   }, [callbackUrl, prefetch]);
 
