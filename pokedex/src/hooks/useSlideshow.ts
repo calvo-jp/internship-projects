@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 import arrayChunk from "utils/arrayChunk";
 import noop from "utils/noop";
 
@@ -60,10 +60,10 @@ const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
   const slides = arrayChunk(data, itemsPerSlide);
   const totalSlides = slides.length;
 
-  const [playing, setPlaying] = React.useState(autoPlay);
-  const [currentSlide, setCurrentSlide] = React.useState(slideStartIndex);
+  const [playing, setPlaying] = useState(autoPlay);
+  const [currentSlide, setCurrentSlide] = useState(slideStartIndex);
 
-  const increment = React.useCallback(
+  const increment = useCallback(
     (amount?: number) => {
       setCurrentSlide((old) => {
         const current = old + (amount ?? 1);
@@ -74,7 +74,7 @@ const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
     [onSlideChange]
   );
 
-  const decrement = React.useCallback(
+  const decrement = useCallback(
     (amount?: number) => {
       setCurrentSlide((old) => {
         const current = old - (amount ?? 1);
@@ -85,13 +85,13 @@ const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
     [onSlideChange]
   );
 
-  const prev = React.useCallback(() => {
+  const prev = useCallback(() => {
     if (currentSlide > 1) return decrement();
 
     if (loop) increment(totalSlides - currentSlide);
   }, [currentSlide, decrement, increment, loop, totalSlides]);
 
-  const next = React.useCallback(() => {
+  const next = useCallback(() => {
     if (currentSlide < totalSlides) return increment();
 
     if (loop) decrement(totalSlides - 1);
@@ -101,12 +101,12 @@ const useSlideshow = <T extends Array<any>>(data: T, config?: Config) => {
   const pause = () => setPlaying(false);
 
   // listen to slide index changes outside
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentSlide(slideStartIndex);
   }, [slideStartIndex]);
 
   // autoplay slideshow
-  React.useEffect(() => {
+  useEffect(() => {
     if (!playing) return;
 
     const timeout = setTimeout(next, delay * 1000); // convert delay to ms

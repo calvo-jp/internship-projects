@@ -1,6 +1,7 @@
-import * as React from "react";
-
 // typescript does not know how to handle this
+
+import { useEffect, useState } from "react";
+
 // type checking should be bypassed in return stmt
 type FetchStatus<D, E> =
   | {
@@ -30,11 +31,11 @@ const useFetch = <D = any, E = any>(
   input: RequestInfo,
   init?: RequestInit
 ): FetchStatus<D, E> => {
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<E>();
-  const [data, setData] = React.useState<D>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<E>();
+  const [data, setData] = useState<D>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetch(input, init)
       .then((response) => response.json())
       .then(setData)

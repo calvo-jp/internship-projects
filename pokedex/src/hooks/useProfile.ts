@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { PROFILE } from "graphql/auth-api/queries";
 import { useSession } from "next-auth/react";
-import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Profile } from "__generated__/Profile";
 
 interface IProfile {
@@ -27,14 +27,14 @@ type UserProfile =
  */
 const useProfile = (): UserProfile => {
   const session = useSession({ required: true });
-  const [profile, setProfile] = React.useState<IProfile>();
+  const [profile, setProfile] = useState<IProfile>();
   const [fetchProfile, { loading }] = useLazyQuery<Profile>(PROFILE, {
     context: {
       client: "auth",
     },
   });
 
-  const getServerProfile = React.useCallback(async () => {
+  const getServerProfile = useCallback(async () => {
     const result = await fetchProfile();
     if (!result.data) return;
     const details = result.data.me;
@@ -44,7 +44,7 @@ const useProfile = (): UserProfile => {
     });
   }, [fetchProfile]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (session.status === "authenticated") {
       if (session.data.user.__auth_method__ === "oauth")
         setProfile(session.data.user);
