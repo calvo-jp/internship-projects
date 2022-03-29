@@ -1,21 +1,40 @@
+import cleanValues from "utils/cleanValues";
 import YoutubeSearchResult from "./types";
 
-const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+interface SearchConfig {
+  query: string | string[];
+  /** next or previous page token returned after first query */
+  token?: string;
+}
 
-const search = async (...search: string[]): Promise<YoutubeSearchResult> => {
-  const q = [search].flat().join("%20");
+const search = async (config: SearchConfig): Promise<YoutubeSearchResult> => {
+  const q = [config.query].flat();
+  const pageToken = config.token;
 
-  const endpoint = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${q}&type=video&key=${GOOGLE_API_KEY}`;
+  const params = new URLSearchParams(
+    cleanValues({
+      q,
+      key,
+      type,
+      pageToken,
+      maxResults,
+    })
+  );
 
-  const response = await fetch(endpoint);
+  const response = await fetch(`${endpoint}?${params.toString()}`);
 
-  if (!response.ok) {
-    console.log(await response.json());
-    throw new Error(response.statusText);
-  }
+  // youtube's success or error response is in json
+  const o = await response.json();
 
-  return await response.json();
+  if (!response.ok) throw new Error(o.message);
+
+  return o;
 };
+
+const key = process.env.NEXT_PUBLIC_GOOGLE_API_KEY!;
+const type = "video";
+const maxResults = 10; /* limiting to 10 inorder not to hit quota early */
+const endpoint = "https://youtube.googleapis.com/youtube/v3/search";
 
 const youtube = {
   search,
