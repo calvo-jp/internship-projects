@@ -9,12 +9,7 @@ import randomIdGenerator from "utils/randomIdGenerator";
 import Container from "./Container";
 import Control from "./Control";
 import Slider from "./Slider";
-import {
-  download,
-  getLightboxItems,
-  hideScrollbar,
-  showScrollbar,
-} from "./utils";
+import { getLightboxItems, hideScrollbar, showScrollbar } from "./utils";
 
 /**
  *
@@ -166,8 +161,8 @@ const Lightbox = () => {
         >
           <Slider
             ref={sliderRef}
-            active={currentImage}
-            images={images}
+            items={images}
+            selected={currentImage}
             onSelect={handleThumbnailClick}
           />
         </Box>

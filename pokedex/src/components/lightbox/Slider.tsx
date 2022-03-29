@@ -2,15 +2,15 @@ import { Box, Flex, Image } from "@chakra-ui/react";
 import * as React from "react";
 
 interface SliderProps {
-  images: HTMLImageElement[];
-  active?: HTMLImageElement;
+  items: HTMLImageElement[];
+  selected?: HTMLImageElement;
   onSelect?: (image: HTMLImageElement) => void;
 }
 
 const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
-  ({ images, active, onSelect }, ref) => {
+  ({ items, selected, onSelect }, ref) => {
     // remove duplicates
-    const srcs = images.reduce<HTMLImageElement[]>((array, image) => {
+    const srcs = items.reduce<HTMLImageElement[]>((array, image) => {
       if (array.some(({ src }) => image.src === src)) return array;
 
       return [...array, image];
@@ -29,22 +29,22 @@ const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           h="100px"
         >
           {srcs.map((image) => {
-            const selected = active && active.src === image.src;
+            const active = selected && selected.src === image.src;
 
             return (
               <Box
-                p={4}
                 key={image.src}
+                p={4}
+                h="100px"
+                w="100px"
+                border="1px"
+                borderColor={active ? "#46526ceb" : "transparent"}
+                bgColor="#ffffff0f"
                 rounded="lg"
                 cursor="pointer"
                 scrollSnapAlign="start"
-                onClick={() => onSelect && onSelect(image)}
-                border="1px"
-                borderColor={selected ? "#46526ceb" : "transparent"}
-                bgColor="#ffffff0f"
                 flexShrink={0}
-                h="100px"
-                w="100px"
+                onClick={() => onSelect && onSelect(image)}
               >
                 <Image alt="" h="full" src={image.src} />
               </Box>
