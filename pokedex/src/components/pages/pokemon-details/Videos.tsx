@@ -6,8 +6,6 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import InfiniteScroll from "components/InfiniteScroll";
-import Alert from "components/widgets/Alert";
-import Photo from "components/widgets/Photo";
 import * as React from "react";
 import services from "services";
 
@@ -53,8 +51,6 @@ const Videos = ({ search }: VideosProps) => {
     // This causes re-renders all the time
     // needs refactoring or rewriting of codes
   }, [data?.nextPageToken, search]);
-
-  const handleClose = () => setError(false);
 
   React.useEffect(() => {
     performSearch();
