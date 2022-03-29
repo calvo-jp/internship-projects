@@ -8,6 +8,7 @@ import {
 import InfiniteScroll from "components/InfiniteScroll";
 import { useCallback, useEffect, useState } from "react";
 import services from "services";
+import randomIdGenerator from "utils/randomIdGenerator";
 
 interface VideosProps {
   search: string;
@@ -18,7 +19,7 @@ type YoutubeResult = Awaited<ReturnType<typeof services.youtube.search>>;
 const Videos = ({ search }: VideosProps) => {
   const [data, setData] = useState<YoutubeResult>();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const performSearch = useCallback(async () => {
     setLoading(true);
@@ -52,19 +53,30 @@ const Videos = ({ search }: VideosProps) => {
     // needs refactoring or rewriting of codes
   }, [data?.nextPageToken, search]);
 
-  useEffect(() => {
-    performSearch();
-  }, [performSearch]);
-
-  const hasNext = data && data.nextPageToken;
+  const hasNext =
+    /* no request has been sent yet */
+    !data ||
+    /** should have a next page token for succeeding request unless already reached last page */
+    (data && data.nextPageToken);
 
   return (
     <Box>
-      <SimpleGrid columns={{ lg: 2 }} gap={4}>
-        {data?.items.map((item) => (
-          <Item key={item.id.videoId} data={item} />
-        ))}
-      </SimpleGrid>
+      {data && (
+        <SimpleGrid columns={{ lg: 2 }} gap={4} mb={4}>
+          {data.items.map((item) => (
+            <Item
+              key={
+                item.id.videoId +
+                // some items are duplicates
+                // they are the exactly the same video with same id
+                // need to generate uniqid due to console errors
+                generateId()
+              }
+              data={item}
+            />
+          ))}
+        </SimpleGrid>
+      )}
 
       {loading && (
         <Center>
@@ -94,5 +106,7 @@ const Item = ({ data }: ItemProps) => {
     </AspectRatio>
   );
 };
+
+const generateId = randomIdGenerator();
 
 export default Videos;
