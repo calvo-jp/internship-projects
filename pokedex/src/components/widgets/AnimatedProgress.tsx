@@ -10,10 +10,7 @@ const AnimatedProgress = ({ value, ...props }: AnimatedProgressProps) => {
     if (value && target < value) setTarget((old) => old + 1);
   }, [target, value]);
 
-  React.useEffect(() => {
-    increment();
-  }, [increment]);
-
+  React.useEffect(() => increment(), [increment]);
   React.useEffect(() => () => setTarget(0), []);
 
   return <Progress value={target} {...props} />;
