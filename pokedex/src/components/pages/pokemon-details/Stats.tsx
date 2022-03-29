@@ -1,14 +1,15 @@
 import { useQuery } from "@apollo/client";
 import {
+  Box,
   Center,
   Flex,
+  Progress,
   Spinner,
   Tag,
   TagLabel,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import AnimatedProgress from "components/widgets/AnimatedProgress";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
 import { GET_POKEMON_STATS } from "graphql/pokeapi/queries";
@@ -80,15 +81,15 @@ const Stats = ({ id }: StatsProps) => {
           return (
             <Flex align="center" fontWeight="medium" key={generateId()}>
               <Text w="45px">{stat.label}</Text>
-              <AnimatedProgress
+              <Progress
                 ml={8}
                 mr={4}
                 size="xs"
                 rounded="full"
                 colorScheme={stat.color}
                 bgColor="brand.gray.200"
-                flexGrow="1"
                 value={stat.value}
+                flexGrow="1"
               />
               <Text w="45px">{stat.value}%</Text>
             </Flex>
