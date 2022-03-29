@@ -1,5 +1,5 @@
 import { Box, Flex, Image } from "@chakra-ui/react";
-import * as React from "react";
+import { forwardRef } from "react";
 
 interface SliderProps {
   items: HTMLImageElement[];
@@ -7,7 +7,7 @@ interface SliderProps {
   onSelect?: (image: HTMLImageElement) => void;
 }
 
-const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
+const Slider = forwardRef<HTMLDivElement, SliderProps>(
   ({ items, selected, onSelect }, ref) => {
     // remove duplicates
     const srcs = items.reduce<HTMLImageElement[]>((array, image) => {

@@ -4,7 +4,7 @@ import {
   ChevronRightIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import randomIdGenerator from "utils/randomIdGenerator";
 import Container from "./Container";
 import Control from "./Control";
@@ -19,14 +19,14 @@ import { getLightboxItems, hideScrollbar, showScrollbar } from "./utils";
 const lbItemsId: string[] = [];
 
 const Lightbox = () => {
-  const sliderRef = React.useRef<HTMLDivElement>(null);
-  const sliderWrapperRef = React.useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const sliderWrapperRef = useRef<HTMLDivElement>(null);
 
-  const [open, setOpen] = React.useState(false);
-  const [images, setImages] = React.useState<HTMLImageElement[]>([]);
-  const [currentImage, setCurrentImage] = React.useState<HTMLImageElement>();
+  const [open, setOpen] = useState(false);
+  const [images, setImages] = useState<HTMLImageElement[]>([]);
+  const [currentImage, setCurrentImage] = useState<HTMLImageElement>();
 
-  const handleImageClick = React.useCallback((image: HTMLImageElement) => {
+  const handleImageClick = useCallback((image: HTMLImageElement) => {
     return (e: MouseEvent) => {
       // do not add onclick event, but include in slideshow
       if (image.hasAttribute("data-lightbox-noclick")) return;
@@ -43,7 +43,7 @@ const Lightbox = () => {
     };
   }, []);
 
-  const init = React.useCallback(() => {
+  const init = useCallback(() => {
     images.map((image) => {
       // adding ids to images
       // inorder to recognize them on re-renders
@@ -80,33 +80,33 @@ const Lightbox = () => {
     };
   };
 
-  const handleThumbnailClick = React.useCallback((image: HTMLImageElement) => {
+  const handleThumbnailClick = useCallback((image: HTMLImageElement) => {
     setCurrentImage(image);
   }, []);
 
-  const loadImages = React.useCallback(() => {
+  const loadImages = useCallback(() => {
     const lbItems = getLightboxItems();
     if (!lbItems) return;
     setImages(lbItems);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timeout = setInterval(loadImages, 1000);
 
     return () => clearInterval(timeout);
   }, [loadImages]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     init();
   }, [images, init]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     open && hideScrollbar();
     !open && showScrollbar();
   }, [open]);
 
   // separated clean-up to prevent infinite re-rendering
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       setOpen(false);
       setImages([]);
@@ -115,7 +115,7 @@ const Lightbox = () => {
     };
   }, []);
 
-  if (!open) return <React.Fragment />;
+  if (!open) return null;
 
   return (
     <Container>

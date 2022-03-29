@@ -1,10 +1,10 @@
 import { Icon, IconButton, IconButtonProps } from "@chakra-ui/react";
-import * as React from "react";
+import { ComponentProps } from 'react';
 
 type BaseProps = Omit<IconButtonProps, "aria-label" | "icon">;
 
 interface ControlProps {
-  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
+  icon: (props: ComponentProps<"svg">) => JSX.Element;
 }
 
 const Control = ({ icon, ...props }: ControlProps & BaseProps) => {
