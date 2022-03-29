@@ -50,14 +50,7 @@ const Stats = ({ id }: StatsProps) => {
     }
   );
 
-  if (loading) {
-    return (
-      <Center>
-        <Spinner size="lg" />
-      </Center>
-    );
-  }
-
+  if (loading) <Loader />;
   if (!data?.pokemon) return null;
 
   const stats = [
@@ -108,11 +101,21 @@ const Stats = ({ id }: StatsProps) => {
   );
 };
 
+const Loader = () => {
+  return (
+    <Center>
+      <Spinner size="lg" />
+    </Center>
+  );
+};
+
 interface OtherStatsProps {
   types: NonNullable<GetPokemonStats["pokemon"]>["types"];
 }
 
-type TOtherStats = Awaited<ReturnType<typeof services.pokemons.stats["read"]>>;
+type TOtherStats = Awaited<
+  ReturnType<typeof services.pokemons.stats["read"]["all"]>
+>;
 
 const OtherStats = ({ types }: OtherStatsProps) => {
   const [loading, setLoading] = useState(true);
@@ -122,8 +125,10 @@ const OtherStats = ({ types }: OtherStatsProps) => {
   });
 
   useEffect(() => {
-    services.pokemons.stats
-      .read(types)
+    const ids = types.filter(({ type }) => !!type).map(({ type }) => type!.id);
+
+    services.pokemons.stats.read
+      .all(ids)
       .then(setData)
       .finally(() => setLoading(false));
 

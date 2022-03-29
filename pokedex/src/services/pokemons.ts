@@ -1,55 +1,46 @@
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON_TYPES } from "graphql/pokeapi/queries";
-import { GetPokemonStats } from "__generated__/GetPokemonStats";
 import { GetPokemonTypes } from "__generated__/GetPokemonTypes";
 
-type PokemonTypes = NonNullable<GetPokemonStats["pokemon"]>["types"];
-
 const stats = {
-  async read(types: PokemonTypes) {
-    const endpoint = "https://pokeapi.co/api/v2/type/";
+  read: {
+    async all(pokemonTypeIds: number[]) {
+      const endpoint = "https://pokeapi.co/api/v2/type/";
 
-    const requests = types.reduce<Promise<Response>[]>((arr, { type }) => {
-      if (!type) return arr;
+      const responses = pokemonTypeIds.map((id) => fetch(endpoint + id));
+      const results = await Promise.allSettled(responses);
 
-      const response = fetch(endpoint + type.id);
+      const weaknesses: Record<string, any>[] = [];
+      const resistance: Record<string, any>[] = [];
 
-      return [...arr, response];
-    }, []);
+      for (const result of results) {
+        if (result.status === "fulfilled" && result.value) {
+          const data = await result.value.json();
 
-    const responses = await Promise.allSettled(requests);
-    const weaknesses: Record<string, any>[] = [];
-    const resistance: Record<string, any>[] = [];
+          resistance.push(
+            ...data.damage_relations.double_damage_to,
+            ...data.damage_relations.half_damage_from,
+            ...data.damage_relations.no_damage_from
+          );
 
-    for (const response of responses) {
-      if (response.status === "fulfilled" && response.value) {
-        const data = await response.value.json();
-
-        resistance.push(
-          ...data.damage_relations.double_damage_to,
-          ...data.damage_relations.half_damage_from,
-          ...data.damage_relations.no_damage_from
-        );
-
-        weaknesses.push(
-          ...data.damage_relations.double_damage_from,
-          ...data.damage_relations.half_damage_to,
-          ...data.damage_relations.no_damage_to
-        );
+          weaknesses.push(
+            ...data.damage_relations.double_damage_from,
+            ...data.damage_relations.half_damage_to,
+            ...data.damage_relations.no_damage_to
+          );
+        }
       }
-    }
 
-    // filter unique
-    return {
-      weaknesses: weaknesses.reduce<string[]>(
-        (arr, obj) => (arr.includes(obj.name) ? arr : [...arr, obj.name]),
-        []
-      ),
-      resistance: resistance.reduce<string[]>(
-        (arr, obj) => (arr.includes(obj.name) ? arr : [...arr, obj.name]),
-        []
-      ),
-    };
+      // filter unique
+      return {
+        weaknesses: weaknesses.reduce<string[]>((arr, obj) => {
+          return arr.includes(obj.name) ? arr : [...arr, obj.name];
+        }, []),
+        resistance: resistance.reduce<string[]>((arr, obj) => {
+          return arr.includes(obj.name) ? arr : [...arr, obj.name];
+        }, []),
+      };
+    },
   },
 };
 
