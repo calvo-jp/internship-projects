@@ -8,6 +8,7 @@ import theme from "config/theme";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import Script from "next/script";
 import * as React from "react";
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -33,6 +34,18 @@ const App = ({ Component, pageProps }: AppProps) => {
           ].join()}
         />
       </Head>
+
+      <Script
+        strategy="lazyOnload"
+        src="https://www.googletagmanager.com/gtag/js?id=G-K2FBBFFHFS"
+      />
+
+      <Script id="" strategy="lazyOnload">
+        {`window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-K2FBBFFHFS');`}
+      </Script>
 
       <SessionProvider session={pageProps.session}>
         <ApolloProvider client={apolloClient}>
