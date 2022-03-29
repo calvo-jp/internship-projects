@@ -98,7 +98,7 @@ const OpenGraph = ({ pokemon }: Props) => {
         <meta property="fb:app_id" content="1522507158149034" />
         <meta
           property="og:title"
-          content={["Pokedex" + pokemon.name].join("|")}
+          content={["Pokedex", pokemon.name].join("|")}
         />
         <meta
           property="og:description"
