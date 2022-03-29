@@ -7,7 +7,6 @@ import {
   Icon,
   IconButton,
   Spinner,
-  VStack,
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import Photo from "components/widgets/Photo";
@@ -43,36 +42,32 @@ const Slideshow = () => {
   });
 
   return (
-    <VStack>
-      <HStack spacing={5}>
-        <Control type="previous" onClick={prev} />
+    <HStack spacing={5}>
+      <Control type="previous" onClick={prev} />
 
-        <Flex
-          ref={sliderRef}
-          overflowX="hidden"
-          scrollBehavior="smooth"
-          w="187px"
-        >
-          {slides.map((ids) => (
-            <Grid
-              key={generateId()}
-              gap={2}
-              templateColumns="repeat(3, 57px)"
-              gridAutoRows="57px"
-              flexShrink={0}
-            >
-              {ids.map((id) => (
-                <SlideItem key={id} id={id} />
-              ))}
-            </Grid>
-          ))}
-        </Flex>
+      <Flex
+        ref={sliderRef}
+        overflowX="hidden"
+        scrollBehavior="smooth"
+        w="187px"
+      >
+        {slides.map((ids) => (
+          <Grid
+            key={generateId()}
+            gap={2}
+            templateColumns="repeat(3, 57px)"
+            gridAutoRows="57px"
+            flexShrink={0}
+          >
+            {ids.map((id) => (
+              <SlideItem key={id} id={id} />
+            ))}
+          </Grid>
+        ))}
+      </Flex>
 
-        <Control type="next" onClick={next} />
-      </HStack>
-
-      <Flex></Flex>
-    </VStack>
+      <Control type="next" onClick={next} />
+    </HStack>
   );
 };
 
