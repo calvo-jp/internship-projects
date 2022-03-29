@@ -79,11 +79,10 @@ const Stats = ({ id }: StatsProps) => {
           if (!stat) return null;
 
           return (
-            <Flex align="center" fontWeight="medium" key={generateId()}>
-              <Text w="45px">{stat.label}</Text>
+            <Flex align="center" fontWeight="medium" key={generateId()} gap={2}>
+              <Text w="35px">{stat.label}</Text>
+
               <Progress
-                ml={8}
-                mr={4}
                 size="xs"
                 rounded="full"
                 colorScheme={stat.color}
@@ -91,6 +90,7 @@ const Stats = ({ id }: StatsProps) => {
                 value={stat.value}
                 flexGrow="1"
               />
+
               <Text w="45px">{stat.value}%</Text>
             </Flex>
           );
