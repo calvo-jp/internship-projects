@@ -20,7 +20,11 @@ const ListView = ({ data }: ListViewProps) => {
 
   return (
     <GridTable
-      columns={{ base: "55px 85px 1fr 1fr", lg: "55px 85px 1fr 1fr 1fr" }}
+      columns={{
+        base: "55px 85px 1fr",
+        sm: "55px 85px 1fr 1fr",
+        lg: "55px 85px 1fr 1fr 1fr",
+      }}
       columnsProps={{
         borderBottom: "1px",
         borderColor: "brand.gray.50",
