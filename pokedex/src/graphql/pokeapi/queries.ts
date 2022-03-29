@@ -47,6 +47,7 @@ export const GET_POKEMONS_TOTAL = gql`
 export const GET_POKEMON = gql`
   query GetPokemon($id: Int!) {
     pokemon: pokemon_v2_pokemon_by_pk(id: $id) {
+      id
       weight
       height
 
@@ -60,10 +61,12 @@ export const GET_POKEMON = gql`
       }
 
       specy: pokemon_v2_pokemonspecy {
+        id
         genderRate: gender_rate
         eggCycyle: hatch_counter
         eggGroups: pokemon_v2_pokemonegggroups {
           eggGroup: pokemon_v2_egggroup {
+            id
             name
           }
         }
@@ -138,6 +141,7 @@ export const GET_POKEMON_EVOLUTION = gql`
         id
         name
         evolutionChain: pokemon_v2_evolutionchain {
+          id
           evolutions: pokemon_v2_pokemonspecies {
             id
             name

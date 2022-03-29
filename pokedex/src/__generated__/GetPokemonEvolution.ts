@@ -25,6 +25,7 @@ export interface GetPokemonEvolution_pokemon_specy_evolutionChain_evolutions {
 
 export interface GetPokemonEvolution_pokemon_specy_evolutionChain {
   __typename: "pokemon_v2_evolutionchain";
+  id: number;
   /**
    * An array relationship
    */

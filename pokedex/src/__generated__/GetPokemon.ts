@@ -22,6 +22,7 @@ export interface GetPokemon_pokemon_others {
 
 export interface GetPokemon_pokemon_specy_eggGroups_eggGroup {
   __typename: "pokemon_v2_egggroup";
+  id: number;
   name: string;
 }
 
@@ -35,6 +36,7 @@ export interface GetPokemon_pokemon_specy_eggGroups {
 
 export interface GetPokemon_pokemon_specy {
   __typename: "pokemon_v2_pokemonspecies";
+  id: number;
   genderRate: number | null;
   eggCycyle: number | null;
   /**
@@ -59,6 +61,7 @@ export interface GetPokemon_pokemon_types {
 
 export interface GetPokemon_pokemon {
   __typename: "pokemon_v2_pokemon";
+  id: number;
   weight: number | null;
   height: number | null;
   /**
@@ -69,7 +72,6 @@ export interface GetPokemon_pokemon {
    * An object relationship
    */
   specy: GetPokemon_pokemon_specy | null;
-  id: number;
   name: string;
   /**
    * An array relationship
