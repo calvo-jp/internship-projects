@@ -13,8 +13,10 @@ import Photo from "components/widgets/Photo";
 import apolloClient from "config/apollo/client";
 import { GET_POKEMON, GET_POKEMONS } from "graphql/pokeapi/queries";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
 import services from "services";
 import capitalize from "utils/capitalize";
@@ -76,6 +78,13 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 };
 
 const OpenGraph = ({ pokemon }: Props) => {
+  const { push } = useRouter();
+  const { status } = useSession();
+
+  React.useEffect(() => {
+    if (status === "authenticated") push("/pokemons/" + pokemon.id);
+  }, [pokemon.id, push, status]);
+
   return (
     <React.Fragment>
       <Head>
