@@ -1,17 +1,17 @@
 import { Progress, ProgressProps } from "@chakra-ui/react";
-import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type AnimatedProgressProps = ProgressProps;
 
 const AnimatedProgress = ({ value, ...props }: AnimatedProgressProps) => {
-  const [target, setTarget] = React.useState(0);
+  const [target, setTarget] = useState(0);
 
-  const increment = React.useCallback(() => {
+  const increment = useCallback(() => {
     if (value && target < value) setTarget((old) => old + 1);
   }, [target, value]);
 
-  React.useEffect(() => increment(), [increment]);
-  React.useEffect(() => () => setTarget(0), []);
+  useEffect(() => increment(), [increment]);
+  useEffect(() => () => setTarget(0), []);
 
   return <Progress value={target} {...props} />;
 };

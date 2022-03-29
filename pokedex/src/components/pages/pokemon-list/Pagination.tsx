@@ -1,7 +1,7 @@
 import { Box, Center, HStack, Icon } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import useSlideshow from "hooks/useSlideshow";
-import * as React from "react";
+import { PropsWithChildren, useMemo } from "react";
 import IPaginated from "types/paginated";
 import valx from "utils/valx";
 
@@ -20,7 +20,7 @@ const Pagination = ({
   const startSlideIndex = Math.ceil(page / itemsPerSlide);
   const totalPages = Math.ceil(totalRows / pageSize);
 
-  const slideItems = React.useMemo(() => {
+  const slideItems = useMemo(() => {
     return new Array<number>(totalPages).fill(1).map((v, i) => v + i);
   }, [totalPages]);
 
@@ -80,7 +80,7 @@ const PageButton = ({
   active,
   onClick,
   children,
-}: React.PropsWithChildren<PageButtonProps>) => {
+}: PropsWithChildren<PageButtonProps>) => {
   return (
     <Box
       as="button"

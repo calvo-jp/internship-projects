@@ -2,7 +2,7 @@ import {
   Image as ChakraImage,
   ImageProps as ChakraImageProps,
 } from "@chakra-ui/react";
-import * as React from "react";
+import { useEffect, useState } from "react";
 
 interface ImageProps {
   src: string;
@@ -33,10 +33,10 @@ const Photo = ({
   fallback,
   ...props
 }: ImageProps & Omit<ChakraImageProps, "fallback" | "fallbackSrc">) => {
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (previouslyLoadedImages.includes(src)) return setLoading(false);
 
     const image = new Image();
@@ -61,12 +61,12 @@ const Photo = ({
   }, [src]);
 
   return (
-    <React.Fragment>
+    <>
       {!!loading && loader}
       {!loading && (
         <ChakraImage src={error ? fallback : src} loading="lazy" {...props} />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

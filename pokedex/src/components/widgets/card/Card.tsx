@@ -1,7 +1,6 @@
 import { Box, BoxProps } from "@chakra-ui/react";
-import * as React from "react";
 
-const Card = ({ children, ...props }: React.PropsWithChildren<BoxProps>) => {
+const Card = ({ children, ...props }: BoxProps) => {
   return (
     <Box
       py={6}

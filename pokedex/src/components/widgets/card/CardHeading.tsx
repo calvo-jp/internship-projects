@@ -1,10 +1,6 @@
 import { Heading, HeadingProps } from "@chakra-ui/react";
-import * as React from "react";
 
-const CardHeading = ({
-  children,
-  ...props
-}: React.PropsWithChildren<HeadingProps>) => {
+const CardHeading = ({ children, ...props }: HeadingProps) => {
   return (
     <Heading
       color="brand.blue.400"

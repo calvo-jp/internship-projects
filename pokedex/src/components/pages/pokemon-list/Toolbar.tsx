@@ -12,14 +12,13 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import {
-  CheckIcon,
   FilterIcon,
   ViewGridIcon,
   ViewListIcon,
 } from "@heroicons/react/outline";
 import usePokemonTypes from "hooks/usePokemonTypes";
 import useStore from "hooks/useStore";
-import * as React from "react";
+import { ComponentProps, useCallback } from "react";
 import valx from "utils/valx";
 
 interface ToolbarProps {
@@ -66,7 +65,7 @@ interface FilterToolProps {
 const FilterTool = ({ value = [], onChange }: FilterToolProps) => {
   const { data, loading } = usePokemonTypes();
 
-  const toggle = React.useCallback(
+  const toggle = useCallback(
     (subject: string) => {
       return () => {
         if (!value.includes(subject)) return onChange([subject, ...value]);
@@ -128,7 +127,7 @@ const Loader = () => {
 };
 
 interface ToolbarIconProps {
-  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
+  icon: (props: ComponentProps<"svg">) => JSX.Element;
 }
 
 const ToolbarIcon = ({ icon }: ToolbarIconProps) => {
