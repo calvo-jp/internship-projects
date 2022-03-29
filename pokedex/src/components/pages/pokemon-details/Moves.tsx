@@ -18,7 +18,7 @@ import GridTableCell from "components/widgets/grid-table/GridTableCell";
 import GridTableHeading from "components/widgets/grid-table/GridTableHeading";
 import GridTableRow from "components/widgets/grid-table/GridTableRow";
 import { GET_POKEMON_MOVES } from "graphql/pokeapi/queries";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import arrayChunk from "utils/arrayChunk";
 import unkebab from "utils/unkebab";
 import {
@@ -92,25 +92,25 @@ interface MainMovesProps {
 
 const MainMoves = ({ moves }: MainMovesProps) => {
   const chunks = arrayChunk(moves, 5);
-  const [current, setCurrent] = React.useState(0);
+  const [current, setCurrent] = useState(0);
 
   const display = chunks.reduce((array, chunk, idx) => {
     return idx <= current ? [...array, ...chunk] : array;
   }, []);
 
   const hasMore = current < chunks.length - 1;
-  const [scrollHeight, setScrollHeight] = React.useState(0);
+  const [scrollHeight, setScrollHeight] = useState(0);
 
   const showMore = () => {
     if (!hasMore) return;
     setCurrent((old) => old + 1);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setScrollHeight(document.body.scrollHeight);
   }, [current]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (window.pageYOffset) window.scrollTo(0, scrollHeight);
   }, [scrollHeight]);
 

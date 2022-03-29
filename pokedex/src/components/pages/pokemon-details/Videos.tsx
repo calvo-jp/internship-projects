@@ -6,7 +6,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import InfiniteScroll from "components/InfiniteScroll";
-import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 import services from "services";
 
 interface VideosProps {
@@ -16,11 +16,11 @@ interface VideosProps {
 type YoutubeResult = Awaited<ReturnType<typeof services.youtube.search>>;
 
 const Videos = ({ search }: VideosProps) => {
-  const [data, setData] = React.useState<YoutubeResult>();
-  const [error, setError] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+  const [data, setData] = useState<YoutubeResult>();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const performSearch = React.useCallback(async () => {
+  const performSearch = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -52,7 +52,7 @@ const Videos = ({ search }: VideosProps) => {
     // needs refactoring or rewriting of codes
   }, [data?.nextPageToken, search]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     performSearch();
   }, [performSearch]);
 

@@ -14,7 +14,6 @@ import Card from "components/widgets/card";
 import Photo from "components/widgets/Photo";
 import { GET_POKEMON, GET_POKEMON_EVOLUTION } from "graphql/pokeapi/queries";
 import Link from "next/link";
-import * as React from "react";
 import capitalize from "utils/capitalize";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
@@ -29,7 +28,7 @@ interface EvolutionProps {
 }
 
 const Evolution = ({ id }: EvolutionProps) => {
-  const { loading, data, refetch } = useQuery<
+  const { loading, data } = useQuery<
     GetPokemonEvolution,
     GetPokemonEvolutionVariables
   >(GET_POKEMON_EVOLUTION, {
@@ -37,15 +36,7 @@ const Evolution = ({ id }: EvolutionProps) => {
     notifyOnNetworkStatusChange: true,
   });
 
-  if (loading) {
-    return (
-      <Center>
-        <Spinner size="lg" />
-      </Center>
-    );
-  }
-
-  // TODO: show error and option for refetch
+  if (loading) return <Loader />;
   if (!data?.pokemon) return null;
 
   const pokemon = data.pokemon;
@@ -109,6 +100,14 @@ const Evolution = ({ id }: EvolutionProps) => {
         </VStack>
       </Card>
     </Box>
+  );
+};
+
+const Loader = () => {
+  return (
+    <Center>
+      <Spinner size="lg" />
+    </Center>
   );
 };
 

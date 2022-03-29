@@ -9,7 +9,6 @@ import {
   LinkedinShareButton,
   TwitterShareButton,
 } from "next-share";
-import * as React from "react";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 
 interface SocialsShareProps {

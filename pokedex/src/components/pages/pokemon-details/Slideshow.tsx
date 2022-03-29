@@ -14,7 +14,7 @@ import { GET_POKEMON_TYPE } from "graphql/pokeapi/queries";
 import useSlideshow from "hooks/useSlideshow";
 import useStore from "hooks/useStore";
 import Link from "next/link";
-import * as React from "react";
+import { useRef } from "react";
 import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
 import randomIdGenerator from "utils/randomIdGenerator";
@@ -25,7 +25,7 @@ import {
 
 const Slideshow = () => {
   const items = useStore((state) => state.viewedPokemonIds);
-  const sliderRef = React.useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   const { slides, next, prev } = useSlideshow(items, {
     delay: 5,
