@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { HStack, Icon, IconButton } from "@chakra-ui/react";
+import { Flex, HStack, Icon } from "@chakra-ui/react";
 import FacebookIcon from "components/icons/Facebook";
 import LinkedInIcon from "components/icons/LinkedIn";
 import TwitterIcon from "components/icons/Twitter";
@@ -61,13 +61,16 @@ interface ShareButtonProps {
 
 const ShareButton = ({ icon }: ShareButtonProps) => {
   return (
-    <IconButton
-      bgColor="brand.gray.800"
-      aria-label=""
-      icon={<Icon w={3} h={3} as={icon} fill="white" />}
+    <Flex
+      w={8}
+      h={8}
+      align="center"
+      justify="center"
       rounded="full"
-      size="sm"
-    />
+      bgColor="brand.gray.800"
+    >
+      <Icon w={3} h={3} as={icon} fill="white" />
+    </Flex>
   );
 };
 
