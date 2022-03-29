@@ -1,18 +1,19 @@
 import { useQuery } from "@apollo/client";
 import {
+  Box,
   Center,
   Flex,
   HStack,
   Icon,
   SimpleGrid,
   Spinner,
+  Tag,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import Card from "components/widgets/card";
 import CardHeading from "components/widgets/card/CardHeading";
-import CardTag from "components/widgets/card/CardTag";
 import GridTable from "components/widgets/grid-table";
 import GridTableCell from "components/widgets/grid-table/GridTableCell";
 import GridTableHeading from "components/widgets/grid-table/GridTableHeading";
@@ -74,11 +75,7 @@ const QuickMoves = ({ moves }: QuickMovesProps) => {
           {moves.map(({ move }) => {
             if (!move) return null;
 
-            return (
-              <CardTag variant="info" key={move.name}>
-                {unkebab(move.name)}
-              </CardTag>
-            );
+            return <MoveItem key={move.name} label={move.name} />;
           })}
         </Flex>
       </VStack>
@@ -117,41 +114,38 @@ const MainMoves = ({ moves }: MainMovesProps) => {
   return (
     <Card w="full">
       <SimpleGrid columns={2}>
-        <VStack spacing={6} align="start">
-          <CardHeading>Main Moves</CardHeading>
-
-          {display
-            .map(({ move }) => (move ? move.name : ""))
-            .filter((value) => value.length > 0)
-            .map((tag) => (
-              <CardTag variant="info" key={tag}>
-                {unkebab(tag)}
-              </CardTag>
-            ))}
-        </VStack>
+        <CardHeading>Main Moves</CardHeading>
 
         <GridTable columns="repeat(3, 1fr)">
-          <GridTableRow p={1} borderBottom="1px">
+          <GridTableRow pb={4} borderBottom="1px">
             {"Damage|DPS|EPS".split(/\|/).map((heading) => (
               <GridTableHeading textAlign="center" key={heading}>
                 {heading}
               </GridTableHeading>
             ))}
           </GridTableRow>
+        </GridTable>
+      </SimpleGrid>
 
-          {display.map(({ id, move }) => {
-            if (!move) return null;
+      {display.map(({ move }) => {
+        if (!move) return null;
 
-            return (
-              <GridTableRow key={id} p={4} borderBottom="1px">
+        return (
+          <SimpleGrid key={move.name} columns={2} alignItems="center">
+            <Box>
+              <MoveItem label={move.name} />
+            </Box>
+
+            <GridTable columns="repeat(3, 1fr)">
+              <GridTableRow p={4} borderBottom="1px">
                 <GridTableCell textAlign="center">{move.power}</GridTableCell>
                 <GridTableCell textAlign="center">{move.pp}</GridTableCell>
                 <GridTableCell textAlign="center">{move.pp}</GridTableCell>
               </GridTableRow>
-            );
-          })}
-        </GridTable>
-      </SimpleGrid>
+            </GridTable>
+          </SimpleGrid>
+        );
+      })}
 
       {hasMore && (
         <Flex mt={6} justify="end" fontSize="sm" color="brand.primary">
@@ -162,6 +156,22 @@ const MainMoves = ({ moves }: MainMovesProps) => {
         </Flex>
       )}
     </Card>
+  );
+};
+
+const MoveItem = ({ label }: { label: string }) => {
+  return (
+    <Tag
+      py={2}
+      px={8}
+      fontFamily="'Public Sans', sans-serif"
+      border="1px"
+      color="brand.blue.700"
+      bgColor="brand.blue.50"
+      borderColor="brand.blue.200"
+    >
+      {unkebab(label)}
+    </Tag>
   );
 };
 
