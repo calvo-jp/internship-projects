@@ -1,7 +1,6 @@
-// typescript does not know how to handle this
-
 import { useEffect, useState } from "react";
 
+// typescript does not know how to handle this
 // type checking should be bypassed in return stmt
 type FetchStatus<D, E> =
   | {
