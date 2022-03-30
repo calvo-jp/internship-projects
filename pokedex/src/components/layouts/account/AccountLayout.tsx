@@ -1,5 +1,4 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import spinner from "assets/spinner.svg";
 import useCallbackUrlQuery from "hooks/useCallbackUrlQuery";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -30,16 +29,7 @@ const AccountLayout = ({
     prefetch(callbackUrl);
   }, [callbackUrl, prefetch]);
 
-  if (status === "loading") return <Loader />;
-
-  // there will be delays while nextjs is pushing the new url
-  // this sends a loader instead of an empty page
-  // or showing the form where this component is used
-  if (status === "authenticated") {
-    push(callbackUrl);
-
-    return <Loader />;
-  }
+  if (status === "authenticated") push(callbackUrl);
 
   return (
     <Flex minH="100vh">
@@ -61,14 +51,6 @@ const AccountLayout = ({
           <Box mt={8}>{children}</Box>
         </Box>
       </Flex>
-    </Flex>
-  );
-};
-
-const Loader = () => {
-  return (
-    <Flex minH="100vh" align="center" justify="center">
-      <Image src={spinner} alt="" />
     </Flex>
   );
 };
