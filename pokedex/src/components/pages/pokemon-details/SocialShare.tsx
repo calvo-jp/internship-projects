@@ -1,14 +1,15 @@
 import { useQuery } from "@apollo/client";
-import { Flex, HStack, Icon } from "@chakra-ui/react";
-import FacebookIcon from "components/icons/Facebook";
-import LinkedInIcon from "components/icons/LinkedIn";
-import TwitterIcon from "components/icons/Twitter";
+import { Box, Flex, HStack, Icon, Tooltip } from "@chakra-ui/react";
 import { GET_POKEMON } from "graphql/pokeapi/queries";
 import {
+  FacebookIcon,
   FacebookShareButton,
+  LinkedinIcon,
   LinkedinShareButton,
+  TwitterIcon,
   TwitterShareButton,
 } from "next-share";
+import { PropsWithChildren } from "react";
 import { GetPokemon, GetPokemonVariables } from "__generated__/GetPokemon";
 
 interface SocialsShareProps {
@@ -31,45 +32,47 @@ const SocialShare = ({ id }: SocialsShareProps) => {
 
   return (
     <HStack>
-      <FacebookShareButton
-        url={url}
-        hashtag={data.pokemon.name}
-        windowWidth={400}
-        windowHeight={400}
-      >
-        <ShareButton icon={FacebookIcon} />
-      </FacebookShareButton>
-      <TwitterShareButton
-        url={url}
-        hashtags={[data.pokemon.name]}
-        windowWidth={400}
-        windowHeight={400}
-      >
-        <ShareButton icon={TwitterIcon} />
-      </TwitterShareButton>
-      <LinkedinShareButton url={url} windowWidth={400} windowHeight={400}>
-        <ShareButton icon={LinkedInIcon} />
-      </LinkedinShareButton>
+      <ButtonWrapper label="Share on facebook">
+        <FacebookShareButton
+          url={url}
+          hashtag={data.pokemon.name}
+          windowWidth={400}
+          windowHeight={400}
+        >
+          <Icon as={FacebookIcon} w={8} h={8} fill="white" />
+        </FacebookShareButton>
+      </ButtonWrapper>
+
+      <ButtonWrapper label="Share on twitter">
+        <TwitterShareButton
+          url={url}
+          hashtags={[data.pokemon.name]}
+          windowWidth={400}
+          windowHeight={400}
+        >
+          <Icon as={TwitterIcon} w={8} h={8} fill="white" />
+        </TwitterShareButton>
+      </ButtonWrapper>
+
+      <ButtonWrapper label="Share on linkedin">
+        <LinkedinShareButton url={url} windowWidth={400} windowHeight={400}>
+          <Icon as={LinkedinIcon} w={8} h={8} fill="white" />
+        </LinkedinShareButton>
+      </ButtonWrapper>
     </HStack>
   );
 };
 
-interface ShareButtonProps {
-  icon: (props: React.ComponentProps<"svg">) => JSX.Element;
-}
-
-const ShareButton = ({ icon }: ShareButtonProps) => {
+const ButtonWrapper = ({
+  label,
+  children,
+}: PropsWithChildren<{ label?: string }>) => {
   return (
-    <Flex
-      w={8}
-      h={8}
-      align="center"
-      justify="center"
-      rounded="full"
-      bgColor="brand.gray.800"
-    >
-      <Icon w={3} h={3} as={icon} fill="white" />
-    </Flex>
+    <Tooltip shouldWrapChildren label={label} hasArrow>
+      <Box rounded="full" overflow="hidden" w="32px" h="32px" shadow="md">
+        {children}
+      </Box>
+    </Tooltip>
   );
 };
 
