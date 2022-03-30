@@ -7,8 +7,7 @@ interface InfiniteScrollProps {
 
 const InfiniteScroll = ({ callback, paused }: InfiniteScrollProps) => {
   const handleScroll = useCallback(() => {
-    if (paused) return;
-    if (isScrolledToBottom()) callback();
+    if (!paused && isScrolledToBottom()) callback();
   }, [callback, paused]);
 
   useEffect(() => {
