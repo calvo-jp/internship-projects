@@ -12,7 +12,7 @@ import {
   Skeleton,
   Text,
 } from "@chakra-ui/react";
-import ArrowDownIcon from "components/icons/ArrowDown";
+import CaretDownIcon from "components/icons/CaretDown";
 import Link from "components/widgets/Link";
 import useProfile from "hooks/useProfile";
 import useStore from "hooks/useStore";
@@ -91,7 +91,7 @@ const Dropdown = () => {
   return (
     <Menu>
       <MenuButton>
-        <Icon as={ArrowDownIcon} fill="brand.gray.100" w="10px" h="10px" />
+        <Icon as={CaretDownIcon} fill="brand.gray.100" w="10px" h="10px" />
       </MenuButton>
       <MenuList mt={3} bgColor="brand.gray.800" rounded="sm">
         <MenuItem color="brand.red.500" onClick={logout}>

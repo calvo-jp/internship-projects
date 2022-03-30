@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-const ArrowDownIcon = (props: ComponentProps<"svg">) => {
+const CaretDownIcon = (props: ComponentProps<"svg">) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,4 +14,4 @@ const ArrowDownIcon = (props: ComponentProps<"svg">) => {
   );
 };
 
-export default ArrowDownIcon;
+export default CaretDownIcon;
