@@ -84,6 +84,7 @@ const CreateAccountForm = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await signUp({ variables: data });
+      // no need to catch errors here since this would always go through
       await signIn("credentials", {
         email: data.email,
         password: data.password,
