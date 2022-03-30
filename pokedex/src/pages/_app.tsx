@@ -8,7 +8,6 @@ import theme from "config/theme";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import Script from "next/script";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -34,18 +33,6 @@ const App = ({ Component, pageProps }: AppProps) => {
         />
       </Head>
 
-      <Script
-        strategy="lazyOnload"
-        src={"https://www.googletagmanager.com/gtag/js?id=" + googleAnalyticsId}
-      />
-
-      <Script id="" strategy="lazyOnload">
-        {`window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', ${googleAnalyticsId});`}
-      </Script>
-
       <SessionProvider session={pageProps.session}>
         <ApolloProvider client={apolloClient}>
           <ChakraProvider theme={theme}>
@@ -58,7 +45,5 @@ const App = ({ Component, pageProps }: AppProps) => {
     </>
   );
 };
-
-const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export default App;
