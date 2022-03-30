@@ -9,7 +9,7 @@ import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
 import useCallbackUrlQuery from "hooks/useCallbackUrlQuery";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
