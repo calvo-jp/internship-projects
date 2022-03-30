@@ -39,7 +39,7 @@ const Header = () => {
       justify="space-between"
       bgColor="brand.gray.800"
       shadow="md"
-      zIndex="banner"
+      zIndex={100}
       pos="sticky"
       top={0}
       transitionProperty="position"
