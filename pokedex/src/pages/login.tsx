@@ -9,7 +9,7 @@ import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
 import useCallbackUrlQuery from "hooks/useCallbackUrlQuery";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -60,24 +60,25 @@ const LoginForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [loginError, setLoginError] = useState(false);
+  const [loginError, setLoginError] = useState<string>();
 
   const login = handleSubmit(async (data) => {
     setLoading(true);
 
-    await signIn("credentials", {
+    const response = await signIn<"credentials">("credentials", {
       ...data,
       redirect: false,
     });
 
+    if (response && response.error) setLoginError(response.error);
+
     setLoading(false);
-    setLoginError(true);
   });
 
   useEffect(() => {
     return () => {
       setLoading(false);
-      setLoginError(false);
+      setLoginError(undefined);
     };
   }, []);
 
@@ -85,10 +86,10 @@ const LoginForm = () => {
     <Box as="form" onSubmit={login} noValidate>
       <VStack spacing={4} align="stretch">
         <Alert
-          open={loginError}
+          open={!!loginError}
           variant="error"
-          message="Invalid username or password"
-          onClose={() => setLoginError(false)}
+          message={loginError}
+          onClose={() => setLoginError(undefined)}
         />
 
         <TextField
