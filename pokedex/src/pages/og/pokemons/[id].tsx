@@ -81,6 +81,9 @@ const OpenGraph = ({ pokemon }: Props) => {
   const { push } = useRouter();
   const { status } = useSession();
 
+  const canonical =
+    "https://internship-project-pokedex.vercel.app/og/pokemons/";
+
   useEffect(() => {
     if (status === "authenticated") push("/pokemons/" + pokemon.id);
   }, [pokemon.id, push, status]);
@@ -90,19 +93,9 @@ const OpenGraph = ({ pokemon }: Props) => {
       <Head>
         <title>Pokedex | {pokemon.name}</title>
 
-        <meta
-          property="og:url"
-          content={
-            "https://internship-project-pokedex.vercel.app/og/pokemons/" +
-            pokemon.id
-          }
-        />
+        <meta property="og:url" content={canonical + pokemon.id} />
         <meta property="og:site_name" content="Pokedex" />
-        <meta property="fb:app_id" content="1522507158149034" />
-        <meta
-          property="og:title"
-          content={["Pokedex", pokemon.name].join("|")}
-        />
+        <meta property="og:title" content={pokemon.name} />
         <meta
           property="og:description"
           content={pokemon.others?.descriptions.at(0)?.description}
