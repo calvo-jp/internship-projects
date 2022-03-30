@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { Box, Center, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Center, HStack, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AccountLayout from "components/layouts/account";
 import Alert from "components/widgets/Alert";
