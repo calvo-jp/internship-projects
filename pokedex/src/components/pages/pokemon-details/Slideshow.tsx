@@ -14,7 +14,8 @@ import { GET_POKEMON_TYPE } from "graphql/pokeapi/queries";
 import useSlideshow from "hooks/useSlideshow";
 import useStore from "hooks/useStore";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 import getColorByType from "utils/pokemons/getColorByType";
 import getImageUrlById from "utils/pokemons/getImageUrlById";
 import randomIdGenerator from "utils/randomIdGenerator";
@@ -102,6 +103,14 @@ const SlideItem = ({ id }: { id: number }) => {
     { variables: { id } }
   );
 
+  const router = useRouter();
+  const [shouldInclude, setShouldInclude] = useState(false);
+
+  useEffect(() => {
+    const condition = router.query.tab === "evolution";
+    setShouldInclude(condition);
+  }, [router.query.tab]);
+
   return (
     <Link passHref href={"/pokemons/" + id}>
       <GridItem
@@ -123,6 +132,7 @@ const SlideItem = ({ id }: { id: number }) => {
           fallback={getImageUrlById(id, "PNG")}
           data-lightbox-item=""
           data-lightbox-noclick=""
+          data-lightbox-excludeif={shouldInclude}
         />
       </GridItem>
     </Link>
