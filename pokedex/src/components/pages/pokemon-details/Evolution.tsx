@@ -55,6 +55,7 @@ const Evolution = ({ id }: EvolutionProps) => {
   const fromSpecyName = fromSpecy?.name ?? pokemon.name;
   // how much level it takes to evolve to its current form
   const candyCost = currentSpecy?.evolvesWhen.at(0)?.level ?? 1;
+  // description not including candy cost
   const partialDescription = `
   There are currently a total of ${evolutions.length} Pokémon in the
   ${capitalize(unkebab(pokemon.name))} family.
