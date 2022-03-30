@@ -50,7 +50,7 @@ const Stats = ({ id }: StatsProps) => {
     }
   );
 
-  if (loading) <Loader />;
+  if (loading) return <Loader />;
   if (!data?.pokemon) return null;
 
   const stats = [
