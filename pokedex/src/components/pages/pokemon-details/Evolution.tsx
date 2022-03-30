@@ -53,6 +53,8 @@ const Evolution = ({ id }: EvolutionProps) => {
 
   // fallback to current pokemons name
   const fromSpecyName = fromSpecy?.name ?? pokemon.name;
+  // how much level it takes to evolve to its current form
+  const candyCost = currentSpecy?.evolvesWhen.at(0)?.level ?? 1;
   const partialDescription = `
   There are currently a total of ${evolutions.length} Pokémon in the
   ${capitalize(unkebab(pokemon.name))} family.
@@ -64,7 +66,7 @@ const Evolution = ({ id }: EvolutionProps) => {
       <Text maxW="403px" fontSize="sm">
         {partialDescription}
         <Text as="b" fontWeight="semibold">
-          25 Candy.
+          {candyCost} Candy.
         </Text>
       </Text>
 
