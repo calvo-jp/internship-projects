@@ -31,7 +31,13 @@ const search = async (config: SearchConfig): Promise<YoutubeSearchResult> => {
   return o;
 };
 
-const key = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY_0!;
+const getApiKey = () => {
+  const debug = process.env.NODE_ENV === "development";
+  if (debug) return process.env.NEXT_PUBLIC_YOUTUBE_API_KEY_0!;
+  return process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
+};
+
+const key = getApiKey();
 const type = "video";
 const maxResults = 8; /* limiting to 8 inorder not to hit quota early */
 const endpoint = "https://youtube.googleapis.com/youtube/v3/search";
