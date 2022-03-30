@@ -35,7 +35,17 @@ export const getLightboxItems = () => {
   for (; i < j; i++) {
     const image = images[i];
 
-    if (image.hasAttribute("data-lightbox-item")) lbItems.push(image);
+    // discard non-lightbox-item
+    if (!image.hasAttribute("data-lightbox-item")) continue;
+
+    // check for conditional exclude
+    if (
+      image.hasAttribute("data-lightbox-excludeif") &&
+      image.getAttribute("data-lightbox-excludeif") === "true"
+    )
+      continue;
+
+    lbItems.push(image);
   }
 
   PROCESSING_LIGHTBOX_ITEMS = false;
