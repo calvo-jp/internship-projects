@@ -33,24 +33,12 @@ interface MovesProps {
 }
 
 const Moves = ({ id }: MovesProps) => {
-  const { loading, data, refetch } = useQuery<
-    GetPokemonMoves,
-    GetPokemonMovesVariables
-  >(GET_POKEMON_MOVES, {
-    variables: { id },
-    notifyOnNetworkStatusChange: true,
-  });
+  const { loading, data } = useQuery<GetPokemonMoves, GetPokemonMovesVariables>(
+    GET_POKEMON_MOVES,
+    { variables: { id }, notifyOnNetworkStatusChange: true }
+  );
 
-  // TODO: update to skeleton
-  if (loading) {
-    return (
-      <Center>
-        <Spinner size="lg" />
-      </Center>
-    );
-  }
-
-  // TODO: return error and add option for refetch
+  if (loading) return <Loader />;
   if (!data?.moves) return null;
 
   return (
@@ -58,6 +46,14 @@ const Moves = ({ id }: MovesProps) => {
       <QuickMoves moves={data.moves.quick ?? []} />
       <MainMoves moves={data.moves.main ?? []} />
     </VStack>
+  );
+};
+
+const Loader = () => {
+  return (
+    <Center>
+      <Spinner size="lg" />
+    </Center>
   );
 };
 
