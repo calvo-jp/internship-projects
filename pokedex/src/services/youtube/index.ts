@@ -33,6 +33,9 @@ const search = async (config: SearchConfig): Promise<YoutubeSearchResult> => {
 
 const getApiKey = () => {
   const debug = process.env.NODE_ENV === "development";
+  // I have five yoube API keys for dev
+  // namely NEXT_PUBLIC_YOUTUBE_API_KEY_[1,2,3,4,5]
+  // due to youtube's really small YT quota
   if (debug) return process.env.NEXT_PUBLIC_YOUTUBE_API_KEY_0!;
   return process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 };
