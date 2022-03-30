@@ -6,6 +6,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import InfiniteScroll from "components/InfiniteScroll";
+import Alert from "components/widgets/Alert";
 import { useCallback, useEffect, useState } from "react";
 import services from "services";
 import randomIdGenerator from "utils/randomIdGenerator";
@@ -23,6 +24,7 @@ const Videos = ({ search }: VideosProps) => {
   const [data, setData] = useState<YoutubeResult>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const performSearch = useCallback(async () => {
     setLoading(true);
@@ -56,6 +58,10 @@ const Videos = ({ search }: VideosProps) => {
     // needs refactoring or rewriting of codes
   }, [data?.nextPageToken, search]);
 
+  useEffect(() => {
+    if (firstLoad) performSearch().finally(() => setFirstLoad(false));
+  }, [firstLoad, performSearch]);
+
   const hasNext =
     /* no request has been sent yet */
     !data ||
@@ -64,6 +70,13 @@ const Videos = ({ search }: VideosProps) => {
 
   return (
     <Box>
+      <Alert
+        mb={8}
+        open={!!error}
+        variant="warning"
+        message="Service currently unavailable"
+      />
+
       {data && (
         <SimpleGrid columns={{ lg: 2 }} gap={4} mb={4}>
           {data.items.map((item) => (
@@ -87,7 +100,10 @@ const Videos = ({ search }: VideosProps) => {
         </Center>
       )}
 
-      <InfiniteScroll callback={performSearch} paused={loading || !hasNext} />
+      <InfiniteScroll
+        callback={performSearch}
+        paused={loading || !hasNext || firstLoad}
+      />
     </Box>
   );
 };
