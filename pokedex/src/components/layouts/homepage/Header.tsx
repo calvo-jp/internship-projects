@@ -84,8 +84,12 @@ const Dropdown = () => {
 
   const logout = async () => {
     resetStore();
-    await signOut({ redirect: false });
+
+    // this ensures page goes to login after signing out
     await push("/");
+    // this gets called before session is checked
+    // no problems here
+    await signOut({ redirect: false });
   };
 
   return (
