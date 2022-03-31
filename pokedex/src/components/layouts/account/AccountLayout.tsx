@@ -29,6 +29,11 @@ const AccountLayout = ({
     prefetch(callbackUrl);
   }, [callbackUrl, prefetch]);
 
+  // returning null if status is authenticated or loading
+  // causes unwanted behavior.
+  // we just let content be visible here and
+  // will handle authenticated or loading status
+  // on the actual page eg. disabling button when loading or authenticated
   if (status === "authenticated") push(callbackUrl);
 
   return (
