@@ -16,8 +16,12 @@ const search = async (config: SearchConfig): Promise<YoutubeSearchResult> => {
       q,
       key,
       type,
+      part,
       pageToken,
       maxResults,
+      videoDuration,
+      videoEmbeddable,
+      relevanceLanguage,
     })
   );
 
@@ -42,7 +46,12 @@ const getApiKey = () => {
 
 const key = getApiKey();
 const type = "video";
+const part = "snippet";
 const maxResults = 8; /* limiting to 8 inorder not to hit quota early */
+const videoDuration = "short";
+const videoEmbeddable = "true";
+const relevanceLanguage = "en";
+
 const endpoint = "https://youtube.googleapis.com/youtube/v3/search";
 
 const youtube = {
