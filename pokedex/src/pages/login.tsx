@@ -9,7 +9,7 @@ import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
 import useCallbackUrlQuery from "hooks/useCallbackUrlQuery";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,6 +50,8 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
+  const { status } = useSession();
+
   const { register, formState, handleSubmit } = useForm({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -116,6 +118,7 @@ const LoginForm = () => {
         type="submit"
         fontSize="sm"
         isLoading={loading}
+        isDisabled={status !== "unauthenticated"}
       >
         Sign In
       </Button>

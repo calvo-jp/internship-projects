@@ -7,6 +7,7 @@ import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
 import { TRIGGER_PASSWORD_RESET } from "graphql/auth-api/mutations";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -48,6 +49,8 @@ const schema = yup.object().shape({
 });
 
 const ForgotPasswordForm = () => {
+  const { status } = useSession();
+
   const { register, formState, handleSubmit, ...form } = useForm({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -103,6 +106,7 @@ const ForgotPasswordForm = () => {
         type="submit"
         fontSize="sm"
         isLoading={loading}
+        isDisabled={status !== "unauthenticated"}
       >
         Send password reset link
       </Button>

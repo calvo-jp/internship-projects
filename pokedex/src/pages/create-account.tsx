@@ -7,7 +7,7 @@ import Button from "components/widgets/Button";
 import Link from "components/widgets/Link";
 import TextField from "components/widgets/TextField";
 import { SIGN_UP } from "graphql/auth-api/mutations";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -61,6 +61,8 @@ const schema = yup.object().shape({
 });
 
 const CreateAccountForm = () => {
+  const { status } = useSession();
+
   const { register, formState, handleSubmit } = useForm({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -141,6 +143,7 @@ const CreateAccountForm = () => {
         type="submit"
         fontSize="sm"
         isLoading={loading}
+        isDisabled={status !== "unauthenticated"}
       >
         Create Account
       </Button>

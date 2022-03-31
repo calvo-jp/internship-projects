@@ -7,7 +7,7 @@ import Button from "components/widgets/Button";
 import TextField from "components/widgets/TextField";
 import { RESET_PASSWORD } from "graphql/auth-api/mutations";
 import useSearchParams from "hooks/useSearchParams";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -49,6 +49,7 @@ const schema = yup.object().shape({
 });
 
 const AccountRecoveryForm = () => {
+  const session = useSession();
   const router = useRouter();
   const params = useSearchParams("email", "code");
   const code = params.get("code");
@@ -131,6 +132,7 @@ const AccountRecoveryForm = () => {
         type="submit"
         fontSize="sm"
         isLoading={loading}
+        isDisabled={session.status !== "unauthenticated"}
       >
         Submit
       </Button>
