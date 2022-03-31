@@ -117,14 +117,7 @@ const Item = ({ data }: ItemProps) => {
   const play = () => setPlaying(true);
   const stop = () => setPlaying(false);
 
-  const videoSrc =
-    "https://youtube.com/embed/" +
-    data.id.videoId +
-    "?autoplay=1&modestbranding=1&fs=0&cc_lang_pref=en&color=yellow";
-
-  useEffect(() => {
-    return () => setPlaying(false);
-  }, []);
+  useEffect(() => () => setPlaying(false), []);
 
   return (
     <>
@@ -135,7 +128,11 @@ const Item = ({ data }: ItemProps) => {
         onClick={play}
       />
 
-      <Player src={videoSrc} open={playing} onClose={stop} />
+      <Player
+        src={`https://youtube.com/embed/${data.id.videoId}?autoplay=1&modestbranding=1&fs=0&cc_lang_pref=en&color=yellow`}
+        open={playing}
+        onClose={stop}
+      />
     </>
   );
 };
