@@ -25,22 +25,26 @@ const search = async (config: SearchConfig): Promise<YoutubeSearchResult> => {
     })
   );
 
-  const response = await fetch(`${endpoint}?${params.toString()}`);
+  try {
+    const response = await fetch(`${endpoint}?${params.toString()}`);
 
-  // youtube's success or error response is in json
-  const o = await response.json();
+    // youtube's success or error response is in json
+    const o = await response.json();
 
-  if (!response.ok) throw new Error(o.message);
+    if (!response.ok) throw new Error(o.error.message);
 
-  return o;
+    return o;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const getApiKey = () => {
   const debug = process.env.NODE_ENV === "development";
-  // I have five yoube API keys for dev
-  // namely NEXT_PUBLIC_YOUTUBE_API_KEY_[1,2,3,4,5]
+  // I have six yoube API keys for dev
+  // namely NEXT_PUBLIC_YOUTUBE_API_KEY_[0,1,2,3,4,5]
   // due to youtube's really small YT quota
-  if (debug) return process.env.NEXT_PUBLIC_YOUTUBE_API_KEY_0!;
+  if (debug) return process.env.NEXT_PUBLIC_YOUTUBE_API_KEY_1!;
   return process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 };
 

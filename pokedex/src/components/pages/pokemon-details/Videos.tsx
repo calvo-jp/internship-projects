@@ -32,9 +32,8 @@ type YoutubeResult = Awaited<ReturnType<typeof services.youtube.search>>;
 
 const Videos = ({ search }: VideosProps) => {
   const [data, setData] = useState<YoutubeResult>();
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const [firstLoad, setFirstLoad] = useState(true);
 
   const performSearch = useCallback(async () => {
     setLoading(true);
@@ -58,8 +57,8 @@ const Videos = ({ search }: VideosProps) => {
           previousPageToken: response.previousPageToken,
         };
       });
-    } catch (error) {
-      setError(true);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -69,23 +68,16 @@ const Videos = ({ search }: VideosProps) => {
   }, [data?.nextPageToken, search]);
 
   useEffect(() => {
-    if (firstLoad) performSearch().finally(() => setFirstLoad(false));
-  }, [firstLoad, performSearch]);
+    if (!data) performSearch();
 
-  const hasNext =
-    /* no request has been sent yet */
-    !data ||
-    /** should have a next page token for succeeding request unless already reached last page */
-    (data && data.nextPageToken);
+    return () => setError(undefined);
+  }, [data, performSearch]);
+
+  const hasNext = data && data.nextPageToken;
 
   return (
     <Box>
-      <Alert
-        mb={8}
-        open={!!error}
-        variant="warning"
-        message="Service currently unavailable"
-      />
+      <Alert mb={8} open={!!error} variant="warning" message={error} />
 
       {data && (
         <SimpleGrid columns={{ lg: 2 }} gap={4} mb={4}>
@@ -110,10 +102,7 @@ const Videos = ({ search }: VideosProps) => {
         </Center>
       )}
 
-      <InfiniteScroll
-        callback={performSearch}
-        paused={loading || !hasNext || firstLoad}
-      />
+      <InfiniteScroll callback={performSearch} paused={loading || !hasNext} />
     </Box>
   );
 };
