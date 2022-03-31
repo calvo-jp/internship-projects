@@ -9,6 +9,7 @@ import TextField from "components/widgets/TextField";
 import { SIGN_UP } from "graphql/auth-api/mutations";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { SignUp, SignUpVariables } from "__generated__/SignUp";
@@ -62,6 +63,7 @@ const schema = yup.object().shape({
 
 const CreateAccountForm = () => {
   const { status } = useSession();
+  const { push } = useRouter();
 
   const { register, formState, handleSubmit } = useForm({
     mode: "onChange",
@@ -92,6 +94,8 @@ const CreateAccountForm = () => {
         password: data.password,
         redirect: false,
       });
+
+      await push("/pokemons");
     } catch {}
   });
 
