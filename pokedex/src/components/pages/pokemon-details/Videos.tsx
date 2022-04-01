@@ -140,7 +140,7 @@ const Item = ({ data }: ItemProps) => {
 interface CardProps {
   title: string;
   image: string;
-  // date string
+  /** a valid date string */
   date: string;
   onClick?: () => void;
 }
