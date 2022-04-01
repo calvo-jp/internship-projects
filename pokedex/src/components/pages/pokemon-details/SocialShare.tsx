@@ -1,5 +1,13 @@
 import { useQuery } from "@apollo/client";
-import { Box, Flex, HStack, Icon, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  HStack,
+  Icon,
+  Spinner,
+  Tooltip,
+} from "@chakra-ui/react";
 import { GET_POKEMON } from "graphql/pokeapi/queries";
 import {
   FacebookIcon,
@@ -25,7 +33,7 @@ const SocialShare = ({ id }: SocialsShareProps) => {
     { variables: { id } }
   );
 
-  if (loading) return null;
+  if (loading) return <Loader />;
   if (!data?.pokemon) return null;
 
   const url = baseUrl + data.pokemon.id;
@@ -60,6 +68,14 @@ const SocialShare = ({ id }: SocialsShareProps) => {
         </LinkedinShareButton>
       </ButtonWrapper>
     </HStack>
+  );
+};
+
+const Loader = () => {
+  return (
+    <Center>
+      <Spinner size="sm" />
+    </Center>
   );
 };
 
