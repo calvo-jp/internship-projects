@@ -1,7 +1,5 @@
 import { ApolloProvider } from "@apollo/client";
 import { ChakraProvider, Container } from "@chakra-ui/react";
-import "@fontsource/pt-sans/400.css";
-import "@fontsource/pt-sans/700.css";
 import PageLoader from "components/PageLoader";
 import apolloClient from "config/apollo/client";
 import theme from "config/theme";
